@@ -70,7 +70,6 @@ plugins=(
 	command-not-found
 	common-aliases
 	git
-	git-auto-fetch
 	git-extras
 	gitstatus
 	git-remote-branch
@@ -87,7 +86,6 @@ plugins=(
 	ubuntu
 	vscode
 	wd
-	zsh_reload
 )
 
 source $ZSH/oh-my-zsh.sh

@@ -2,61 +2,61 @@
 
 function inst {
 	if ! apt-get -qq install "$@" > /dev/null; then
-		echo " >>> ERROR WHILE INSTALLING PACKAGES:"
+		echo ">>> ERROR WHILE INSTALLING PACKAGES:"
 		echo "$@"
 	fi
 }
 
 
 if [ "$EUID" -ne 0 ]
-  then echo "> usage: sudo init.sh"
-  exit 1
+	then echo ">> usage: sudo init.sh"
+	exit 1
 fi
 
 GIT_DIR=`grep ivan-ristovic/dotfiles .git/config`;
 if [ -z "$GIT_DIR" ]; then
-	echo " > CRITICAL: Not in dotfiles directory. Exiting ..."
+	echo ">> CRITICAL: Not in dotfiles directory. Exiting ..."
 	exit 1
 fi
 
-echo " > Updating..."
+echo ">> Updating..."
 apt-get -qq update > /dev/null
 
-echo " > Configuring git..."
+echo ">> Configuring git..."
 inst git
 git config --global user.email "ivan.ristovic95@gmail.com"
 git config --global user.name "ivan-ristovic"
 
-echo " > Installing synaptic package manager ..."
+echo ">> Installing synaptic package manager ..."
 inst synaptic
 
-echo " > Installing svn ..."
+echo ">> Installing svn ..."
 inst subversion
 
-echo " > Installing building essentials ..."
+echo ">> Installing building essentials ..."
 inst build-essential
 inst valgrind
 inst kcachegrind
 
-echo " > Installing Qt5 ..."
+echo ">> Installing Qt5 ..."
 inst qt5-default
 inst qtcreator
 inst qt5-doc qt5-doc-html qtbase5-doc-html
-/sbin/ldconfig -v
+/sbin/ldconfig -v > /dev/null
 
-echo " > Installing VS Code ..."
+echo ">> Installing VS Code ..."
 inst software-properties-common apt-transport-https wget
-wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | apt-key add -
-add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | apt-key add - > /dev/null
+add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /dev/null
 inst code
 
-echo " > Installing LaTeX ..."
+echo ">> Installing LaTeX ..."
 inst texlive-latex-recommended texlive-lang-other texlive-lang-cyrillic texlive-luatex
 
-echo " > Cleaning up ..."
+echo ">> Cleaning up ..."
 apt -qq autoremove > /dev/null
 
-echo " > Installing zsh ..."
+echo ">> Installing zsh ..."
 inst zsh
 zsh --version 
 usermod -s /usr/bin/zsh $(whoami)
@@ -65,7 +65,7 @@ inst zsh-syntax-highlighting
 sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 
 
-echo " > Copying dotfiles ..."
+echo ">> Linking dotfiles ..."
 
 INIT_IGNORES=`cat init.ignore`
 
@@ -93,7 +93,9 @@ for item in *; do
 
 done
 
+read -p ">> All done! Have a nice day! (press any key to continue...) " -n 1 -r
+echo
 
-echo " > Switching to zsh ..."
+echo ">> Switching to zsh ..."
 chsh -s "$(which zsh)"
 source ~/.zshrc
