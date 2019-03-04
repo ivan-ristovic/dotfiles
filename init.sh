@@ -19,10 +19,10 @@ if [ -z "$GIT_DIR" ]; then
 	exit 1
 fi
 
-echo ">> Updating..."
+echo ">> Updating ..."
 apt-get -qq update > /dev/null
 
-echo ">> Configuring git..."
+echo ">> Configuring git ..."
 inst git
 git config --global user.email "ivan.ristovic95@gmail.com"
 git config --global user.name "ivan-ristovic"
@@ -56,13 +56,14 @@ inst texlive-latex-recommended texlive-lang-other texlive-lang-cyrillic texlive-
 echo ">> Cleaning up ..."
 apt -qq autoremove > /dev/null
 
+
 echo ">> Installing zsh ..."
 inst zsh
-zsh --version 
-usermod -s /usr/bin/zsh $(whoami)
+pip install powerline-status > /dev/null
 inst powerline fonts-powerline
 inst zsh-syntax-highlighting
 sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+rm ~/.zshrc
 
 
 echo ">> Linking dotfiles ..."
@@ -93,9 +94,9 @@ for item in *; do
 
 done
 
-read -p ">> All done! Have a nice day! (press any key to continue...) " -n 1 -r
+echo ">> Making zsh the default shell ..."
+chsh -s "$(which zsh)"
+
+read -p ">> All done! Please re-login to apply changes (press any key to continue...) " -n 1 -r
 echo
 
-echo ">> Switching to zsh ..."
-chsh -s "$(which zsh)"
-source ~/.zshrc
