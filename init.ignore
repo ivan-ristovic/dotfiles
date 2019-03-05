@@ -1,3 +1,2 @@
-*.sh
 *.md
-init.ignore
+init.*

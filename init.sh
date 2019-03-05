@@ -30,8 +30,16 @@ git config --global user.name "ivan-ristovic"
 echo ">> Installing synaptic package manager ..."
 inst synaptic
 
+echo ">> Installing networking tools ..."
+inst apt-transport-https
+inst curl
+inst traceroute
+
 echo ">> Installing svn ..."
 inst subversion
+
+echo ">> Installing tmux ..."
+inst tmux
 
 echo ">> Installing building essentials ..."
 inst build-essential
