@@ -101,6 +101,7 @@ for item in *; do
     ln -s "$PWD/$item" "$HOME/.$item"
 
 done
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 echo ">> Making zsh the default shell ..."
 chsh -s "$(which zsh)"
