@@ -21,6 +21,7 @@ fi
 
 echo ">> Updating ..."
 apt-get -qq update > /dev/null
+inst python-pip
 
 echo ">> Configuring git ..."
 inst git
@@ -68,7 +69,7 @@ apt -qq autoremove > /dev/null
 echo ">> Installing zsh ..."
 inst zsh
 pip install powerline-status > /dev/null
-inst powerline fonts-powerline
+inst fonts-powerline
 inst zsh-syntax-highlighting
 sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 rm ~/.zshrc
