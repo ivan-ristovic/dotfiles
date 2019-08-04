@@ -46,7 +46,7 @@ function pm_cmd ()
     osinfo[/etc/arch-release]=pacman
     osinfo[/etc/gentoo-release]=emerge
     osinfo[/etc/SuSE-release]=zypp
-    osinfo[/etc/debian_version]="apt-get install"
+    osinfo[/etc/debian_version]="apt-get install -qq"
 
     for f in ${!osinfo[@]}
     do
