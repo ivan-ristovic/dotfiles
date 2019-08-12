@@ -17,7 +17,7 @@ rm ~/.zshrc
 if ask "Change the theme?"; then
     TMP_CURDIR=`pwd`
     cd ~
-    if git clone "https://github.com/ivan-ristovic/zsh_theme.git" > /dev/null; then
+    if git clone "https://github.com/ivan-ristovic/zsh-theme.git" > /dev/null; then
         cd zsh_theme
         source "setup.sh" > /dev/null
     else
