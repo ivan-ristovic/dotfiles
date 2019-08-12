@@ -1,12 +1,13 @@
 #!/bin/bash
 
-if ! -f "gf.ip"; then
-    touch "gf.ip"
-    echo "Fill gf.ip with the server IP address and re-run"
+IPFILE="gf.ip"
+
+if [ ! -f "$IPFILE" ]; then
+    touch $IPFILE
+    echo "Fill $IPFILE with the server IP address and re-run"
     exit 1
 fi
 
-IP=`cat gf.ip`
+IP=`cat $IPFILE | xargs`
 
 /opt/TurboVNC/bin/vncviewer -via root@$IP -quality 75 127.0.0.1:5901
-

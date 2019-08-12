@@ -7,20 +7,20 @@
 #   - if there is a file <entry>.sh present in the `install` directory, use that script to setup the entry
 #   - if the statement above does not stand, then use package manager provided as script argument (defaults to `apt`) to setup the package 
 
-updates
-git
-synaptic
-apt-transport-https
-curl
-traceroute
-subversion
-tmux
-build-essential
-valgrind
-kcachegrind
-qt5
-vscode_apt
-latex
+#updates
+#git
+#synaptic
+#apt-transport-https
+#curl
+#traceroute
+#subversion
+#tmux
+#build-essential
+#valgrind
+#kcachegrind
+#qt5
+#vscode_apt
+#latex
 zsh
 
 # Do not delete this line. I cannot trust you to add a new line at the end of the file...
