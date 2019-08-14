@@ -73,6 +73,7 @@ plugins=(
   ubuntu
   vscode
   wd
+  zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh

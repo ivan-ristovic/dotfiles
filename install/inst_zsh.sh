@@ -4,6 +4,7 @@ source "utils.sh"
 
 inst $@ zsh
 inst $@ python-pip
+inst $@ git
 pip install powerline-status > /dev/null
 inst $@ fonts-powerline
 inst $@ zsh-syntax-highlighting
@@ -13,6 +14,8 @@ wget -q -O install.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/m
 sh install.sh --unattended > /dev/null
 rm install.sh
 rm ~/.zshrc 
+
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
 if ask "Change the theme?"; then
     TMP_CURDIR=`pwd`
