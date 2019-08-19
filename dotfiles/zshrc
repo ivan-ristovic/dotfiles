@@ -70,6 +70,7 @@ plugins=(
   command-not-found
   common-aliases
   gitignore
+  sudo
   ubuntu
   vscode
   wd
