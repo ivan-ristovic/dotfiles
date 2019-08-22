@@ -63,16 +63,12 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git 
   branch
   colored-man-pages
   colorize
   command-not-found
-  common-aliases
   gitignore
   sudo
-  ubuntu
-  vscode
   wd
   zsh-syntax-highlighting
 )
@@ -139,3 +135,47 @@ LS_COLORS="ow=01;36;40" && export LS_COLORS
 zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 autoload -Uz compinit
 compinit
+
+
+########################## ALIASES ##########################
+
+# blank aliases
+typeset -a baliases
+baliases=()
+
+balias() {
+  alias $@
+  args="$@"
+  args=${args%%\=*}
+  baliases+=(${args##* })
+}
+
+# ignored aliases
+typeset -a ialiases
+ialiases=()
+
+ialias() {
+  alias $@
+  args="$@"
+  args=${args%%\=*}
+  ialiases+=(${args##* })
+}
+
+# functionality
+expand-alias-space() {
+  [[ $LBUFFER =~ "\<(${(j:|:)baliases})\$" ]]; insertBlank=$?
+  if [[ ! $LBUFFER =~ "\<(${(j:|:)ialiases})\$" ]]; then
+    zle _expand_alias
+  fi
+  zle self-insert
+  if [[ "$insertBlank" = "0" ]]; then
+    zle backward-delete-char
+  fi
+}
+zle -N expand-alias-space
+
+bindkey " " expand-alias-space
+bindkey -M isearch " " magic-space
+
+
+source ~/.aliases.zsh
