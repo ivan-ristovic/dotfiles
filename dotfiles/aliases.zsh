@@ -221,6 +221,7 @@ alias mydeb='time dpkg-buildpackage -rfakeroot -us -uc'
 alias p='ps -f'
 alias ppap='sudo ppa-purge'
 alias rd=rmdir
+ialias rm=rm
 alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
 alias sortnr='sort -n -r'
 alias src='source ~/.zshrc'
