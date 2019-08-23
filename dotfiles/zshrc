@@ -174,7 +174,15 @@ expand-alias-space() {
 }
 zle -N expand-alias-space
 
+expand-alias-enter() {
+  zle expand-alias-space
+  zle backward-delete-char
+  zle accept-line
+}
+zle -N expand-alias-enter
+
 bindkey " " expand-alias-space
+bindkey "^M" expand-alias-enter
 bindkey -M isearch " " magic-space
 
 
