@@ -15,7 +15,7 @@ curl
 traceroute
 subversion
 tmux
-uild-essential
+build-essential
 valgrind
 kcachegrind
 qt5
