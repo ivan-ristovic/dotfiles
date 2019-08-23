@@ -21,7 +21,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Get install list path
-INSTALL_LIST="install_apt.list"
+INSTALL_LIST="apt_install.list"
 if [ $# -ge 1 ]; then
     if [ -f $1 ]; then
         INSTALL_LIST=$1
@@ -34,6 +34,7 @@ fi
 PM=`pm_cmd`
 msg "Package manager installation command identified as: $PM"
 
+# Install packages
 suc "Checks completed successfully, starting installations..."
 for entry in `rm_comments "$INSTALL_LIST"`; do
     cd "install"
@@ -49,6 +50,7 @@ for entry in `rm_comments "$INSTALL_LIST"`; do
 done
 suc "Installations finished"
 
+# Link dotfiles
 msg "Linking dotfiles..."
 if [ -d "dotfiles" ]; then
     cd "dotfiles"
