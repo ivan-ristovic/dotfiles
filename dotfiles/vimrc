@@ -8,6 +8,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Bundle 'edkolev/tmuxline.vim'
 Plugin 'ivan-cukic/vim-colors-penultimate'
 
 
@@ -17,7 +18,8 @@ filetype plugin indent on    " required
 
 let g:airline_powerline_fonts = 1
 let g:airline_theme='murmur'
-
+let g:airline#extensions#tmuxline#enabled = 0
+let airline#extensions#tmuxline#snapshot_file = "~/.tmux-status.conf"
 
 syntax on
 set t_Co=256

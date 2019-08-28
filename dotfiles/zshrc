@@ -69,9 +69,12 @@ plugins=(
   command-not-found
   gitignore
   sudo
+  tmux
   wd
   zsh-syntax-highlighting
 )
+
+ZSH_TMUX_AUTOSTART=true
 
 source $ZSH/oh-my-zsh.sh
 
