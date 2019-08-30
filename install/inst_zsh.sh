@@ -13,9 +13,10 @@ inst $@ zsh-syntax-highlighting
 wget -q -O install.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
 sh install.sh --unattended > /dev/null
 rm install.sh
-rm ~/.zshrc 
+rm ~/.zshrc
 
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
 if ask "Change the theme?"; then
     TMP_CURDIR=`pwd`
