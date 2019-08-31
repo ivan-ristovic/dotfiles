@@ -9,7 +9,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Bundle 'edkolev/tmuxline.vim'
-Plugin 'ivan-cukic/vim-colors-penultimate'
+Plugin 'tomasiser/vim-code-dark'
 
 
 call vundle#end()            " required
@@ -17,12 +17,23 @@ filetype plugin indent on    " required
 
 
 let g:airline_powerline_fonts = 1
-let g:airline_theme='murmur'
+let g:airline_theme='bubblegum'
 let g:airline#extensions#tmuxline#enabled = 0
 let airline#extensions#tmuxline#snapshot_file = "~/.tmux-status.conf"
 
+set tabstop=4
+set shiftwidth=4
+set expandtab
+
+set number
+highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
+
 syntax on
 set t_Co=256
-colors penultimate
+colors codedark 
+set enc=utf-8
+set guifont=Powerline_Consolas:h11
+set renderoptions=type:directx,gamma:1.5,contrast:0.5,geom:1,renmode:5,taamode:1,level:0.5
+
 filetype plugin indent on
 
