@@ -12,6 +12,7 @@ git
 synaptic
 apt-transport-https
 curl
+cmake
 traceroute
 subversion
 tmux
