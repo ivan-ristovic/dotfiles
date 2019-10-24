@@ -226,6 +226,7 @@ ialias mv='mv -i'
 alias mydeb='time dpkg-buildpackage -rfakeroot -us -uc'
 alias p='ps -f'
 alias ppap='sudo ppa-purge'
+alias py='python3'
 alias rd=rmdir
 ialias rm=rm
 alias sa='alias | grep -i'
@@ -233,6 +234,7 @@ alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
 alias sortnr='sort -n -r'
 alias src='source ~/.zshrc'
 alias t='tail -f'
+alias td='tmux detach'
 ialias type='type -a' 
 alias unexport=unset
 alias vsc='code .'
