@@ -222,6 +222,8 @@ ialias ls='ls --color=tty'
 ialias lsa='ls -lah'
 alias lt='ls -ltFh'
 alias md='mkdir -p'
+alias m=make
+alias mk='make -B'
 ialias mv='mv -i'
 alias mydeb='time dpkg-buildpackage -rfakeroot -us -uc'
 alias p='ps -f'
