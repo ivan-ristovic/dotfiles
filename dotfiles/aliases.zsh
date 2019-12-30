@@ -231,6 +231,7 @@ alias ppap='sudo ppa-purge'
 alias py='python3'
 alias rd=rmdir
 ialias rm=rm
+alias rmf='rm -rf'
 alias sa='alias | grep -i'
 alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
 alias sortnr='sort -n -r'
