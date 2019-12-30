@@ -21,7 +21,7 @@ if ask "Change the theme?"; then
     TMP_CURDIR=`pwd`
     cd ~
     if git clone "https://github.com/ivan-ristovic/xris47.zsh-theme.git" > /dev/null; then
-        cd zsh_theme
+        cd xris47.zsh-theme
         source "setup.sh" > /dev/null
     else
         err "Failed to clone the theme from GitHub"
