@@ -6,10 +6,8 @@ ZSH_THEME="xris47"
 
 # CASE_SENSITIVE="true"
 # HYPHEN_INSENSITIVE="true"
-
 # DISABLE_AUTO_UPDATE="true"
 # export UPDATE_ZSH_DAYS=13
-
 # DISABLE_LS_COLORS="true"
 # DISABLE_AUTO_TITLE="true"
 # ENABLE_CORRECTION="true"
@@ -32,37 +30,10 @@ plugins=(
 
 ZSH_TMUX_AUTOSTART=true
 
-
 source $ZSH/oh-my-zsh.sh
 
+########################## LS COLORS ##########################
 
-# export MANPATH="/usr/local/man:$MANPATH"
-export LANG=en_US.UTF-8
-export EDITOR='vim'
-
-# export ARCHFLAGS="-arch x86_64"
-export SSH_KEY_PATH="~/.ssh/rsa_id"
-env=~/.ssh/agent.env
-agent_load_env () { test -f "$env" && . "$env" >| /dev/null ; }
-agent_start () {
-    (umask 077; ssh-agent >| "$env")
-    . "$env" >| /dev/null ; }
-
-agent_load_env
-# agent_run_state: 0=agent running w/ key; 1=agent w/o key; 2= agent not running
-agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
-
-if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
-    agent_start
-    ssh-add
-elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
-    ssh-add
-fi
-
-unset env
-
-
-# Change ls colours
 LS_COLORS="ow=01;36;40" && export LS_COLORS
 
 # Make cd use the ls colours
@@ -121,3 +92,29 @@ bindkey -M isearch " " magic-space
 
 source ~/.aliases.zsh
 
+########################## SSH AGENT ##########################
+
+# export MANPATH="/usr/local/man:$MANPATH"
+export LANG=en_US.UTF-8
+export EDITOR='vim'
+
+# export ARCHFLAGS="-arch x86_64"
+export SSH_KEY_PATH="~/.ssh/rsa_id"
+env=~/.ssh/agent.env
+agent_load_env () { test -f "$env" && . "$env" >| /dev/null ; }
+agent_start () {
+    (umask 077; ssh-agent >| "$env")
+    . "$env" >| /dev/null ; }
+
+agent_load_env
+# agent_run_state: 0=agent running w/ key; 1=agent w/o key; 2= agent not running
+agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
+
+if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
+    agent_start
+    ssh-add
+elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
+    ssh-add
+fi
+
+unset env
