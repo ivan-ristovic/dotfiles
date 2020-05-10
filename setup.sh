@@ -36,7 +36,7 @@ msg "Package manager installation command identified as: $PM"
 
 # Install packages
 suc "Checks completed successfully, starting installations..."
-for entry in `rm_comments "$INSTALL_LIST"`; do
+for entry in $(rm_comments "$INSTALL_LIST"); do
     cd "install"
     SETUP_SCRIPT="inst_$entry.sh"
     if [ -f "$SETUP_SCRIPT" ]; then
@@ -44,7 +44,7 @@ for entry in `rm_comments "$INSTALL_LIST"`; do
         source "$SETUP_SCRIPT" "$PM"
     else
         msg "Installing package    : $entry"
-        inst $PM $entry
+        inst "$PM" "$entry"
     fi
     cd "$ROOT_DIR"
 done
@@ -54,7 +54,7 @@ suc "Installations finished"
 msg "Linking dotfiles..."
 export SETUP_HOME_DIR="/home/ivan"
 if [ $# -ge 1 ]; then
-    HOME_DIR=$1
+    SETUP_HOME_DIR=$1
 fi
 echo "Setting up dotfiles in dir: $SETUP_HOME_DIR"
 if [ -d "dotfiles" ]; then
