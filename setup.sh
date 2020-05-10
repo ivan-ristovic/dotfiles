@@ -52,6 +52,7 @@ suc "Installations finished"
 
 # Link dotfiles
 msg "Linking dotfiles..."
+HOME_DIR="/home/ivan"
 if [ -d "dotfiles" ]; then
     cd "dotfiles"
     INIT_IGNORES=`cat ignore.list`
@@ -69,13 +70,13 @@ if [ -d "dotfiles" ]; then
             continue;
         fi
 
-        if [ -e "$HOME/.$item" ]; then
-            echo "Skipped: .$item (already exists)"
+        if [ -e "$HOME_DIR/.$item" ]; then
+            echo "Skipped: $HOME_DIR/.$item (already exists)"
             continue;
         fi
 
-        echo "Linking: $item  to  ~/.$item"
-        ln -s "$PWD/$item" "$HOME/.$item"
+        echo "Linking: $item  to  $HOME_DIR/.$item"
+        ln -s "$PWD/$item" "$HOME_DIR/.$item"
 
     done
 

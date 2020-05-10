@@ -3,9 +3,9 @@
 source "utils.sh"
 
 inst $@ zsh
-inst $@ python-pip
+inst $@ python3-pip
 inst $@ git
-pip install powerline-status > /dev/null
+pip3 install powerline-status > /dev/null
 inst $@ fonts-powerline
 inst $@ zsh-syntax-highlighting
 
