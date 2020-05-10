@@ -15,10 +15,10 @@ sh install.sh --unattended > /dev/null
 rm install.sh
 rm ~/.zshrc
 
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${"$ZSH_CUSTOM":-~/.oh-my-zsh/custom"/plugins/zsh-syntax-highlighting
 
 if ask "Change the theme?"; then
-    TMP_CURDIR=`pwd`
+    TMP_CURDIR=$(pwd)
     cd ~
     if git clone "https://github.com/ivan-ristovic/xris47.zsh-theme.git" > /dev/null; then
         cd xris47.zsh-theme
@@ -26,7 +26,7 @@ if ask "Change the theme?"; then
     else
         err "Failed to clone the theme from GitHub"
     fi
-    cd $TMP_CURDIR
+    cd "$TMP_CURDIR"
     suc "Done"
 fi
 

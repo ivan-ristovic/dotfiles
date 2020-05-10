@@ -23,8 +23,7 @@ git config --global credential.helper 'cache --timeout=18000'
 ```
 
 If your setup differs for different distributions, you can create multiple files and then use different names for different distributions:
-```
+```sh
 inst_mypkg_deb.sh
 inst_mypkg_arch.sh
 ```
-

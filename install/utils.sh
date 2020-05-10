@@ -51,7 +51,7 @@ function pm_cmd ()
     for f in ${!osinfo[@]}
     do
         if [[ -f $f ]]; then
-            echo ${osinfo[$f]}
+            echo "${osinfo["$f"]}"
         fi
     done
 }
