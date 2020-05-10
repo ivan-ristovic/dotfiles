@@ -17,16 +17,16 @@ source "install/utils.sh"
 
 # Check if sudo
 if [ "$EUID" -ne 0 ]; then 
-    fat "usage: sudo $0 [install/list/path]"
+    fat "usage: sudo $0 [user=ivan] [install/list/path]"
 fi
 
 # Get install list path
 INSTALL_LIST="apt_install.list"
-if [ $# -ge 1 ]; then
+if [ $# -ge 2 ]; then
     if [ -f "$1" ]; then
         INSTALL_LIST=$1
     else
-        fat "can't find file: $1"
+        fat "can't find file: $2"
     fi
 fi
 
@@ -52,7 +52,11 @@ suc "Installations finished"
 
 # Link dotfiles
 msg "Linking dotfiles..."
-HOME_DIR="/home/ivan"
+export SETUP_HOME_DIR="/home/ivan"
+if [ $# -ge 1 ]; then
+    HOME_DIR=$1
+fi
+echo "Setting up dotfiles in dir: $SETUP_HOME_DIR"
 if [ -d "dotfiles" ]; then
     cd "dotfiles"
     INIT_IGNORES=$(cat ignore.list)
@@ -70,13 +74,13 @@ if [ -d "dotfiles" ]; then
             continue;
         fi
 
-        if [ -e "$HOME_DIR/.$item" ]; then
-            echo "Skipped: $HOME_DIR/.$item (already exists)"
+        if [ -e "$SETUP_HOME_DIR/.$item" ]; then
+            echo "Skipped: $SETUP_HOME_DIR/.$item (already exists)"
             continue;
         fi
 
-        echo "Linking: $item  to  $HOME_DIR/.$item"
-        ln -s "$PWD/$item" "$HOME_DIR/.$item"
+        echo "Linking: $item  to  $SETUP_HOME_DIR/.$item"
+        ln -s "$PWD/$item" "$SETUP_HOME_DIR/.$item"
 
     done
 

@@ -7,8 +7,8 @@ inst $@ curl
 
 inst $@ neovim
 
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim > /dev/null
+git clone https://github.com/VundleVim/Vundle.vim.git "$SETUP_HOME_DIR"/.vim/bundle/Vundle.vim > /dev/null
 
-vim +PluginInstall +qall &
+sudo vim +PluginInstall +qall &
 
 
