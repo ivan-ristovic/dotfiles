@@ -17,7 +17,7 @@ function msg ()
 
 function err ()
 {
-    echo -e "${RED}${PROMPT} err: ${NC}$@" 
+    echo -e "${RED}${PROMPT} err: ${NC}$@"
 }
 
 function fat ()
@@ -28,7 +28,7 @@ function fat ()
 
 function inst ()
 {
-	if ! $@ > /dev/null; then
+	if ! $@; then
 		err "An error occurred while executing: $@"
 	fi
 }
@@ -57,7 +57,7 @@ function pm_cmd ()
 }
 
 # http://djm.me/ask
-function ask() 
+function ask()
 {
     while true; do
 
@@ -77,10 +77,11 @@ function ask()
 
         # Read the answer (use /dev/tty in case stdin is redirected from somewhere else)
         read REPLY </dev/tty
+	sleep 1
 
         # Default?
         if [ -z "$REPLY" ]; then
-            REPLY=$default
+            REPLY="$default"
         fi
 
         # Check if the reply is valid

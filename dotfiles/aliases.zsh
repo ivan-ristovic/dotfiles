@@ -46,6 +46,7 @@ alias aguu='sudo apt update && sudo apt upgrade'
 alias allpkgs='dpkg --get-selections | grep -v deinstall'
 ialias ccat=colorize_via_pygmentize
 alias cless=colorize_via_pygmentize_less
+alias conn='~/conn.sh'
 ialias cp='cp -i'
 alias diffu='diff --unified'
 alias du='du -kh'

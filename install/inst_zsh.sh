@@ -5,22 +5,24 @@ source "utils.sh"
 inst $@ zsh
 inst $@ python3-pip
 inst $@ git
-pip3 install powerline-status > /dev/null
-inst $@ fonts-powerline
-inst $@ zsh-syntax-highlighting
 
-# Install omz
+msg "Installing powerline ..."
+pip3 install powerline-status
+inst $@ fonts-powerline
+
+msg "Installing oh-my-zsh ..."
 wget -q -O install.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
-sh install.sh --unattended > /dev/null
+sh install.sh --unattended
 rm install.sh
 rm ~/.zshrc
 
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${$ZSH_CUSTOM:-$SETUP_HOME_DIR/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
+msg "Downloading syntax highlighting plugin ..."
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$SETUP_HOME_DIR/.oh-my-zsh/custom"/plugins/zsh-syntax-highlighting
 
 if ask "Change the theme?"; then
     TMP_CURDIR=$(pwd)
     cd "$SETUP_HOME_DIR"
-    if git clone "https://github.com/ivan-ristovic/xris47.zsh-theme.git" > /dev/null; then
+    if git clone "https://github.com/ivan-ristovic/xris47.zsh-theme.git"; then
         cd xris47.zsh-theme
         source "setup.sh" > /dev/null
     else
@@ -31,6 +33,6 @@ if ask "Change the theme?"; then
 fi
 
 if ask "Change the default shell to zsh?"; then
-    chsh -s "$(which zsh)"
+    sudo chsh -s "$(which zsh)"
     suc "Done"
 fi

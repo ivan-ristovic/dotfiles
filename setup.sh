@@ -5,7 +5,7 @@ ROOT_DIR=$(pwd)
 # Load utils
 GIT_DIR=$(grep ivan-ristovic/dotfiles .git/config)
 if [ -z "$GIT_DIR" ]; then
-	echo "Not in dotfiles directory. Exiting ..."
+    echo "Not in dotfiles directory. Exiting ..."
     exit 1
 fi
 if [ ! -d "install" ]; then
@@ -16,26 +16,34 @@ fi
 source "install/utils.sh"
 
 # Check if sudo
-if [ "$EUID" -ne 0 ]; then 
-    fat "usage: sudo $0 [user=ivan] [install/list/path]"
+if [ "$EUID" -ne 0 ]; then
+    fat "usage: $0 [user=ivan] [install/list/path]"
 fi
+
+# Set home dir
+export SETUP_HOME_DIR="/home/ivan"
+if [ $# -ge 1 ]; then
+    SETUP_HOME_DIR="$1"
+fi
+msg "home dir: $SETUP_HOME_DIR"
 
 # Get install list path
 INSTALL_LIST="apt_install.list"
 if [ $# -ge 2 ]; then
-    if [ -f "$1" ]; then
-        INSTALL_LIST=$1
+    if [ -f "$2" ]; then
+        INSTALL_LIST="$2"
     else
         fat "can't find file: $2"
     fi
 fi
+msg "install list: $INSTALL_LIST"
 
 # Identify package manager
 PM=$(pm_cmd)
 msg "Package manager installation command identified as: $PM"
 
 # Install packages
-suc "Checks completed successfully, starting installations..."
+suc "Checks completed successfully, starting installations ..."
 for entry in $(rm_comments "$INSTALL_LIST"); do
     cd "install"
     SETUP_SCRIPT="inst_$entry.sh"
@@ -47,16 +55,13 @@ for entry in $(rm_comments "$INSTALL_LIST"); do
         inst "$PM" "$entry"
     fi
     cd "$ROOT_DIR"
+    msg "Installed $entry."
+    sleep 1
 done
-suc "Installations finished"
+suc "Installations finished."
 
 # Link dotfiles
-msg "Linking dotfiles..."
-export SETUP_HOME_DIR="/home/ivan"
-if [ $# -ge 1 ]; then
-    SETUP_HOME_DIR=$1
-fi
-echo "Setting up dotfiles in dir: $SETUP_HOME_DIR"
+msg "Setting up dotfiles in: $SETUP_HOME_DIR ..."
 if [ -d "dotfiles" ]; then
     cd "dotfiles"
     INIT_IGNORES=$(cat ignore.list)
@@ -70,16 +75,16 @@ if [ -d "dotfiles" ]; then
         done
 
         if [ -n "$IGNORED_FILE" ]; then
-            echo "Ignored: $item"
+            echo "Ignoring $item ..."
             continue;
         fi
 
         if [ -e "$SETUP_HOME_DIR/.$item" ]; then
-            echo "Skipped: $SETUP_HOME_DIR/.$item (already exists)"
+            echo "Skipping: $SETUP_HOME_DIR/.$item (already exists) ..."
             continue;
         fi
 
-        echo "Linking: $item  to  $SETUP_HOME_DIR/.$item"
+        echo "Linking: $item -> $SETUP_HOME_DIR/.$item ..."
         ln -s "$PWD/$item" "$SETUP_HOME_DIR/.$item"
 
     done
