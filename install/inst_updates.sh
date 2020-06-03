@@ -4,5 +4,5 @@ source "utils.sh"
 
 msg "Updating..."
 
-apt-get update
-apt-get dist-upgrade
+sudo apt-get -y update
+sudo apt-get -y dist-upgrade

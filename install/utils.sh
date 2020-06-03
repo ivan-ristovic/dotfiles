@@ -28,7 +28,7 @@ function fat ()
 
 function inst ()
 {
-	if ! $@; then
+	if ! sudo $@; then
 		err "An error occurred while executing: $@"
 	fi
 }

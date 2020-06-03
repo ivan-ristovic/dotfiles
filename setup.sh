@@ -15,11 +15,6 @@ fi
 
 source "install/utils.sh"
 
-# Check if sudo
-if [ "$EUID" -ne 0 ]; then
-    fat "usage: $0 [user=ivan] [install/list/path]"
-fi
-
 # Set home dir
 export SETUP_HOME_DIR="/home/ivan"
 if [ $# -ge 1 ]; then
