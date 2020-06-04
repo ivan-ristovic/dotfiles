@@ -50,7 +50,7 @@ for entry in $(rm_comments "$INSTALL_LIST"); do
         inst "$PM" "$entry"
     fi
     cd "$ROOT_DIR"
-    msg "Installed $entry."
+    suc "Installed $entry."
     sleep 1
 done
 suc "Installations finished."
