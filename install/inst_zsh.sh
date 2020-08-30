@@ -12,12 +12,13 @@ inst $@ fonts-powerline
 
 msg "Installing oh-my-zsh ..."
 wget -q -O install.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+ZSH="$SETUP_HOME_DIR"/.zsh sh install.sh --unattended
 sh install.sh --unattended
 rm install.sh
-rm ~/.zshrc
+rm "$SETUP_HOME_DIR"/.zshrc
 
 msg "Downloading syntax highlighting plugin ..."
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$SETUP_HOME_DIR/.oh-my-zsh/custom"/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$SETUP_HOME_DIR"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
 if ask "Change the theme?"; then
     TMP_CURDIR=$(pwd)
