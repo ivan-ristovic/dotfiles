@@ -21,6 +21,7 @@ plugins=(
   colored-man-pages
   colorize
   command-not-found
+  docker
   gitignore
   sudo
   tmux
