@@ -22,7 +22,10 @@ valgrind
 #qt5
 vscode_apt
 #latex
+texlive-full
+tig
 nvim
+unison
 #youtubedl
 zsh
 
