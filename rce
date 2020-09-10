@@ -1,0 +1,93 @@
+<span class="hl slc">#!/bin/bash</span>
+
+ROOT_DIR<span class="hl opt">=</span>$<span class="hl opt">(</span><span class="hl kwb">pwd</span><span class="hl opt">)</span>
+
+<span class="hl slc"># Load utils</span>
+GIT_DIR<span class="hl opt">=</span>$<span class="hl opt">(</span><span class="hl kwc">grep</span> ivan-ristovic<span class="hl opt">/</span>dotfiles .git<span class="hl opt">/</span>config<span class="hl opt">)</span>
+<span class="hl kwa">if</span> <span class="hl opt">[</span> <span class="hl kwb">-z</span> <span class="hl str">&quot;</span><span class="hl ipl">$GIT_DIR</span><span class="hl str">&quot;</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
+    <span class="hl kwb">echo</span> <span class="hl str">&quot;Not in dotfiles directory. Exiting ...&quot;</span>
+    <span class="hl kwb">exit</span> <span class="hl num">1</span>
+<span class="hl kwa">fi</span>
+<span class="hl kwa">if</span> <span class="hl opt">[ !</span> <span class="hl kwb">-d</span> <span class="hl str">&quot;install&quot;</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
+    <span class="hl kwb">echo</span> <span class="hl str">&quot;install/ directory is not present. Exiting ...&quot;</span>
+    <span class="hl kwb">exit</span> <span class="hl num">1</span>
+<span class="hl kwa">fi</span>
+
+<span class="hl kwb">source</span> <span class="hl str">&quot;install/utils.sh&quot;</span>
+
+<span class="hl slc"># Set home dir</span>
+<span class="hl kwb">export</span> SETUP_HOME_DIR<span class="hl opt">=</span><span class="hl str">&quot;/home/ivan&quot;</span>
+<span class="hl kwa">if</span> <span class="hl opt">[</span> <span class="hl kwd">$#</span> <span class="hl kwb">-ge</span> <span class="hl num">1</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
+    SETUP_HOME_DIR<span class="hl opt">=</span><span class="hl str">&quot;</span><span class="hl ipl">$1</span><span class="hl str">&quot;</span>
+<span class="hl kwa">fi</span>
+msg <span class="hl str">&quot;home dir:</span> <span class="hl ipl">$SETUP_HOME_DIR</span><span class="hl str">&quot;</span>
+
+<span class="hl slc"># Get install list path</span>
+INSTALL_LIST<span class="hl opt">=</span><span class="hl str">&quot;apt_install.list&quot;</span>
+<span class="hl kwa">if</span> <span class="hl opt">[</span> <span class="hl kwd">$#</span> <span class="hl kwb">-ge</span> <span class="hl num">2</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
+    <span class="hl kwa">if</span> <span class="hl opt">[</span> <span class="hl kwb">-f</span> <span class="hl str">&quot;</span><span class="hl ipl">$2</span><span class="hl str">&quot;</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
+        INSTALL_LIST<span class="hl opt">=</span><span class="hl str">&quot;</span><span class="hl ipl">$2</span><span class="hl str">&quot;</span>
+    <span class="hl kwa">else</span>
+        fat <span class="hl str">&quot;can&apos;t find file:</span> <span class="hl ipl">$2</span><span class="hl str">&quot;</span>
+    <span class="hl kwa">fi</span>
+<span class="hl kwa">fi</span>
+msg <span class="hl str">&quot;install list:</span> <span class="hl ipl">$INSTALL_LIST</span><span class="hl str">&quot;</span>
+
+<span class="hl slc"># Identify package manager</span>
+PM<span class="hl opt">=</span>$<span class="hl opt">(</span>pm_cmd<span class="hl opt">)</span>
+msg <span class="hl str">&quot;Package manager installation command identified as:</span> <span class="hl ipl">$PM</span><span class="hl str">&quot;</span>
+
+<span class="hl slc"># Install packages</span>
+suc <span class="hl str">&quot;Checks completed successfully, starting installations ...&quot;</span>
+<span class="hl kwa">for</span> entry <span class="hl kwa">in</span> $<span class="hl opt">(</span>rm_comments <span class="hl str">&quot;</span><span class="hl ipl">$INSTALL_LIST</span><span class="hl str">&quot;</span><span class="hl opt">);</span> <span class="hl kwa">do</span>
+    <span class="hl kwb">cd</span> <span class="hl str">&quot;install&quot;</span>
+    SETUP_SCRIPT<span class="hl opt">=</span><span class="hl str">&quot;inst_</span><span class="hl ipl">$entry</span><span class="hl str">.sh&quot;</span>
+    <span class="hl kwa">if</span> <span class="hl opt">[</span> <span class="hl kwb">-f</span> <span class="hl str">&quot;</span><span class="hl ipl">$SETUP_SCRIPT</span><span class="hl str">&quot;</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
+        msg <span class="hl str">&quot;Setting up via script :</span> <span class="hl ipl">$entry</span><span class="hl str">&quot;</span>
+        <span class="hl kwb">source</span> <span class="hl str">&quot;</span><span class="hl ipl">$SETUP_SCRIPT</span><span class="hl str">&quot;</span> <span class="hl str">&quot;</span><span class="hl ipl">$PM</span><span class="hl str">&quot;</span>
+    <span class="hl kwa">else</span>
+        msg <span class="hl str">&quot;Installing package    :</span> <span class="hl ipl">$entry</span><span class="hl str">&quot;</span>
+        inst <span class="hl str">&quot;</span><span class="hl ipl">$PM</span><span class="hl str">&quot;</span> <span class="hl str">&quot;</span><span class="hl ipl">$entry</span><span class="hl str">&quot;</span>
+    <span class="hl kwa">fi</span>
+    <span class="hl kwb">cd</span> <span class="hl str">&quot;</span><span class="hl ipl">$ROOT_DIR</span><span class="hl str">&quot;</span>
+    suc <span class="hl str">&quot;Installed</span> <span class="hl ipl">$entry</span><span class="hl str">.&quot;</span>
+    <span class="hl kwc">sleep</span> <span class="hl num">1</span>
+<span class="hl kwa">done</span>
+suc <span class="hl str">&quot;Installations finished.&quot;</span>
+
+<span class="hl slc"># Link dotfiles</span>
+msg <span class="hl str">&quot;Setting up dotfiles in:</span> <span class="hl ipl">$SETUP_HOME_DIR</span> <span class="hl str">...&quot;</span>
+<span class="hl kwa">if</span> <span class="hl opt">[</span> <span class="hl kwb">-d</span> <span class="hl str">&quot;dotfiles&quot;</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
+    <span class="hl kwb">cd</span> <span class="hl str">&quot;dotfiles&quot;</span>
+    INIT_IGNORES<span class="hl opt">=</span>$<span class="hl opt">(</span><span class="hl kwc">cat</span> ignore.list<span class="hl opt">)</span>
+    <span class="hl kwa">for</span> item <span class="hl kwa">in</span> <span class="hl opt">*;</span> <span class="hl kwa">do</span>
+
+        IGNORED_FILE<span class="hl opt">=</span><span class="hl str">&quot;&quot;</span>
+        <span class="hl kwa">for</span> ignored <span class="hl kwa">in</span> <span class="hl kwd">$INIT_IGNORES</span><span class="hl opt">;</span> <span class="hl kwa">do</span>
+            <span class="hl kwa">if</span> <span class="hl opt">[[</span> <span class="hl str">&quot;</span><span class="hl ipl">$ignored</span><span class="hl str">&quot;</span> <span class="hl opt">=</span> <span class="hl str">&quot;</span><span class="hl ipl">$item</span><span class="hl str">&quot;</span> <span class="hl opt">]];</span> <span class="hl kwa">then</span>
+                IGNORED_FILE<span class="hl opt">=</span><span class="hl str">&quot;</span><span class="hl ipl">$item</span><span class="hl str">&quot;</span>
+            <span class="hl kwa">fi</span>
+        <span class="hl kwa">done</span>
+
+        <span class="hl kwa">if</span> <span class="hl opt">[</span> <span class="hl kwb">-n</span> <span class="hl str">&quot;</span><span class="hl ipl">$IGNORED_FILE</span><span class="hl str">&quot;</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
+            <span class="hl kwb">echo</span> <span class="hl str">&quot;Ignoring</span> <span class="hl ipl">$item</span> <span class="hl str">...&quot;</span>
+            <span class="hl kwb">continue</span><span class="hl opt">;</span>
+        <span class="hl kwa">fi</span>
+
+        <span class="hl kwa">if</span> <span class="hl opt">[</span> <span class="hl kwb">-e</span> <span class="hl str">&quot;</span><span class="hl ipl">$SETUP_HOME_DIR</span><span class="hl str">/.</span><span class="hl ipl">$item</span><span class="hl str">&quot;</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
+            <span class="hl kwb">echo</span> <span class="hl str">&quot;Skipping:</span> <span class="hl ipl">$SETUP_HOME_DIR</span><span class="hl str">/.</span><span class="hl ipl">$item</span> <span class="hl str">(already exists) ...&quot;</span>
+            <span class="hl kwb">continue</span><span class="hl opt">;</span>
+        <span class="hl kwa">fi</span>
+
+        <span class="hl kwb">echo</span> <span class="hl str">&quot;Linking:</span> <span class="hl ipl">$item</span> <span class="hl str">-&gt;</span> <span class="hl ipl">$SETUP_HOME_DIR</span><span class="hl str">/.</span><span class="hl ipl">$item</span> <span class="hl str">...&quot;</span>
+        <span class="hl kwc">ln</span> <span class="hl kwb">-s</span> <span class="hl str">&quot;</span><span class="hl ipl">$PWD</span><span class="hl str">/</span><span class="hl ipl">$item</span><span class="hl str">&quot;</span> <span class="hl str">&quot;</span><span class="hl ipl">$SETUP_HOME_DIR</span><span class="hl str">/.</span><span class="hl ipl">$item</span><span class="hl str">&quot;</span>
+
+    <span class="hl kwa">done</span>
+
+    suc <span class="hl str">&quot;Dotfiles linked.&quot;</span>
+<span class="hl kwa">else</span>
+    err <span class="hl str">&quot;dotfiles/ directory is not present.&quot;</span>
+<span class="hl kwa">fi</span>
+
+
+suc <span class="hl str">&quot;Done! Have a nice day.&quot;</span>

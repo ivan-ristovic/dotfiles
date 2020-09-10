@@ -8,24 +8,24 @@
 #   - if the statement above does not stand, then use package manager provided as script argument (defaults to `apt`) to setup the package 
 
 updates
-git
-#synaptic
+
 apt-transport-https
-curl
-cmake
-traceroute
-subversion
-tmux
 build-essential
-valgrind
-#kcachegrind
-#qt5
-vscode_apt
-#latex
-texlive-full
-tig
+cmake
+curl
+git
+highlight
+latex
 nvim
+#qt5
+subversion
+#texlive-full
+tig
+tmux
+traceroute
 unison
+valgrind
+vscode_apt
 #youtubedl
 zsh
 

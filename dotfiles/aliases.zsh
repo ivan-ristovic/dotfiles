@@ -1,3 +1,4 @@
+alias bp=/opt/BProlog/bp
 alias ...=../..
 alias ....=../../..
 alias .....=../../../..
@@ -226,6 +227,7 @@ alias gupv='git pull --rebase -v'
 alias gwch='git whatchanged -p --abbrev-commit --pretty=medium'
 alias gwip='git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign -m "--wip-- [skip ci]"'
 alias h=history
+alias hl='highlight -O ansi --force'
 alias help=man
 alias hgrep='fc -El 0 | grep'
 ialias history=omz_history

@@ -7,24 +7,28 @@
 #   - if there is a file <entry>.sh present in the `install` directory, use that script to setup the entry
 #   - if the statement above does not stand, then use package manager provided as script argument (defaults to `apt`) to setup the package 
 
+
 #updates
-#git
-#synaptic
+
 #apt-transport-https
-#curl
-#cmake
-#traceroute
-#subversion
-#tmux
-#tig
 #build-essential
-#valgrind
+#cmake
+#curl
+#git
+#highlight
 #kcachegrind
-#qt5
-#vscode_apt
 #latex
 #nvim
+#qt5
+#subversion
+#synaptic
+#tig
+#tmux
+#traceroute
 #unison
+#updates
+#valgrind
+#vscode_apt
 #youtubedl
 #zsh
 
