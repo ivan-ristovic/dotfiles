@@ -19,7 +19,6 @@ alias -g LL='2>&1 | less'
 alias -g M='| most'
 alias -g NE='2> /dev/null'
 alias -g NUL='> /dev/null 2>&1'
-alias -g P='2>&1| pygmentize -l pytb'
 alias -g T='| tail'
 alias _=sudo
 alias acp='apt-cache policy'
