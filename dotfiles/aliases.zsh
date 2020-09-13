@@ -1,4 +1,3 @@
-alias bp=/opt/BProlog/bp
 alias ...=../..
 alias ....=../../..
 alias .....=../../../..
