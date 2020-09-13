@@ -1,0 +1,10 @@
+ignore = Name *~
+ignore = Name .*~
+ignore = Name .*
+ignore = Path d/Work
+ignore = Regex .+/GitHub/.+/(bin|obj|packages)
+ignore = Name $RECYCLE.BIN*
+
+diff = diff -y -W 79 --suppress-common-lines
+
+log = true
