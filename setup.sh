@@ -17,8 +17,10 @@ source "install/utils.sh"
 
 # Set home dir
 export SETUP_HOME_DIR="/home/ivan"
+export SETUP_USER="ivan"
 if [ $# -ge 1 ]; then
-    SETUP_HOME_DIR="$1"
+    SETUP_USER="$1"
+    SETUP_HOME_DIR="/home/$1"
 fi
 msg "home dir: $SETUP_HOME_DIR"
 
