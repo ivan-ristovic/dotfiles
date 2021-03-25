@@ -251,13 +251,13 @@ alias py='python3'
 alias rd=rmdir
 ialias rm=rm
 alias rmf='rm -rf'
-alias sa='alias | grep -i'
-alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
+alias sa='alias | egrep -i'
+alias sgrep='egrep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS}'
 alias sortnr='sort -n -r'
 alias src='source ~/.zshrc'
 alias t='tail -f'
 alias td='tmux detach'
-ialias type='type -a' 
+ialias type='type -a'
 alias unexport=unset
 alias vsc='code .'
 alias vsca='code --add'
