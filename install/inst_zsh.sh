@@ -20,18 +20,7 @@ rm "$SETUP_HOME_DIR"/.zshrc
 msg "Downloading syntax highlighting plugin ..."
 sudo -u $USER git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$SETUP_HOME_DIR"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
-if ask "Change the theme?"; then
-    TMP_CURDIR=$(pwd)
-    cd "$SETUP_HOME_DIR"
-    if git clone "https://github.com/ivan-ristovic/xris47.zsh-theme.git"; then
-        cd xris47.zsh-theme
-        source "setup.sh" > /dev/null
-    else
-        err "Failed to clone the theme from GitHub"
-    fi
-    cd "$TMP_CURDIR"
-    suc "Done"
-fi
+sudo -u $USER git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$SETUP_HOME_DIR"/.oh-my-zsh/custom/themes/powerlevel10k
 
 if ask "Change the default shell to zsh?"; then
     sudo chsh -s "$(which zsh)"
