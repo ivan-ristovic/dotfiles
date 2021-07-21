@@ -17,8 +17,10 @@ git
 highlight
 jq
 latex
+lftp
 nvim
 #qt5
+ranger
 subversion
 #texlive-full
 tig

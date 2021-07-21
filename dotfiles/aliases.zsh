@@ -74,6 +74,7 @@ alias dvrm'docker volume rm'
 ialias e='$EDITOR'
 alias fd='find . -type d -name'
 alias ff='find . -type f -name'
+alias fm='ranger'
 alias g=git
 alias ga='git add'
 alias gaa='git add --all'
