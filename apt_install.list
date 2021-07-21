@@ -17,6 +17,7 @@
 #git
 #highlight
 #kcachegrind
+#jq
 #latex
 #nvim
 #qt5
@@ -24,6 +25,7 @@
 #synaptic
 #tig
 #tmux
+#tree
 #traceroute
 #unison
 #updates

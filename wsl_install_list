@@ -15,6 +15,7 @@ cmake
 curl
 git
 highlight
+jq
 latex
 nvim
 #qt5
@@ -22,6 +23,7 @@ subversion
 #texlive-full
 tig
 tmux
+tree
 traceroute
 unison
 valgrind
