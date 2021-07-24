@@ -20,6 +20,7 @@ rm "$SETUP_HOME_DIR"/.zshrc
 msg "Downloading syntax highlighting plugin ..."
 sudo -u $USER git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$SETUP_HOME_DIR"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
+msg "Downloading powerlevel10k ..."
 sudo -u $USER git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$SETUP_HOME_DIR"/.oh-my-zsh/custom/themes/powerlevel10k
 
 if ask "Change the default shell to zsh?"; then
