@@ -25,16 +25,23 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="dd/mm/yyyy"
 
 plugins=(
-  branch
+  ag
   colored-man-pages
   colorize
   command-not-found
+  copybuffer
+  direnv
   docker
+  encode64
+  extract
+  fd
+  fzf
   gitignore
   sudo
   tmux
   wd
-  zsh-syntax-highlighting  
+  # zsh-autosuggestions
+  zsh-syntax-highlighting     # must be last!
 )
 
 ZSH_TMUX_AUTOSTART=true
@@ -50,6 +57,18 @@ zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 autoload -Uz compinit
 compinit
 
+########################## FZF ##########################
+
+DISABLE_FZF_AUTO_COMPLETION=false
+DISABLE_FZF_KEY_BINDINGS=false
+FZF_DEFAULT_OPTS="--layout reverse --info inline --border \
+    --preview 'cat -ns {}'" 
+
+########################## COLORIZE ##########################
+
+ZSH_COLORIZE_TOOL=chroma
+ZSH_COLORIZE_STYLE="solarized-dark"
+ZSH_COLORIZE_CHROMA_FORMATTER=terminal256
 
 ########################## ALIASES ##########################
 
