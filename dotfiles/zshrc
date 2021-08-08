@@ -36,15 +36,33 @@ plugins=(
   extract
   fd
   fzf
+  git
   gitignore
+  nmap
+  rsync
+  ssh-agent
   sudo
+  taskwarrior
+  universalarchive
+  urltools
   tmux
   wd
   # zsh-autosuggestions
+  zsh-interactive-cd
   zsh-syntax-highlighting     # must be last!
 )
 
 ZSH_TMUX_AUTOSTART=true
+
+########################## SSH-AGENT ##########################
+
+# Must come before oh-my-zsh sourcing!
+#zstyle :omz:plugins:ssh-agent agent-forwarding on
+#zstyle :omz:plugins:ssh-agent identities id_rsa id_rsa2 id_github
+#zstyle :omz:plugins:ssh-agent lifetime 4h
+#zstyle :omz:plugins:ssh-agent ssh-add-args -K -c -a /run/user/1000/ssh-auth
+
+########################## OH-MY-ZSH ##########################
 
 source $ZSH/oh-my-zsh.sh
 
@@ -71,6 +89,9 @@ ZSH_COLORIZE_STYLE="solarized-dark"
 ZSH_COLORIZE_CHROMA_FORMATTER=terminal256
 
 ########################## ALIASES ##########################
+
+export LANG=en_US.UTF-8
+export EDITOR='vim'
 
 # Blank aliases
 typeset -a baliases
@@ -121,37 +142,11 @@ bindkey -M isearch " " magic-space
 source ~/.aliases.zsh
 source ~/.funcs.zsh
 
-########################## SSH AGENT ##########################
-
-# export MANPATH="/usr/local/man:$MANPATH"
-export LANG=en_US.UTF-8
-export EDITOR='vim'
-
-# export ARCHFLAGS="-arch x86_64"
-export SSH_KEY_PATH="~/.ssh/rsa_id"
-env=~/.ssh/agent.env
-agent_load_env () { test -f "$env" && . "$env" >| /dev/null ; }
-agent_start () {
-    (umask 077; ssh-agent >| "$env")
-    . "$env" >| /dev/null ; }
-
-agent_load_env
-# agent_run_state: 0=agent running w/ key; 1=agent w/o key; 2= agent not running
-agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
-
-if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
-    agent_start
-    ssh-add
-elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
-    ssh-add
-fi
-
-unset env
-
-
 ################ AUTOLOAD ################
 
 autoload -U zmv
+
+################ P10K ################
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
