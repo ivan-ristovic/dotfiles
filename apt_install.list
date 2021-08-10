@@ -10,6 +10,7 @@
 
 updates
 
+bat
 build-essential
 cmake
 curl

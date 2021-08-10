@@ -20,7 +20,6 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # DISABLE_AUTO_TITLE="true"
 # ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
-DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 HIST_STAMPS="dd/mm/yyyy"
 
@@ -77,16 +76,16 @@ compinit
 
 ########################## FZF ##########################
 
-DISABLE_FZF_AUTO_COMPLETION=false
-DISABLE_FZF_KEY_BINDINGS=false
-FZF_DEFAULT_OPTS="--layout reverse --info inline --border \
-    --preview 'cat -ns {}'" 
+export DISABLE_FZF_AUTO_COMPLETION=false
+export DISABLE_FZF_KEY_BINDINGS=false
+export BAT_THEME=zenburn
+export FZF_DEFAULT_OPTS="--layout reverse --info inline --border --preview 'batcat --style=numbers --color=always --line-range :500 {} || '" 
 
 ########################## COLORIZE ##########################
 
-ZSH_COLORIZE_TOOL=chroma
-ZSH_COLORIZE_STYLE="solarized-dark"
-ZSH_COLORIZE_CHROMA_FORMATTER=terminal256
+export ZSH_COLORIZE_TOOL=chroma
+export ZSH_COLORIZE_STYLE="solarized-dark"
+export ZSH_COLORIZE_CHROMA_FORMATTER=terminal256
 
 ########################## ALIASES ##########################
 
@@ -150,3 +149,4 @@ autoload -U zmv
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
