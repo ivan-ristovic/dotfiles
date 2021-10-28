@@ -1,6 +1,0 @@
-root = /mnt/
-root = /mnt/b/Backup
-
-path = d
-
-include common
