@@ -15,6 +15,11 @@ fi
 
 source "install/utils.sh"
 
+if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+    msg "usage: $0 [username] [install_list]"
+    exit 0
+fi
+
 # Set home dir
 export SETUP_HOME_DIR="/home/ivan"
 export SETUP_USER="ivan"
@@ -25,7 +30,7 @@ fi
 msg "home dir: $SETUP_HOME_DIR"
 
 # Get install list path
-INSTALL_LIST="apt_install.list"
+INSTALL_LIST="apt_install.lst"
 if [ $# -ge 2 ]; then
     if [ -f "$2" ]; then
         INSTALL_LIST="$2"
@@ -52,8 +57,8 @@ for entry in $(rm_comments "$INSTALL_LIST"); do
         inst "$PM" "$entry"
     fi
     cd "$ROOT_DIR"
-    suc "Installed $entry."
-    sleep 1
+    suc "Finished processing $entry."
+    sleep 3 
 done
 suc "Installations finished."
 

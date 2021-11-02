@@ -25,6 +25,6 @@ msg "Downloading powerlevel10k ..."
 sudo -u $USER git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$SETUP_HOME_DIR"/.oh-my-zsh/custom/themes/powerlevel10k
 
 if ask "Change the default shell to zsh?"; then
-    sudo chsh -s "$(which zsh)"
+    sudo -u $USER chsh -s "$(which zsh)"
     suc "Done"
 fi
