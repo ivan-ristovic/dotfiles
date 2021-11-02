@@ -31,7 +31,7 @@ subversion
 synaptic
 taskwarrior
 tig
-tlp
+tlp tlp-rdw
 tmux
 tree
 traceroute
