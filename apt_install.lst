@@ -24,6 +24,7 @@ jq
 lftp
 nvim
 #qt5
+pandoc
 ranger
 redshift
 silversearcher-ag
