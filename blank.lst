@@ -8,37 +8,4 @@
 #   - if the statement above does not stand, then use package manager provided as script argument (defaults to `apt`) to setup the package 
 
 
-updates
-
-bat
-build-essential
-cmake
-curl
-direnv
-fd-find
-fzf
-git
-#kcachegrind
-jq
-#latex
-lftp
-nvim
-#qt5
-pandoc
-ranger
-redshift
-silversearcher-ag
-subversion
-synaptic
-taskwarrior
-tig
-tlp tlp-rdw
-tmux
-tree
-traceroute
-valgrind
-#vscode_apt
-youtubedl
-zsh
-
 # Do not delete this line. I cannot trust you to add a new line at the end of the file...
