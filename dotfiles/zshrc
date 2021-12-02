@@ -74,7 +74,7 @@ export BAT_THEME=zenburn
 export FZF_DEFAULT_OPTS="--layout reverse --info inline --border --preview 'batcat --style=numbers --color=always --line-range :500 {} || '" 
 
 # Use ~~ as the trigger sequence instead of the default **
-export FZF_COMPLETION_TRIGGER='~~'
+#export FZF_COMPLETION_TRIGGER='~~'
 
 # Options to fzf command
 export FZF_COMPLETION_OPTS='--border --info=inline'
@@ -84,12 +84,12 @@ export FZF_COMPLETION_OPTS='--border --info=inline'
 # - The first argument to the function ($1) is the base path to start traversal
 # - See the source code (completion.{bash,zsh}) for the details.
 _fzf_compgen_path() {
-  fd --hidden --follow --exclude ".git" . "$1"
+  fdfind --hidden --follow --exclude ".git" . "$1"
 }
 
 # Use fd to generate the list for directory completion
 _fzf_compgen_dir() {
-  fd --type d --hidden --follow --exclude ".git" . "$1"
+  fdfind --type d --hidden --follow --exclude ".git" . "$1"
 }
 
 # (EXPERIMENTAL) Advanced customization of fzf options via _fzf_comprun function
