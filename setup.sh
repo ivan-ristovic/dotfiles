@@ -30,7 +30,7 @@ fi
 msg "home dir: $SETUP_HOME_DIR"
 
 # Get install list path
-INSTALL_LIST="apt_install.lst"
+INSTALL_LIST="local_apt.lst"
 if [ $# -ge 2 ]; then
     if [ -f "$2" ]; then
         INSTALL_LIST="$2"

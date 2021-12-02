@@ -13,11 +13,13 @@ updates
 bat
 build-essential
 cmake
+codium
 curl
 direnv
 fd-find
 fzf
 git
+ffmpeg
 #kcachegrind
 jq
 #latex
@@ -32,12 +34,12 @@ subversion
 synaptic
 taskwarrior
 tig
-tlp tlp-rdw
+tlp 
+#tlp-rdw
 tmux
 tree
 traceroute
 valgrind
-#vscode_apt
 youtubedl
 zsh
 
