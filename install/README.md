@@ -1,6 +1,6 @@
 # How to write my own script?
 
-The main script will invoke the setup scripts with package manager installation command as an argument. For example, if your package manager is pacman then `pacman -s` will be provided to your script as a command line argument.
+The main script will invoke the setup scripts with package manager installation command as an argument. For example, if your package manager is pacman then `pacman -S` will be provided to your script as a command line argument.
 
 The name of the script should match the pattern `inst_<name>.sh` where `<name>` will be parsed from the installation list.
 
@@ -27,3 +27,4 @@ If your setup differs for different distributions, you can create multiple files
 inst_mypkg_deb.sh
 inst_mypkg_arch.sh
 ```
+

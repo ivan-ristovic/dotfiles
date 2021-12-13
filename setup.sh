@@ -30,7 +30,7 @@ fi
 msg "home dir: $SETUP_HOME_DIR"
 
 # Get install list path
-INSTALL_LIST="local_apt.lst"
+INSTALL_LIST="local_arch.lst"
 if [ $# -ge 2 ]; then
     if [ -f "$2" ]; then
         INSTALL_LIST="$2"
@@ -49,16 +49,21 @@ suc "Checks completed successfully, starting installations ..."
 for entry in $(rm_comments "$INSTALL_LIST"); do
     cd "install"
     SETUP_SCRIPT="inst_$entry.sh"
+    AUR_PREFIX="aur_"
     if [ -f "$SETUP_SCRIPT" ]; then
         msg "Setting up via script : $entry"
         source "$SETUP_SCRIPT" "$PM"
+    elif [[ "$entry" == "$AUR_PREFIX"* ]]; then
+        pkg=${entry#"$AUR_PREFIX"}
+        msg "Installing from AUR: $pkg"
+        inst_aur "$pkg"
     else
         msg "Installing package    : $entry"
         inst "$PM" "$entry"
     fi
     cd "$ROOT_DIR"
     suc "Finished processing $entry."
-    sleep 3 
+    sleep 2
 done
 suc "Installations finished."
 
@@ -92,6 +97,14 @@ if [ -d "dotfiles" ]; then
     done
 
     suc "Dotfiles linked."
+
+    cd "config"
+    for item in *; do
+        echo "Linking: $item -> $SETUP_HOME_DIR/.config/$item ..."
+        ln -s "$PWD/$item" "$SETUP_HOME_DIR/.config/$item"
+    done
+
+    suc "Conf files linked."
 else
     err "dotfiles/ directory is not present."
 fi

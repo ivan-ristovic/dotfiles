@@ -8,7 +8,7 @@
 #   - if the statement above does not stand, then use package manager provided as script argument (defaults to `apt`) to setup the package 
 
 
-updates
+updates_deb
 
 bat
 build-essential

@@ -9,7 +9,6 @@ inst $@ curl
 
 msg "Installing powerline ..."
 pip install powerline-status
-inst $@ fonts-powerline
 
 msg "Installing oh-my-zsh ..."
 

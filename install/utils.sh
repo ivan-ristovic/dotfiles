@@ -33,6 +33,13 @@ function inst ()
 	fi
 }
 
+function inst_aur ()
+{
+	if ! sudo -u $SETUP_USER yay $@; then
+		err "An error occurred while executing: $@"
+	fi
+}
+
 function rm_comments ()
 {
     sed -e 's/[[:space:]]*#.*// ; /^[[:space:]]*$/d' $@
@@ -40,12 +47,11 @@ function rm_comments ()
 
 function pm_cmd ()
 {
-    # TODO I currently need it to setup ubuntu-ish distros, this should be updated to work for others as well
     declare -A osinfo;
-    osinfo[/etc/redhat-release]=yum
-    osinfo[/etc/arch-release]=pacman
-    osinfo[/etc/gentoo-release]=emerge
-    osinfo[/etc/SuSE-release]=zypp
+    osinfo[/etc/redhat-release]="yum -y install"
+    osinfo[/etc/arch-release]="pacman --noconfirm -S"
+    osinfo[/etc/gentoo-release]='emerge'
+    osinfo[/etc/SuSE-release]='zypper install'
     osinfo[/etc/debian_version]="apt-get install -qq"
 
     for f in ${!osinfo[@]}
