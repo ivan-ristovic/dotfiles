@@ -27,12 +27,13 @@ firefox_arch
 jq
 #latex
 lftp
+lm_sensors
 nextcloud-client
 nvim
 #qt5
 pandoc
 ranger
-redshift-minimal
+redshift
 the_silver_searcher
 subversion
 task
