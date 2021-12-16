@@ -44,6 +44,7 @@ traceroute
 valgrind
 aur_vscodium-bin
 youtubedl
+xorg-xrandr
 zsh_arch
 
 # Do not delete this line. I cannot trust you to add a new line at the end of the file...
