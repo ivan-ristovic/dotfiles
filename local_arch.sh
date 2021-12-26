@@ -26,6 +26,7 @@ ffmpeg
 firefox_arch
 jq
 #latex
+ladspa ladspa-plugins
 lftp
 lm_sensors
 nextcloud-client

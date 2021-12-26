@@ -1,0 +1,22 @@
+pcm.ladcomp {
+    type plug
+    slave.pcm ladspa;
+    hint {
+        show on
+        description "with compressor"
+    }
+}
+
+pcm.ladspa {
+    type ladspa
+       slave.pcm "plughw:0,0";
+       path "/usr/lib/ladspa";
+       plugins [{
+           label se4
+           input {
+               #         RMS/peak   attac time (ms)   release time (ms)   threshold (dB)   ratio   knee radius   attenuation 
+               controls  [0.7       30                550                 -25              6.5     6             0]
+        }
+    }]
+}
+
