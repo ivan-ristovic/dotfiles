@@ -8,39 +8,24 @@
 #   - if the statement above does not stand, then use package manager provided as script argument (defaults to `apt`) to setup the package 
 
 
-updates_deb
+updates_arch
 
-bat
-build-essential
-cmake
-codium
-curl
-direnv
-fd-find
-fzf
-git
-ffmpeg
-#kcachegrind
-jq
+yay
+snap_arch
+
++lst_common
+
+base-devel
+#aur_go-chroma
+firefox_arch
 #latex
-lftp
-nvim
+ladspa ladspa-plugins
+lm_sensors
+nextcloud-client
 #qt5
-pandoc
-ranger
-redshift
-silversearcher-ag
-subversion
-synaptic
-taskwarrior
-tig
-tlp 
-#tlp-rdw
-tmux
-tree
-traceroute
-valgrind
-youtubedl
-zsh
+the_silver_searcher
+aur_vscodium-bin
+xorg-xrandr
+zsh_arch
 
 # Do not delete this line. I cannot trust you to add a new line at the end of the file...

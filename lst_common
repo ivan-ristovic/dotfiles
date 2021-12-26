@@ -8,34 +8,20 @@
 #   - if the statement above does not stand, then use package manager provided as script argument (defaults to `apt`) to setup the package 
 
 
-updates_arch
-
-yay
-snap_arch
-
 bat
-base-devel
 cmake
-#aur_go-chroma
 curl
 direnv
 fd
 fzf
 git
 ffmpeg
-firefox_arch
 jq
-#latex
-ladspa ladspa-plugins
 lftp
-lm_sensors
-nextcloud-client
 nvim
-#qt5
 pandoc
 ranger
 redshift
-the_silver_searcher
 subversion
 task
 tig
@@ -44,9 +30,6 @@ tmux
 tree
 traceroute
 valgrind
-aur_vscodium-bin
 youtubedl
-xorg-xrandr
-zsh_arch
 
 # Do not delete this line. I cannot trust you to add a new line at the end of the file...
