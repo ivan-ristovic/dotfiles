@@ -15,6 +15,7 @@ build-essential
 cmake
 curl
 direnv
+docker
 fd-find
 fzf
 git

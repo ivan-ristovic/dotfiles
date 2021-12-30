@@ -23,6 +23,7 @@ plugins=(
   copybuffer
   direnv
   docker
+  docker-compose
   encode64
   extract
   fd
