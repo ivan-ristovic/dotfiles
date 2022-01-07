@@ -18,6 +18,7 @@ git
 ffmpeg
 jq
 lftp
+nethogs
 nvim
 pandoc
 ranger

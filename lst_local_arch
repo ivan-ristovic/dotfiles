@@ -17,13 +17,24 @@ snap_arch
 
 base-devel
 #aur_go-chroma
+noto-fonts noto-fonts-emoji
 firefox_arch
 #latex
-ladspa ladspa-plugins
+ladspa ladspa-plugins swh-plugins paprefs
 lm_sensors
+lutris
 nextcloud-client
 #qt5
 the_silver_searcher
+
+optimus-manager optimus-manager-qt
+aur_gdm-prime
+aur_extremecooling4linux
+
+
+thunderbird
+aur_birdtray
+
 aur_vscodium-bin
 xorg-xrandr
 zsh_arch
