@@ -16,7 +16,6 @@ snap_arch
 +lst_common
 
 base-devel
-#aur_go-chroma
 noto-fonts noto-fonts-emoji
 firefox_arch
 #latex
@@ -27,15 +26,13 @@ nextcloud-client
 #qt5
 the_silver_searcher
 
-optimus-manager optimus-manager-qt
-aur_gdm-prime
-aur_extremecooling4linux
-
+aur: optimus-manager optimus-manager-qt gdm-prime
+aur: extremecooling4linux
 
 thunderbird
-aur_birdtray
+aur: birdtray
 
-aur_vscodium-bin
+aur: vscodium-bin
 xorg-xrandr
 zsh_arch
 

@@ -15,7 +15,7 @@ Packages are set up from the package lists in the following manner:
 - otherwise, the line represents a package name
     - if there is a special setup script with such name in the `install/` directory, then invoke that script
     - otherwise, attempt to install a package with such name using the default package manager
-        - for Arch Linux, if a line starts with `aur_`, then `yay` is used instead of `pacman` for that package
+        - for Arch Linux, if a line starts with `aur:`, then `yay` is used instead of `pacman` for that package
 
 Check out `install/` directory for more information on how to use the scripts for automatic mass package installations.
 

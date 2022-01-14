@@ -52,7 +52,7 @@ function process_list
     for entry in $(rm_comments "$1"); do
         cd "install"
         SETUP_SCRIPT="inst_$entry.sh"
-        AUR_PREFIX="aur_"
+        AUR_PREFIX="aur:"
         if [[ "$entry" == "+"* ]]; then
             cd $ROOT_DIR
             to_include=${entry#"+"}
