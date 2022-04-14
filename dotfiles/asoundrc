@@ -1,22 +1,35 @@
-pcm.ladcomp {
-    type plug
-    slave.pcm ladspa;
-    hint {
-        show on
-        description "with compressor"
-    }
+pcm.!default {
+    type asym
+    playback.pcm "plug:ladcomp_compressor"
+    capture.pcm "plug:dsnoop" 
 }
 
-pcm.ladspa {
+pcm.ladcomp_compressor {
     type ladspa
-       slave.pcm "plughw:0,0";
-       path "/usr/lib/ladspa";
-       plugins [{
-           label se4
-           input {
-               #         RMS/peak   attac time (ms)   release time (ms)   threshold (dB)   ratio   knee radius   attenuation 
-               controls  [0.7       30                550                 -25              6.5     6             0]
+    slave.pcm "ladcomp_limiter";
+    path "/usr/lib/ladspa";
+    plugins [
+    {
+        label dysonCompress
+        input {
+            #peak limit, release time, fast ratio, ratio
+            controls [0 1 0.5 0.99]
         }
-    }]
+    }
+    ]
 }
 
+pcm.ladcomp_limiter {
+    type ladspa
+    slave.pcm "plug:dmix"
+    path "/usr/lib/ladspa";
+    plugins [
+    {
+        label fastLookaheadLimiter
+        input {
+            #InputGain(Db) -20 -> +20 ; Limit (db) -20 -> 0 ; Release time (s) 0.01 -> 2
+            controls [ 20 0 0.8  ]
+        }
+    }
+    ]
+}

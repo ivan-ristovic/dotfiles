@@ -33,7 +33,11 @@ thunderbird
 aur: birdtray
 
 aur: vscodium-bin
+
 xorg-xrandr
+
+handbrake
+
 zsh_arch
 
 # Do not delete this line. I cannot trust you to add a new line at the end of the file...

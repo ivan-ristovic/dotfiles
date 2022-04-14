@@ -18,6 +18,7 @@ git
 ffmpeg
 jq
 lftp
+net-tools
 nethogs
 nvim
 pandoc
