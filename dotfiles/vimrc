@@ -5,6 +5,7 @@ call plug#begin()
 
 Plug 'edkolev/tmuxline.vim'
 Plug 'VundleVim/Vundle.vim'
+Plug 'christoomey/vim-system-copy'
 Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'itchyny/lightline.vim'
