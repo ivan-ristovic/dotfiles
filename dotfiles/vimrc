@@ -12,6 +12,7 @@ Plug 'neovimhaskell/haskell-vim'
 Plug 'scrooloose/nerdtree'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tomasiser/vim-code-dark'
+Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
@@ -38,6 +39,15 @@ Plug 'ObserverOfTime/ncm2-jc2' " Java
 " Map TAB to completion
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Map vim-commentary to cm
+if !hasmapto('<Plug>Commentary') || maparg('gc','n') ==# ''
+  xmap cm  <Plug>Commentary
+  nmap cm  <Plug>Commentary
+  omap cm  <Plug>Commentary
+  nmap cmm <Plug>CommentaryLine
+  nmap cmu <Plug>Commentary<Plug>Commentary
+endif
 
 call plug#end()
 filetype plugin indent on    " required
