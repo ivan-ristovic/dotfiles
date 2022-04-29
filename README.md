@@ -4,18 +4,18 @@ This repository contains my personal dotfiles and automated setup scripts for fr
 
 ## How it works?
 
-Invoking `setup.sh` with username and package list will start the setup process as follows:
+Invoking `setup.sh` (with optional username and package list) will start the setup process as follows:
 - Identify user and environment (e.g. package manager command)
-- Setup packages from the package list
-- Link dotfiles from `dotfiles/` to user's home
+- Install entries from the installation list
+- Link dotfiles and `.config` files (from the `dotfiles/` directory) to user's home directory
 
 Packages are set up from the package lists in the following manner:
-- any lines beginning with a `#` sign are treated as comments
-- if a line begins with a `+` sign, a file whose name are the remaining line contents is included in the list
-- otherwise, the line represents a package name
-    - if there is a special setup script with such name in the `install/` directory, then invoke that script
-    - otherwise, attempt to install a package with such name using the default package manager
-        - for Arch Linux, if a line starts with `aur:`, then `yay` is used instead of `pacman` for that package
+- lines beginning with a `#` sign are treated as comments
+- lines beginning with a `+` sign are treated as an "include" command (useful if same entries are present over multiple installation lists)
+- if a line does not match any of the above cases, it represents a package/script name
+    - if there exists a special setup script matching that name name in the `install/` directory, it is invoked
+    - otherwise, it is assumed that there exists a package with such name and installation is attempted using the default package manager
+        - specially, for Arch Linux, if lines starting with `aur:` will use `yay` instead of `pacman` for that entry
 
 Check out `install/` directory for more information on how to use the scripts for automatic mass package installations.
 
