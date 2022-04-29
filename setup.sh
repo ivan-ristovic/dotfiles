@@ -80,45 +80,44 @@ suc "Installations finished."
 
 # Link dotfiles
 msg "Setting up dotfiles in: $SETUP_HOME_DIR ..."
-if [ -d "dotfiles" ]; then
-    cd "dotfiles"
-    INIT_IGNORES=$(cat ignore.list)
-    for item in *; do
-
-        IGNORED_FILE=""
-        for ignored in $INIT_IGNORES; do
-            if [[ "$ignored" = "$item" ]]; then
-                IGNORED_FILE="$item"
-            fi
-        done
-
-        if [ -n "$IGNORED_FILE" ]; then
-            echo "Ignoring $item ..."
-            continue;
-        fi
-
-        if [ -e "$SETUP_HOME_DIR/.$item" ]; then
-            echo "Skipping: $SETUP_HOME_DIR/.$item (already exists) ..."
-            continue;
-        fi
-
-        echo "Linking: $item -> $SETUP_HOME_DIR/.$item ..."
-        ln -s "$PWD/$item" "$SETUP_HOME_DIR/.$item"
-
-    done
-
-    suc "Dotfiles linked."
-
-    cd "config"
-    for item in *; do
-        echo "Linking: $item -> $SETUP_HOME_DIR/.config/$item ..."
-        ln -s "$PWD/$item" "$SETUP_HOME_DIR/.config/$item"
-    done
-
-    suc "Conf files linked."
-else
-    err "dotfiles/ directory is not present."
+if [ ! -d "dotfiles" ]; then
+    fat "dotfiles/ directory is not present."
 fi
 
+msg "Linking dotfiles..."
+cd "dotfiles"
+INIT_IGNORES=$(cat ignore.list)
+for item in *; do
+
+    IGNORED_FILE=""
+    for ignored in $INIT_IGNORES; do
+        if [[ "$ignored" = "$item" ]]; then
+            IGNORED_FILE="$item"
+        fi
+    done
+
+    if [ -n "$IGNORED_FILE" ]; then
+        echo "Ignoring $item ..."
+        continue;
+    fi
+
+    if [ -e "$SETUP_HOME_DIR/.$item" ]; then
+        echo "Skipping: $SETUP_HOME_DIR/.$item (already exists) ..."
+        continue;
+    fi
+
+    echo "Linking: $item -> $SETUP_HOME_DIR/.$item ..."
+    ln -s "$PWD/$item" "$SETUP_HOME_DIR/.$item"
+
+done
+suc "Dotfiles linked."
+
+msg "Linking .config files..."
+cd "config"
+for item in *; do
+    echo "Linking: $item -> $SETUP_HOME_DIR/.config/$item ..."
+    ln -s "$PWD/$item" "$SETUP_HOME_DIR/.config/$item"
+done
+suc ".config files linked."
 
 suc "Done! Have a nice day."
