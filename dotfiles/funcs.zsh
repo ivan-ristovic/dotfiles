@@ -9,3 +9,7 @@ function beep() {
 function beep_v() {
     speaker-test -f 1000 --test sine -l 1 & sleep .2 && kill -9 $!
 }
+
+function mp3gain_all() {
+   fd -g \*.mp3 -X mp3gain -g $@ 
+}
