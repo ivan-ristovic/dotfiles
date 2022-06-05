@@ -2,7 +2,7 @@
 
 ROOT_DIR=$(pwd)
 
-# Load utils
+# Check for dotfiles root
 GIT_DIR=$(grep ivan-ristovic/dotfiles .git/config)
 if [ -z "$GIT_DIR" ]; then
     echo "Not in dotfiles directory. Exiting ..."
@@ -13,8 +13,10 @@ if [ ! -d "install" ]; then
     exit 1
 fi
 
+# Load utils
 source "install/utils.sh"
 
+# Check args
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
     msg "usage: $0 [username] [install_list]"
     exit 0
@@ -112,6 +114,7 @@ for item in *; do
 done
 suc "Dotfiles linked."
 
+# Link config files
 msg "Linking .config files..."
 cd "config"
 for item in *; do
