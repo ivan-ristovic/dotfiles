@@ -22,6 +22,7 @@ firefox_arch
 ladspa ladspa-plugins swh-plugins paprefs
 lm_sensors
 lutris
+aur: mp3gain
 nextcloud-client
 #qt5
 the_silver_searcher
