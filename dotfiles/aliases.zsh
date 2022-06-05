@@ -68,6 +68,7 @@ ialias e='$EDITOR'
 alias fm='ranger'
 alias getc='curl --continue-at - --location --progress-bar --remote-name --remote-time'
 alias getw='wget --continue --progress=bar --timestamping'
+alias gsa='git submodule add'
 ialias grep='grep --color'
 alias h=history
 alias help=man
