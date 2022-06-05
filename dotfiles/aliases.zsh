@@ -102,6 +102,8 @@ alias t='tail -f'
 alias td='tmux detach'
 ialias type='type -a'
 alias unexport=unset
+alias uz=ua
+alias ux=extract
 alias vim='nvim'
 alias vsc='codium .'
 alias vsca='codium --add'
@@ -118,5 +120,4 @@ alias vscue='codium --uninstall-extension'
 alias vscv='codium --verbose'
 alias vscw='codium --wait'
 alias which-command=whence
-alias x=extract
 
