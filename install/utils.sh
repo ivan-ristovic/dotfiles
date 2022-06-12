@@ -35,7 +35,7 @@ function inst ()
 
 function inst_aur ()
 {
-	if ! sudo -u $SETUP_USER yay $@; then
+	if ! echo y | sudo -u $SETUP_USER yay --noprovides --answerdiff None --answerclean None --mflags "--noconfirm" $@; then
 		err "An error occurred while executing: $@"
 	fi
 }

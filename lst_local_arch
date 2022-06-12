@@ -16,28 +16,24 @@ snap_arch
 +lst_common
 
 base-devel
-noto-fonts noto-fonts-emoji
 firefox_arch
-#latex
+handbrake
+kvantum-manjaro
 ladspa ladspa-plugins swh-plugins paprefs
 lm_sensors
 lutris
-aur: mp3gain
 nextcloud-client
-#qt5
+noto-fonts noto-fonts-emoji
+obs-studio
 the_silver_searcher
-
-aur: optimus-manager optimus-manager-qt gdm-prime
-aur: extremecooling4linux
-
 thunderbird
-aur: birdtray
-
-aur: vscodium-bin
-
 xorg-xrandr
 
-handbrake
+aur:birdtray
+aur:mp3gain
+aur:extremecooling4linux
+aur:optimus-manager optimus-manager-qt gdm-prime
+aur:vscodium-bin
 
 zsh_arch
 
