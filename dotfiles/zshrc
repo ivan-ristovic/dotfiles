@@ -57,12 +57,10 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-
-########################## PATH ##########################
-if [[ -d ${HOME}/dotfiles ]]; then    
-    GIT_DIR=$(grep ivan-ristovic/dotfiles ${HOME}/dotfiles/.git/config)
-    if [ ! -z ${GIT_DIR} ]; then
-        export PATH=${PATH}:${HOME}/dotfiles/bin
+# ########################## PATH ##########################
+if [[ -d "${HOME}/dotfiles" ]]; then    
+    if [[ ! -z $(grep ivan-ristovic/dotfiles "${HOME}/dotfiles/.git/config") ]]; then
+        export PATH="${PATH}:${HOME}/dotfiles/bin"
     fi
 fi
 
