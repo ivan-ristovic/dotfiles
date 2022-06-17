@@ -46,6 +46,7 @@ plugins=(
 ZSH_TMUX_AUTOSTART=true
 
 source $ZSH/oh-my-zsh.sh
+source ~/.env
 
 ########################## P10K ##########################
 
@@ -114,9 +115,6 @@ export ZSH_COLORIZE_STYLE="solarized-dark"
 export ZSH_COLORIZE_CHROMA_FORMATTER=terminal256
 
 ########################## ALIASES ##########################
-
-export LANG=en_US.UTF-8
-export EDITOR='nvim'
 
 # Blank aliases
 typeset -a baliases
