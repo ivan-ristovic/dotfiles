@@ -1,0 +1,48 @@
+#!/bin/bash
+
+function usage ()
+{
+    echo "usage: $0 server_id [protocol]"
+    echo "known hosts (ids|endpoint|args):"
+    while read line; do
+        IFS=' ' read -a split <<< $line
+        SERVER_ID=${split[0]}
+        ENDPOINT=${split[1]}
+        EXTRA_ARGS=${split[2]}
+        echo -e "\t${SERVER_ID} \t| ${ENDPOINT} \t| ${EXTRA_ARGS}"
+    done < ~/.known_hosts 
+    exit 1
+}
+
+if [[ $# -eq 0 ]]; then
+    usage
+fi
+
+PROTOCOL="ssh"
+if [[ $# -ge 2 ]]; then
+    PROTOCOL=$2
+fi
+
+SID=$1
+ENDPOINT=""
+while read line; do
+    IFS=' ' read -a split <<< $line
+    SERVER_IDS=${split[0]}
+    EP=${split[1]}
+    EXTRA_ARGS=${split[2]}
+    IFS=',' read -a split <<< $SERVER_IDS
+    for spl in ${split[@]} ; do
+        if [[ $spl == $SID ]]; then
+            ENDPOINT=$EP
+        fi
+    done
+done < ~/.known_hosts 
+
+if [[ -z $ENDPOINT ]]; then
+    echo "unknown server ID: ${SID}"
+    usage
+fi
+
+set -xe;
+${PROTOCOL} ${EXTRA_ARGS} ${ENDPOINT}
+
