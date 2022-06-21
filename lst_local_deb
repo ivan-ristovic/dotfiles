@@ -15,8 +15,6 @@ updates_deb
 build-essential
 codium
 fd-find
-#latex
-#qt5
 silversearcher-ag
 zsh
 
