@@ -182,4 +182,7 @@ if $SETUP_CONFIG ; then
     cd $ROOT_DIR
 fi
 
+unset $SETUP_USER
+unset $SETUP_HOME_DIR
+
 suc "Done! Have a nice day."
