@@ -9,5 +9,6 @@ fi
 
 VAL=$(<${PSTATE_PATH})
 NEW_VAL=$((($VAL + 1) % 2))
-echo $NEW_VAL | sudo tee ${PSTATE_PATH}
+echo ${PSTATE_PATH}
+echo ${NEW_VAL} | sudo tee ${PSTATE_PATH}
 
