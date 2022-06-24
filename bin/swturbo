@@ -1,0 +1,13 @@
+#!/bin/bash
+
+PSTATE_PATH=/sys/devices/system/cpu/intel_pstate/no_turbo
+
+if [[ ! -f ${PSTATE_PATH} ]]; then
+    echo 'fatal: intel_pstate missing'
+    exit 1
+fi
+
+VAL=$(<${PSTATE_PATH})
+NEW_VAL=$((($VAL + 1) % 2))
+echo $NEW_VAL | sudo tee ${PSTATE_PATH}
+
