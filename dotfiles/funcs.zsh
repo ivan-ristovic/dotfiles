@@ -14,6 +14,10 @@ function mp3gain_all() {
    fd -g \*.mp3 -X mp3gain -g $@ 
 }
 
+function flac2mp3() {
+    fd -t f -e flac -x ffmpeg -i "{}" -qscale:a 0 "{.}.mp3"
+}
+
 # http://djm.me/ask
 function ask()
 {
