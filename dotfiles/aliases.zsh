@@ -122,4 +122,7 @@ alias vscue='codium --uninstall-extension'
 alias vscv='codium --verbose'
 alias vscw='codium --wait'
 alias which-command=whence
+alias ytdl=youtube-dl
+alias ytdlmp3='youtube-dl --extract-audio --audio-format=mp3'
+alias ytdlmp3pl='youtube-dl --extract-audio --audio-format=mp3 -o "%(title)s.%(ext)s"'
 
