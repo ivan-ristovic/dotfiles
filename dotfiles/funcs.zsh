@@ -18,6 +18,25 @@ function flac2mp3() {
     fd -t f -e flac -x ffmpeg -i "{}" -qscale:a 0 "{.}.mp3"
 }
 
+function trim() {
+    sed 's/^ *//; s/ *$//; /^$/d' $@
+}
+
+function until-err() {
+    "$@"
+    while [ $? -eq 0 ]; do
+        "$@"
+    done
+}
+
+function until-suc() {
+    "$@"
+    while [ $? -ne 0 ]; do
+        "$@"
+    done
+}
+
+
 # http://djm.me/ask
 function ask()
 {
