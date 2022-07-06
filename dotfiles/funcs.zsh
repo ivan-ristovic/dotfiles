@@ -1,7 +1,3 @@
-function palette() {
-    for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
-}
-
 function beep() {
     beep_v > /dev/null 2>&1
 }
@@ -10,12 +6,38 @@ function beep_v() {
     speaker-test -f 1000 --test sine -l 1 & sleep .2 && kill -9 $!
 }
 
+function flac2mp3() {
+    fd -t f -e flac -x ffmpeg -i "{}" -qscale:a 0 "{.}.mp3"
+}
+
+# Determine size of a file or total size of a directory
+function fs() {
+	if du -b /dev/null > /dev/null 2>&1; then
+		local arg=-sbh;
+	else
+		local arg=-sh;
+	fi
+	if [[ -n "$@" ]]; then
+		du $arg -- "$@";
+	else
+		du $arg .[^.]* ./*;
+	fi;
+}
+
+function mkd() {
+	mkdir -p "$@" && cd "$_";
+}
+
 function mp3gain_all() {
    fd -g \*.mp3 -X mp3gain -g $@ 
 }
 
-function flac2mp3() {
-    fd -t f -e flac -x ffmpeg -i "{}" -qscale:a 0 "{.}.mp3"
+function palette() {
+    for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
+}
+
+function tree_detail() {
+	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
 
 function trim() {
@@ -38,8 +60,7 @@ function until-suc() {
 
 
 # http://djm.me/ask
-function ask()
-{
+function ask() {
     while true; do
 
         if [ "${2:-}" = "Y" ]; then
