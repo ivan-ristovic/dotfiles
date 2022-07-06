@@ -1,6 +1,8 @@
 # dotfiles
 
-This repository contains my personal dotfiles and automated setup scripts for fresh Linux systems (primary goal for Arch and Ubuntu since I use them at the moment).
+This repository contains my personal dotfiles, QOL scripts and binaries, as well as all-in-one automated setup scripts for fresh Linux systems (primarily for Arch since I use it at the moment).
+
+The goal of this repository is to make fresh system setup and configuration synchronization trivial. Setup can be done by invoking `setup.sh`, a powerful all-in-one setup script that performs mass package installation, configuration installation and much more. This repository is not only my personal configuration store, it includes tools and QOL scripts that one might find useful. 
 
 ## How does it work?
 

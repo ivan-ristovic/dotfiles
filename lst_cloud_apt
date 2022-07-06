@@ -1,13 +1,3 @@
-# This file contains list of items to install when the setup script is ran.
-# Programs/packages are being setup in the same order as in this file.
-# Each line represents a single entry!
-# Comment out or delete lines corresponding to packages which you do not want to setup automatically
-
-# The entries are processed in the following manner:
-#   - if there is a file <entry>.sh present in the `install` directory, use that script to setup the entry
-#   - if the statement above does not stand, then use package manager provided as script argument (defaults to `apt`) to setup the package 
-
-
 updates_deb
 
 bat
