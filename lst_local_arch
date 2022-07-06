@@ -26,10 +26,8 @@ nextcloud-client
 noto-fonts noto-fonts-emoji
 obs-studio
 the_silver_searcher
-thunderbird
 xorg-xrandr
 
-aur:birdtray
 aur:mp3gain
 aur:extremecooling4linux
 aur:optimus-manager optimus-manager-qt gdm-prime
