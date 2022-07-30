@@ -1,31 +1,24 @@
-# My personal Arch lis
+# My personal Arch list
 
 updates_arch
 
-yay
-snap_arch
+#snap_arch
 
 +lst_common
++lst_common_arch
 
 audacity
-base-devel
-firefox_arch
 handbrake
 kvantum-manjaro
 ladspa ladspa-plugins swh-plugins paprefs
-lm_sensors
 lutris
 nextcloud-client
-noto-fonts noto-fonts-emoji
 obs-studio
-the_silver_searcher
 xorg-xrandr
 
 aur:mp3gain
 aur:extremecooling4linux
 aur:optimus-manager optimus-manager-qt gdm-prime
 aur:vscodium-bin
-
-zsh_arch
 
 # Do not delete this line. I cannot trust you to add a new line at the end of the file...
