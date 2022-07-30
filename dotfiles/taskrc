@@ -1,0 +1,14 @@
+# Files
+data.location=/hdd/nextcloud/Backup/taskwarrior
+
+alias.lo=priority:L
+alias.md=priority:M
+alias.hi=priority:H
+
+alias.E=project:edu
+alias.M=project:edu
+alias.P=project:personal
+alias.W=project:work
+
+alias.rr=recurring until: parent:
+
