@@ -14,6 +14,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 COMPLETION_WAITING_DOTS="true"
 
 HIST_STAMPS="dd/mm/yyyy"
+HIST_SIZE=500000
 
 plugins=(
   ag
