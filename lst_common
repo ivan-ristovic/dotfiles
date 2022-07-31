@@ -12,6 +12,7 @@ ffmpeg
 flameshot
 jq
 lftp
+lynx
 net-tools
 nethogs
 nvim
