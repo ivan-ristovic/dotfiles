@@ -2,6 +2,7 @@ yay
 
 base-devel
 diff-so-fancy
+extra/bind
 firefox_arch
 lm_sensors
 noto-fonts noto-fonts-emoji
