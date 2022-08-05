@@ -20,6 +20,7 @@ pandoc
 parallel
 ranger
 redshift
+stow
 subversion
 task
 tig

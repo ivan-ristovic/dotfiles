@@ -25,7 +25,6 @@ function usage ()
     echo
     echo -e "\t--packages: install packages"
     echo -e "\t--dotfiles: link dotfiles"
-    echo -e "\t--config: link config files"
     echo -e "\t--all: do all of the above (default)"
     exit 0
 }
@@ -33,7 +32,6 @@ function usage ()
 SETUP_OVERRIDE=false
 SETUP_PACKAGES=false
 SETUP_DOTFILES=false
-SETUP_CONFIG=false
 
 # Check arguments
 while test $# -gt 0
@@ -52,10 +50,6 @@ do
         --dotfiles)
             SETUP_OVERRIDE=true
             SETUP_DOTFILES=true
-            ;;
-        --config)
-            SETUP_OVERRIDE=true
-            SETUP_CONFIG=true
             ;;
         -h) usage
             ;;
@@ -89,7 +83,6 @@ msg "install list: $INSTALL_LIST"
 if ! $SETUP_OVERRIDE ; then 
     SETUP_PACKAGES=true
     SETUP_DOTFILES=true
-    SETUP_CONFIG=true
 fi
 
 if $SETUP_PACKAGES ; then
@@ -135,54 +128,21 @@ fi
 
 
 if $SETUP_DOTFILES ; then
-    msg "Linking dotfiles in: $SETUP_HOME_DIR ..."
-   
     if [ ! -d "dotfiles" ]; then
         fat "dotfiles/ directory is not present."
     fi
-
-    cd "dotfiles"
-    INIT_IGNORES=$(cat ignore.list)
-    for item in *; do
-
-        IGNORED_FILE=""
-        for ignored in $INIT_IGNORES; do
-            if [[ "$ignored" = "$item" ]]; then
-                IGNORED_FILE="$item"
-            fi
-        done
-
-        if [ -n "$IGNORED_FILE" ]; then
-            echo "Ignoring $item ..."
-            continue;
-        fi
-
-        if [ -e "$SETUP_HOME_DIR/.$item" ]; then
-            echo "Skipping: $SETUP_HOME_DIR/.$item (already exists) ..."
-            continue;
-        fi
-
-        echo "Linking: $item -> $SETUP_HOME_DIR/.$item ..."
-        ln -s "$PWD/$item" "$SETUP_HOME_DIR/.$item"
-
-    done
-    suc "Dotfiles linked."
-    cd $ROOT_DIR
-fi
-
-
-if $SETUP_CONFIG ; then
-    msg "Linking .config files..."
-    cd "dotfiles/config"
-    for item in *; do
-        echo "Linking: $item -> $SETUP_HOME_DIR/.config/$item ..."
-        ln -s "$PWD/$item" "$SETUP_HOME_DIR/.config/$item"
-    done
-    suc ".config files linked."
-    cd $ROOT_DIR
+    pushd "dotfiles"
+    stow -v . -t $SETUP_HOME_DIR 
+    if [[ $? -eq 0 ]]; then
+        suc "Dotfiles linked."
+    else
+        err "Failed linking dotfiles!"
+    fi
+    popd
 fi
 
 unset SETUP_USER
 unset SETUP_HOME_DIR
 
 suc "Done! Have a nice day."
+
