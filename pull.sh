@@ -17,11 +17,12 @@ fi
 
 unmerged_files=$(git diff --name-only --diff-filter=U)
 if [[ ! -z $unmerged_files ]]; then
-   echo "The following files have merge conflicts after popping the stash:"
-   printf %"s\n" $unmerged_files
+    echo "The following files have merge conflicts after popping the stash:"
+    printf %"s\n" $unmerged_files
 else
-   pushd dotfiles
-   stow -v . -t $HOME
-   popd
+    echo "Updating dotfiles symlinks..."
+    pushd dotfiles
+    stow -v . -t $HOME
+    popd
 fi
 
