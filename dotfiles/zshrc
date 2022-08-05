@@ -3,6 +3,10 @@ export ZSH="$HOME/.oh-my-zsh"
 
 #ZSH_THEME="xris47"
 ZSH_THEME="powerlevel10k/powerlevel10k"
+ZSH_TMUX_AUTOSTART=true
+export ZSH_COLORIZE_TOOL=chroma
+export ZSH_COLORIZE_STYLE="solarized-dark"
+export ZSH_COLORIZE_CHROMA_FORMATTER=terminal256
 
 # CASE_SENSITIVE="true"
 # HYPHEN_INSENSITIVE="true"
@@ -30,7 +34,6 @@ plugins=(
   fd
   fzf
   git
-  gitignore
   nmap
   rsync
   sudo
@@ -44,9 +47,25 @@ plugins=(
   zsh-syntax-highlighting     # must be last!
 )
 
-ZSH_TMUX_AUTOSTART=true
-
 source $ZSH/oh-my-zsh.sh
+
+######################### ZPLUG ##########################
+
+source ~/.zplug/init.zsh
+
+zplug 'wfxr/forgit'
+
+if ! zplug check; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+zplug load
+
+##########################################################
+
 source ~/.env
 
 ########################## P10K ##########################
@@ -114,12 +133,6 @@ _fzf_comprun() {
     *)            fzf "$@" ;;
   esac
 }
-
-########################## COLORIZE ##########################
-
-export ZSH_COLORIZE_TOOL=chroma
-export ZSH_COLORIZE_STYLE="solarized-dark"
-export ZSH_COLORIZE_CHROMA_FORMATTER=terminal256
 
 ########################## ALIASES ##########################
 
