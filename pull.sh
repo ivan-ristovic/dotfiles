@@ -2,15 +2,15 @@
 
 echo "Stashing existing changes..."
 stash_result=$(git stash push -m "dotfiles: Before pull")
-needs_pop=$true
+needs_pop=true
 if [ "$stash_result" = "No local changes to save" ]; then
-    needs_pop=$false
+    needs_pop=false
 fi
 
 echo "Pulling updates..."
 git pull
 
-if [[ $needs_pop ]]; then
+if $needs_pop; then
     echo "Restoring stashed changes..."
     git stash pop
 fi
