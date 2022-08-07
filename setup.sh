@@ -128,6 +128,7 @@ fi
 
 
 if $SETUP_DOTFILES ; then
+    mkdir -p $SETUP_HOME_DIR/.config
     if [ ! -d "dotfiles" ]; then
         fat "dotfiles/ directory is not present."
     fi

@@ -7,7 +7,7 @@ ARG PRIVATE_KEY
 ARG PUBLIC_KEY
 
 RUN useradd -ms /bin/bash user && \
-        echo "user ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/user && \
+        echo "user ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/user && \
         chmod 0440 /etc/sudoers.d/user
 
 USER user:user

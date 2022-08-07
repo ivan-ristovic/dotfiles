@@ -4,5 +4,5 @@ source "utils.sh"
 
 msg "Updating..."
 
-sudo pacman -Syu
+sudo pacman --noconfirm -Syu
 

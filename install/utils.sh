@@ -35,7 +35,7 @@ function inst ()
 
 function inst_aur ()
 {
-	if ! echo y | sudo -u $SETUP_USER yay --noprovides --answerdiff None --answerclean None --mflags "--noconfirm" $@; then
+	if ! echo y | sudo -u $SETUP_USER yay --needed --noprovides --answerdiff None --answerclean None --mflags "--noconfirm --needed" $@; then
 		err "An error occurred while executing: $@"
 	fi
 }
@@ -49,7 +49,7 @@ function pm_cmd ()
 {
     declare -A osinfo;
     osinfo[/etc/redhat-release]="yum -y install"
-    osinfo[/etc/arch-release]="pacman --noconfirm -S"
+    osinfo[/etc/arch-release]="pacman --noconfirm --needed -S"
     osinfo[/etc/gentoo-release]='emerge'
     osinfo[/etc/SuSE-release]='zypper install'
     osinfo[/etc/debian_version]="apt-get install -qq"
@@ -62,39 +62,3 @@ function pm_cmd ()
     done
 }
 
-# http://djm.me/ask
-function ask()
-{
-    while true; do
-
-        if [ "${2:-}" = "Y" ]; then
-            prompt="Y/n"
-            default=Y
-        elif [ "${2:-}" = "N" ]; then
-            prompt="y/N"
-            default=N
-        else
-            prompt="y/n"
-            default=
-        fi
-
-        # Ask the question (not using "read -p" as it uses stderr not stdout)
-        echo -n "$1 [$prompt] "
-
-        # Read the answer (use /dev/tty in case stdin is redirected from somewhere else)
-        read REPLY </dev/tty
-	sleep 1
-
-        # Default?
-        if [ -z "$REPLY" ]; then
-            REPLY="$default"
-        fi
-
-        # Check if the reply is valid
-        case "$REPLY" in
-            Y*|y*) return 0 ;;
-            N*|n*) return 1 ;;
-        esac
-
-    done
-}

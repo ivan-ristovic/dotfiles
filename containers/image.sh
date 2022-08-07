@@ -10,13 +10,13 @@ if [[ $# -ne 2 ]]; then
     usage
 fi
 
-distro=$1
+distro=$2
 if [[ ! -d $distro ]]; then
     echo "fatal: $distro directory is not present"
     exit 1
 fi
 
-cmd=$2
+cmd=$1
 tag="dotfiles-$distro"
 dotfiles_dir=$(realpath ../)
 shift 2

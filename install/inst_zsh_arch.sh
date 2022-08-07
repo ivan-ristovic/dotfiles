@@ -23,7 +23,5 @@ sudo -u $SETUP_USER git clone --depth=1 https://github.com/romkatv/powerlevel10k
 msg "Downloading zplug ..."
 curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 
-if ask "Change the default shell to zsh?"; then
-    sudo -u $SETUP_USER chsh -s "$(which zsh)"
-    suc "Done"
-fi
+sudo -u $SETUP_USER chsh -s "$(which zsh)"
+
