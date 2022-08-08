@@ -1,0 +1,4 @@
+#!/bin/bash
+
+fd -t f -e flac -x ffmpeg -i "{}" -qscale:a 0 "{.}.mp3"
+

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+fd -g \*.mp3 -X mp3gain -g $@ 
+
