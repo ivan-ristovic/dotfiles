@@ -77,7 +77,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# ########################## PATH ##########################
+############################ PATH #############################
 if [[ -d "${HOME}/dotfiles" ]]; then    
     if [[ ! -z $(grep ivan-ristovic/dotfiles "${HOME}/dotfiles/.git/config") ]]; then
         export PATH="${PATH}:${HOME}/dotfiles/bin"
@@ -188,7 +188,7 @@ bindkey "^M" expand-alias-enter
 bindkey -M isearch " " magic-space
 
 source ~/.aliases.zsh
-source ~/.funcs.zsh
+source ~/.functions
 
 ################ AUTOLOAD ################
 

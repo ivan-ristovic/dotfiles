@@ -128,18 +128,7 @@ fi
 
 
 if $SETUP_DOTFILES ; then
-    mkdir -p $SETUP_HOME_DIR/.config
-    if [ ! -d "dotfiles" ]; then
-        fat "dotfiles/ directory is not present."
-    fi
-    pushd "dotfiles"
-    stow -v . -t $SETUP_HOME_DIR 
-    if [[ $? -eq 0 ]]; then
-        suc "Dotfiles linked."
-    else
-        err "Failed linking dotfiles!"
-    fi
-    popd
+    source link.sh $SETUP_HOME_DIR
 fi
 
 unset SETUP_USER

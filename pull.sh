@@ -21,8 +21,6 @@ if [[ ! -z $unmerged_files ]]; then
     printf %"s\n" $unmerged_files
 else
     echo "Updating dotfiles symlinks..."
-    pushd dotfiles
-    stow -v . -t $HOME
-    popd
+    source link.sh $HOME
 fi
 
