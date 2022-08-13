@@ -22,7 +22,7 @@ My custom (additional) features:
 ### Session Manager (tmux)
 ![tmux](screenshots/tmux.png)
 
-### Editor (plugin-enriched Neovim with zsh and fzf integration)
+### Editor (plugin-enriched Neovim with zsh, git and fzf integration)
 ![nvim](screenshots/nvim.png)
 
 ### Search (fzf fuzz search integrated with zsh, nvim and forgit; fd and ag)
