@@ -16,6 +16,9 @@ The goal of this repository is to trivialize fresh system setup and configuratio
 ### Editor (Neovim with various plugins)
 ![nvim](screenshots/nvim.png)
 
+### Search (fzf, integrated with zsh and forgit)
+![fzf](screenshots/fzf.png)
+
 ### File manager (Ranger with font icon support)
 ![ranger](screenshots/ranger.png)
 
