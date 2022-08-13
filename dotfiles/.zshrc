@@ -27,6 +27,7 @@ plugins=(
   command-not-found
   copybuffer
   direnv
+  dirhistory
   docker
   docker-compose
   encode64
@@ -42,6 +43,7 @@ plugins=(
   urltools
   tmux
   wd
+  web-search
   # zsh-autosuggestions
   zsh-interactive-cd
   zsh-syntax-highlighting     # must be last!
