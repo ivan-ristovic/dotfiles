@@ -30,11 +30,13 @@ fi
 # dump their config into the dotfiles directory)
 mkdir -p $home_dir/.config
 
-# Move existing bashrc to avoid conflicts when running 
-# for the first time
-bashrc_backup_dir=/tmp/dotfiles
-mkdir -p $bashrc_backup_dir
-mv $home_dir/.bashrc $bashrc_backup_dir
+if [[ -f ~/.bashrc && ! -h ~/.bashrc ]]; then
+    # Move existing bashrc to avoid conflicts when running 
+    # for the first time
+    bashrc_backup_dir=/tmp/dotfiles
+    mkdir -p $bashrc_backup_dir
+    mv $home_dir/.bashrc $bashrc_backup_dir
+fi
 
 pushd dotfiles
 stow -v . -t $home_dir 
