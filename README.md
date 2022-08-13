@@ -10,10 +10,19 @@ The goal of this repository is to trivialize fresh system setup and configuratio
 ### All in one image (zsh, nvim, fzf, ranger, forgit, etc.)
 ![all-in-one](screenshots/all-in-one.png)
 
-### Shell (zsh with oh-my-zsh, p10k prompt and tmux integration)
+### Shell (zsh with oh-my-zsh, p10k prompt)
+![zsh](screenshots/zsh.png)
 ![prompt](screenshots/prompt.png)
 
-### Editor (Neovim with various plugins)
+My custom (additional) features:
+- Integration with tmux, nvim, fzf...
+- Automatic [alias expansion](dotfiles/.zshrc)
+- QOL [aliases](dotfiles/.aliases.zsh) and [functions](bin)
+
+### Session Manager (tmux)
+![tmux](screenshots/tmux.png)
+
+### Editor (plugin-enriched Neovim with zsh and fzf integration)
 ![nvim](screenshots/nvim.png)
 
 ### Search (fzf fuzz search integrated with zsh, nvim and forgit; fd and ag)
