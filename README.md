@@ -37,7 +37,7 @@ My custom (additional) features:
 Invoking `setup.sh` with username and package list will start the setup process that performs the following steps:
 - Environment identification (e.g., the package manager)
 - Installation list processing
-- Dotfiles and `.config` files (from the `dotfiles/` directory) linking to user's home directory using [Stow](https://www.gnu.org/software/stow/) (can be done manually by invoking `link.sh`)
+- Dotfiles and `.config` files (from the `dotfiles/` directory) linking to user's home directory using [GNU Stow](https://www.gnu.org/software/stow/) (can be done manually by invoking `link.sh`)
 
 It is possible to perform only some of the above steps by passing options (such as `--dotfiles` or `--packages`). Run `setup.sh --help` for more information.
 
