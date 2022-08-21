@@ -16,9 +16,11 @@ nextcloud-client
 obs-studio
 xorg-xrandr
 
-aur:mp3gain
 aur:extremecooling4linux
+aur:g810-led-git
+aur:mp3gain
 aur:optimus-manager optimus-manager-qt gdm-prime
 aur:vscodium-bin
+aur:webcord-bin
 
 # Do not delete this line. I cannot trust you to add a new line at the end of the file...
