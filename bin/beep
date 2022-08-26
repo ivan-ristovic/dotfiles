@@ -1,6 +1,7 @@
 #!/bin/bash
 
-function beep_v() {
+function beep_v() 
+{
     speaker-test -Dpulse -f 1000 --test sine -l 1 & sleep .2 && kill -9 $!
 }
 
