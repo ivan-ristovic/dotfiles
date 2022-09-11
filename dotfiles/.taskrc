@@ -1,5 +1,5 @@
 # Files
-data.location=/home/ivan/Nextcloud/Backup/taskwarrior
+data.location=/hdd/nextcloud/Backup/taskwarrior
 
 alias.lo=priority:L
 alias.md=priority:M
