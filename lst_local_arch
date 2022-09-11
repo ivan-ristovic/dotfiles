@@ -9,6 +9,7 @@ updates_arch
 
 audacity
 handbrake
+#i3-wm i3-scripts i3-help i3status-manjaro dmenu-manjaro
 kvantum-manjaro
 ladspa ladspa-plugins swh-plugins paprefs
 lutris

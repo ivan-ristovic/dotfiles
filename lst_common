@@ -6,6 +6,7 @@ cmake
 curl
 direnv
 fd
+feh
 fzf
 git
 ffmpeg
