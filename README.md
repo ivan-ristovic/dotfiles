@@ -1,4 +1,4 @@
- dotfiles
+# dotfiles
 
 This repository contains my personal dotfiles, QOL scripts and binaries, as well as installation scripts for fresh Linux systems (primarily for Arch and Ubuntu, since I use them at the moment for my local/cloud machines).
 
