@@ -25,6 +25,7 @@ function usage ()
     echo
     echo -e "\t--packages: install packages"
     echo -e "\t--dotfiles: link dotfiles"
+    echo -e "\t--patch: perform patches from patches/ dir"
     echo -e "\t--all: do all of the above (default)"
     exit 0
 }
@@ -32,6 +33,7 @@ function usage ()
 SETUP_OVERRIDE=false
 SETUP_PACKAGES=false
 SETUP_DOTFILES=false
+SETUP_PATCHES=false
 
 # Check arguments
 while test $# -gt 0
@@ -50,6 +52,10 @@ do
         --dotfiles)
             SETUP_OVERRIDE=true
             SETUP_DOTFILES=true
+            ;;
+        --patch)
+            SETUP_OVERRIDE=true
+            SETUP_PATCHES=true
             ;;
         -h) usage
             ;;
@@ -83,6 +89,7 @@ msg "install list: $INSTALL_LIST"
 if ! $SETUP_OVERRIDE ; then 
     SETUP_PACKAGES=true
     SETUP_DOTFILES=true
+    SETUP_PATCHES=true
 fi
 
 if $SETUP_PACKAGES ; then
@@ -129,6 +136,19 @@ fi
 
 if $SETUP_DOTFILES ; then
     source link.sh $SETUP_HOME_DIR
+fi
+
+if $SETUP_PATCHES ; then
+    if [ ! -d "patches" ]; then
+        err "patches/ directory is not present."
+    fi
+    cd patches
+    if [ -f "patch.sh" ]; then
+        source patch.sh
+    else
+        err "patches/patch.sh script is not present."
+    fi
+    cd $SETUP_HOME_DIR
 fi
 
 unset SETUP_USER

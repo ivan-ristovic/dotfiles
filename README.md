@@ -1,4 +1,4 @@
-# dotfiles
+ dotfiles
 
 This repository contains my personal dotfiles, QOL scripts and binaries, as well as installation scripts for fresh Linux systems (primarily for Arch and Ubuntu, since I use them at the moment for my local/cloud machines).
 
@@ -54,6 +54,8 @@ Entries from the installation lists are processed in the following manner:
         - specially, for Arch Linux, lines prefixed with `aur:` will use `yay` instead of `pacman` for that entry
 
 Check out `install/` directory for more information on how to use the scripts for automatic mass package installations.
+
+Check out `patches/` directory for more information on how to use the automatic file content patching system.
 
 `bin/` directory is placed on the `PATH` automatically if this dotfiles directory is found in user's home directory.
 
