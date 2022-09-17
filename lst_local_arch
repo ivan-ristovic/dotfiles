@@ -14,6 +14,7 @@ handbrake
 kdenlive
 kvantum-manjaro
 ladspa ladspa-plugins swh-plugins paprefs
+lg512-arch
 lutris
 nextcloud-client
 obs-studio
@@ -21,7 +22,6 @@ xorg-xrandr
 
 aur:discord_arch_electron
 aur:extremecooling4linux
-aur:g810-led-git
 aur:mp3gain
 aur:optimus-manager optimus-manager-qt gdm-prime
 aur:vscodium-bin
