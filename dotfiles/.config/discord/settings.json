@@ -1,0 +1,14 @@
+{
+  "BACKGROUND_COLOR": "#202225",
+  "SKIP_HOST_UPDATE": true,
+  "IS_MAXIMIZED": false,
+  "IS_MINIMIZED": false,
+  "DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING": true,
+  "WINDOW_BOUNDS": {
+    "x": 318,
+    "y": 209,
+    "width": 1280,
+    "height": 720
+  },
+  "OPEN_ON_STARTUP": true
+}
