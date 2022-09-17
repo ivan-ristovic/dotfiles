@@ -4,6 +4,7 @@ base-devel
 diff-so-fancy
 extra/bind
 firefox_arch
+gnu-netcat
 lm_sensors
 noto-fonts noto-fonts-emoji
 taskwarrior-tui

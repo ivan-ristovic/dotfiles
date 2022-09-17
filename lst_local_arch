@@ -8,8 +8,10 @@ updates_arch
 +lst_common_arch
 
 audacity
+gimp
 handbrake
 #i3-wm i3-scripts i3-help i3status-manjaro dmenu-manjaro
+kdenlive
 kvantum-manjaro
 ladspa ladspa-plugins swh-plugins paprefs
 lutris
@@ -17,11 +19,11 @@ nextcloud-client
 obs-studio
 xorg-xrandr
 
+aur:discord_arch_electron
 aur:extremecooling4linux
 aur:g810-led-git
 aur:mp3gain
 aur:optimus-manager optimus-manager-qt gdm-prime
 aur:vscodium-bin
-aur:webcord-bin
 
 # Do not delete this line. I cannot trust you to add a new line at the end of the file...
