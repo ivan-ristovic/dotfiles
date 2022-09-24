@@ -36,6 +36,7 @@
     context                 # user@hostname
     dir                     # current directory
     vcs                     # git status
+    ol_jh_gh                # custom OL JAVA_HOME and GRAALVM_HOME segment
     # =========================[ Line #2 ]=========================
     newline                 # \n
     prompt_char             # prompt symbol
@@ -128,6 +129,8 @@
     # wifi                    # wifi speed
     # example                 # example user-defined segment (see prompt_example function below)
   )
+
+  source $HOME/.p10k.custom.zsh
 
   # Defines character set used by powerlevel10k. It's best to let `p10k configure` set it for you.
   typeset -g POWERLEVEL9K_MODE=nerdfont-v3
@@ -1687,7 +1690,7 @@
   typeset -g POWERLEVEL9K_TIME_VISUAL_IDENTIFIER_EXPANSION=
   # Custom prefix.
   # typeset -g POWERLEVEL9K_TIME_PREFIX='%fat '
-
+  
   # Example of a user-defined prompt segment. Function prompt_example will be called on every
   # prompt if `example` prompt segment is added to POWERLEVEL9K_LEFT_PROMPT_ELEMENTS or
   # POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS. It displays an icon and orange text greeting the user.
