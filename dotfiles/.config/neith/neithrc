@@ -1,1 +1,32 @@
-NEITH_LIBS="$HOME/work/neith-lib/"
+NEITH_LIBS="$HOME/gh/neith-lib/"
+NEITH_LIBS="$NEITH_LIBS:$OL_PATH/ol-docs/"
+
+docs=(
+
+    graal/compiler/docs/
+    graal/docs/
+    graal/espresso/docs/
+    graal/regex/docs/
+    graal/substratevm/docs/
+    graal/sulong/docs/
+    graal/tools/docs/
+    graal/truffle/docs/
+    graal/vm/docs/
+    graal/wasm/docs/
+    graal-enterprise/compiler-fuzzing/docs/
+    graal-enterprise/docs/
+    graal-enterprise/graal-enterprise/docs/
+    graal-enterprise/substratevm-enterprise/docs/
+    graal-enterprise/sulong-managed/docs/
+    graal-enterprise/tools-enterprise/src/com.oracle.truffle.tools.docs.test/
+    graal-enterprise/tools-enterprise/src/com.oracle.truffle.tools.docs.test/src/com/oracle/truffle/tools/docs/
+    graal-enterprise/web-image/docs/
+    graal-enterprise/web-image-enterprise/docs/
+
+)
+
+for doc in "${docs[@]}"; do
+    NEITH_LIBS="$NEITH_LIBS:$OL_PATH/bb/master/$doc/"
+done
+
+unset docs
