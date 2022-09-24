@@ -55,10 +55,14 @@ local servers = {
   'clangd',                           -- clang lsp
   --[[ 'cpplint',                          -- cpp linter ]]
   'dockerls',                          -- docker lsp
-  'docker_compose_language_service',  -- docker-compose lsp
+  --[[ 'docker_compose_language_service',  -- docker-compose lsp ]]
   --[[ 'editorconfig-checker',             -- .editorconfig check  ]]
-  'html',                             -- html lsp
+  'gradle_ls',                        -- gradle
+  'hls',                              -- haskell
+  --[[ 'html',                             -- html lsp ]]
+  'jdtls',                            -- java lsp
   'jsonls',                           -- json lsp
+  'jsonnet_ls',                       -- jsonnet lsp
   'lemminx',                          -- xml lsp
   'lua_ls',                           -- lua lsp and linter
   'marksman',                         -- markdown lsp
