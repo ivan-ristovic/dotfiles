@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# create
+tmux new-session -d -s "$SESSION_NAME" -c "${ROOT_DIR:-$HOME}"
+
+# win 1
+tmux rename-window -t "$SESSION_NAME":1 dash
+tmux split-window -h -t "$SESSION_NAME":dash -c "${ROOT_DIR:-$HOME}"
+tmux send-keys -t "$SESSION_NAME":dash.1 "g-vpn" C-l C-m
+tmux send-keys -t "$SESSION_NAME":dash.2 "taskwarrior-tui" C-l C-m
+
+# win 2
+tmux new-window -t "$SESSION_NAME" -n master -c "$OL_PATH/bb/master"
+tmux send-keys -t "$SESSION_NAME":master "g-update" C-l C-m
+
+# win 3
+tmux new-window -t "$SESSION_NAME" -n focus -c "$OL_PATH/bb"
+tmux send-keys -t "$SESSION_NAME":focus "ls -la" C-l C-m
+
+# select dash
+tmux select-window -t "$SESSION_NAME":dash.1
