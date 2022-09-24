@@ -68,6 +68,7 @@ plugins=(
   fancy-ctrl-z              # ctrl+z for fg and bg
   fzf                       # fzf completion
   git                       # git completion and aliases
+  mx
   per-directory-history     # ctrl+g to toggle global/dir history
   python                    # python aliases and venv management
   rsync                     # rsync aliases
@@ -274,3 +275,7 @@ autoload -U zmv
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+
+################ OL ##################
+# has to be at the end
+source ${OL_SCRIPTS}/shell_rc.sh
