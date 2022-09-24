@@ -1,0 +1,9 @@
+--- /etc/hosts	2024-07-16 09:26:34.696657141 +0200
++++ /home/ivan/dotfiles/patches/etc/hosts	2024-07-16 09:27:00.266656525 +0200
+@@ -5,2 +5,6 @@
+ ff02::2    ip6-allrouters
++# # Speed up openconnect auth
++141.143.194.53 ams-twvpn-1a.oraclevpn.com
++141.143.194.55 ams-twvpn-2a.oraclevpn.com
++141.143.211.21 lon-twvpn-1a.oraclevpn.com
+ # This host address

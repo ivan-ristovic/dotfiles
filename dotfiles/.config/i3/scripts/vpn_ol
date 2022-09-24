@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+COLOR=\#bb0000
+if pgrep g-vpn > /dev/null ; then
+    COLOR=\#15d4ce
+    echo "[ol] "
+else
+    echo ""
+fi
+
+echo
+echo $COLOR

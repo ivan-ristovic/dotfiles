@@ -24,5 +24,7 @@ gnu-netcat
 ## Bitwise utils
 aur/bitwise
 
+## rr (replayable debugging)
+aur:rr-bin
 
 # end

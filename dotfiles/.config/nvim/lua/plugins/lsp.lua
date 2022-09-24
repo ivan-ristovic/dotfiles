@@ -60,6 +60,7 @@ return {
         'html',                             -- html lsp
         'jdtls',                            -- java lsp
         'jsonls',                           -- json lsp
+        'jsonnet_ls',                       -- jsonnet lsp
         'lemminx',                          -- xml lsp
         'lua_ls',                           -- lua lsp and linter
         'marksman',                         -- markdown lsp

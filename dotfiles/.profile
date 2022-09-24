@@ -32,3 +32,7 @@ export QT_AUTO_SCREEN_SCALE_FACTOR=0
 export QT_STYLE_OVERRIDE=kvantum
 export GTK_THEME=Material-Black-Pistachio-4.0
 
+# OL
+export OL_PATH=~/ol
+export OL_SCRIPTS="$OL_PATH/ol-scripts"
+source "$OL_SCRIPTS/shell_env.sh"
