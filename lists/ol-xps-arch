@@ -1,0 +1,71 @@
+### Work ol-xps list (Arch) ###
+
+
+updates_arch
+cleanup_manjaro_i3
+
+
+# Base
++i3-x11-arch
++hardware-arch
++utils-arch
++media-arch
+
+
+# VPN split-tunnel
+aur:vpn-slice
+
+
+# Development
+# (keep close to top for build dependencies)
++dev-arch
+# dev-dotnet-arch
++perf-arch
+
+
+firefox
+filezilla
+flameshot
+haskell_arch
+kvantum-manjaro
+lg512_arch
+libreoffice-still
+neofetch
+nextcloud-client libsecret
+obs-studio
+polychromatic_arch
+qalculate-gtk
+vlc
+
+aur:linux-wifi-hotspot
+aur:ventoy-bin
+
+gradle
+intellij-idea-community-edition
+jdk-openjdk jdk11-openjdk jdk17-openjdk openjdk-src openjdk11-src openjdk17-src
+libreoffice-still libreoffice-extension-texmaths libreoffice-extension-writer2latex
+maven
+perf
+qt5
+strace
+latex
+# vmware
+workrave
+xorg-xwininfo
+
+# For wifi scripts to work
+xorg-xinput
+
+# YubiKey
+yubikey-manager yubikey-manager-qt
+
+aur:async-profiler
+# aur:dell_command_configure
+aur:gdb-frontend-bin
+aur:hotspot
+aur:jabref-bin
+aur:jdk-mission-control-bin
+aur:perf-tools
+aur:visualvm
+
+# Do not delete this line.

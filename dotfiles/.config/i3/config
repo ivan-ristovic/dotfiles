@@ -270,7 +270,7 @@ bindsym $mod+Print exec flameshot gui -s -c
 bindsym $mod+Shift+Print exec flameshot gui
 
 ## Emoji picker
-bindsym $mod+p exec $scriptdir/emoji-picker
+bindsym $mod+o exec "sleep 0.5 && printf 'ivan.ristovic@oracle.com' | xclip -selection clipboard && xdotool key Control_L+v"
 
 ####################################
 ##### Program/Workspace/Output #####
@@ -296,10 +296,10 @@ set $ws10 "10"
 # workspace $ws5 output HDMI-0
 
 ## Program-to-Workspace mappings
-assign [class="Alacritty"]         $ws1
-assign [class="(?i)firefox"]       $ws2
-assign [class="(Dis|Web)[cC]ord*"] $ws3
-assign [class="[Ss]team"]          $ws3
+assign [class="Alacritty"] $ws1
+assign [class="(?i)firefox"] $ws2
+assign [class="idea"] $ws3
+assign [class="VSCodium"] $ws3
 # assign [class="Thunar"] $ws4
 
 ## Automatic set focus new window if it opens on another workspace then the current:
@@ -367,12 +367,10 @@ exec --no-startup-id xautolock -time 10 -notify 60 -notifier "notify-send 'Auto-
 exec --no-startup-id dbus-launch dunst --config ~/.config/dunst/dunstrc
 
 ## Apps
-exec --no-startup-id sleep 1 && optimus-manager-qt
-exec --no-startup-id sleep 2 && alacritty
-exec --no-startup-id sleep 3 && firefox 
-exec --no-startup-id sleep 5 && nextcloud --background
-exec --no-startup-id sleep 5 && webcord
-exec --no-startup-id sleep 5 && steam-native -silent -vrdisable -cef-force-occlusion -cef-force-opaque-backgrounds -cef-single-process -cef-disable-gpu-compositing -cef-disable-gpu -no-dwrite
+exec --no-startup-id sleep 1 && alacritty
+exec --no-startup-id sleep 2 && firefox
+exec --no-startup-id sleep 3 && nextcloud --background
+# exec --no-startup-id sleep 60 && workrave
 
 ################
 ##### Tray #####
