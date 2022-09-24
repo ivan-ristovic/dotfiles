@@ -1,1 +1,1 @@
-tmpfs       /ramfs tmpfs   nodev,nosuid,nodiratime,size=8G   0 0
+tmpfs       /ramfs tmpfs   nodev,nosuid,nodiratime,size=16G   0 0
