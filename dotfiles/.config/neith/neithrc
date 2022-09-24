@@ -1,1 +1,1 @@
-NEITH_LIBS="$HOME/work/neith-lib/"
+NEITH_LIBS="$HOME/gh/neith-lib/:$OL_PATH/ol-docs/:$OL_PATH/bb/master/graal/docs/:$OL_PATH/bb/master/graal-enterprise/docs/"

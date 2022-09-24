@@ -237,8 +237,8 @@ bindsym $mod+a focus parent
 # open new empty workspace
 bindsym $mod+Shift+n exec $scriptdir/empty-workspace
 
-# emoji picker
-bindsym $mod+p exec $scriptdir/emoji-picker
+# email shortcut
+bindsym $mod+o exec "sleep 0.5 && printf 'ivan.ristovic@oracle.com' | xclip -selection clipboard && xdotool key Control_L+v"
 
 # Multimedia Keys
 
@@ -297,8 +297,8 @@ set $ws10 "10"
 # bind program to workspace and focus to them on startup:
 assign [class="Alacritty"] $ws1
 assign [class="(?i)firefox"] $ws2
-assign [class="(Dis|Web)[cC]ord*"] $ws3
-assign [class="[Ss]team"] $ws3
+assign [class="idea"] $ws3
+assign [class="VSCodium"] $ws3
 # assign [class="Thunar"] $ws4
 
 # automatic set focus new window if it opens on another workspace then the current:
@@ -389,12 +389,10 @@ exec --no-startup-id dbus-launch dunst --config ~/.config/dunst/dunstrc
 #exec_always --no-startup-id autotiling
 
 # Autostart apps
-exec --no-startup-id sleep 1 && optimus-manager-qt
-exec --no-startup-id sleep 2 && alacritty
+exec --no-startup-id sleep 1 && alacritty
+exec --no-startup-id sleep 2 && firefox
 exec --no-startup-id sleep 3 && nextcloud --background
-exec --no-startup-id sleep 4 && firefox 
-exec --no-startup-id sleep 5 && webcord
-exec --no-startup-id sleep 5 && steam-native
+# exec --no-startup-id sleep 60 && workrave
 
 ###############
 # system tray #
