@@ -1,0 +1,4 @@
+/etc/sysctl.d/10-ptrace.conf
+
+kernel.yama.ptrace_scope=0
+

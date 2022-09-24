@@ -36,6 +36,7 @@
     context                 # user@hostname
     dir                     # current directory
     vcs                     # git status
+    ol_jh_gh                # custom OL JAVA_HOME and GRAALVM_HOME segment
     # =========================[ Line #2 ]=========================
     newline                 # \n
     prompt_char             # prompt symbol
@@ -1573,6 +1574,8 @@
   typeset -g POWERLEVEL9K_TIME_VISUAL_IDENTIFIER_EXPANSION=
   # Custom prefix.
   # typeset -g POWERLEVEL9K_TIME_PREFIX='%244Fat '
+  
+  source $HOME/.p10k.custom.zsh
 
   # Example of a user-defined prompt segment. Function prompt_example will be called on every
   # prompt if `example` prompt segment is added to POWERLEVEL9K_LEFT_PROMPT_ELEMENTS or

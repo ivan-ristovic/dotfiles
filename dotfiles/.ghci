@@ -18,7 +18,7 @@ import Data.String
 :m + Data.Maybe
 :m + Data.Monoid
 
-:set -Wall
+-- :set -Wall
 :set -fno-warn-missing-signatures
 :set -fno-warn-type-defaults
 :set -fno-warn-name-shadowing

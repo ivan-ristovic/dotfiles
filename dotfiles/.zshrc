@@ -55,6 +55,7 @@ plugins=(
   fd                        # fd completion
   fzf                       # fzf completion
   git                       # git completion and aliases
+  mx
   nmap                      # nmap aliases
   per-directory-history     # ctrl+g to toggle global/dir history
   python                    # python aliases and venv management
@@ -226,3 +227,10 @@ autoload -U zmv
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+
+################ OL ##################
+# has to be at the end
+export OL_PATH=~/ol
+export OL_SCRIPTS=${OL_PATH}/ol-scripts
+export PATH=$HOME/.ghcup/bin:${PATH}:${OL_SCRIPTS}/bin
+source ${OL_SCRIPTS}/shell_include.sh
