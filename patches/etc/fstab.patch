@@ -2,4 +2,4 @@
 +++ /home/ivan/dotfiles/patches/etc/fstab	2024-07-12 16:41:11.493338341 +0200
 @@ -11 +11,2 @@
  tmpfs                                     /tmp           tmpfs   defaults,noatime,mode=1777 0 0
-+tmpfs       /ramfs tmpfs   nodev,nosuid,nodiratime,size=8G   0 0
++tmpfs       /ramfs tmpfs   nodev,nosuid,nodiratime,size=16G   0 0
