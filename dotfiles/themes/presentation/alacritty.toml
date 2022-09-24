@@ -32,7 +32,7 @@ blinking = "Off"
 shape = "Block"
 
 [font]
-size = 13.5
+size = 10.0
 
 [font.bold]
 family = "Hack Nerd Font"
