@@ -1,10 +1,13 @@
 # My custom gdb config
 # by ivan-ristovic
 
-
 ####### General settings #######
+
 # No confirmations
 set confirm off
+
+# For loading native-image debug scripts
+set auto-load safe-path /
 
 
 ######## gdb-dashboard #########
