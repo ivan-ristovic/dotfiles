@@ -1,0 +1,3 @@
+/etc/fstab
+
+tmpfs       /ramfs tmpfs   nodev,nosuid,nodiratime,size=8G   0 0
