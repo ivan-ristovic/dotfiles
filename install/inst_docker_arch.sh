@@ -10,3 +10,4 @@ sudo systemctl enable docker.service
 sudo systemctl enable containerd.service
 
 inst $@ docker-compose
+

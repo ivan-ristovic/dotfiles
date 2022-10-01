@@ -4,6 +4,9 @@ source "utils.sh"
 
 inst $@ snapd
 sudo systemctl enable snapd.socket
-sudo ln -s /var/lib/snapd/snap /snap
-echo "export PATH=\$PATH:\/snap/bin/" | sudo tee -a /etc/profile
+
+if [[ ! -f /snap ]]; then
+    sudo ln -s /var/lib/snapd/snap /snap
+    echo "export PATH=\$PATH:\/snap/bin/" | sudo tee -a /etc/profile
+fi
 

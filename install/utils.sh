@@ -26,6 +26,20 @@ function fat ()
     exit 1
 }
 
+function is_installed ()
+{
+    if command -v "$@" &> /dev/null ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+function print_already_installed ()
+{
+    echo "warning: $@ already installed -- skipping"
+}
+
 function inst ()
 {
 	if ! sudo $@; then
