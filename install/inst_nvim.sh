@@ -15,3 +15,4 @@ nvim +PlugInstall +qall
 
 inst $@ python-pip
 pip install pynvim
+

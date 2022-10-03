@@ -2,8 +2,14 @@
 
 source "utils.sh"
 
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh ./get-docker.sh
+if is_installed docker ; then
+    print_already_installed docker
+    return
+fi
+
+curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
+sudo sh /tmp/get-docker.sh
+rm /rmp/get-docker.sh
 
 sudo groupadd docker
 sudo usermod -aG docker $SETUP_USER

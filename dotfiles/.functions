@@ -9,3 +9,8 @@ function o()
 	fi;
 }
 
+function mkd () 
+{
+    mkdir -p "$@" && cd "$_";
+}
+
