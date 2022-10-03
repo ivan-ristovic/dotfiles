@@ -2,15 +2,15 @@
 
 source "utils.sh"
 
+if is_installed omz ; then
+    print_already_installed zsh
+    return
+fi
+
 inst $@ zsh
 inst $@ python-pip
 inst $@ git
 inst $@ curl
-
-if is_installed zsh ; then
-    print_already_installed zsh
-    return
-fi
 
 msg "Installing powerline ..."
 pip install powerline-status
