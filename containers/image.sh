@@ -2,7 +2,7 @@
 
 function usage ()
 {
-    echo "usage $(basename $0) distro build|run [docker run/build opts ...]"
+    echo "usage $(basename $0) build|run distro [docker run/build opts ...]"
     exit 1
 }
 
