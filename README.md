@@ -32,7 +32,7 @@ My custom (additional) features:
 ![nvim](screenshots/nvim.png)
 
 ### Music Player (mpd with ncmpcpp)
-![fzf](screenshots/fzf.png)
+![fzf](screenshots/ncmpcpp.png)
 
 ### Search (fzf fuzz search integrated with zsh, nvim and forgit; fd and ag)
 ![fzf](screenshots/fzf.png)
