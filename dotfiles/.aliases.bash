@@ -93,6 +93,7 @@ alias m=make
 alias map='xargs -n1'
 alias md='mkdir -p'
 alias mk='make -B'
+alias mp=ncmpcpp
 alias mv='mv -i'
 alias p='ps -f'
 alias pacs='sudo pacman -S'
