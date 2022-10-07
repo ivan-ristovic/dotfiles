@@ -1,8 +1,15 @@
 # dotfiles
 
-This repository contains my personal dotfiles, QOL scripts and binaries, as well as installation scripts for fresh Linux systems (primarily for Arch and Ubuntu, since I use them at the moment for my local/cloud machines).
+- **OS**: Arch Linux - Manjaro
+- **WM**: ~~Xfce~~ i3 setup in progress
+- **Shell**: Zsh with oh-my-zsh and powerlevel10k prompt
+- **Editor**: neovim
+- **Session manager**: tmux
+- **File manager**: ranger
+- **Music player**: mpd with ncmpcpp (TUI), qmmp (GUI)
+- **Dotfile manager**: Custom scripts using GNU/Stow
 
-The goal of this repository is to trivialize fresh system setup and configuration. Setup can be done by invoking `setup.sh`, a powerful all-in-one setup script that performs mass package installation, configuration linking and more. This repository is not only my personal configuration store, it includes tools and QOL scripts that one might find useful. 
+This repository contains my personal dotfiles, QOL scripts and binaries, as well as installation scripts for quick setup of Linux systems (primarily for Arch and Ubuntu, since I use them at the moment for my local/cloud machines). Setup can be done by invoking `setup.sh`, a powerful all-in-one setup script. 
 
 
 ## Showcase
