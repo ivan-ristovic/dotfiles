@@ -31,6 +31,13 @@ MiscNewTabAdjacent=FALSE
 MiscSearchDialogOpacity=100
 MiscShowUnsafePasteDialog=TRUE
 DropdownAlwaysShowTabs=FALSE
-ColorPalette=rgb(0,0,0);rgb(170,0,0);rgb(0,170,0);rgb(170,85,0);rgb(70,116,232);rgb(170,0,170);rgb(0,170,170);rgb(170,170,170);rgb(85,85,85);rgb(255,85,85);rgb(85,255,85);rgb(255,255,85);rgb(85,85,255);rgb(255,85,255);rgb(85,255,255);rgb(255,255,255)
 MiscRightClickAction=TERMINAL_RIGHT_CLICK_ACTION_CONTEXT_MENU
+
+ColorBackground=#1e1e1e
+ColorForeground=#dcdfe4
+ColorBold=#dcdfe4
+ColorBoldUseDefault=FALSE
+ColorCursor=#282C34
+#TabActivityColor=
+ColorPalette=#282c34;#e06c75;#98c379;#e5c07b;#61afef;#c678dd;#56b6c2;#dcdfe4;#282c34;#e06c75;#98c379;#e5c07b;#61afef;#c678dd;#56b6c2;#dcdfe4
 
