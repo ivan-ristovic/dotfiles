@@ -1,7 +1,9 @@
 # dotfiles
 
+![all-in-one](screenshots/all-in-one.png)
+
 - **OS**: Arch Linux - Manjaro
-- **WM**: ~~Xfce~~ i3 setup in progress
+- **WM**: ~~Xfce4~~ i3 setup in progress
 - **Shell**: Zsh with oh-my-zsh and powerlevel10k prompt
 - **Editor**: neovim
 - **Session manager**: tmux
@@ -13,9 +15,6 @@ This repository contains my personal dotfiles, QOL scripts and binaries, as well
 
 
 ## Showcase
-
-### All in one image (zsh, nvim, fzf, ranger, forgit, etc.)
-![all-in-one](screenshots/all-in-one.png)
 
 ### Shell (zsh with oh-my-zsh, p10k prompt)
 ![zsh](screenshots/zsh.png)
@@ -31,6 +30,9 @@ My custom (additional) features:
 
 ### Editor (plugin-enriched Neovim with zsh, git and fzf integration)
 ![nvim](screenshots/nvim.png)
+
+### Music Player (mpd with ncmpcpp)
+![fzf](screenshots/fzf.png)
 
 ### Search (fzf fuzz search integrated with zsh, nvim and forgit; fd and ag)
 ![fzf](screenshots/fzf.png)
