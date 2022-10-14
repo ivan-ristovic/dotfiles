@@ -22,6 +22,7 @@ function usage ()
     echo
     echo "OPTIONS:"
     echo -e "\t--help -h: prints this manual"
+    echo -e "\t--strict: stops the setup if a recoverable error occurs instead of continuing"
     echo -e "\t--debug: runs the script in debug mode"
     echo
     echo -e "\t--packages: install packages"
@@ -60,7 +61,11 @@ do
             ;;
         --debug)
             inf "debug mode enabled"
-            set -xe; 
+            set -x; 
+            ;;
+        --strict)
+            inf "strict mode enabled"
+            set -e; 
             ;;
         -h) usage
             ;;
