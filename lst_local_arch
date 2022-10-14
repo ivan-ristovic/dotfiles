@@ -13,7 +13,7 @@ handbrake
 #i3-wm i3-scripts i3-help i3status-manjaro dmenu-manjaro
 kdenlive
 kvantum-manjaro
-ladspa ladspa-plugins swh-plugins paprefs
+#ladspa ladspa-plugins swh-plugins paprefs
 lg512-arch
 lutris
 neofetch
