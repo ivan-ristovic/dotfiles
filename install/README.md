@@ -1,6 +1,6 @@
 # How to write my own script?
 
-The main script will invoke the setup scripts with package manager installation command as an argument. For example, if your package manager is pacman then `pacman -S` will be provided to your script as a command line argument.
+The main script will invoke the setup scripts with package manager installation command as an argument. For example, if your package manager is pacman then `pacman -S` will be provided to your script as a command line argument. **Note that the script runs as root**.
 
 The name of the script should match the pattern `inst_<name>.sh` where `<name>` will be parsed from the installation list.
 
@@ -8,6 +8,7 @@ The logic of the command is entirely up to you. Feel free (and I encourage you t
 ```sh
 source "utils.sh"
 ```
+That way you can use functions such as `as_user` to execute commands as the setup user instead of root.
 
 As an example, consider the script below that sets up `git` wtih custom settings. The file is named `inst_git.sh`, so having `git` in the installation list will invoke this script:
 ```sh

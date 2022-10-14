@@ -18,7 +18,7 @@ for patch in *.patch ; do
         msg "Performing patch: $patch"
         process_patch $patch
         if [[ $? -eq 0 ]]; then
-            sudo -u $SETUP_USER touch $patched
+            as_user touch $patched
         else
             err "Patch failed: $patch"
         fi

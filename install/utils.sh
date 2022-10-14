@@ -41,6 +41,16 @@ function print_already_installed ()
     echo "warning: $@ already installed -- skipping"
 }
 
+function as_user ()
+{
+    sudo -u $SETUP_USER $@
+}
+
+function gcl ()
+{
+    as_user git clone $@
+}
+
 function inst ()
 {
 	if ! sudo $@; then
