@@ -8,12 +8,12 @@ if is_installed omz ; then
 fi
 
 inst $@ zsh
-inst $@ python-pip
+inst $@ python3-pip
 inst $@ git
 inst $@ curl
 
 msg "Installing powerline ..."
-pip install powerline-status
+sudo -u $SETUP_USER pip3 install powerline-status
 
 msg "Installing oh-my-zsh ..."
 sudo -u $SETUP_USER sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended

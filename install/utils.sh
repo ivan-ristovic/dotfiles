@@ -3,6 +3,7 @@
 PROMPT=">"
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+YELLOW='\033[0;36m'
 NC='\033[0m'
 
 function suc ()
@@ -12,7 +13,7 @@ function suc ()
 
 function msg ()
 {
-    echo "${PROMPT} inf: $@"
+    echo -e "${YELLOW}${PROMPT} inf: ${NC}$@"
 }
 
 function err ()
