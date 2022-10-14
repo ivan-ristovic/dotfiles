@@ -4,6 +4,7 @@ bat
 build-essential
 cmake
 curl
+diff-so-fancy_deb
 direnv
 docker
 fd-find

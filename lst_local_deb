@@ -6,6 +6,7 @@ updates_deb
 
 build-essential
 codium
+diff-so-fancy_deb
 fd-find
 silversearcher-ag
 zsh
