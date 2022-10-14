@@ -22,6 +22,7 @@ function usage ()
     echo
     echo "OPTIONS:"
     echo -e "\t--help -h: prints this manual"
+    echo -e "\t--debug: runs the script in debug mode"
     echo
     echo -e "\t--packages: install packages"
     echo -e "\t--dotfiles: link dotfiles"
@@ -56,6 +57,10 @@ do
         --patch)
             SETUP_OVERRIDE=true
             SETUP_PATCHES=true
+            ;;
+        --debug)
+            inf "debug mode enabled"
+            set -xe; 
             ;;
         -h) usage
             ;;
@@ -125,7 +130,7 @@ if $SETUP_PACKAGES ; then
             fi
             cd "$ROOT_DIR"
             suc "Finished processing $entry."
-            sleep 2
+            sleep 1
         done
     }
 
