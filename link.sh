@@ -39,7 +39,7 @@ if [[ -f ~/.bashrc && ! -h ~/.bashrc ]]; then
 fi
 
 pushd dotfiles
-stow -v . -t $home_dir 
+stow --no-folding -v . -t $home_dir 
 if [[ $? -eq 0 ]]; then
     suc "Dotfiles linked."
     rm -rf $bashrc_backup_dir
