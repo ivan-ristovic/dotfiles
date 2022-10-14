@@ -1,6 +1,6 @@
 FROM manjarolinux/base
 
-RUN sudo pacman -Syu
+RUN sudo pacman --noconfirm -Syu
 RUN sudo pacman --noconfirm -S openssh stow
 
 ARG PRIVATE_KEY
