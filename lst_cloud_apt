@@ -12,13 +12,12 @@ fzf
 git
 ffmpeg
 jq
-#latex
 lftp
 nvim
-#qt5
 pandoc
 ranger
 silversearcher-ag
+stow
 subversion
 taskwarrior
 tig
