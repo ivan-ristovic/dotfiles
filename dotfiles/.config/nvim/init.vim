@@ -6,7 +6,6 @@ call plug#begin()
 Plug 'edkolev/tmuxline.vim'
 Plug 'VundleVim/Vundle.vim'
 Plug 'christoomey/vim-system-copy'
-Plug 'crispgm/nvim-tabline'
 Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'neovimhaskell/haskell-vim'
@@ -24,6 +23,10 @@ set rtp+=~/.fzf
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
+" Setup tabline
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'romgrk/barbar.nvim'
+
 " Setup completion
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
@@ -36,14 +39,6 @@ Plug 'ncm2/ncm2-path'          " paths
 Plug 'ncm2/ncm2-pyclang'       " C/C++
 Plug 'ncm2/ncm2-vim'           " vimscript
 Plug 'ObserverOfTime/ncm2-jc2' " Java
-
-" Setup tabline
-require('tabline').setup({
-    show_index = true,
-    show_modify = true,
-    modify_indicator = '[+]',
-    no_name = '[Untitled]',
-})
 
 " Map TAB to completion
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
