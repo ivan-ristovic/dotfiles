@@ -6,9 +6,9 @@ call plug#begin()
 Plug 'edkolev/tmuxline.vim'
 Plug 'VundleVim/Vundle.vim'
 Plug 'christoomey/vim-system-copy'
+Plug 'crispgm/nvim-tabline'
 Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'itchyny/lightline.vim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'scrooloose/nerdtree'
 Plug 'terryma/vim-multiple-cursors'
@@ -37,6 +37,14 @@ Plug 'ncm2/ncm2-pyclang'       " C/C++
 Plug 'ncm2/ncm2-vim'           " vimscript
 Plug 'ObserverOfTime/ncm2-jc2' " Java
 
+" Setup tabline
+require('tabline').setup({
+    show_index = true,
+    show_modify = true,
+    modify_indicator = '[+]',
+    no_name = '[Untitled]',
+})
+
 " Map TAB to completion
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -56,6 +64,7 @@ filetype plugin indent on    " required
 nnoremap <SPACE> <Nop>
 let mapleader = " "
 
+" Setup airline
 let g:airline_powerline_fonts = 1
 let g:airline_theme='bubblegum'
 let g:airline#extensions#tmuxline#enabled = 0
@@ -106,3 +115,4 @@ noremap <leader>0 :tablast<cr>
 :  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif
 :  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif
 :augroup END
+
