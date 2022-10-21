@@ -83,20 +83,15 @@ fi
 
 zplug load
 
-##########################################################
+############################ MISC##############################
 
 source ~/.env
 
-########################## P10K ##########################
-
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+export BAT_THEME=zenburn
+export HISTORY_START_WITH_GLOBAL=true
 
 ############################ PATH #############################
+
 if [[ -d "${HOME}/dotfiles" ]]; then    
     if [[ ! -z $(grep ivan-ristovic/dotfiles "${HOME}/dotfiles/.git/config") ]]; then
         export PATH="${PATH}:${HOME}/dotfiles/bin"
@@ -116,7 +111,6 @@ compinit
 
 export DISABLE_FZF_AUTO_COMPLETION=false
 export DISABLE_FZF_KEY_BINDINGS=false
-export BAT_THEME=zenburn
 
 # FIXME Find a better preview option
 export FZF_DEFAULT_OPTS="--layout=reverse --info inline --border --preview 'bat --style=numbers --color=always --line-range :500 {} || '" 
