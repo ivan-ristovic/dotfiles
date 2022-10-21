@@ -23,10 +23,6 @@ set rtp+=~/.fzf
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
-" Setup tabline
-Plug 'kyazdani42/nvim-web-devicons'
-Plug 'romgrk/barbar.nvim'
-
 " Setup completion
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
@@ -63,6 +59,7 @@ let mapleader = " "
 let g:airline_powerline_fonts = 1
 let g:airline_theme='bubblegum'
 let g:airline#extensions#tmuxline#enabled = 0
+let g:airline#extensions#tabline#enabled = 1
 let airline#extensions#tmuxline#snapshot_file = "~/.tmux-status.conf"
 
 set tabstop=4
