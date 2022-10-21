@@ -22,32 +22,39 @@ HIST_STAMPS="dd/mm/yyyy"
 HIST_SIZE=500000
 
 plugins=(
-  ag
-  colored-man-pages
-  colorize
-  command-not-found
-  copybuffer
-  direnv
-  dirhistory
-  docker
-  docker-compose
-  encode64
-  extract
-  fd
-  fzf
-  git
-  nmap
-  rsync
-  sudo
-  taskwarrior
-  universalarchive
-  urltools
-  tmux
-  wd
-  web-search
+  ag                        # ag completion
+  colored-man-pages         # man highlighting
+  colorize                  # sh highlighting
+  command-not-found         # "did you mean" on cmd 404
+  copybuffer                # ctrl+o to copy buffer to clip
+  copyfile                  # copies file to clip
+  copypath                  # copies $(pwd) to clip
+  cp                        # cpv alias to use rsync
+  direnv                    # .env files for each dir
+  dirhistory                # alt+arrows to navigate dirs
+  docker                    # docker completion and aliases
+  docker-compose            # docker-compose completion and aliases
+  encode64                  # encode64/decode64 aliases
+  extract                   # extract alias
+  fancy-ctrl-z              # ctrl+z for fg and bg
+  fd                        # fd completion
+  fzf                       # fzf completion
+  git                       # git completion and aliases
+  nmap                      # nmap aliases
+  per-directory-history     # ctrl+g to toggle global/dir history
+  rsync                     # rsync aliases
+  shell-proxy               # proxy support
+  sudo                      # esc to add/remove sudo
+  taskwarrior               # taskw completion
+  tmux                      # tmux completion and aliases
+  tmuxinator                # tmuxinator completion and aliases
+  universalarchive          # ua
+  urltools                  # urlencode/urldecode aliases 
+  wd                        # directory warp
+  web-search                # aliases for search engines
   # zsh-autosuggestions
-  zsh-interactive-cd
-  zsh-syntax-highlighting     # must be last!
+  zsh-interactive-cd        # tab completion for cd 
+  zsh-syntax-highlighting   # must be last!
 )
 
 source $ZSH/oh-my-zsh.sh
