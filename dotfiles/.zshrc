@@ -1,3 +1,10 @@
+################ TMUX ################
+
+# Start tmux. Has to be before p10k instant prompt initialization!
+if [ -z "$TMUX" ]; then
+  exec tmux new-session -A
+fi
+
 ################ P10K ################
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
