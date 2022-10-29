@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ $# -ne 3 ]; then
+    echo "usage: $(basename $0) input_video hh:mm:ss hh:mm:ss"
+    exit 1
+fi
+
+set -xe;
+ffmpeg -i "$1" -ss "$2" -to "$3" -c:v copy -c:a copy "cut_$1"
+
