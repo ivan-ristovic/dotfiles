@@ -85,6 +85,7 @@ alias pacq='sudo pacman -Q'
 alias pacr='sudo pacman -R'
 alias pacu='sudo pacman -U'
 alias pacua='sudo pacman -Syu'
+alias ports='netstat -tulanp'
 alias py='python3'
 alias rd=rmdir
 alias rma='rm *'
