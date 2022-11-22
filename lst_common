@@ -13,6 +13,7 @@ git
 htop
 ffmpeg
 flameshot
+imagemagick
 jq
 lftp
 lynx
