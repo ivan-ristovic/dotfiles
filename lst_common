@@ -2,6 +2,7 @@
 # Often included in other lists
 
 bat
+bc
 cmake
 curl
 direnv
