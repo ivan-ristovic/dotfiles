@@ -229,17 +229,19 @@ bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
 bindsym $mod+h split h
+bindsym $mod+bar split h
 
 # split in vertical orientation
 bindsym $mod+v split v
+bindsym $mod+minus split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
-bindsym $mod+g layout tabbed
-bindsym $mod+e layout toggle split
+bindsym $mod+t layout tabbed
+bindsym $mod+z layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -277,8 +279,10 @@ bindsym $mod+p exec /usr/local/bin/switch-audio-port
 
 ## App shortcuts
 bindsym $mod+w exec /usr/bin/firefox
-bindsym $mod+n exec /usr/bin/thunar
-bindsym Print exec scrot ~/%Y-%m-%d-%T-screenshot.png && notify-send "Screenshot saved to ~/$(date +"%Y-%m-%d-%T")-screenshot.png"
+bindsym $mod+e exec /usr/bin/thunar
+bindsym Print exec scrot ~/Desktop/ss-%Y-%m-%d-%T.png && notify-send "Screenshot saved to ~/Desktop/ss-$(date +"%Y-%m-%d-%T").png"
+bindsym $mod+Print exec flameshot gui -s -c
+bindsym $mod+Shift+Print exec flameshot gui
 
 # Power Profiles menu switcher (rofi)
 bindsym $mod+Shift+p exec ~/.config/i3/scripts/power-profiles
@@ -291,8 +295,8 @@ bindsym $mod+Shift+p exec ~/.config/i3/scripts/power-profiles
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1: "
 set $ws2 "2: "
-set $ws3 "3: "
-set $ws4 "4: "
+set $ws4 "3: "
+set $ws3 "4: "
 set $ws5 "5:"
 set $ws6 "6"
 set $ws7 "7"
@@ -312,15 +316,13 @@ set $ws10 "10"
 # bind program to workspace and focus to them on startup:
 assign [class="Xfce4-terminal"] $ws1
 assign [class="(?i)firefox"] $ws2
-assign [class="Thunar"] $ws3
-assign [class="idea"] $ws4
+assign [class="idea"] $ws3
+# assign [class="Thunar"] $ws4
 
 # automatic set focus new window if it opens on another workspace then the current:
 # for_window [class=Xfce4-terminal] focus
-# for_window [class=(?i)firefox] focus
-# for_window [class=Thunar] focus
-# for_window [class=Thunderbird] focus
-# for_window [class=TelegramDesktop] focus
+for_window [class=(?i)firefox] focus
+for_window [class=Thunar] focus
 
 ##############
 # compositor #
@@ -414,8 +416,8 @@ exec --no-startup-id dbus-launch dunst --config ~/.config/dunst/dunstrc
 # Autostart apps as you like
 exec --no-startup-id sleep 2 && xfce4-terminal
 exec --no-startup-id sleep 7 && firefox 
-exec --no-startup-id sleep 3 && thunar
-exec --no-startup-id sleep 20 && idea
+# exec --no-startup-id sleep 3 && thunar
+# exec --no-startup-id sleep 20 && idea
 exec --no-startup-id sleep 3 && nextcloud-desktop
 
 ###############
@@ -564,7 +566,7 @@ bindsym $mod+d exec rofi -modi drun -show drun \
 
 ## rofi bindings for window menu ($mod+t /F10 optional disabled)
 
-bindsym $mod+t exec rofi -show window \
+bindsym $mod+Shift+w exec rofi -show window \
 		-config ~/.config/rofi/rofidmenu.rasi
 
 #bindsym F10 exec rofi -show window \

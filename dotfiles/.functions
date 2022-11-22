@@ -3,7 +3,7 @@
 function o ()
 {
 	if [ $# -eq 0 ]; then
-		xdg-open .;
+		$FILEMGR .;
 	else
 		xdg-open "$@";
 	fi;
