@@ -179,7 +179,8 @@ bindsym $mod+Return exec xfce4-terminal
 bindsym $mod+q kill
 
 # exit-menu
-bindsym $mod+Shift+e exec ~/.config/i3/scripts/powermenu
+# bindsym $mod+Shift+e exec ~/.config/i3/scripts/powermenu
+bindsym $mod+Shift+e exec ~/.config/rofi/applets/bin/powermenu.sh
 
 # Lock the system
 # lock with a picture:
@@ -194,7 +195,7 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 
 # keybinding in fancy rofi (automated):
-bindsym F1 exec ~/.config/i3/scripts/keyhint-2
+# bindsym F1 exec ~/.config/i3/scripts/keyhint-2
 # alternative
 # keybinding list in editor:
 # bindsym $mod+F1 exec xed ~/.config/i3/keybindings
@@ -280,7 +281,7 @@ bindsym $mod+p exec /usr/local/bin/switch-audio-port
 ## App shortcuts
 bindsym $mod+w exec /usr/bin/firefox
 bindsym $mod+e exec /usr/bin/thunar
-bindsym Print exec scrot ~/Desktop/ss-%Y-%m-%d-%T.png && notify-send "Screenshot saved to ~/Desktop/ss-$(date +"%Y-%m-%d-%T").png"
+bindsym Print exec scrot ~/ss-%Y-%m-%d-%T.png && notify-send "Screenshot saved to ~/ss-$(date +"%Y-%m-%d-%T").png"
 bindsym $mod+Print exec flameshot gui -s -c
 bindsym $mod+Shift+Print exec flameshot gui
 
@@ -295,8 +296,8 @@ bindsym $mod+Shift+p exec ~/.config/i3/scripts/power-profiles
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1: "
 set $ws2 "2: "
-set $ws4 "3: "
-set $ws3 "4: "
+set $ws3 "3: "
+set $ws4 "4: "
 set $ws5 "5:"
 set $ws6 "6"
 set $ws7 "7"
@@ -357,7 +358,10 @@ for_window [class=Thunar] focus
 # autostart applications/services on login: #
 #############################################
 
-#get auth work with polkit-gnome
+# Get ARandR to apply the screen layout
+exec_always --no-startup-id ~/.screenlayout/.screenlayout.sh
+
+# get auth work with polkit-gnome
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
 # dex execute .desktop files + apps using /etc/xdg/autostart.
@@ -415,10 +419,10 @@ exec --no-startup-id dbus-launch dunst --config ~/.config/dunst/dunstrc
 
 # Autostart apps as you like
 exec --no-startup-id sleep 2 && xfce4-terminal
-exec --no-startup-id sleep 7 && firefox 
+exec --no-startup-id sleep 5 && firefox 
 # exec --no-startup-id sleep 3 && thunar
 # exec --no-startup-id sleep 20 && idea
-exec --no-startup-id sleep 3 && nextcloud-desktop
+exec --no-startup-id sleep 3 && nextcloud --background
 
 ###############
 # system tray #
@@ -452,6 +456,7 @@ for_window [class="Blueberry.py" instance="blueberry.py"] floating enable
 for_window [class="Bluetooth-sendto" instance="bluetooth-sendto"] floating enable
 for_window [class="Pamac-manager"] floating enable
 for_window [window_role="About"] floating enable
+for_window [window_role="vmplayer"] floating enable
 
 # set border of floating window
 for_window [class="urxvt"] border pixel 1
@@ -558,19 +563,24 @@ strip_workspace_numbers yes
 
 ## rofi bindings fancy application menu ($mod+d /F9 optional disabled)
 
-bindsym $mod+d exec rofi -modi drun -show drun \
-		-config ~/.config/rofi/rofidmenu.rasi
+# Default config
+##bindsym $mod+d exec rofi -modi drun -show drun \
+#		 #-config ~/.config/rofi/rofidmenu.rasi
+
+# Rofi themed config
+bindsym $mod+d exec /home/ivan/.config/rofi/launchers/type-4/launcher.sh
+bindsym $mod+m exec /home/ivan/.config/rofi/applets/bin/mpd.sh
 
 #bindsym F9 exec rofi -modi drun -show drun \
 #		-config ~/.config/rofi/rofidmenu.rasi
 
 ## rofi bindings for window menu ($mod+t /F10 optional disabled)
 
-bindsym $mod+Shift+w exec rofi -show window \
-		-config ~/.config/rofi/rofidmenu.rasi
+#bindsym $mod+Shift+w exec rofi -show window \
+#		-config ~/.config/rofi/rofidmenu.rasi
 
 #bindsym F10 exec rofi -show window \
-#		-config ~/.config/rofi/rofidmenu.rasi
+#       -config ~/.config/rofi/rofidmenu.rasi
 
 ## rofi bindings to manage clipboard (install rofi-greenclip from the AUR)
 

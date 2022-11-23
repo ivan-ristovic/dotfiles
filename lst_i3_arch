@@ -1,0 +1,44 @@
+# Add your own packages here
+
+yay
+
+acpi
+arandr
+archlinux-xdg-menu
+awesome-terminal-fonts
+dex
+dmenu
+dunst
+feh
+file-roller
+gtk-engine-murrine
+i3blocks
+i3-gaps
+i3lock
+i3status
+jq
+lightdm
+lightdm-slick-greeter
+lxappearance-gtk3
+mpv
+network-manager-applet
+numlockx
+playerctl
+polkit-gnome
+rofi
+scrot
+sysstat
+thunar
+thunar-archive-plugin
+thunar-volman
+tumbler
+xbindkeys
+xdg-user-dirs-gkt
+xed
+xfce4-terminal
+xorg-xbacklight
+xorg-xdpyinfo
+
+aur: qogir-icon-theme
+
+# Do not delete this line. I cannot trust you to add a new line at the end of the file...
