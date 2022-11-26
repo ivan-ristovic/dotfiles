@@ -16,7 +16,8 @@ msg "Installing powerline ..."
 as_user pip3 install powerline-status
 
 msg "Installing oh-my-zsh ..."
-as_user sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+gcl https://github.com/ohmyzsh/ohmyzsh.git "$SETUP_HOME_DIR"/.oh-my-zsh/
+# as_user sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 rm "$SETUP_HOME_DIR"/.zshrc
 
 msg "Downloading syntax highlighting plugin ..."

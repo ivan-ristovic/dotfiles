@@ -8,7 +8,7 @@ inst $@ curl
 inst $@ neovim
 
 msg "Downloading vim-plug ..."
-as_user sh -c "curl -fLo ${SETUP_HOME_DIR}/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+curl -fLo ${SETUP_HOME_DIR}/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 msg "Installing plugins ..."
 nvim +PlugInstall +qall

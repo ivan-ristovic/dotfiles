@@ -4,7 +4,7 @@ yay
 
 acpi
 arandr
-archlinux-xdg-menu
+# archlinux-xdg-menu
 awesome-terminal-fonts
 dex
 dmenu
@@ -33,12 +33,12 @@ thunar-archive-plugin
 thunar-volman
 tumbler
 xbindkeys
-xdg-user-dirs-gkt
+# xdg-user-dirs-gkt
 xed
 xfce4-terminal
 xorg-xbacklight
 xorg-xdpyinfo
 
-aur: qogir-icon-theme
+aur:qogir-icon-theme
 
 # Do not delete this line. I cannot trust you to add a new line at the end of the file...
