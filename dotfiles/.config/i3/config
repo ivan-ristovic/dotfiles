@@ -423,7 +423,6 @@ exec --no-startup-id sleep 5 && firefox
 # exec --no-startup-id sleep 3 && thunar
 # exec --no-startup-id sleep 20 && idea
 exec --no-startup-id sleep 3 && nextcloud --background
-exec --no-startup-id sleep 10 && conky -c ~/.config/conky/conky.conf 
 
 ###############
 # system tray #
