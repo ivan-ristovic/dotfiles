@@ -382,7 +382,7 @@ exec --no-startup-id dex --autostart --environment i3
 #exec --no-startup-id setxkbmap -layout 'us,sk' -variant altgr-intl,qwerty -option 'grp:alt_caps_toggle'
 
 # start conky:
-#exec_always --no-startup-id conky
+exec_always --no-startup-id conky
 
 # start a script to setup displays
 # uncomment the next line, use arandr to setup displays and save the file as monitor:
@@ -423,7 +423,6 @@ exec --no-startup-id sleep 5 && firefox
 # exec --no-startup-id sleep 3 && thunar
 # exec --no-startup-id sleep 20 && idea
 exec --no-startup-id sleep 3 && nextcloud --background
-exec --no-startup-id sleep 10 && conky -c ~/.config/conky/conky.conf 
 
 ###############
 # system tray #
