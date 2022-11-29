@@ -6,7 +6,7 @@ Section "InputClass"
         Identifier "system-keyboard"
         MatchIsKeyboard "on"
         Option "XkbLayout"  "us,rs,rs"
-        Option "XkbVariant" "euro,latin,basic"
+        Option "XkbVariant" "euro,latin,yz"
         Option "XkbOptions" "grp:ctrls_toggle,compose:rctrl"
 EndSection
 
