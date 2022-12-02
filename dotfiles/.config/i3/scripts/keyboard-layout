@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-KBD=$(/usr/bin/xkblayout-state print '%s')
+KBD=$(/usr/bin/xkblayout-state print '%s[%v]')
 echo $KBD
 
