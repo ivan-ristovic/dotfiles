@@ -7,6 +7,6 @@ Section "InputClass"
         MatchIsKeyboard "on"
         Option "XkbLayout"  "us,rs,rs"
         Option "XkbVariant" "euro,latin,yz"
-        Option "XkbOptions" "grp:win_space_toggle,compose:rctrl"
+        Option "XkbOptions" "grp:rctrl_rshift_toggle,compose:rctrl"
 EndSection
 
