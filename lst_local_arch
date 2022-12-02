@@ -6,25 +6,24 @@ updates_arch
 
 +lst_common
 +lst_common_arch
++lst_i3_arch
 
 audacity
 gimp
 handbrake
-#i3-wm i3-scripts i3-help i3status-manjaro dmenu-manjaro
 kdenlive
 kvantum-manjaro
-#ladspa ladspa-plugins swh-plugins paprefs
 lg512-arch
 lutris
 neofetch
 nextcloud-client
 obs-studio
-replay-sorcery-arch
-xorg-xrandr
 
 aur:extremecooling4linux
+aur:goverlay
 aur:mp3gain
 aur:optimus-manager optimus-manager-qt gdm-prime
+aur:oversteer
 aur:vscodium-bin
 aur:webcord-bin
 

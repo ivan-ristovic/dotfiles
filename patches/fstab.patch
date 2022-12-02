@@ -1,3 +1,4 @@
 /etc/fstab
 
+UUID=962be65c-9117-4a61-ada4-44656ddac6c7 /hdd           auto    nosuid,nodev,nofail,x-gvfs-show 0 0
 tmpfs       /ramfs tmpfs   nodev,nosuid,nodiratime,size=8G   0 0

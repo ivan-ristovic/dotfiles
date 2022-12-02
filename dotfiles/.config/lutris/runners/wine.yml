@@ -1,0 +1,6 @@
+system:
+  disable_compositor: true
+  prime: true
+  reset_desktop: true
+  restore_gamma: true
+wine: {}
