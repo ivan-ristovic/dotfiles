@@ -293,7 +293,7 @@ bindsym $mod+Shift+Print exec flameshot gui
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1: "
 set $ws2 "2: "
-set $ws3 "3: "
+set $ws3 "3: "
 set $ws4 "4: "
 set $ws5 "5:"
 set $ws6 "6"
@@ -314,7 +314,8 @@ set $ws10 "10"
 # bind program to workspace and focus to them on startup:
 assign [class="Xfce4-terminal"] $ws1
 assign [class="(?i)firefox"] $ws2
-assign [class="idea"] $ws3
+assign [class="(dis|web)cord*"] $ws3
+assign [class="steam"] $ws3
 # assign [class="Thunar"] $ws4
 
 # automatic set focus new window if it opens on another workspace then the current:
@@ -409,6 +410,8 @@ exec --no-startup-id dbus-launch dunst --config ~/.config/dunst/dunstrc
 exec --no-startup-id sleep 2 && xfce4-terminal
 exec --no-startup-id sleep 5 && firefox 
 exec --no-startup-id sleep 3 && nextcloud --background
+exec --no-startup-id sleep 6 && webcord
+exec --no-startup-id sleep 10 && steam
 
 ###############
 # system tray #
@@ -428,11 +431,6 @@ exec --no-startup-id xfce4-clipman
 ##################
 # floating rules #
 ##################
-
-# set floating (nontiling) for apps needing it
-for_window [class="Yad" instance="yad"] floating enable
-for_window [class="Galculator" instance="galculator"] floating enable
-for_window [class="Blueberry.py" instance="blueberry.py"] floating enable
 
 # set floating (nontiling) for special apps
 for_window [class="Xsane" instance="xsane"] floating enable
