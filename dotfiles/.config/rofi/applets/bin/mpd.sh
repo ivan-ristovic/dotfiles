@@ -31,26 +31,26 @@ fi
 layout=`cat ${theme} | grep 'USE_ICON' | cut -d'=' -f2`
 if [[ "$layout" == 'NO' ]]; then
 	if [[ ${status} == *"[playing]"* ]]; then
-		option_1=" Pause"
+		option_1=" Pause"
 	else
-		option_1=" Play"
+		option_1="契 Play"
 	fi
-	option_2=" Stop"
-	option_3=" Previous"
-	option_4=" Next"
-	option_5=" Repeat"
-	option_6=" Random"
+	option_2="栗 Stop"
+	option_3="玲 Previous"
+	option_4="怜 Next"
+	option_5="凌 Repeat"
+	option_6="列 Random"
 else
 	if [[ ${status} == *"[playing]"* ]]; then
-		option_1=""
+		option_1=""
 	else
-		option_1=""
+		option_1="契"
 	fi
-	option_2=""
-	option_3=""
-	option_4=""
-	option_5=""
-	option_6=""
+	option_2="栗"
+	option_3="玲"
+	option_4="怜"
+	option_5="凌"
+	option_6="列"
 fi
 
 # Toggle Actions
@@ -62,7 +62,7 @@ if [[ ${status} == *"repeat: on"* ]]; then
 elif [[ ${status} == *"repeat: off"* ]]; then
     urgent="-u 4"
 else
-    option_5=" Parsing Error"
+    option_5=" Parsing Error"
 fi
 # Random
 if [[ ${status} == *"random: on"* ]]; then
@@ -70,7 +70,7 @@ if [[ ${status} == *"random: on"* ]]; then
 elif [[ ${status} == *"random: off"* ]]; then
     [ -n "$urgent" ] && urgent+=",5" || urgent="-u 5"
 else
-    option_6=" Parsing Error"
+    option_6=" Parsing Error"
 fi
 
 # Rofi CMD
