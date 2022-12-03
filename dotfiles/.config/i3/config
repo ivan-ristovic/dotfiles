@@ -439,8 +439,9 @@ for_window [class="qt5ct" instance="qt5ct"] floating enable
 for_window [class="Blueberry.py" instance="blueberry.py"] floating enable
 for_window [class="Bluetooth-sendto" instance="bluetooth-sendto"] floating enable
 for_window [class="Pamac-manager"] floating enable
+for_window [class="VM Player" instance="vmplayer"] floating enable
 for_window [window_role="About"] floating enable
-for_window [window_role="vmplayer"] floating enable
+for_window [window_role="Friends List"] floating enable
 
 # set border of floating window
 for_window [class="urxvt"] border pixel 1
