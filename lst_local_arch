@@ -17,8 +17,10 @@ lg512-arch
 lutris
 neofetch
 nextcloud-client
+nvidia-dkms
 obs-studio
 picard
+qbittorrent
 steam
 
 aur:extremecooling4linux
@@ -26,6 +28,7 @@ aur:goverlay
 aur:mp3gain
 aur:optimus-manager optimus-manager-qt gdm-prime
 aur:oversteer
+aur:rider
 aur:vscodium-bin
 aur:webcord-bin
 

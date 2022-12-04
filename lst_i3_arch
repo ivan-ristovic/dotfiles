@@ -6,6 +6,7 @@ acpi
 arandr
 # archlinux-xdg-menu
 awesome-terminal-fonts
+brightnessctl
 conky
 dex
 dmenu
@@ -26,6 +27,7 @@ network-manager-applet
 numlockx
 playerctl
 polkit-gnome
+pulseaudio pavucontrol
 rofi
 scrot
 sysstat

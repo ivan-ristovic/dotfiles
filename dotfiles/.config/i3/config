@@ -200,9 +200,9 @@ bindsym $mod+Shift+r restart
 # keybinding list in editor:
 # bindsym $mod+F1 exec xed ~/.config/i3/keybindings
 
-# Backlight control
-bindsym XF86MonBrightnessUp exec xbacklight +5 && notify-send "Brightness - $(xbacklight -get | cut -d '.' -f 1)%"
-bindsym XF86MonBrightnessDown exec xbacklight -5 && notify-send "Brightness - $(xbacklight -get | cut -d '.' -f 1)%"
+# Brightness control
+bindsym XF86MonBrightnessUp exec brightnessctl s 10%+ && notify-send "Brightness - $(brightnessctl g)/$(brightnessctl m)"
+bindsym XF86MonBrightnessDown exec brightnessctl s 10%- && notify-send "Brightness - $(brightnessctl g)/$(brightnessctl m)"
 
 # change focus
 bindsym $mod+j focus left
@@ -255,6 +255,9 @@ bindsym $mod+a focus parent
 
 # open new empty workspace
 bindsym $mod+Shift+n exec ~/.config/i3/scripts/empty_workspace
+
+# toggle extreme cooling
+bindsym Ctrl+Shift+0 exec ec4Linux change-state
 
 # Multimedia Keys
 
