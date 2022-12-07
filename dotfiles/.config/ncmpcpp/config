@@ -40,8 +40,8 @@ visualizer_in_stereo = yes
 # Set to 10 only if experiencing sync issues
 #visualizer_sync_interval = 0
 
-visualizer_type = spectrum
-#visualizer_fps = 60
+visualizer_type = ellipse
+visualizer_fps = 60
 #visualizer_autoscale = no
 visualizer_look = ●▮
 visualizer_color = 47, 83, 119, 155, 191, 227, 221, 215, 209, 203, 197, 161
@@ -215,8 +215,8 @@ playlist_editor_display_mode = columns
 #incremental_seeking = yes
 seek_time = 5
 volume_change_step = 5
-#autocenter_mode = no
-#centered_cursor = no
+# autocenter_mode = no
+centered_cursor = yes
 
 ## Note: You can specify third character which will be used to build 'empty'
 ## part of progressbar.
@@ -274,18 +274,18 @@ lyrics_fetchers = musixmatch, azlyrics, genius, sing365, metrolyrics, justsomely
 
 ## Note: You can define startup slave screen by choosing screen from the list
 ## above or an empty value for no slave screen.
-#startup_slave_screen = ""
+startup_slave_screen = "visualizer"
 #startup_slave_screen_focus = no
 
-## Default width of locked screen (in %).  Acceptable values are from 20 to 80.
-#locked_screen_width_part = 50
+## Default width of locked7screen (in %).  Acceptable values are from 20 to 80.
+locked_screen_width_part = 70
 #ask_for_locked_screen_width_part = yes
 #jump_to_now_playing_song_at_start = yes
 
 #ask_before_clearing_playlists = yes
 #clock_display_seconds = no
 #display_volume_level = yes
-#display_bitrate = no
+display_bitrate = yes
 #display_remaining_time = no
 
 ## Available values: none, basic, extended, perl.
