@@ -41,6 +41,7 @@ valgrind
 vlc
 xsel
 youtube-dl
+wine
 zsh
 
 # Do not delete this line. I cannot trust you to add a new line at the end of the file...

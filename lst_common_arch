@@ -3,6 +3,7 @@ yay
 base-devel
 btop
 diff-so-fancy
+docker_arch
 extra/bind
 firefox_arch
 gnu-netcat
