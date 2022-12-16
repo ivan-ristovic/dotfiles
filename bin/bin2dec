@@ -1,0 +1,3 @@
+#!/bin/bash
+
+base2base 2 10 $@

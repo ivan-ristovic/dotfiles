@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ $# -lt 3 ]]; then
+    echo "usage: $(basename $0) base_from base_to num [nums ...]"
+    exit 1
+fi
+
+ibase=$1
+obase=$2
+shift 2
+nums=$(joinby ';' $@)
+
+# Order matters! As soon as ibase is set, input must be in that base
+bc <<< "obase=$obase;ibase=$ibase;$nums"
+

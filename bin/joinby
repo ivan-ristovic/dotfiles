@@ -1,0 +1,16 @@
+#!/bin/bash
+
+function join_by () 
+{
+    local d=${1-} f=${2-}
+    if shift 2; then
+        printf %s "$f" "${@/#/$d}"
+    fi
+}
+
+if [[ $# -lt 2 ]]; then
+    echo "usage: $(basename $0) delimiter args..."
+    exit 1
+fi
+
+join_by $@
