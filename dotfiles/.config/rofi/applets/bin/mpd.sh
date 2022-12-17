@@ -16,7 +16,11 @@ if [[ -z "$status" ]]; then
 	mesg="MPD is Offline"
 else
 	prompt="`mpc -f "%artist%" current`"
-	mesg="`mpc -f "%title%" current` :: `mpc status | grep "#" | awk '{print $3}'`"
+    if [[ -z "$prompt" ]]; then
+        mesg="`mpc status | head -1` :: `mpc status | grep "#" | awk '{print $3}'`"
+	else
+        mesg="`mpc -f "%title%" current` :: `mpc status | grep "#" | awk '{print $3}'`"
+    fi
 fi
 
 if [[ ( "$theme" == *'type-1'* ) || ( "$theme" == *'type-3'* ) || ( "$theme" == *'type-5'* ) ]]; then
