@@ -44,7 +44,10 @@ xfce4-terminal
 xorg-xbacklight
 xorg-xdpyinfo
 
-aur:qogir-icon-theme
+# aur:qogir-icon-theme
 aur:xkblayout-state-git
+
+# Themes and icons come after dotfiles link
+!appearance
 
 # Do not delete this line. I cannot trust you to add a new line at the end of the file...

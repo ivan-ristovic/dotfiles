@@ -102,6 +102,8 @@ if ! $SETUP_OVERRIDE ; then
     SETUP_PATCHES=true
 fi
 
+packages_requiring_linked_dotfiles=()
+
 if $SETUP_PACKAGES ; then
 
     # Identify package manager
@@ -111,9 +113,14 @@ if $SETUP_PACKAGES ; then
     # Install packages
     suc "Checks completed successfully, starting installations ..."
 
+    function read_list ()
+    {
+        echo $(rm_comments $1)
+    }
+
     function process_list ()
     {
-        for entry in $(rm_comments "$1"); do
+        for entry in $@; do
             cd "install"
             SETUP_SCRIPT="inst_$entry.sh"
             AUR_PREFIX="aur:"
@@ -121,13 +128,17 @@ if $SETUP_PACKAGES ; then
                 cd $ROOT_DIR
                 to_include=${entry#"+"}
                 msg "Importing setup script: $to_include"
-                process_list "$to_include"
+                process_list $(read_list "$to_include")
+            elif [[ "$entry" == "!"* ]]; then
+                to_post_install=${entry#"!"}
+                msg "Post-link install for : $to_post_install"
+                packages_requiring_linked_dotfiles+=(${to_post_install})
             elif [ -f "$SETUP_SCRIPT" ]; then
                 msg "Setting up via script : $entry"
                 source "$SETUP_SCRIPT" "$PM"
             elif [[ "$entry" == "$AUR_PREFIX"* ]]; then
                 pkg=${entry#"$AUR_PREFIX"}
-                msg "Installing from AUR: $pkg"
+                msg "Installing from AUR   : $pkg"
                 inst_aur "$pkg"
             else
                 msg "Installing package    : $entry"
@@ -139,7 +150,7 @@ if $SETUP_PACKAGES ; then
         done
     }
 
-    process_list "$INSTALL_LIST"
+    process_list $(read_list "$INSTALL_LIST")
     suc "Installations finished."
 fi
 
@@ -159,6 +170,10 @@ if $SETUP_PATCHES ; then
         err "patches/patch.sh script is not present."
     fi
     cd $SETUP_HOME_DIR
+fi
+
+if $SETUP_PACKAGES ; then
+    process_list "${packages_requiring_linked_dotfiles[@]}"
 fi
 
 unset SETUP_USER
