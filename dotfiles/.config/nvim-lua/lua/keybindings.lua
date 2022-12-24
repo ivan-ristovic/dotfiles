@@ -75,6 +75,19 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 -- keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 -- keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 
+
+-- File Tree (NvimTree)
 keymap("n", "<leader>t", ":NvimTreeToggle<cr>", opts)
 keymap("n", "<leader>n", ":NvimTreeFocus<cr>", opts)
+
+-- Tab line (Bufferline)
+keymap("n", "<leader>1", ":BufferLineGoToBuffer 1<cr>", opts)
+keymap("n", "<leader>2", ":BufferLineGoToBuffer 2<cr>", opts)
+keymap("n", "<leader>3", ":BufferLineGoToBuffer 3<cr>", opts)
+keymap("n", "<leader>4", ":BufferLineGoToBuffer 4<cr>", opts)
+keymap("n", "<leader>5", ":BufferLineGoToBuffer 5<cr>", opts)
+keymap("n", "<leader>6", ":BufferLineGoToBuffer 6<cr>", opts)
+keymap("n", "<leader>7", ":BufferLineGoToBuffer 7<cr>", opts)
+keymap("n", "<leader>8", ":BufferLineGoToBuffer 8<cr>", opts)
+keymap("n", "<leader>9", ":BufferLineGoToBuffer 9<cr>", opts)
 
