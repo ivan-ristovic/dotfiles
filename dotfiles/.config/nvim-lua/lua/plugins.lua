@@ -35,16 +35,26 @@ return require('packer').startup(function(use)
     -- Neovim general functionality and apperence
     use 'tomasiser/vim-code-dark'   -- VSCode-like color scheme
     use 'nvim-lua/popup.nvim'       -- An implementation of the Popup API   
-    use 'nvim-lua/plenary.nvim'     -- Useful Lua functions used by many plugins
-    use 'kyazdani42/nvim-tree.lua'  -- NvimTree file manager
     use "akinsho/bufferline.nvim"   -- Buffer (tabs)
+    use "sitiom/nvim-numbertoggle"  -- Absolute/Relative number autotoggle
     use {
-      'nvim-lualine/lualine.nvim',
-      requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+        'nvim-lualine/lualine.nvim',
+        requires = { 'kyazdani42/nvim-web-devicons' }
+    }
+    use {
+        'nvim-tree/nvim-tree.lua',
+        requires = { 'nvim-tree/nvim-web-devicons' }
     }
 
-    --Programming
-    use "windwp/nvim-autopairs" --autopairs
+    -- Telescope
+    use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } }
+    use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
+
+    -- Treesitter
+    use "nvim-treesitter/nvim-treesitter" -- Syntax highlighting
+
+    -- Programming
+    use "windwp/nvim-autopairs" -- Autopairs
     use "numToStr/Comment.nvim"
     use "JoosepAlviste/nvim-ts-context-commentstring"
     use 'lukas-reineke/indent-blankline.nvim' --shows line indendation
@@ -52,23 +62,13 @@ return require('packer').startup(function(use)
     use "lewis6991/gitsigns.nvim" --Git indication
     use "akinsho/toggleterm.nvim"
 
-    --Treesitter
-    use "nvim-treesitter/nvim-treesitter" --Syntax highlighting
-
-    -- Telescope
-    use "nvim-telescope/telescope.nvim" -- telescope search engine
-
-    --cmp plugins
+    -- Completion
     use "hrsh7th/nvim-cmp" -- completion plugin
     use "hrsh7th/cmp-buffer" -- buffer completions
     use "hrsh7th/cmp-path" -- path completions
     use "hrsh7th/cmp-cmdline" -- cmdline completions
     use "saadparwaiz1/cmp_luasnip" -- snippet completions
     use "hrsh7th/cmp-nvim-lsp" -- LSP completion for cmp
-
-    --Snippets
-    use "L3MON4D3/LuaSnip" -- snippet engine
-    use "rafamadriz/friendly-snippets" -- many snippets to use
 
     -- LSP 
     use "neovim/nvim-lspconfig" -- enable LSP

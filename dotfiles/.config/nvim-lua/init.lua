@@ -3,6 +3,8 @@ require "keybindings"
 require "plugins"
 require "statusline"
 require "colorscheme"
+require "finder"
+require "filetree"
 
 
 -- The line beneath this is called `modeline`. See `:help modeline`
