@@ -22,14 +22,14 @@ vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = tr
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Better window navigation
-keymap("n", "<C-h>", "<C-w>h", opts)
-keymap("n", "<C-j>", "<C-w>j", opts)
-keymap("n", "<C-k>", "<C-w>k", opts)
-keymap("n", "<C-l>", "<C-w>l", opts)
-keymap("n", "<C-Left>", "<C-w>h", opts)
-keymap("n", "<C-Down>", "<C-w>j", opts)
-keymap("n", "<C-Up>", "<C-w>k", opts)
-keymap("n", "<C-Right>", "<C-w>l", opts)
+keymap("n", "<A-h>", "<C-w>h", opts)
+keymap("n", "<A-j>", "<C-w>j", opts)
+keymap("n", "<A-k>", "<C-w>k", opts)
+keymap("n", "<A-l>", "<C-w>l", opts)
+keymap("n", "<A-Left>", "<C-w>h", opts)
+keymap("n", "<A-Down>", "<C-w>j", opts)
+keymap("n", "<A-Up>", "<C-w>k", opts)
+keymap("n", "<A-Right>", "<C-w>l", opts)
 
 -- Resize with arrows
 keymap("n", "<C-A-Up>", ":resize -2<CR>", opts)
@@ -38,12 +38,16 @@ keymap("n", "<C-A-Left>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-A-Right>", ":vertical resize +2<CR>", opts)
 
 -- Navigate buffers
-keymap("n", "<S-l>", ":bnext<CR>", opts)
-keymap("n", "<S-h>", ":bprevious<CR>", opts)
+keymap("n", "<C-Right>", ":bnext<CR>", opts)
+keymap("n", "<C-Left>", ":bprevious<CR>", opts)
+keymap("n", "<C-Right>", ":bnext<CR>", opts)
+keymap("n", "<C-Left>", ":bprevious<CR>", opts)
 
 -- Move text up and down
-keymap("n", "<A-j>", "<Esc>:m .+1<CR>==gi", opts)
-keymap("n", "<A-k>", "<Esc>:m .-2<CR>==gi", opts)
+keymap("n", "<C-j>", "ddp", opts)
+keymap("n", "<C-k>", "ddkkp", opts)
+keymap("n", "<C-Down>", "ddp", opts)
+keymap("n", "<C-Up>", "ddkkp", opts)
 
 -- Visual --
 -- Stay in indent mode
@@ -51,8 +55,10 @@ keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
 
 -- Move text up and down
-keymap("v", "<A-j>", ":m .+1<CR>==", opts)
-keymap("v", "<A-k>", ":m .-2<CR>==", opts)
+keymap("v", "<C-j>", "ddp", opts)
+keymap("v", "<C-k>", "ddkkp", opts)
+keymap("v", "<C-Down>", "ddp", opts)
+keymap("v", "<C-Up>", "ddkkp", opts)
 keymap("v", "p", '"_dP', opts)
 
 -- Visual Block --
