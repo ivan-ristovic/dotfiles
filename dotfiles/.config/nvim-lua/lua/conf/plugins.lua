@@ -52,28 +52,40 @@ return require('packer').startup(function(use)
 
     -- Treesitter
     use "nvim-treesitter/nvim-treesitter" -- Syntax highlighting
+    use {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        after = 'nvim-treesitter',
+    }
 
     -- Programming
-    use "windwp/nvim-autopairs" -- Autopairs
-    use "numToStr/Comment.nvim"
-    use "JoosepAlviste/nvim-ts-context-commentstring"
-    use 'lukas-reineke/indent-blankline.nvim' --shows line indendation
-    use 'norcalli/nvim-colorizer.lua' --CSS colors
-    use "lewis6991/gitsigns.nvim" --Git indication
-    use "akinsho/toggleterm.nvim"
+    use "windwp/nvim-autopairs" -- Bracket autoindent and pairing
+    use "numToStr/Comment.nvim" -- Code comment
+    use 'tpope/vim-sleuth'      -- Detect ts and sw automatically
+    use "JoosepAlviste/nvim-ts-context-commentstring" -- Treesitter-guided comments
+    use 'lukas-reineke/indent-blankline.nvim' -- Line indendation
+    use 'norcalli/nvim-colorizer.lua'   -- CSS colors
+    use "lewis6991/gitsigns.nvim"       -- Git indication
 
     -- Completion
-    use "hrsh7th/nvim-cmp" -- completion plugin
-    use "hrsh7th/cmp-buffer" -- buffer completions
-    use "hrsh7th/cmp-path" -- path completions
-    use "hrsh7th/cmp-cmdline" -- cmdline completions
-    use "saadparwaiz1/cmp_luasnip" -- snippet completions
-    use "hrsh7th/cmp-nvim-lsp" -- LSP completion for cmp
+    use "hrsh7th/nvim-cmp"
+    use "hrsh7th/cmp-buffer"
+    use "hrsh7th/cmp-path"
+    use "hrsh7th/cmp-cmdline"
+    use "hrsh7th/cmp-nvim-lsp"
+    use "L3MON4D3/LuaSnip"
+    use "saadparwaiz1/cmp_luasnip"
 
     -- LSP 
-    use "neovim/nvim-lspconfig" -- enable LSP
-    use "williamboman/nvim-lsp-installer" -- leungage server installer
-    use "jose-elias-alvarez/null-ls.nvim" --formatters and linters
+    use {
+        'neovim/nvim-lspconfig',
+        requires = {
+            -- Automatically install LSPs to stdpath for neovim
+            'williamboman/mason.nvim',
+            'williamboman/mason-lspconfig.nvim',
+            -- Useful status updates for LSP
+            'j-hui/fidget.nvim',
+        },
+    }
 
 end)
 
