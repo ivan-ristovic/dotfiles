@@ -22,7 +22,7 @@ mpd
 ncmpcpp
 net-tools
 nethogs
-nvim
+neovim
 pandoc
 parallel
 qmmp
