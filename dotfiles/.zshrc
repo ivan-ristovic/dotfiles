@@ -94,7 +94,6 @@ zplug load
 
 source ~/.env
 
-export BAT_THEME=zenburn
 export HISTORY_START_WITH_GLOBAL=true
 
 ############################ PATH #############################
