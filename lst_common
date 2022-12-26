@@ -3,6 +3,7 @@
 
 bat
 bc
+choose
 cmake
 curl
 direnv
@@ -13,8 +14,10 @@ feh
 filezilla
 fzf
 git lazygit
+gping
 htop
 httpie
+hyperfine
 ffmpeg
 flameshot
 imagemagick
@@ -29,8 +32,10 @@ neovim
 pandoc
 parallel
 qmmp
+procs
 ranger
 redshift
+sd
 stow
 subversion
 task
