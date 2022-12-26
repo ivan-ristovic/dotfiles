@@ -6,6 +6,7 @@ bc
 cmake
 curl
 direnv
+duf
 dust
 fd
 feh
