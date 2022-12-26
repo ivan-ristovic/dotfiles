@@ -59,7 +59,6 @@ plugins=(
   nmap                      # nmap aliases
   per-directory-history     # ctrl+g to toggle global/dir history
   rsync                     # rsync aliases
-  shell-proxy               # proxy support
   sudo                      # esc to add/remove sudo
   taskwarrior               # taskw completion
   tmux                      # tmux completion and aliases
