@@ -6,6 +6,7 @@ bc
 cmake
 curl
 direnv
+dust
 fd
 feh
 filezilla
