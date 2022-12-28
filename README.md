@@ -1,11 +1,12 @@
 # dotfiles
 
+![all-in-one](screenshots/desktop.png)
 ![all-in-one](screenshots/all-in-one.png)
 
 - **OS**: Arch Linux - Manjaro
 - **WM**: i3
-- **Terminal Emulator**: Alacritty
 - **Shell**: Zsh with oh-my-zsh and powerlevel10k prompt
+- **Terminal**: Alacritty
 - **Editor**: neovim (Lua config)
 - **Session manager**: tmux
 - **File manager**: ranger
