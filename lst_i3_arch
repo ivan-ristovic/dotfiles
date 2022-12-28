@@ -3,6 +3,7 @@
 yay
 
 acpi
+alacritty
 arandr
 autorandr
 # archlinux-xdg-menu
@@ -40,7 +41,6 @@ tumbler
 xbindkeys
 # xdg-user-dirs-gkt
 xed
-xfce4-terminal
 xorg-xbacklight
 xorg-xdpyinfo
 

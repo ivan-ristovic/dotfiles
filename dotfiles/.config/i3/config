@@ -173,7 +173,7 @@ bindsym $mod+r mode "resize"
 ######################################
 
 # start a terminal
-bindsym $mod+Return exec xfce4-terminal
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+q kill
@@ -316,14 +316,14 @@ set $ws10 "10"
 #workspace $ws5 output HDMI-0
 
 # bind program to workspace and focus to them on startup:
-assign [class="Xfce4-terminal"] $ws1
+assign [class="Alacritty"] $ws1
 assign [class="(?i)firefox"] $ws2
 assign [class="(Dis|Web)[cC]ord*"] $ws3
 assign [class="Steam"] $ws3
 # assign [class="Thunar"] $ws4
 
 # automatic set focus new window if it opens on another workspace then the current:
-# for_window [class=Xfce4-terminal] focus
+# for_window [class=Alacritty] focus
 for_window [class=(?i)firefox] focus
 for_window [class=Thunar] focus
 
