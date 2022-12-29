@@ -71,9 +71,9 @@ if ($temperature < 45) {
 }
 # Print short_text, full_text
 print "${label}";
-print " $temperature°C\n";
+printf(" %.0f°C\n", $temperature);
 print "${label}";
-print " $temperature°C\n";
+printf(" %.0f°C\n", $temperature);
 
 # Print color, if needed
 if ($temperature >= $t_crit) {
