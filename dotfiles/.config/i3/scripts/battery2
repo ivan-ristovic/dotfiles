@@ -66,20 +66,23 @@ else:
     def battery(percent, state):
         if state == 'Full':
             return '\uf578'
-        icons = {
-            #                  < 10      < 20      < 30      < 40      < 50      < 60      < 70      < 80      < 90      < 100      100
-            'Discharging': [ '\uf579', '\uf57a', '\uf57b', '\uf57c', '\uf57d', '\uf57e', '\uf57f', '\uf580', '\uf581', '\uf578', '\uf578' ],
-            'Charging'   : [ '\uf579', '\uf585', '\uf585', '\uf586', '\uf586', '\uf587', '\uf588', '\uf589', '\uf589', '\uf58a', '\uf584' ],
-        }
-        if state in icons:
-            return icons[state][int(percent / 10)]
-        else: 
-            return '\uf582'
+        
+        #           < 10      < 20      < 30      < 40      < 50      < 60      < 70      < 80      < 90      < 100      100
+        icons = [ '\uf579', '\uf57a', '\uf57b', '\uf57c', '\uf57d', '\uf57e', '\uf57f', '\uf580', '\uf581', '\uf578', '\uf578' ]
+        icon = icons[int(percent / 10)]
+        
+        if state == 'Charging':
+            return icon + '\u26a1'
+        elif state == 'Discharging':
+            return icon
+        else:
+            return '\uf590'
 
     fulltext = f"<span font='FontAwesome'>{battery(percentleft, state)}</span> "
     form = '<span color="{}">{}%</span>'
     fulltext += form.format(color(percentleft), percentleft)
-    fulltext += timeleft
+    if state in ['Charging', 'Discharging']:
+        fulltext += timeleft
 
 print(fulltext)
 print(fulltext)
