@@ -6,16 +6,13 @@
 # A battery indicator blocklet script for i3blocks
 
 from subprocess import check_output
-import os
 import re
 
-config = dict(os.environ)
 status = check_output(['acpi'], universal_newlines=True)
 
 if not status:
     # stands for no battery found
-    color = config.get("color_10", "red")
-    fulltext = "<span color='{}'><span font='FontAwesome'>\uf00d \uf240</span></span>".format(color)
+    fulltext = "<span color='red'><span font='FontAwesome'>\uf00d \uf240</span></span>".format(color)
     percentleft = 100
 else:
     # if there is more than one battery in one laptop, the percentage left is
@@ -26,6 +23,7 @@ else:
     commasplitstatus_batteries=[]
     percentleft_batteries=[]
     time = ""
+    timeleft = ""
     for battery in batteries:
         if battery!='':
             state_batteries.append(battery.split(": ")[1].split(", ")[0])
@@ -37,8 +35,6 @@ else:
                 if time:
                     time = ":".join(time.groups())
                     timeleft = " ({})".format(time)
-                else:
-                    timeleft = ""
 
             p = int(commasplitstatus[1].rstrip("%\n"))
             if p>0:
@@ -51,54 +47,39 @@ else:
     else:
         percentleft = 0
 
-    # stands for charging
-    color = config.get("color_charging", "yellow")
-    FA_LIGHTNING = "<span color='{}'><span font='FontAwesome'>\uf0e7</span></span>".format(color)
-
-    # stands for plugged in
-    FA_PLUG = "<span font='FontAwesome'>\uf1e6</span>"
-
-    # stands for using battery
-    FA_BATTERY = "<span font='FontAwesome'>\uf240</span>"
-
-    # stands for unknown status of battery
-    FA_QUESTION = "<span font='FontAwesome'>\uf128</span>"
-
-
-    if state == "Discharging":
-        fulltext = FA_BATTERY + " "
-    elif state == "Full":
-        fulltext = FA_PLUG + " "
-        timeleft = ""
-    elif state == "Unknown":
-        fulltext = FA_QUESTION + " " + FA_BATTERY + " "
-        timeleft = ""
-    else:
-        fulltext = FA_LIGHTNING + " " + FA_PLUG + " "
-
     def color(percent):
-        if percent < 10:
-            # exit code 33 will turn background red
-            return config.get("color_10", "#FFFFFF")
-        if percent < 20:
-            return config.get("color_20", "#d21a1a")
-        if percent < 30:
-            return config.get("color_30", "#df612a")
-        if percent < 40:
-            return config.get("color_40", "#c98f1f")
-        if percent < 50:
-            return config.get("color_50", "#c98f1f")
-        if percent < 60:
-            return config.get("color_60", "#94bf19")
-        if percent < 70:
-            return config.get("color_70", "#94bf19")
-        if percent < 80:
-            return config.get("color_80", "#58ba1a")
-        return config.get("color_full", "#58ba1a")
+        colors = [
+            '#FFFFFF', # < 10, exit code will make bg red
+            '#d21a1a', # < 20
+            '#df612a', # < 30
+            '#c98f1f', # < 40
+            '#c98f1f', # < 50
+            '#94bf19', # < 60
+            '#94bf19', # < 70
+            '#58ba1a', # < 80
+            '#58ba1a', # < 90
+            '#58ba1a', # < 100
+            '#58ba1a', # 100
+        ]
+        return colors[int(percent / 10)]
 
-    form =  '<span color="{}">{}%</span>'
+    def battery(percent, state):
+        if state == 'Full':
+            return '\uf578'
+        icons = {
+            #                  < 10      < 20      < 30      < 40      < 50      < 60      < 70      < 80      < 90      < 100      100
+            'Discharging': [ '\uf579', '\uf57a', '\uf57b', '\uf57c', '\uf57d', '\uf57e', '\uf57f', '\uf580', '\uf581', '\uf578', '\uf578' ],
+            'Charging'   : [ '\uf579', '\uf585', '\uf585', '\uf586', '\uf586', '\uf587', '\uf588', '\uf589', '\uf589', '\uf58a', '\uf584' ],
+        }
+        if state in icons:
+            return icons[state][int(percent / 10)]
+        else: 
+            return '\uf582'
+
+    fulltext = f"<span font='FontAwesome'>{battery(percentleft, state)}</span> "
+    form = '<span color="{}">{}%</span>'
     fulltext += form.format(color(percentleft), percentleft)
-    #fulltext += timeleft
+    fulltext += timeleft
 
 print(fulltext)
 print(fulltext)
