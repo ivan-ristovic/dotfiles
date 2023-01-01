@@ -5,7 +5,7 @@ alias.lo=priority:L
 alias.md=priority:M
 alias.hi=priority:H
 
-include ~/.taskrc.projects
+include ~/.config/task/.taskrc.projects
 
 alias.rr=recurring until: parent:
 
