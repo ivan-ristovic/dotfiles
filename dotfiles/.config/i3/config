@@ -522,9 +522,9 @@ strip_workspace_numbers yes
 # Application menu handled by rofi: #
 #####################################
 
-## rofi bindings fancy application menu ($mod+d /F9 optional disabled)
-
+bindsym $mod+d exec /home/ivan/.config/rofi/launchers/type-4/launcher.sh
 bindsym $mod+m exec /home/ivan/.config/rofi/applets/bin/mpd.sh
 
 exec --no-startup-id greenclip daemon > /dev/null
 bindsym $mod+c exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard 
+
