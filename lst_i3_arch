@@ -45,6 +45,7 @@ xorg-xbacklight
 xorg-xdpyinfo
 
 # aur:qogir-icon-theme
+aur:rofi-greenclip
 aur:xkblayout-state-git
 
 # Themes and icons come after dotfiles link
