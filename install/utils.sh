@@ -51,18 +51,26 @@ function gcl ()
     as_user git clone $@
 }
 
+function uninst ()
+{
+    PMU=$(pm_uninst_cmd)
+    if ! sudo $PMU $@; then
+        msg "An error occurred while uninstalling: $@"
+    fi
+}
+
 function inst ()
 {
-	if ! sudo $@; then
-		err "An error occurred while executing: $@"
-	fi
+    if ! sudo $@; then
+        err "An error occurred while installing: $@"
+    fi
 }
 
 function inst_aur ()
 {
-	if ! echo y | sudo -u $SETUP_USER yay -S --needed --noprovides --answerdiff None --answerclean None --mflags "--noconfirm --needed" $@; then
-		err "An error occurred while executing: $@"
-	fi
+    if ! echo y | sudo -u $SETUP_USER yay -S --needed --noprovides --answerdiff None --answerclean None --mflags "--noconfirm --needed" $@; then
+        err "An error occurred while installing from AUR: $@"
+    fi
 }
 
 function rm_comments ()
@@ -87,3 +95,19 @@ function pm_cmd ()
     done
 }
 
+function pm_uninst_cmd ()
+{
+    declare -A osinfo;
+    osinfo[/etc/redhat-release]="yum -y remove"
+    osinfo[/etc/arch-release]="pacman --noconfirm -R"
+    osinfo[/etc/gentoo-release]='emerge --deselect'
+    osinfo[/etc/SuSE-release]='zypper remove'
+    osinfo[/etc/debian_version]="apt-get remove -qq"
+
+    for f in ${!osinfo[@]}
+    do
+        if [[ -f $f ]]; then
+            echo "${osinfo["$f"]}"
+        fi
+    done
+}

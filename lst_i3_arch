@@ -8,6 +8,7 @@ arandr
 autorandr
 # archlinux-xdg-menu
 awesome-terminal-fonts
+blueberry
 brightnessctl
 conky
 dex
@@ -38,6 +39,7 @@ thunar-archive-plugin
 thunar-volman
 ttf-hack-nerd
 tumbler
+xautolock
 xbindkeys
 # xdg-user-dirs-gkt
 xed
