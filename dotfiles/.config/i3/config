@@ -157,7 +157,7 @@ bindsym $mod+Shift+e exec ~/.config/rofi/applets/bin/powermenu.sh
 
 # Lock the system
 # lock with a picture:
-# bindsym $mod+l exec i3lock -i ~/.config/i3/wp.png -p default -t
+bindsym $mod+Shift+l exec i3lock -i ~/.config/i3/wp.png -p default -t
 # lock by blurring the screen:
 bindsym $mod+l exec ~/.config/i3/scripts/blur-lock ~/.config/i3/wp.png
 
@@ -354,9 +354,9 @@ exec --no-startup-id xset s 480 dpms 600 600 600
 # disable power saving (for example if using xscreensaver)
 #exec --no-startup-id xset -dpms
 
-# use xautolock to use autosuspend rules for mobile devices
+# automatic lock 
 # https://wiki.archlinux.org/title/Session_lock#xautolock
-#exec --no-startup-id xautolock -time 60 -locker "systemctl suspend"
+exec --no-startup-id xautolock -time 2 -notify 1 -notifier "notify-send 'Auto-Locking in 1m...'" -locker "~/.config/i3/scripts/blur-lock ~/.config/i3/wp.png"
 
 # xscreensaver
 # https://www.jwz.org/xscreensaver
@@ -389,9 +389,6 @@ exec --no-startup-id blueberry-tray
 
 # networkmanager-applet
 exec --no-startup-id nm-applet
-
-# clipman-applet
-exec --no-startup-id xfce4-clipman
 
 ##################
 # floating rules #
@@ -525,6 +522,8 @@ strip_workspace_numbers yes
 bindsym $mod+d exec /home/ivan/.config/rofi/launchers/type-4/launcher.sh
 bindsym $mod+m exec /home/ivan/.config/rofi/applets/bin/mpd.sh
 
+# Clipboard
+# https://github.com/erebe/greenclip
 exec --no-startup-id greenclip daemon > /dev/null
 bindsym $mod+c exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard 
 
