@@ -21,27 +21,19 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
--- Better window navigation
-keymap("n", "<A-h>", "<C-w>h", opts)
-keymap("n", "<A-j>", "<C-w>j", opts)
-keymap("n", "<A-k>", "<C-w>k", opts)
-keymap("n", "<A-l>", "<C-w>l", opts)
-keymap("n", "<A-Left>", "<C-w>h", opts)
-keymap("n", "<A-Down>", "<C-w>j", opts)
-keymap("n", "<A-Up>", "<C-w>k", opts)
-keymap("n", "<A-Right>", "<C-w>l", opts)
-
 -- Resize with arrows
 keymap("n", "<C-A-Up>", ":resize -2<CR>", opts)
 keymap("n", "<C-A-Down>", ":resize +2<CR>", opts)
 keymap("n", "<C-A-Left>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-A-Right>", ":vertical resize +2<CR>", opts)
 
--- Navigate buffers
-keymap("n", "<C-Right>", ":bnext<CR>", opts)
-keymap("n", "<C-Left>", ":bprevious<CR>", opts)
-keymap("n", "<C-Right>", ":bnext<CR>", opts)
-keymap("n", "<C-Left>", ":bprevious<CR>", opts)
+-- Navigate buffers/windows
+keymap("n", "<C>", "<C-w>h", opts)
+keymap("n", "<C-gt>", "<C-w>l", opts)
+keymap("n", "<A-Right>", ":bnext<CR>", opts)
+keymap("n", "<A-Left>", ":bprevious<CR>", opts)
+keymap("n", "<A-Right>", ":bnext<CR>", opts)
+keymap("n", "<A-Left>", ":bprevious<CR>", opts)
 
 -- Move text up and down
 keymap("n", "<C-j>", "ddp", opts)
