@@ -168,8 +168,8 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 
 # Brightness control
-bindsym XF86MonBrightnessUp exec brightnessctl s 10%+ && notify-send "Brightness - $(brightnessctl g)/$(brightnessctl m)"
-bindsym XF86MonBrightnessDown exec brightnessctl s 10%- && notify-send "Brightness - $(brightnessctl g)/$(brightnessctl m)"
+bindsym XF86MonBrightnessUp exec ~/.config/i3/scripts/brightnessctl 10%+ 
+bindsym XF86MonBrightnessDown exec ~/.config/i3/scripts/brightnessctl 10%- 
 
 # change focus
 bindsym $mod+j focus left
