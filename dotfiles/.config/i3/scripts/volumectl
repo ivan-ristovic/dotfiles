@@ -1,0 +1,14 @@
+#!/bin/bash
+
+script_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+amixer -D pulse sset Master $@
+
+if [ $? -eq 0 ]; then
+    pkill -RTMIN+10 i3blocks
+    notify-send "  Volume: $($script_dir/volume)"
+else
+    notify-send "  Failed to set volume."
+    exit 1
+fi
+
