@@ -17,20 +17,20 @@ if (( ${BLOCK_BUTTON:-0} == 1 )); then
   eval $status_cmd 2>&1 >/dev/null
   if (( $? == 0 )); then
     eval $off_cmd 2>&1 >/dev/null
-    label=${LABEL_OFF}
+    label=${LABEL_OFF:-$LABEL}
   else
     eval $on_cmd 2>&1 >/dev/null
-    label=${LABEL_ON}
+    label=${LABEL_ON:-$LABEL}
   fi
 fi
 
 eval $status_cmd 2>&1 >/dev/null
 if (( $? == 0 )); then
   COLOR=${COLOR_ON}
-  label=${LABEL_ON}
+  label=${LABEL_ON:-$LABEL}
 else
   COLOR=${COLOR_OFF:-#555555}
-  label=${LABEL_OFF}
+  label=${LABEL_OFF:-$LABEL}
 fi
 
 echo $label
