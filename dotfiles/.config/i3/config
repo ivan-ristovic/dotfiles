@@ -519,8 +519,8 @@ strip_workspace_numbers yes
 # Application menu handled by rofi: #
 #####################################
 
-bindsym $mod+d exec /home/ivan/.config/rofi/launchers/type-4/launcher.sh
-bindsym $mod+m exec /home/ivan/.config/rofi/applets/bin/mpd.sh
+bindsym $mod+d exec ~/.config/rofi/launchers/type-4/launcher.sh
+bindsym $mod+m exec ~/.config/rofi/applets/bin/mpd.sh
 
 # Clipboard
 # https://github.com/erebe/greenclip
