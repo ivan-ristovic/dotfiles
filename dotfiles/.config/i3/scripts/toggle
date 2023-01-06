@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# https://github.com/vivien/i3blocks-contrib/blob/master/toggle/toggle
+# modified to support different labels
+
+if [[ -z ${COMMAND_ON} || -z ${COMMAND_OFF} || -z ${COMMAND_STATUS} ]]; then
+  echo "All of COMMAND_ON, COMMAND_OFF, and COMMAND_STATUS are required" >&2
+  exit 1
+fi
+
+label=${LABEL}
+on_cmd=${COMMAND_ON}
+off_cmd=${COMMAND_OFF}
+status_cmd=${COMMAND_STATUS}
+
+if (( ${BLOCK_BUTTON:-0} == 1 )); then
+  eval $status_cmd 2>&1 >/dev/null
+  if (( $? == 0 )); then
+    eval $off_cmd 2>&1 >/dev/null
+    label=${LABEL_OFF}
+  else
+    eval $on_cmd 2>&1 >/dev/null
+    label=${LABEL_ON}
+  fi
+fi
+
+eval $status_cmd 2>&1 >/dev/null
+if (( $? == 0 )); then
+  COLOR=${COLOR_ON}
+  label=${LABEL_ON}
+else
+  COLOR=${COLOR_OFF:-#555555}
+  label=${LABEL_OFF}
+fi
+
+echo $label
+echo $label 
+echo $COLOR
+
