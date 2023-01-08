@@ -109,5 +109,5 @@ alias ux=extract
 alias vim='nvim'
 alias vsc='codium .'
 alias which-command=whence
-alias ytdl=youtube-dl
+alias ytdl=yt-dlp
 
