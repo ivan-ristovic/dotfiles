@@ -21,15 +21,15 @@ function usage ()
     msg "usage: $0 username install_list"
     echo
     echo "OPTIONS:"
-    echo -e "\t--help -h: prints this manual"
-    echo -e "\t--strict: stops the setup if a recoverable error occurs instead of continuing"
-    echo -e "\t--debug: runs the script in debug mode"
+    echo -e "\t--help -h         prints this manual"
+    echo -e "\t--strict          stops the setup if a recoverable error occurs instead of continuing"
+    echo -e "\t--debug           runs the script in debug mode"
     echo
-    echo -e "\t--packages: install packages"
-    echo -e "\t--dotfiles: link dotfiles"
-    echo -e "\t--patch: perform patches from patches/ dir"
-    echo -e "\t--all: do all of the above (default)"
-    exit 0
+    echo -e "\t--packages        install packages"
+    echo -e "\t--dotfiles        link dotfiles"
+    echo -e "\t--patch --patches perform patches from patches/ dir"
+    echo -e "\t--all             all of the above (default)"
+    exit 1
 }
 
 SETUP_OVERRIDE=false
@@ -55,7 +55,7 @@ do
             SETUP_OVERRIDE=true
             SETUP_DOTFILES=true
             ;;
-        --patch)
+        --patches)
             SETUP_OVERRIDE=true
             SETUP_PATCHES=true
             ;;
