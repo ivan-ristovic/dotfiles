@@ -26,6 +26,9 @@ picard
 qbittorrent
 steam
 
+retroarch retroarch-assets-ozone libretro-mame libretro-mesen libretro-nestopia libretro-picodrive
+aur:libretro-fbneo
+
 aur:extremecooling4linux
 aur:freetube-bin
 aur:goverlay
