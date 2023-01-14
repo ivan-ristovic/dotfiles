@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# https://github.com/vivien/i3blocks-contrib/blob/master/toggle/toggle
+# modified to support different labels
+
+label=''
+label_off=''
+label_on=''
+
+status=$(mpc status)
+is_playing=$(echo $status | grep "\[playing\]")
+is_paused=$(echo $status | grep "\[paused\]")
+if (( ${BLOCK_BUTTON:-0} == 1 )); then
+  if [ -n "$is_playing" ]; then
+    mpc pause >> /dev/null
+    label=$label_off
+  else
+    mpc play >> /dev/null
+    label=$label_on
+  fi
+else
+  if [ -n "$is_playing" ]; then
+    label=$label_on
+  else
+    label=$label_off
+  fi
+fi
+
+if [ ]; then
+  echo "$ | [stopped])"
+else
+  echo "$label | $(mpc --format '%artist% - %title%' current)"
+fi  
+
