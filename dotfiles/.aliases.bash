@@ -59,6 +59,7 @@ alias gsa='git submodule add'
 alias grhhh='git reset --hard @{u}'
 alias grep='grep --color'
 alias h=history
+alias hd='hexdump -C'
 alias help=man
 alias hgrep='fc -El 0 | grep'
 alias k='kill -9'
