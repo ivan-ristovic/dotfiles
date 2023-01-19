@@ -21,13 +21,13 @@ if (( ${BLOCK_BUTTON:-0} == 1 )); then
 else
   if [ -n "$is_playing" ]; then
     label=$label_on
-  else
+  elif [ -n "$is_paused" ]; then
     label=$label_off
   fi
 fi
 
-if [ ]; then
-  echo "$ | [stopped])"
+if [ "$label" == '' ]; then
+  echo "$label"
 else
   echo "$label | $(mpc --format '%artist% - %title%' current)"
 fi  
