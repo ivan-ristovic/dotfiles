@@ -78,6 +78,11 @@ function rm_comments ()
     sed -e 's/[[:space:]]*#.*// ; /^[[:space:]]*$/d' $@
 }
 
+function read_list ()
+{
+    echo $(rm_comments $1)
+}
+
 function pm_cmd ()
 {
     declare -A osinfo;

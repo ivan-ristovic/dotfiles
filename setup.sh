@@ -113,11 +113,6 @@ if $SETUP_PACKAGES ; then
     # Install packages
     suc "Checks completed successfully, starting installations ..."
 
-    function read_list ()
-    {
-        echo $(rm_comments $1)
-    }
-
     function process_list ()
     {
         for entry in $@; do

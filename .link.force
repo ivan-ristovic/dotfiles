@@ -1,0 +1,7 @@
+# In case bashrc already exists (e.g., first use)
+.bashrc
+
+# Force overwrites of gtk config as they re-create files and hence destroy the symlinks
+.config/.gtk-3.0/bookmarks
+.config/mimeapps.list
+

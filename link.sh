@@ -25,27 +25,30 @@ if [ ! -d "dotfiles" ]; then
     fat "dotfiles/ directory is not present. Exiting ..."
 fi
 
-# Ensure to make .config dir so that the directory
-# is not symlinked (otherwise all programs would 
-# dump their config into the dotfiles directory)
+# Ensure .config dir exists so that it is not
+# symlinked (otherwise all programs would dump
+# their config into the dotfiles directory)
 mkdir -p $home_dir/.config
 
-if [[ -f ~/.bashrc && ! -h ~/.bashrc ]]; then
-    # Move existing bashrc to avoid conflicts when running 
-    # for the first time
-    bashrc_backup_dir=/tmp/dotfiles
-    mkdir -p $bashrc_backup_dir
-    mv $home_dir/.bashrc $bashrc_backup_dir
-fi
+# Move existing bashrc to avoid conflicts when running 
+backup_dir=/tmp/dotfiles
+rm -rf $backup_dir
+force_overwrite_list=$(read_list ".link.force")
+for entry in $force_overwrite_list; do
+    entry_path="$home_dir/$entry"
+    if [[ -f $entry_path && ! -h $entry_path ]]; then
+        mkdir -p $backup_dir
+        msg "Forcing overwrite of: $entry_path ; backup at $backup_dir"
+        mv $entry_path $backup_dir
+    fi
+done
 
 pushd dotfiles
 stow --no-folding -v . -t $home_dir 
 if [[ $? -eq 0 ]]; then
     suc "Dotfiles linked."
-    rm -rf $bashrc_backup_dir
 else
     err "Failed linking dotfiles!"
-    mv $bashrc_backup_dir/.bashrc $home_dir
 fi
 popd
 
