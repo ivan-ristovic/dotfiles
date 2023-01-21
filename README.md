@@ -55,6 +55,7 @@ It is possible to perform only some of the above steps by passing options (such 
 Additional scripts are available for maintenance:
 - `pull.sh` - stashes local changes, pulls the remote and re-stows dotfiles
 - `link.sh` - re-stows dotfiles
+    - `.link.force` - list of paths to be forcefully overwritten when stowing
 
 Entries from the installation lists are processed in the following manner:
 - lines beginning with a `#` sign are treated as comments
