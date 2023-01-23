@@ -29,6 +29,6 @@ fi
 if [ "$label" == '' ]; then
   echo "$label"
 else
-  echo "$label | $(mpc --format '%artist% - %title%' current)"
+  echo "$label | $(mpc --format '[[%artist% - ]%title%]|[%file%]' current)"
 fi  
 
