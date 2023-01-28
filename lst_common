@@ -41,6 +41,7 @@ subversion
 task
 tig
 time
+timeshift
 tlp 
 tmux
 tree
