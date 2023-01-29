@@ -1,13 +1,14 @@
 FROM archlinux:base
 
 RUN pacman --noconfirm -Syu
-RUN pacman --noconfirm -S openssh stow
+RUN pacman --noconfirm -S openssh stow sudo vim
 
 ARG PRIVATE_KEY
 ARG PUBLIC_KEY
 
 RUN useradd -ms /bin/bash user && \
-        echo "user ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers && \
+        echo "root ALL=(ALL) NOPASSWD:ALL" >  /etc/sudoers && \
+        echo "user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
         chmod 0440 /etc/sudoers
 
 USER user:user

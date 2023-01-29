@@ -66,6 +66,11 @@ function inst ()
     fi
 }
 
+function inst_silent ()
+{
+    sudo $@
+}
+
 function inst_aur ()
 {
     if ! echo y | sudo -u $SETUP_USER yay -S --needed --noprovides --answerdiff None --answerclean None --mflags "--noconfirm --needed" $@; then
