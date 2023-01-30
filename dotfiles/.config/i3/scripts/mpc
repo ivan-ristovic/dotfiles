@@ -10,14 +10,23 @@ label_on=''
 status=$(mpc status)
 is_playing=$(echo $status | grep "\[playing\]")
 is_paused=$(echo $status | grep "\[paused\]")
-if (( ${BLOCK_BUTTON:-0} == 1 )); then
+if (( ${BLOCK_BUTTON:-0} == 1 )); then    # left click
   if [ -n "$is_playing" ]; then
-    mpc pause >> /dev/null
+    mpc -q pause
     label=$label_off
   else
-    mpc play >> /dev/null
+    mpc -q play
     label=$label_on
   fi
+elif (( ${BLOCK_BUTTON:-0} == 3 )); then  # right click
+  mpc -q seek 0%
+  label=$label_on
+elif (( ${BLOCK_BUTTON:-0} == 4 )); then  # scroll up
+  mpc -q next
+  label=$label_on
+elif (( ${BLOCK_BUTTON:-0} == 5 )); then  # scroll down
+  mpc -q prev
+  label=$label_on
 else
   if [ -n "$is_playing" ]; then
     label=$label_on
