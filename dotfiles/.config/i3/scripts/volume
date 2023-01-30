@@ -85,6 +85,8 @@ format() {
 #------------------------------------------------------------------------
 
 case $BLOCK_BUTTON in
+  1) amixer $AMIXER_PARAMS -q -D $MIXER sset $SCONTROL $(capability) toggle ;;  # left click, mute/unmute
+  2) amixer $AMIXER_PARAMS -q -D $MIXER sset $SCONTROL $(capability) toggle ;;  # middle click, mute/unmute
   3) amixer $AMIXER_PARAMS -q -D $MIXER sset $SCONTROL $(capability) toggle ;;  # right click, mute/unmute
   4) amixer $AMIXER_PARAMS -q -D $MIXER sset $SCONTROL $(capability) ${STEP}+ unmute ;; # scroll up, increase
   5) amixer $AMIXER_PARAMS -q -D $MIXER sset $SCONTROL $(capability) ${STEP}- unmute ;; # scroll down, decrease
