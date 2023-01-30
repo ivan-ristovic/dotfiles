@@ -18,6 +18,8 @@ if (( ${BLOCK_BUTTON:-0} == 1 )); then    # left click
     mpc -q play
     label=$label_on
   fi
+elif (( ${BLOCK_BUTTON:-0} == 2 )); then  # middle click
+  mpc -q stop
 elif (( ${BLOCK_BUTTON:-0} == 3 )); then  # right click
   mpc -q seek 0%
   label=$label_on
