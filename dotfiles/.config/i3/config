@@ -253,6 +253,7 @@ bindsym XF86AudioPrev exec playerctl previous
 
 ## App shortcuts
 bindsym $mod+w exec /usr/bin/firefox
+bindsym $mod+y exec /usr/bin/freetube
 bindsym $mod+e exec /usr/bin/thunar
 bindsym Print exec scrot ~/ss-%Y-%m-%d-%T.png && notify-send "Screenshot saved to ~/ss-$(date +"%Y-%m-%d-%T").png"
 bindsym $mod+Print exec flameshot gui -s -c
