@@ -32,6 +32,7 @@ aur:libretro-fbneo
 aur:extremecooling4linux
 aur:freetube-bin
 aur:goverlay
+aur:gpu-screen-recorder-git gpu-screen-recorder-gtk-git
 aur:mp3gain
 aur:openrazer-meta polychromatic
 aur:optimus-manager optimus-manager-qt gdm-prime
