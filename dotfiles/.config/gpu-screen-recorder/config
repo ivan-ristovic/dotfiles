@@ -1,0 +1,11 @@
+main.record_area_option window
+main.fps 60
+main.audio_input Monitor of Built-in Audio Analog Stereo
+main.quality very_high
+streaming.service twitch
+streaming.key 
+record.save_directory /hdd/recordings
+record.container mp4
+replay.save_directory /hdd/recordings
+replay.container mp4
+replay.time 1200
