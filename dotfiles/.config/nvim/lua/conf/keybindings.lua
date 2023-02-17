@@ -83,3 +83,6 @@ keymap("n", "<leader>7", ":BufferLineGoToBuffer 7<cr>", opts)
 keymap("n", "<leader>8", ":BufferLineGoToBuffer 8<cr>", opts)
 keymap("n", "<leader>9", ":BufferLineGoToBuffer 9<cr>", opts)
 
+-- Close buffers
+keymap("n", "<leader>q", ":enew<bar>bd #<CR>", opts)
+
