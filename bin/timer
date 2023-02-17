@@ -1,0 +1,294 @@
+#!/usr/bin/env bash
+
+# https://github.com/rlue/timer/blob/master/bin/Timer
+# Personal modifications: replace custom sounds with beeps
+
+version=0.1.5
+named_pipe=/tmp/timer.fifo
+
+# HELPER FUNCTIONS =============================================================
+# Auxiliary --------------------------------------------------------------------
+usage() {
+  _bd=`tput bold`
+  _ul=`tput smul`
+  _rg=`tput sgr0`
+  cat << EOF
+timer -- a pomodoro/interval timer
+
+Usage: timer [options] [${_ul}minutes${_rg} ...]
+
+    -r ${_ul}rounds${_rg}                        Repeat timer (n < 0 repeats forever)
+    -d ${_ul}seconds${_rg}                       Delay timer start
+    -q                               Suppress command line output
+    -N                               Suppress desktop notifications
+    -p                               Write to named pipe /tmp/timer.fifo
+    -h                               Display this message
+    -v                               Display version information
+
+Timer duration may be specified in fraction or decimal form;
+e.g., 90 seconds may be specified as ${_bd}1.5${_rg} or ${_bd}3/2${_rg}. If multiple
+durations are specified, an alert will be triggered at the
+end of each interval.
+
+EOF
+}
+
+# Arguments: 1) input; 2) regexp for valid input; 3) error msg
+catch_bad_input() {
+  if ! [[ $1 =~ $2 ]]; then
+    echo "timer: $1: $3" 1>&2
+    exit 1
+  fi
+}
+
+# Audio ------------------------------------------------------------------------
+ring() {
+
+  # Audio bell
+  if ! system_muted; then
+    beep 1000 0.5
+  fi
+
+  # Visual bell
+  for _ in $(seq "$([ "$1" = "set" ] && echo 8 || echo 4)"); do
+    printf "\a"
+    sleep 0.125
+  done &
+
+  # Notification
+  if [ -z $notifications_off ]; then
+    if [ $set_count -eq 1 ] && [ "$1" = "set" ]; then
+      message="Finished"
+    else
+      message="${1^} complete"
+    fi
+
+    case $platform in
+      Linux) notify-send --app-name=timer --icon=emblem-default timer "$message" ;;
+      Darwin) osascript -e "display notification \"$message\" with title \"timer\"" ;;
+    esac
+  fi
+}
+
+system_muted() {
+  [ -z "$operating_system" ] && operating_system="$(uname -s)"
+
+  if [ "$operating_system" == "Linux" ]; then
+    # TODO: investigate ways this could go wrong
+    (pactl list sinks 2>/dev/null | grep -i "mute: yes" >/dev/null 2>&1) ||
+      (amixer get Master 2>/dev/null | grep off >/dev/null 2>&1)
+  elif  [ "$operating_system" == "Darwin" ]; then
+    [ "$(osascript -e 'output muted of (get volume settings)')" = 'true' ]
+  fi
+}
+
+# Display ----------------------------------------------------------------------
+cleanup() {
+  # Why write to the pipe before deleting it?
+  # To free up any process that may be waiting on input from it.
+  if [ -p "$named_pipe" ]; then
+    > "$named_pipe" && rm -rf "$named_pipe"
+  fi
+
+  if [ -n "$TMUX" ]; then
+    # reset tmux session name
+    tmux rename -t "*$session_upcase" "$session"
+  else
+    # reset window title
+    printf "\033]0;\007"
+  fi
+
+  # if in fg, clear command line
+  case $(ps -o stat= -p $$) in
+    *+*)
+      if [ "$mode" != "quiet" ]; then
+        printf "\r\e[K"
+      fi
+    ;;
+  esac
+}
+
+rename_tmux_session() {
+  if [ -n "$TMUX" ] && [ "$session" != "$session_upcase" ]; then
+    tmux rename -t "$session" "$session_upcase"
+  fi
+}
+
+update_display() {
+  local hours=$1    # %d
+  local minutes=$2  # %02d
+  local seconds=$3  # %02d
+
+  if [ $hours -ne 0 ] || [ "$minutes$seconds" = "0000" ]; then
+    std_format=${hours}:${minutes}:${seconds}
+    tmux_format=${hours}h${minutes}m${seconds}s
+  else
+    std_format=${minutes}:${seconds}
+    tmux_format=${minutes}m${seconds}s
+  fi
+
+  # tmux UI: write remaining time to session name
+  if [ -n "$TMUX" ]; then
+    tmux rename -t "*$session_upcase" "$tmux_format $session_upcase"
+  # Bare UI: write remaining time to window title
+  else
+    printf "\033]0;$std_format\007"
+  fi
+
+  # In foreground: write remaining time to command line
+  if [ "$mode" != "quiet" ]; then
+    case $(ps -o stat= -p $$) in
+      *+*) printf "\r\e[K$std_format" ;;
+    esac
+  fi
+
+  # Pipe mode: write remaining time to FIFO
+  if [ -p "$named_pipe" ]; then
+    echo "$std_format" > "$named_pipe"
+  fi
+}
+
+countdown_units() {
+  local time_left=$1
+  local hours=$(($time_left/3600))
+  local minutes=$((($time_left/60)%60))
+  local seconds=$(($time_left%60))
+  printf "%d %02d %02d" $hours $minutes $seconds
+}
+
+print_completion_message() {
+  if [ -p "$named_pipe" ] ; then
+    echo "Time expired" > "$named_pipe"
+  fi
+
+  # ...but only if running in foreground
+  case $(ps -o stat= -p $$) in
+    *+*) printf "\r\e[K"
+         echo "[$(date +%R)] Time expired";;
+  esac
+}
+
+# Timing -----------------------------------------------------------------------
+# Argument 1: length of delay (in seconds)
+run_delay() {
+  if ! [ -z $1 ]; then
+    run_interval $1
+  fi
+}
+
+# Argument 1: total number of sets
+run_n_sets() {
+  local set_count=$1
+
+  # For each set (or endlessly, if $set_count < 0)
+  while [ $set_count -ne 0 ]; do
+    run_set "${intervals[@]}"
+    set_count=$(( $set_count - 1 ))
+  done
+}
+
+run_set() {
+  local intervals_remaining=${#intervals[@]}
+
+  for length in ${intervals[@]}; do
+    intervals_remaining=$(($intervals_remaining - 1))
+    [ $intervals_remaining -eq 0 ] && local type="set" || local type="interval"
+    run_interval $length $type
+  done
+}
+
+# Argument 1: length of interval (in seconds)
+# Argument 2: type of bell to ring (default: interval)
+run_interval() {
+  local end_time=$(($next_interval_start_time + $1))
+  local time_left=$(($end_time - $(date +%s)))
+  local bell=${2-interval}
+  next_interval_start_time=$end_time
+
+  while [ $time_left -gt 0 ]; do
+    # NOTE: This is un-quoted on purpose!
+    # countdown_units() provides three space-separated args to update_display()
+    update_display $(countdown_units $time_left)
+    sleep 1
+    time_left=$(($end_time - $(date +%s)))
+  done
+
+  # Skip intervals that accumulated e.g. while system suspended
+  if [ $time_left -ne 0 ]; then
+    return 1
+  fi
+
+  ring $bell
+}
+
+# PROGRAM LOGIC ================================================================
+# Parse options ----------------------------------------------------------------
+while getopts ":qvhpNr:d:" opt; do
+  case $opt in
+    h) mode="help"; break ;;
+    v) mode="version"; break ;;
+    q) mode="quiet" ;;
+    p)
+      if [ -p "$named_pipe" ]; then
+        >&2 echo "timer: another instance is already running"
+        exit 1
+      fi
+
+      mkfifo "$named_pipe"
+      ;;
+    N) notifications_off=1 ;;
+    r)
+      catch_bad_input $OPTARG '^-?[0-9]+$' 'not an integer'
+      sets=$OPTARG
+      ;;
+    d)
+      catch_bad_input $OPTARG '^[0-9]+$' 'not a whole number'
+      delay=$OPTARG
+      ;;
+  esac
+done
+
+shift $(($OPTIND - 1))
+
+case $mode in
+  help)
+    usage
+    exit
+    ;;
+  version)
+    echo "timer $version"
+    exit
+    ;;
+esac
+
+# Initialize variables ---------------------------------------------------------
+# How many sets?
+[ -z $sets ] && sets=1
+
+platform=$(uname)
+
+if [ "$platform" = "Linux" ] && ! command -v notify-send >/dev/null 2>&1; then
+  notifications_off=1
+fi
+
+# What arrangement of intervals?
+for duration in "$@"; do
+  catch_bad_input $duration '[0-9]+([.][0-9]+)?' 'not a number'
+  intervals+=("$(printf %.0f $(echo "(($duration) * 60)" | bc -l))")
+done
+
+next_interval_start_time=$(date +%s)
+
+if [ -n "$TMUX" ]; then
+  session=$(tmux display -p '#S')
+  session_upcase=$(echo "$session" | tr '[:lower:]' '[:upper:]')
+fi
+
+# Main program logic -----------------------------------------------------------
+
+trap cleanup EXIT      # In case of interrupt
+rename_tmux_session
+run_delay $delay
+run_n_sets $sets
+print_completion_message
+
