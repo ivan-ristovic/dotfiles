@@ -17,16 +17,14 @@
 
 # https://github.com/vivien/i3blocks-contrib/blob/master/miccontrol/miccontrol
 
+SOURCE=${SOURCE:-@DEFAULT_SOURCE@}
 case $BLOCK_BUTTON in
-	1|3) pactl set-source-mute  $SOURCE toggle ;;
+  1|3) pactl set-source-mute $SOURCE toggle ;;
 esac
 
-case $(pacmd list-sources | grep -A 11 "$SOURCE" | awk '/muted/ {print $2; exit}') in
-    yes)
-      echo ""
-      ;;
-    no)
-      echo ""
-      ;;
-esac
+if pacmd list-sources | grep "muted: yes" > /dev/null ; then
+  echo ""
+else
+  echo ""
+fi
 
