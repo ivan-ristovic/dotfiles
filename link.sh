@@ -30,7 +30,7 @@ fi
 # their config into the dotfiles directory)
 mkdir -p $home_dir/.config
 
-# Move existing bashrc to avoid conflicts when running 
+# Force overwrites of specified files (save backup to /tmp)
 backup_dir=/tmp/dotfiles
 rm -rf $backup_dir
 force_overwrite_list=$(read_list ".link.force")
