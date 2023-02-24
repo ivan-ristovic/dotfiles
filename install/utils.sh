@@ -63,6 +63,7 @@ function inst ()
 {
     if ! sudo $@; then
         err "An error occurred while installing: $@"
+        sleep 5
     fi
 }
 
@@ -75,6 +76,7 @@ function inst_aur ()
 {
     if ! echo y | sudo -u $SETUP_USER yay -S --needed --noprovides --answerdiff None --answerclean None --mflags "--noconfirm --needed" $@; then
         err "An error occurred while installing from AUR: $@"
+        sleep 5
     fi
 }
 
