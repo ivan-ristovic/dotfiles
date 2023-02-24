@@ -1,6 +1,8 @@
 # Common installation set
 # Often included in other lists
 
+zsh
+
 bat
 bc
 choose
@@ -51,6 +53,5 @@ vlc
 xsel
 yt-dlp aria2
 wine
-zsh
 
 # Do not delete this line. I cannot trust you to add a new line at the end of the file...
