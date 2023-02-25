@@ -74,10 +74,10 @@ do
             usage
             ;;
         *)
-            if [ -z $SETUP_USER ]; then
+            if [ -z "$SETUP_USER" ]; then
                 export SETUP_USER=$1
                 export SETUP_HOME_DIR="/home/${SETUP_USER}"
-            elif [ -z $INSTALL_LIST ]; then
+            elif [ -z "$INSTALL_LIST" ]; then
                 if [ -f "$1" ]; then
                     INSTALL_LIST=$1
                 else
@@ -115,12 +115,12 @@ if $SETUP_PACKAGES ; then
 
     function process_list ()
     {
-        for entry in $@; do
+        for entry in "$@"; do
             cd "install"
             SETUP_SCRIPT="inst_$entry.sh"
             AUR_PREFIX="aur:"
             if [[ "$entry" == "+"* ]]; then
-                cd $ROOT_DIR
+                cd "$ROOT_DIR"
                 to_include=${entry#"+"}
                 msg "Importing setup script: $to_include"
                 process_list $(read_list "$to_include")
@@ -151,7 +151,7 @@ fi
 
 
 if $SETUP_DOTFILES ; then
-    source link.sh $SETUP_HOME_DIR
+    source link.sh "$SETUP_HOME_DIR"
 fi
 
 if $SETUP_PATCHES ; then
@@ -164,7 +164,7 @@ if $SETUP_PATCHES ; then
     else
         err "patches/patch.sh script is not present."
     fi
-    cd $SETUP_HOME_DIR
+    cd "$SETUP_HOME_DIR"
 fi
 
 if $SETUP_PACKAGES ; then

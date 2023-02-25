@@ -1,7 +1,5 @@
 #!/bin/bash
 
-ROOT_DIR=$(pwd)
-
 # Check for dotfiles root
 GIT_DIR=$(grep ivan-ristovic/dotfiles .git/config)
 if [ -z "$GIT_DIR" ]; then
@@ -28,7 +26,7 @@ fi
 # Ensure .config dir exists so that it is not
 # symlinked (otherwise all programs would dump
 # their config into the dotfiles directory)
-mkdir -p $home_dir/.config
+mkdir -p "$home_dir/.config"
 
 # Force overwrites of specified files (save backup to /tmp)
 backup_dir=/tmp/dotfiles
@@ -39,13 +37,12 @@ for entry in $force_overwrite_list; do
     if [[ -f $entry_path && ! -h $entry_path ]]; then
         mkdir -p $backup_dir
         msg "Forcing overwrite of: $entry_path ; backup at $backup_dir"
-        mv $entry_path $backup_dir
+        mv "$entry_path" "$backup_dir"
     fi
 done
 
 pushd dotfiles
-stow --no-folding -v . -t $home_dir 
-if [[ $? -eq 0 ]]; then
+if stow --no-folding -v . -t "$home_dir" ; then 
     suc "Dotfiles linked."
 else
     err "Failed linking dotfiles!"

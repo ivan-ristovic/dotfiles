@@ -16,11 +16,11 @@ if $needs_pop; then
 fi
 
 unmerged_files=$(git diff --name-only --diff-filter=U)
-if [[ ! -z $unmerged_files ]]; then
+if [[ -n $unmerged_files ]]; then
     echo "The following files have merge conflicts after popping the stash:"
-    printf %"s\n" $unmerged_files
+    printf %"s\n" "$unmerged_files"
 else
     echo "Updating dotfiles symlinks..."
-    source link.sh $HOME
+    source link.sh "$HOME"
 fi
 
