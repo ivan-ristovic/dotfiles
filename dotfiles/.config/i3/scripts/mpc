@@ -24,10 +24,10 @@ elif (( ${BLOCK_BUTTON:-0} == 3 )); then  # right click
   mpc -q seek 0%
   label=$label_on
 elif (( ${BLOCK_BUTTON:-0} == 4 )); then  # scroll up
-  mpc -q next
+  mpc -q prev
   label=$label_on
 elif (( ${BLOCK_BUTTON:-0} == 5 )); then  # scroll down
-  mpc -q prev
+  mpc -q next
   label=$label_on
 else
   if [ -n "$is_playing" ]; then
