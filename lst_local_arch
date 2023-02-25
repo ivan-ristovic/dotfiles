@@ -20,6 +20,7 @@ libreoffice-stil
 lutris
 neofetch
 nextcloud-client
+nordvpn_arch
 #nvidia-dkms
 obs-studio
 picard
@@ -34,7 +35,6 @@ aur:freetube-bin
 aur:goverlay
 aur:gpu-screen-recorder-git gpu-screen-recorder-gtk-git
 aur:mp3gain
-aur:nordvpn-cli-bin
 aur:openrazer-meta polychromatic
 aur:optimus-manager optimus-manager-qt gdm-prime
 aur:oversteer
