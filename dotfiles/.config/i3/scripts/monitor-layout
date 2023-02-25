@@ -1,0 +1,126 @@
+#!/usr/bin/env python
+
+rate_cmp_eps = 2
+
+import os 
+import re
+import subprocess
+import sys
+
+env_dbg = os.getenv("DEBUG", "false").lower() == "true"
+env_res = int(os.getenv("RES_COUNT", 5))
+env_rate_pref = float(os.getenv("RATE_PREF", 144))
+env_rate_min = float(os.getenv("RATE_MIN", 60))
+
+positions = {
+    "left-of": "right-of",
+    "right-of": "left-of",
+    "above": "below",
+    "below": "above",
+}
+if len(sys.argv) < 2 or sys.argv[1] not in positions:
+    print('Expected position as argument, one of: ', list(positions.keys()))
+    sys.exit(1)
+pos = sys.argv[1]
+
+def msg(*args):
+    if env_dbg:
+        print(sys.argv[0], '| ', *args)
+
+xrandr_query_c = fr'xrandr | grep -A {env_res} \\bconnected\\b'
+xrandr_query_dc = r"xrandr | grep \\bdisconnected\\b | awk '{ print $1; }'"
+disconnected_outputs = subprocess.check_output(xrandr_query_dc, shell=True, text=True).split(os.linesep)
+disconnected_outputs = sorted([o for o in disconnected_outputs if o])
+xrandr_output = subprocess.check_output(xrandr_query_c, shell=True, text=True).split(os.linesep)
+
+msg('Disconnected outputs:', disconnected_outputs)
+
+xrandr_outputs = [[]]
+for line in xrandr_output:
+    if line == "--":
+        xrandr_outputs.append([])
+    elif line:
+        xrandr_outputs[-1].append(line)
+
+rate_regex = r'[0-9]+\.[0-9]+'
+
+outputs = {}
+for output in xrandr_outputs:
+    name = output[0].split()[0]
+    resolutions = [] 
+    for res in output[1:]:
+        res_value = res.split()[0]
+        rates = sorted([float(v) for v in re.findall(rate_regex, res)], reverse=True)
+        resolutions.append([res_value, rates]) 
+    outputs[name] = resolutions
+
+assert len(outputs) == 2, 'More than two displays are connected.'
+
+def is_viable_rate(r):
+    return r > env_rate_min - rate_cmp_eps
+
+def is_preferred_rate(r):
+    return abs(r - env_rate_pref) < rate_cmp_eps
+
+def xrandr_arg_disconnected(args):
+    return ' '.join([f'--output {arg} --off' for arg in args]) 
+
+xrandr_arg_off = xrandr_arg_disconnected(disconnected_outputs)
+xrandr_arg_primary = []
+xrandr_arg_secondary = []
+
+def push_arg(is_primary, *args):
+    if is_primary:
+        xrandr_arg_primary.extend([str(arg) for arg in args])
+    else:
+        xrandr_arg_secondary.extend([str(arg) for arg in args])
+
+output_primary = None
+for output, info in outputs.items():
+    is_primary = output.startswith('eDP')
+    if is_primary:
+        output_primary = output
+    
+    if env_dbg:
+        msg(output, '\t#1' if is_primary else '\t#2')
+        for res in info:
+            msg('\t', res[0], '\t', res[1])
+
+    push_arg(is_primary, '--output', output)
+
+    def contains_preferred_rate(res_info):
+        return any(filter(is_preferred_rate , res_info[1]))
+    
+    def contains_viable_rate(res_info):
+        return any(filter(is_viable_rate , res_info[1]))
+
+    viable_resolutions = list(filter(contains_viable_rate, info))
+    preferred_resolutions = list(filter(contains_preferred_rate, info))
+    if env_dbg:
+        msg('viable resolutions: ', *viable_resolutions)
+        msg('preferred resolutions: ', *preferred_resolutions)
+
+    chosen_set = preferred_resolutions if any(preferred_resolutions) else viable_resolutions
+    if any(chosen_set):
+        best_res = chosen_set[0][0]
+        best_rate = max(chosen_set[0][1])
+        push_arg(is_primary, '--mode', best_res, '--rate', best_rate)
+    push_arg(is_primary, '--rotate normal')
+
+assert output_primary is not None
+
+xrandr_cmd = f'''\
+xrandr \
+{xrandr_arg_off} \
+{' '.join(xrandr_arg_primary)} \
+{' '.join(xrandr_arg_secondary)} --primary --{pos} {output_primary}
+'''
+msg(xrandr_cmd)
+
+os.system(xrandr_cmd)
+os.system(f'notify-send "{xrandr_cmd}"')
+
+postswitch = '~/.config/autorandr/postswitch'
+if os.path.exists(postswitch):
+    os.system(postswitch)
+

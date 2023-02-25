@@ -175,11 +175,13 @@ bindsym $mod+Shift+r restart
 bindsym XF86MonBrightnessUp exec $scriptdir/brightnessctl 10%+ 
 bindsym XF86MonBrightnessDown exec $scriptdir/brightnessctl 10%- 
 
+# Monitor output arrangement
+bindsym $mod+Ctrl+Left exec $scriptdir/monitor-layout left-of 
+bindsym $mod+Ctrl+Right exec $scriptdir/monitor-layout right-of 
+bindsym $mod+Ctrl+Up exec $scriptdir/monitor-layout above 
+bindsym $mod+Ctrl+Down exec $scriptdir/monitor-layout below 
+
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+b focus up
-bindsym $mod+o focus right
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
