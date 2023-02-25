@@ -48,11 +48,28 @@ require('mason').setup()
 
 -- Enable the following language servers
 -- Feel free to add/remove any LSPs that you want here. They will automatically be installed
+-- Commented ones should be installed manually
 local servers = {
-  'clangd',
-  'rust_analyzer',
-  'pyright',
-  'lua_ls',
+  'bashls',                           -- bash lsp
+  'clangd',                           -- clang lsp
+  --[[ 'cpplint',                          -- cpp linter ]]
+  'dockerls',                          -- docker lsp
+  'docker_compose_language_service',  -- docker-compose lsp
+  --[[ 'editorconfig-checker',             -- .editorconfig check  ]]
+  'html',                             -- html lsp
+  'jsonls',                           -- json lsp
+  'lemminx',                          -- xml lsp
+  'lua_ls',                           -- lua lsp and linter
+  'marksman',                         -- markdown lsp
+  --[[ 'misspell',                         -- english word correction ]]
+  --[[ 'pylint',                           -- python linter ]]
+  'jedi_language_server',             -- python lsp
+  'pyright',                          -- python static type checker 
+  'rust_analyzer',                    -- rust lsp
+  --[[ 'shellcheck',                       -- bash static analysis ]]
+  --[[ 'shfmt',                            -- bash formatter ]]
+  'texlab',                           -- latex lsp
+  'yamlls',                           -- yml/yaml linter 
 }
 
 -- Ensure the servers above are installed
