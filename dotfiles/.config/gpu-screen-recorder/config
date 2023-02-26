@@ -1,11 +1,20 @@
 main.record_area_option window
-main.fps 50
+main.record_area_width 1920
+main.record_area_height 1080
+main.fps 60
+main.merge_audio_tracks false
 main.audio_input Monitor of Built-in Audio Analog Stereo
+main.audio_input Razer Kraken V3 X Analog Stereo
 main.quality high
+main.codec auto
 streaming.service twitch
 streaming.key 
+streaming.start_recording_hotkey 65470 256
 record.save_directory /hdd/recordings
 record.container mp4
+record.start_recording_hotkey 65470 256
 replay.save_directory /hdd/recordings
 replay.container matroska
 replay.time 1200
+replay.start_recording_hotkey 65470 256
+replay.save_recording_hotkey 65471 256
