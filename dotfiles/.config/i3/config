@@ -172,7 +172,7 @@ bindsym $mod+Ctrl+c reload
 bindsym $mod+Ctrl+r restart
 
 # mic control
-bindsym $mod+Ctrl+m exec $scriptdir/mic 1
+bindsym $mod+Ctrl+m exec $scriptdir/mic 1 && pkill -RTMIN+11 i3blocks
 
 # Brightness control
 bindsym XF86MonBrightnessUp exec $scriptdir/brightnessctl 10%+ 
