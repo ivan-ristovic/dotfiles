@@ -166,10 +166,13 @@ bindsym $mod+Shift+l exec i3lock -i $confdir/wp.png -p default -t
 bindsym $mod+l exec $scriptdir/blur-lock $confdir/wp.png
 
 # reload the configuration file
-bindsym $mod+Shift+c reload
+bindsym $mod+Ctrl+c reload
 
 # restart i3 inplace (preserves layout/session, can be used to update i3)
-bindsym $mod+Shift+r restart
+bindsym $mod+Ctrl+r restart
+
+# mic control
+bindsym $mod+Ctrl+m exec $scriptdir/mic 1
 
 # Brightness control
 bindsym XF86MonBrightnessUp exec $scriptdir/brightnessctl 10%+ 

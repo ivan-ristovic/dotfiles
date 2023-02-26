@@ -17,6 +17,7 @@
 
 # https://github.com/vivien/i3blocks-contrib/blob/master/miccontrol/miccontrol
 
+BLOCK_BUTTON=${BLOCK_BUTTON:-$1}
 DEFAULT_SOURCE=$(pactl get-default-source)
 SOURCE=${SOURCE:-$DEFAULT_SOURCE}
 case $BLOCK_BUTTON in
