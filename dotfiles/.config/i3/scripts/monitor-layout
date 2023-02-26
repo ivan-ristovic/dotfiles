@@ -118,9 +118,7 @@ xrandr \
 msg(xrandr_cmd)
 
 os.system(xrandr_cmd)
-os.system(f'notify-send "{xrandr_cmd}"')
 
 postswitch = '~/.config/autorandr/postswitch'
-if os.path.exists(postswitch):
-    os.system(postswitch)
+os.system(f"{postswitch} {pos}")
 
