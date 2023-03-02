@@ -104,7 +104,7 @@ run_cmd() {
 	elif [[ "$1" == '--opt6' ]]; then
 		confirm_run 'systemctl poweroff'
 	elif [[ "$1" == '--opt7' ]]; then
-		confirm_run 'systemctl shutdown -h +m 60'
+		confirm_run 'shutdown -h +60'
 	fi
 }
 
