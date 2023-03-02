@@ -15,9 +15,9 @@ mesg="Uptime : `uptime -p | sed -e 's/up //g'`"
 
 if [[ ( "$theme" == *'type-1'* ) || ( "$theme" == *'type-3'* ) || ( "$theme" == *'type-5'* ) ]]; then
 	list_col='1'
-	list_row='6'
+	list_row='7'
 elif [[ ( "$theme" == *'type-2'* ) || ( "$theme" == *'type-4'* ) ]]; then
-	list_col='6'
+	list_col='7'
 	list_row='1'
 fi
 
@@ -30,6 +30,7 @@ if [[ "$layout" == 'NO' ]]; then
 	option_4=" Hibernate"
 	option_5="菱 Reboot"
 	option_6=" Shutdown"
+	option_7=" Shutdown in 1h"
 	yes=' Yes'
 	no=' No'
 else
@@ -39,6 +40,7 @@ else
 	option_4=""
 	option_5="菱"
 	option_6=""
+	option_7=""
 	yes=''
 	no=''
 fi
@@ -46,7 +48,7 @@ fi
 # Rofi CMD
 rofi_cmd() {
 	rofi -theme-str "listview {columns: $list_col; lines: $list_row;}" \
-		-theme-str 'textbox-prompt-colon {str: "";}' \
+		-theme-str 'textbox-prompt-colon {str: " ";}' \
 		-dmenu \
 		-p "$prompt" \
 		-mesg "$mesg" \
@@ -56,7 +58,7 @@ rofi_cmd() {
 
 # Pass variables to rofi dmenu
 run_rofi() {
-	echo -e "$option_1\n$option_2\n$option_3\n$option_4\n$option_5\n$option_6" | rofi_cmd
+	echo -e "$option_1\n$option_2\n$option_3\n$option_4\n$option_5\n$option_6\n$option_7" | rofi_cmd
 }
 
 # Confirmation CMD
@@ -101,6 +103,8 @@ run_cmd() {
 		confirm_run 'systemctl reboot'
 	elif [[ "$1" == '--opt6' ]]; then
 		confirm_run 'systemctl poweroff'
+	elif [[ "$1" == '--opt7' ]]; then
+		confirm_run 'systemctl shutdown -h +m 60'
 	fi
 }
 
@@ -124,6 +128,10 @@ case ${chosen} in
         ;;
     $option_6)
 		run_cmd --opt6
+        ;;
+    $option_7)
+		run_cmd --opt7
+		notify-send "Powering off in 1h"
         ;;
 esac
 
