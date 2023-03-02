@@ -21,6 +21,9 @@ elif [[ ( "$theme" == *'type-2'* ) || ( "$theme" == *'type-4'* ) ]]; then
 	list_row='1'
 fi
 
+shutdown --show > /dev/null
+is_shutdown=$?
+
 # Options
 layout=`cat ${theme} | grep 'USE_ICON' | cut -d'=' -f2`
 if [[ "$layout" == 'NO' ]]; then
@@ -30,7 +33,11 @@ if [[ "$layout" == 'NO' ]]; then
 	option_4=" Hibernate"
 	option_5="菱 Reboot"
 	option_6=" Shutdown"
-	option_7=" Shutdown in 1h"
+	if [ $is_shutdown -eq 0 ] ; then
+		option_7="󰜺 Cancel scheduled shutdown"
+	else 
+		option_7=" Shutdown in 1h"
+	fi
 	yes=' Yes'
 	no=' No'
 else
@@ -40,7 +47,11 @@ else
 	option_4=""
 	option_5="菱"
 	option_6=""
-	option_7=""
+	if [ $is_shutdown -eq 0 ] ; then
+		option_7="󰜺"
+	else 
+		option_7=""
+	fi
 	yes=''
 	no=''
 fi
@@ -104,7 +115,11 @@ run_cmd() {
 	elif [[ "$1" == '--opt6' ]]; then
 		confirm_run 'systemctl poweroff'
 	elif [[ "$1" == '--opt7' ]]; then
-		confirm_run 'shutdown -h +60'
+		if [ $is_shutdown -eq 0 ] ; then
+			confirm_run 'shutdown -c'
+		else 
+			confirm_run 'shutdown -h +60'
+		fi
 	fi
 }
 
@@ -131,7 +146,11 @@ case ${chosen} in
         ;;
     $option_7)
 		run_cmd --opt7
-		notify-send "Powering off in 1h"
+		if [ $is_shutdown -eq 0 ] ; then
+			notify-send "Scheduled shutdown cancelled"
+		else 
+			notify-send "Powering off in 1h"
+		fi
         ;;
 esac
 
