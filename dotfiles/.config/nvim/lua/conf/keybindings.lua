@@ -21,6 +21,9 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+-- Word wrap
+keymap("n", "<C-W>", ":set wrap!<CR>", opts)
+
 -- Resize with arrows
 keymap("n", "<C-A-Up>", ":resize -2<CR>", opts)
 keymap("n", "<C-A-Down>", ":resize +2<CR>", opts)
@@ -66,7 +69,6 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 -- keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
 -- keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 -- keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
-
 
 -- File Tree (NvimTree)
 keymap("n", "<leader>t", ":NvimTreeToggle<cr>", opts)
