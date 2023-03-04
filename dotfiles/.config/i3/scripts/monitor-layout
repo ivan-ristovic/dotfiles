@@ -132,8 +132,8 @@ else:
 
 msg(xrandr_cmd)
 
-# os.system(xrandr_cmd)
+os.system(xrandr_cmd)
 
 postswitch = '~/.config/autorandr/postswitch'
-# os.system(f"{postswitch} {pos}")
+os.system(f"{postswitch} {pos}")
 
