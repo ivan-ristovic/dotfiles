@@ -310,7 +310,7 @@
     background = "#191d26"
     foreground = "#ffffff"
     frame_color = "#ff7f7f"
-    timeout = 120
+    timeout = 0
     # Icon for notifications with critical urgency, uncomment to enable
     icon = /usr/share/icons/Arc-X-D/status/16/dialog-warning.png
 
