@@ -13,6 +13,7 @@ noto-fonts noto-fonts-emoji
 taskwarrior-tui
 the_silver_searcher
 
+aur:cava
 aur:kvantum-theme-matchama
 aur:linux-wifi-hotspot
 aur:mpdris2
