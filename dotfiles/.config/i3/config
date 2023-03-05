@@ -247,7 +247,7 @@ bindsym $mod+XF86AudioRaiseVolume exec $scriptdir/volumectl 1%+
 bindsym $mod+XF86AudioLowerVolume exec $scriptdir/volumectl 1%-
 
 # mute
-bindsym XF86AudioMute exec amixer sset Master toggle && pkill -RTMIN+10 i3blocks
+bindsym XF86AudioMute exec BLOCK_BUTTON=1 $scriptdir/volume && pkill -RTMIN+10 i3blocks
 
 # audio control
 # play-pause doesn't seem to work with mpd 
