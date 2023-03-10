@@ -127,7 +127,7 @@ if pos != 'default':
     {' '.join(xrandr_arg_secondary)} --primary --{pos} {output_primary}
     '''
 else:
-    xrandr_cmd = f"xrandr {xrandr_arg_off} {' '.join(xrandr_arg_primary)}"
+    xrandr_cmd = f"xrandr {xrandr_arg_off} {' '.join(xrandr_arg_primary)} --primary"
     
 
 msg(xrandr_cmd)
