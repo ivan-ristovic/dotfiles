@@ -11,8 +11,10 @@ env_dbg = os.getenv("DEBUG", "false").lower() == "true"
 env_res = int(os.getenv("RES_COUNT", 5))
 env_rate_pref = float(os.getenv("RATE_PREF", 144))
 env_rate_min = float(os.getenv("RATE_MIN", 60))
-env_res_pref_max = os.getenv("RES_PREF_MAX", '1920x9999').split('x')
-env_res_pref_max = list(map(int, env_res_pref_max))
+env_res_pref_primary_max = os.getenv("RES_PREF_PRIMARY_MAX", '1920x9999').split('x')
+env_res_pref_secondary_max = os.getenv("RES_PREF_SECONDARY_MAX", '4096x9999').split('x')
+env_res_pref_primary_max = list(map(int, env_res_pref_primary_max))
+env_res_pref_secondary_max = list(map(int, env_res_pref_primary_max))
 
 positions = {
     "default": "default",
@@ -65,9 +67,13 @@ def is_viable_rate(r):
 def is_preferred_rate(r):
     return abs(r - env_rate_pref) < rate_cmp_eps
 
-def is_viable_resolution(r):
+def is_viable_primary_resolution(r):
     res = list(map(int, r.split('x')))
-    return res <= env_res_pref_max
+    return res <= env_res_pref_primary_max
+
+def is_viable_secondary_resolution(r):
+    res = list(map(int, r.split('x')))
+    return res <= env_res_pref_secondary_max
 
 def xrandr_arg_disconnected(args):
     return ' '.join([f'--output {arg} --off' for arg in args]) 
@@ -101,10 +107,13 @@ for output, info in outputs.items():
     def contains_viable_rate(res_info):
         return any(filter(is_viable_rate , res_info[1]))
 
-    def resolution_filter(res_info):
-        return is_viable_resolution(res_info[0]) and contains_viable_rate(res_info)
+    def primary_resolution_filter(res_info):
+        return is_viable_primary_resolution(res_info[0]) and contains_viable_rate(res_info)
+    
+    def secondary_resolution_filter(res_info):
+        return is_viable_secondary_resolution(res_info[0]) and contains_viable_rate(res_info)
 
-    viable_resolutions = list(filter(resolution_filter, info))
+    viable_resolutions = list(filter(primary_resolution_filter if is_primary else secondary_resolution_filter, info))
     preferred_resolutions = list(filter(contains_preferred_rate, info))
     if env_dbg:
         msg('viable resolutions: ', *viable_resolutions)
