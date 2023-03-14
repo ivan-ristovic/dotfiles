@@ -14,7 +14,7 @@ env_rate_min = float(os.getenv("RATE_MIN", 60))
 env_res_pref_primary_max = os.getenv("RES_PREF_PRIMARY_MAX", '1920x9999').split('x')
 env_res_pref_secondary_max = os.getenv("RES_PREF_SECONDARY_MAX", '4096x9999').split('x')
 env_res_pref_primary_max = list(map(int, env_res_pref_primary_max))
-env_res_pref_secondary_max = list(map(int, env_res_pref_primary_max))
+env_res_pref_secondary_max = list(map(int, env_res_pref_secondary_max))
 
 positions = {
     "default": "default",
