@@ -39,10 +39,8 @@ keymap("n", "<A-Right>", ":bnext<CR>", opts)
 keymap("n", "<A-Left>", ":bprevious<CR>", opts)
 
 -- Move text up and down
-keymap("n", "<C-j>", "ddp", opts)
-keymap("n", "<C-k>", "ddkkp", opts)
-keymap("n", "<C-Down>", "ddp", opts)
-keymap("n", "<C-Up>", "ddkkp", opts)
+keymap("n", "<A-Down>", "ddp", opts)
+keymap("n", "<A-Up>", "ddkkp", opts)
 
 -- Visual --
 -- Stay in indent mode
