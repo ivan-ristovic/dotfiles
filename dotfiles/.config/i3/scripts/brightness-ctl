@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Script to modify display brightness using brightnessctl
+# Arguments are passed to brightnessctl
+
+if brightnessctl s "$*" ; then
+    curr=$(brightnessctl g)
+    max=$(brightnessctl m)
+    notify-send "  |  Brightness: $((100*$curr/$max))% ($curr/$max)"
+else
+    notify-send "  |  Failed to set display brightness!"
+    exit 1
+fi
+

@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 
 # https://raw.githubusercontent.com/vivien/i3blocks-contrib/master/rofi-calendar/rofi-calendar
 
