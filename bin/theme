@@ -1,0 +1,37 @@
+#!/bin/bash
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+THEMES_DIR="$SCRIPT_DIR/../dotfiles/themes/"
+
+if [ ! -d "$THEMES_DIR" ]; then
+    echo "fatal: dotfiles/themes directory is not present"
+    exit 1
+fi
+
+cd "$THEMES_DIR" || exit 1
+
+function usage () 
+{
+    if [ $# -eq 0 ]; then
+        echo "Missing theme to apply."
+    else
+        echo "$@"
+    fi
+    echo "Available themes:"
+    ls -l .
+    exit 1
+}
+
+if [ $# -ne 1 ]; then
+    usage
+fi
+
+theme=("$1"*/)
+if [ "${#theme[@]}" -ne 1 ]; then
+    usage "Unique theme name starting with $1 was not found." 
+fi
+
+rm current > /dev/null 2>&1
+ln -s "${theme[0]}" current
+./postswitch
+
