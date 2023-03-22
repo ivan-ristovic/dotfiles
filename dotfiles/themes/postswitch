@@ -1,4 +1,5 @@
 #!/bin/bash
 
 touch -h ~/.config/alacritty/alacritty.yml
+exec zsh
 

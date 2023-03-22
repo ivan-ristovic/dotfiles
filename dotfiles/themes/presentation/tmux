@@ -1,0 +1,137 @@
+set -g mouse on 
+
+# Using C-d as tmux leader
+unbind C-b
+set -g prefix C-Space
+bind C-Space send-prefix
+
+# Reloading the configuration file
+bind C-r source-file ~/.tmux.conf \; display "Reloaded user's configuration file (.tmux.conf)"
+
+# Commands for splitting the screen
+unbind %
+unbind '"'
+bind | split-window -h
+bind - split-window -v
+
+# make tmux display things in 256 colors
+set -g default-terminal "xterm-256color"
+
+# set scrollback history
+set -g history-limit 100000
+
+# shorten command delay
+set -sg escape-time 1
+
+# set window and pane index to 1 (0 by default)
+set-option -g base-index 1
+setw -g pane-base-index 1
+
+# explicitly disable mouse control
+# setw -g mode-mouse off
+# set -g mouse-select-pane off
+# set -g mouse-resize-pane off
+# set -g mouse-select-window off
+
+# Next prev window
+bind C-Right next-window
+bind C-Left previous-window
+
+# ---------------------
+# Copy & Paste
+# ---------------------
+# use vim keybindings in copy mode
+setw -g mode-keys vi
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'y' send -X copy-selection
+unbind -T copy-mode-vi MouseDragEnd1Pane
+
+# setup 'v' to begin selection as in Vim
+# bind-key -t vi-copy v begin-selection
+# bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
+
+#### COLOUR (Solarized 256)
+
+# default statusbar colors
+set-option -g status-bg colour235 #base02
+set-option -g status-fg colour2 
+#set-option -g status-attr default
+
+# window title
+set-option -g set-titles on
+set-option -g set-titles-string "#S / #W"
+
+# default window title colors
+#set-window-option -g window-status-fg colour244 #base0
+#set-window-option -g window-status-bg default
+#set-window-option -g window-status-attr dim
+
+# active window title colors
+#set-window-option -g window-status-current-fg green #colour166 #orange
+#set-window-option -g window-status-current-bg default
+#set-window-option -g window-status-current-attr bright
+
+# pane border
+#set-option -g pane-border-fg colour235 #base02
+#set-option -g pane-active-border-fg colour240 #base01
+
+# message text
+#set-option -g message-bg colour235 #base02
+#set-option -g message-fg colour166 #orange
+
+# pane number display
+set-option -g display-panes-active-colour colour33 #blue
+set-option -g display-panes-colour colour166 #orange
+
+# clock
+set-window-option -g clock-mode-colour colour64 #green
+
+# Smart pane switching with awareness of vim splits
+
+bind C-Left  run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)g?(view|n?vim?)(diff)?$' && tmux send-keys Escape ':TmuxNavigateLeft' C-m) || tmux select-pane -L"
+bind C-Down  run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)g?(view|n?vim?)(diff)?$' && tmux send-keys Escape ':TmuxNavigateDown' C-m) || tmux select-pane -D"
+bind C-Up    run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)g?(view|n?vim?)(diff)?$' && tmux send-keys Escape ':TmuxNavigateUp' C-m) || tmux select-pane -U"
+bind C-Right run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)g?(view|n?vim?)(diff)?$' && tmux send-keys Escape ':TmuxNavigateRight' C-m) || tmux select-pane -R"
+# bind -n C-S-\ run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)g?(view|n?vim?)(diff)?$' && tmux send-keys 'C-\\') || tmux select-pane -l"
+
+# keys for resizing
+bind-key -r j resize-pane -D 5
+bind-key -r k resize-pane -U 5
+bind-key -r l resize-pane -R 5
+bind-key -r h resize-pane -L 5
+bind-key -r m resize-pane -Z
+
+
+source-file ~/.tmuxline.snapshot
+#if-shell "test -f ~/.tmux-status.conf" "source ~/.tmux-status.conf"
+
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+# set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @plugin 'tmux-plugins/tmux-open'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+# set -g @plugin 'christoomey/vim-tmux-navigator'
+set -g @plugin 'jaclu/tmux-menus'
+set -g @plugin 'laktak/extrakto'
+set -g @plugin 'tmux-plugins/tmux-yank'
+
+set -g @resurrect-capture-pane-contents 'on'
+set -g @continuum-restore 'on'
+
+# tmux-yank setup
+bind -T copy-mode    DoubleClick1Pane select-pane \; send -X select-word \; send -X copy-pipe-no-clear "xsel -i"
+bind -T copy-mode-vi DoubleClick1Pane select-pane \; send -X select-word \; send -X copy-pipe-no-clear "xsel -i"
+bind -n DoubleClick1Pane select-pane \; copy-mode -M \; send -X select-word \; send -X copy-pipe-no-clear "xsel -i"
+bind -T copy-mode    TripleClick1Pane select-pane \; send -X select-line \; send -X copy-pipe-no-clear "xsel -i"
+bind -T copy-mode-vi TripleClick1Pane select-pane \; send -X select-line \; send -X copy-pipe-no-clear "xsel -i"
+bind -n TripleClick1Pane select-pane \; copy-mode -M \; send -X select-line \; send -X copy-pipe-no-clear "xsel -i"
+bind -n MouseDown2Pane run "tmux set-buffer -b primary_selection \"$(xsel -o)\"; tmux paste-buffer -b primary_selection; tmux delete-buffer -b primary_selection"
+
+set -g @yank_action 'copy-pipe-no-clear'
+bind -T copy-mode    C-c send -X copy-pipe-no-clear "xsel -i --clipboard"
+bind -T copy-mode-vi C-c send -X copy-pipe-no-clear "xsel -i --clipboard"
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
+
