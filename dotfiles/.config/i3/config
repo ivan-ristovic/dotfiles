@@ -366,7 +366,7 @@ exec --no-startup-id xset s 480 dpms 600 600 600
 
 # automatic lock 
 # https://wiki.archlinux.org/title/Session_lock#xautolock
-exec --no-startup-id xautolock -time 10 -notify 60 -notifier "notify-send 'Auto-Locking in 1 minute...'" -locker "$scriptdir/blur-lock ~/.config/i3/wp.png"
+exec --no-startup-id xautolock -time 10 -notify 60 -notifier "notify-send 'Auto-Locking in 1 minute...'" -locker "$scriptdir/lock-blur ~/.config/i3/wp.png"
 
 # xscreensaver
 # https://www.jwz.org/xscreensaver
