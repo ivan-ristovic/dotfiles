@@ -34,8 +34,8 @@ packer.init({
 return require('packer').startup(function(use)
     use 'wbthomason/packer.nvim' -- Packer manages itself
     
-    -- Neovim general functionality and apperence
-    use 'tomasiser/vim-code-dark'   -- VSCode-like color scheme
+    -- Appearance and general functionality
+    use 'Mofiqul/vscode.nvim'       -- VSCode-like color scheme
     use 'nvim-lua/popup.nvim'       -- An implementation of the Popup API   
     use "akinsho/bufferline.nvim"   -- Buffer (tabs)
     use "sitiom/nvim-numbertoggle"  -- Absolute/Relative number autotoggle
