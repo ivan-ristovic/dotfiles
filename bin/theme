@@ -8,7 +8,7 @@ if [ ! -d "$THEMES_DIR" ]; then
     exit 1
 fi
 
-cd "$THEMES_DIR" || exit 1
+pushd "$THEMES_DIR" || exit 1
 
 function usage () 
 {
@@ -19,6 +19,7 @@ function usage ()
     fi
     echo "Available themes:"
     ls -l .
+    popd
     exit 1
 }
 
@@ -33,5 +34,6 @@ fi
 
 rm current > /dev/null 2>&1
 ln -s "${theme[0]}" current
+popd
 ./postswitch
 
