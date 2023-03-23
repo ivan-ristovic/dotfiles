@@ -1,5 +1,6 @@
 #!/bin/bash
 
 touch -h ~/.config/alacritty/alacritty.yml
+tmux source-file ~/.tmux.conf
 exec zsh
 

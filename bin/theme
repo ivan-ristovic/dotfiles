@@ -34,6 +34,6 @@ fi
 
 rm current > /dev/null 2>&1
 ln -s "${theme[0]}" current
-popd
 ./postswitch
+popd
 

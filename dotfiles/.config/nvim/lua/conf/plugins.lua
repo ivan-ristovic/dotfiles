@@ -33,7 +33,7 @@ packer.init({
 
 return require('packer').startup(function(use)
     use 'wbthomason/packer.nvim' -- Packer manages itself
-    
+
     -- Appearance and general functionality
     use 'Mofiqul/vscode.nvim'       -- VSCode-like color scheme
     use 'nvim-lua/popup.nvim'       -- An implementation of the Popup API   
