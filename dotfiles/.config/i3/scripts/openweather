@@ -5,16 +5,20 @@ Aborting."; exit 1; }
 command -v wget >/dev/null 2>&1 || { echo >&2 "Program 'wget' required but is not installed.
 Aborting."; exit 1; }
 
+if [ -z "$LAT" ] || [ -z "$LON" ]; then
+    echo "Coordinates not set"
+    exit
+fi
+
 # To use this script you need to create an API key here https://home.openweathermap.org
 # You need to put your Open Weather APIKEY here:
 APIKEY=$(cat ~/.apikeys/openweather.key)
-LAT=$1
-LON=$2
 URL=$"https://api.openweathermap.org/data/3.0/onecall?units=metric&lat=${LAT}&lon=${LON}&exclude=minutely,hourly,daily&appid=${APIKEY}"
+# echo "$URL"
 
 WEATHER_RESPONSE=$(wget -qO- "${URL}")
-if echo "$WEATHER_RESPONSE" | grep "HTTP/... 401" ; then
-    echo 'Unauthorized'
+if [ $? -ne 0 ] ; then
+    echo "Request failed"
     exit
 fi
 
