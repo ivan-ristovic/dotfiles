@@ -80,11 +80,12 @@ full_text="${WEATHER_ICON} ${TEMP}°C${WIND_DESC}: ${DESCRIPTION}"
 if [ "$ALERT" != "null" ]; then
     WARN_START=$(echo "$WEATHER_RESPONSE" | jq '.alerts[0].start')
     WARN_END=$(echo "$WEATHER_RESPONSE" | jq '.alerts[0].end')
-    WARN_START=$(date -d @"$WARN_START" +%a_%k:%M)
-    WARN_END=$(date -d @"$WARN_END" +%a_%k:%M)
-    full_text="${WEATHER_ICON}  ${TEMP}°C: ${DESCRIPTION}  ${ALERT} from ${WARN_START} to ${WARN_END}"
+    WARN_START=$(date -d @"$WARN_START" "+%a %R")
+    WARN_END=$(date -d @"$WARN_END" "+%a %R")
+    full_text="${WEATHER_ICON}  ${TEMP}°C: ${DESCRIPTION}  [${WARN_START} - ${WARN_END}] ${ALERT}"
 fi
 
 
 echo "${full_text}"
 echo "${TEMP}°C "
+
