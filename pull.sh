@@ -21,6 +21,6 @@ if [[ -n $unmerged_files ]]; then
     printf %"s\n" "$unmerged_files"
 else
     echo "Updating dotfiles symlinks..."
-    source link.sh "$HOME"
+    source symlink.sh "$HOME"
 fi
 

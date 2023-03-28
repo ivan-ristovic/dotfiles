@@ -13,6 +13,11 @@ if [ ! -d "install" ]; then
     exit 1
 fi
 
+if [ "$EUID" -ne 0 ]; then 
+    echo "Not invoked as root. Exiting..."
+    exit
+fi
+
 # Load utils
 source "install/utils.sh"
 
@@ -135,12 +140,13 @@ if $SETUP_PACKAGES ; then
                 pkg=${entry#"$AUR_PREFIX"}
                 msg "Installing from AUR   : $pkg"
                 inst_aur "$pkg"
+                suc "Successfully installed: $pkg"
             else
                 msg "Installing package    : $entry"
                 inst "$PM" "$entry"
+                suc "Successfully installed: $entry"
             fi
             cd "$ROOT_DIR"
-            suc "Finished processing $entry."
             sleep 1
         done
     }
@@ -151,7 +157,7 @@ fi
 
 
 if $SETUP_DOTFILES ; then
-    source link.sh "$SETUP_HOME_DIR"
+    source symlink.sh "$SETUP_HOME_DIR"
 fi
 
 if $SETUP_PATCHES ; then

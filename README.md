@@ -57,7 +57,7 @@ This repository contains:
 Each directory has a README with more details.
 
 Notable scripts:
-- [`link.sh`](link.sh) - updates dotfile symlinks
+- [`symlink.sh`](symlink.sh) - updates dotfile symlinks
     - `.link.force` - set of paths to be forcefully overwritten when symlinking
 - [`setup.sh`](setup.sh) - front-end setup script, can be used for package installations, dotfile management, etc.
 - [`pull.sh`](pull.sh) - pulls latest changes from the remote, stashing and re-applying custom changes if they exist
