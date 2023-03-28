@@ -57,23 +57,19 @@ Each directory has a README with more details.
 
 Notable scripts:
 - [`link.sh`](link.sh) - updates dotfile symlinks
+    - `.link.force` - set of paths to be forcefully overwritten when symlinking
 - [`setup.sh`](setup.sh) - front-end setup script, can be used for package installations, dotfile management, etc.
 - [`pull.sh`](pull.sh) - pulls latest changes from the remote, stashing and re-applying custom changes if they exist
 
 
 ## How does it work?
 
-Invoking `setup.sh` with username and package list will start the setup process that performs the following steps:
-- Environment identification (e.g., the package manager)
-- Installation list processing
-- Dotfiles and `.config` files (from the `dotfiles/` directory) linking to user's home directory using [GNU Stow](https://www.gnu.org/software/stow/) (can be done manually by invoking `link.sh`)
+Invoking `setup.sh` with username and package list will start the setup process that consists of:
+- installing packages from the provided list
+- linking dotfiles to provided user's home directory
+- performing patches to global configuration files
 
 It is possible to perform only some of the above steps by passing options (such as `--dotfiles` or `--packages`). Run `setup.sh --help` for more information.
-
-Additional scripts are available for maintenance:
-- `pull.sh` - stashes local changes, pulls the remote and re-stows dotfiles
-- `link.sh` - re-stows dotfiles
-    - `.link.force` - list of paths to be forcefully overwritten when stowing
 
 Entries from the installation lists are processed in the following manner:
 - lines beginning with a `#` sign are treated as comments
