@@ -1,12 +1,14 @@
-# In case bashrc already exists (e.g., first use)
+# In case they already exist (e.g., first use)
 .bashrc
 .profile
 .zshrc
 
-# Force overwrites of gtk config as they re-create files and hence destroy the symlinks
+# Force overwrites of the GTK configuration as it always creates new files, destroying the symlinks in the process
 .config/gtk-3.0/bookmarks
 .config/gtk-3.0/settings.ini
 .config/mimeapps.list
+.gtkrc-2.0
+
+# These programs destroy symlinks so their config is forcefully re-symlinked
 .config/qBittorrent/qBittorrent.conf
 .config/MusicBrainz/Picard.ini
-.gtkrc-2.0
