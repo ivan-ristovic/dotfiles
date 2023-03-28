@@ -1,8 +1,6 @@
-# My personal Arch list
-
 updates_arch
 
-#snap_arch
+# snap_arch
 
 +lst_common
 +lst_common_arch
@@ -21,7 +19,6 @@ lutris
 neofetch
 nextcloud-client
 nordvpn_arch
-#nvidia-dkms
 obs-studio
 picard
 polychromatic_arch
@@ -34,10 +31,11 @@ aur:freetube-bin
 aur:goverlay
 aur:gpu-screen-recorder-git gpu-screen-recorder-gtk-git
 aur:mp3gain
-aur:optimus-manager optimus-manager-qt gdm-prime
+aur:optimus-manager optimus-manager-qt 
+# aur:gdm-prime
 aur:oversteer
 aur:rider
 aur:vscodium-bin
 aur:webcord-bin
 
-# Do not delete this line. I cannot trust you to add a new line at the end of the file...
+# end
