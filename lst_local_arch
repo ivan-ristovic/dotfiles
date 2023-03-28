@@ -15,8 +15,8 @@ gimp
 handbrake
 kdenlive
 kvantum-manjaro
-lg512-arch
-libreoffice-stil
+lg512_arch
+libreoffice-still
 lutris
 neofetch
 nextcloud-client
@@ -24,18 +24,16 @@ nordvpn_arch
 #nvidia-dkms
 obs-studio
 picard
+polychromatic_arch
+retroarch_arch
 qbittorrent
 steam
-
-retroarch retroarch-assets-ozone libretro-mame libretro-mesen libretro-nestopia libretro-picodrive
-aur:libretro-fbneo
 
 aur:extremecooling4linux
 aur:freetube-bin
 aur:goverlay
 aur:gpu-screen-recorder-git gpu-screen-recorder-gtk-git
 aur:mp3gain
-aur:openrazer-meta polychromatic
 aur:optimus-manager optimus-manager-qt gdm-prime
 aur:oversteer
 aur:rider
