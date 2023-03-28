@@ -123,7 +123,7 @@ if $SETUP_PACKAGES ; then
                 cd "$ROOT_DIR"
                 to_include=${entry#"+"}
                 msg "Importing setup script: $to_include"
-                process_list $(read_list "$to_include")
+                process_list $(read_list "lists/$to_include")
             elif [[ "$entry" == "!"* ]]; then
                 to_post_install=${entry#"!"}
                 msg "Post-link install for : $to_post_install"

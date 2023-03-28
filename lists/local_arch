@@ -2,9 +2,9 @@ updates_arch
 
 # snap_arch
 
-+lst_common
-+lst_common_arch
-+lst_i3_arch
++common
++common_arch
++i3_arch
 
 cleanup_manjaro_i3
 

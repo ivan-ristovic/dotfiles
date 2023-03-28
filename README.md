@@ -49,7 +49,8 @@ My custom (additional) features:
 This repository contains:
 - my personal dotfiles symlinked to the home directory ([`dotfiles/`](dotfiles) directory)
 - binaries and scripts added to the `PATH` for quick setup ([`bin/`](bin) directory)
-- package install lists (`lst_*`) along with custom install scripts ([`install/`](install) directory)
+- package install lists ([`lists/`](lists) directory)
+- custom package install scripts ([`install/`](install) directory)
 - patches for global configuration files ([`patches`](patches) directory)
 - containers for sandboxing and testing ([`containers`](containers) directory)
 
@@ -61,8 +62,10 @@ Notable scripts:
 - [`setup.sh`](setup.sh) - front-end setup script, can be used for package installations, dotfile management, etc.
 - [`pull.sh`](pull.sh) - pulls latest changes from the remote, stashing and re-applying custom changes if they exist
 
+`bin/` directory is placed on the `PATH` automatically if this dotfiles directory is found in user's home directory.
 
-## How does it work?
+
+## Running the scripts
 
 Invoking `setup.sh` with username and package list will start the setup process that consists of:
 - installing packages from the provided list
@@ -71,18 +74,9 @@ Invoking `setup.sh` with username and package list will start the setup process 
 
 It is possible to perform only some of the above steps by passing options (such as `--dotfiles` or `--packages`). Run `setup.sh --help` for more information.
 
-Entries from the installation lists are processed in the following manner:
-- lines beginning with a `#` sign are treated as comments
-- lines beginning with a `+` sign are treated as an "include" command (useful if same entries are present over multiple installation lists)
-- if a line does not match any of the above cases, it represents a package/script name
-    - if there exists a special setup script matching that name in the `install/` directory, it is invoked
-        - if name is prefixed with a `!` sign, then the installation will be performed after stowing (linking) dotfiles
-    - otherwise, it is assumed that there exists a package with such name and installation is attempted using the default package manager
-        - specially, for Arch Linux, lines prefixed with `aur:` will use `yay` instead of `pacman` for that entry
+Check out:
+- `lists/` directory for more information on the package installation lists
+- `install/` directory for more information on how to use the scripts for automatic mass package installations
+- `patches/` directory for more information on how to use the automatic file content patching system
 
-Check out `install/` directory for more information on how to use the scripts for automatic mass package installations.
-
-Check out `patches/` directory for more information on how to use the automatic file content patching system.
-
-`bin/` directory is placed on the `PATH` automatically if this dotfiles directory is found in user's home directory.
 
