@@ -80,8 +80,7 @@ full_text="${WEATHER_ICON} ${TEMP}°C${WIND_DESC}: ${DESCRIPTION}"
 if [ "$ALERT" != "null" ]; then
     full_text+=" " 
     if (( ${BLOCK_BUTTON:-0} == 1 )); then
-        alerts="  Weather alerts:"
-        
+        alerts=""
         for alert in $(echo "$WEATHER_RESPONSE" | jq -r '.alerts[] | @base64'); do
             _jq() {
                 echo "$alert" | base64 --decode | jq -r "$1"
@@ -92,10 +91,10 @@ if [ "$ALERT" != "null" ]; then
             WARN_END=$(date -d @"$WARN_END" "+%a %R")
             ALERT_E=$(_jq '.event' | sed 's/"//g')
             ALERT_D=$(_jq '.description' | sed 's/"//g')
-            alerts+="\n\n[${WARN_START} - ${WARN_END}]\n${ALERT_E}\n${ALERT_D}"
+            alerts+="\n[${WARN_START} - ${WARN_END}]\n${ALERT_E}\n${ALERT_D}\n"
         done
 
-        notify-send "$alerts"
+        notify-send -u critical "  Weather alerts" "$alerts"
     fi
 fi
 
