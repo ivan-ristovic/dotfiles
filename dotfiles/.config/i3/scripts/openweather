@@ -22,8 +22,8 @@ if [ $? -ne 0 ] ; then
     exit
 fi
 
-CONDITION=$(echo $WEATHER_RESPONSE | jq '.current.weather[0].main' | sed 's/"//g')
-TEMP=$(echo $WEATHER_RESPONSE | jq '.current.temp')
+CONDITION=$(echo "$WEATHER_RESPONSE" | jq '.current.weather[0].main' | sed 's/"//g')
+TEMP=$(echo "$WEATHER_RESPONSE" | jq '.current.temp')
 WIND_DIR=$( echo "$WEATHER_RESPONSE" | jq '.current.wind_deg')
 WIND_SPEED=$( echo "$WEATHER_RESPONSE" | jq '.current.wind_speed')
 TIME_NOW=$( echo "$WEATHER_RESPONSE" | jq '.current.dt')
@@ -78,11 +78,25 @@ fi
 
 full_text="${WEATHER_ICON} ${TEMP}°C${WIND_DESC}: ${DESCRIPTION}"
 if [ "$ALERT" != "null" ]; then
-    WARN_START=$(echo "$WEATHER_RESPONSE" | jq '.alerts[0].start')
-    WARN_END=$(echo "$WEATHER_RESPONSE" | jq '.alerts[0].end')
-    WARN_START=$(date -d @"$WARN_START" "+%a %R")
-    WARN_END=$(date -d @"$WARN_END" "+%a %R")
-    full_text="${WEATHER_ICON}  ${TEMP}°C: ${DESCRIPTION}  [${WARN_START} - ${WARN_END}] ${ALERT}"
+    full_text+=" " 
+    if (( ${BLOCK_BUTTON:-0} == 1 )); then
+        alerts="  Weather alerts:"
+        
+        for alert in $(echo "$WEATHER_RESPONSE" | jq -r '.alerts[] | @base64'); do
+            _jq() {
+                echo "$alert" | base64 --decode | jq -r "$1"
+            }
+            WARN_START=$(_jq '.start')
+            WARN_END=$(_jq '.end')
+            WARN_START=$(date -d @"$WARN_START" "+%a %R")
+            WARN_END=$(date -d @"$WARN_END" "+%a %R")
+            ALERT_E=$(_jq '.event' | sed 's/"//g')
+            ALERT_D=$(_jq '.description' | sed 's/"//g')
+            alerts+="\n\n[${WARN_START} - ${WARN_END}]\n${ALERT_E}\n${ALERT_D}"
+        done
+
+        notify-send "$alerts"
+    fi
 fi
 
 
