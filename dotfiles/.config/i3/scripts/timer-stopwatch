@@ -91,7 +91,7 @@ prettify_time() {
     minutes=$(( minutes % 60 ))
     (( minutes < 10 )) && minutes=0$minutes
   fi
-  if $COMPACT ; then
+  if (( mode == 0 )) && $COMPACT ; then
     if $running; then
       minutes=$(( minutes + 1 ))
       if (( minutes >= 60 )); then
