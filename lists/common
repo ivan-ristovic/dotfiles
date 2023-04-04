@@ -8,6 +8,7 @@ curl
 direnv
 duf
 dust
+entr
 fd
 feh
 filezilla
