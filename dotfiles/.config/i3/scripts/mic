@@ -37,6 +37,8 @@ case $(pacmd list-sources | grep -A 11 "$SOURCE" | awk '/muted/ {print $2; exit}
       ;;
     no)
       echo ""
+      echo ""
+      echo "#D21A1A"
       if $toggled ; then
         notify-send "  |  Unmuted"
       fi
