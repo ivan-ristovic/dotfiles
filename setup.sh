@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ROOT_DIR=$(pwd)
+DOTFILES_ROOT_DIR=$(pwd)
 
 # Check for dotfiles root
 GIT_DIR=$(grep ivan-ristovic/dotfiles .git/config)
@@ -125,7 +125,7 @@ if $SETUP_PACKAGES ; then
             SETUP_SCRIPT="inst_$entry.sh"
             AUR_PREFIX="aur:"
             if [[ "$entry" == "+"* ]]; then
-                cd "$ROOT_DIR"
+                cd "$DOTFILES_ROOT_DIR"
                 to_include=${entry#"+"}
                 msg "Importing setup script: $to_include"
                 process_list $(read_list "lists/$to_include")
@@ -146,7 +146,7 @@ if $SETUP_PACKAGES ; then
                 inst "$PM" "$entry"
                 suc "Successfully installed: $entry"
             fi
-            cd "$ROOT_DIR"
+            cd "$DOTFILES_ROOT_DIR"
             sleep 1
         done
     }
@@ -170,7 +170,7 @@ if $SETUP_PATCHES ; then
     else
         err "patches/patch.sh script is not present."
     fi
-    cd "$SETUP_HOME_DIR"
+    cd "$DOTFILES_ROOT_DIR"
 fi
 
 if $SETUP_PACKAGES ; then
