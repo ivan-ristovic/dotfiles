@@ -65,11 +65,11 @@ do
             SETUP_PATCHES=true
             ;;
         --debug)
-            inf "debug mode enabled"
+            msg "debug mode enabled"
             set -x; 
             ;;
         --strict)
-            inf "strict mode enabled"
+            msg "strict mode enabled"
             set -e; 
             ;;
         -h) usage

@@ -4,7 +4,7 @@ source "utils.sh"
 
 inst_silent $@ yay
 if [ $? -ne 0 ]; then
-    inst $@ git base-devel
+    inst $@ base-devel
     yaydir=/opt/yay
     mkdir $yaydir
     chown user:user $yaydir
