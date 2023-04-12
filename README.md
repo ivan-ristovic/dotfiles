@@ -13,7 +13,7 @@
 - **Music player**: [mpd](https://www.musicpd.org/) + [ncmpcpp](https://github.com/ncmpcpp/ncmpcpp)
 - **Dotfile manager**: Custom scripts via [GNU Stow](https://www.gnu.org/software/stow/)
 
-This repository contains my personal dotfiles, QOL scripts and binaries, as well as installation scripts for quick setup of Linux systems (primarily for Arch and Ubuntu, since I use them at the moment for my local/cloud machines). Setup can be done by invoking [`setup.sh`](setup.sh), a powerful all-in-one setup script. 
+This repository contains my personal dotfiles, QOL scripts and binaries, as well as installation scripts for quick setup of Linux systems (primarily for Arch and Ubuntu, since I use them at the moment for my local/cloud machines). Setup can be done by invoking [`setup`](setup), a powerful all-in-one setup and maintenance script. 
 
 
 ## Showcase
@@ -57,26 +57,22 @@ This repository contains:
 Each directory has a README with more details.
 
 Notable scripts:
-- [`symlink.sh`](symlink.sh) - updates dotfile symlinks
+- [`setup`](setup) - front-end setup script, can be used for package installations, dotfiles management, etc.
     - `.link.force` - set of paths to be forcefully overwritten when symlinking
-- [`setup.sh`](setup.sh) - front-end setup script, can be used for package installations, dotfile management, etc.
-- [`pull.sh`](pull.sh) - pulls latest changes from the remote, stashing and re-applying custom changes if they exist
+- [`pull`](pull) - pulls latest changes from the remote, stashing and re-applying custom changes if they exist
 
 `bin/` directory is placed on the `PATH` automatically if this dotfiles directory is found in user's home directory.
 
 
-## Running the scripts
+## Running the setup
 
-Invoking `setup.sh` with username and package list will start the setup process that consists of:
-- installing packages from the provided list
-- linking dotfiles to provided user's home directory
-- performing patches to global configuration files
+`setup` script can (see `setup --help`):
+- install packages from the provided list or command line
+- link dotfiles to provided user's home directory
+- perform patches to global configuration files
 
-It is possible to perform only some of the above steps by passing options (such as `--dotfiles` or `--packages`). Run `setup.sh --help` for more information.
-
-Check out:
-- `lists/` directory for more information on the package installation lists
-- `install/` directory for more information on how to use the scripts for automatic mass package installations
-- `patches/` directory for more information on how to use the automatic file content patching system
-
+Also check out:
+- `lists/` directory for more information on the mass package installation lists
+- `install/` directory for more information on how to use the scripts for custom package installations
+- `patches/` directory for more information on how to use the automatic config patching system
 
