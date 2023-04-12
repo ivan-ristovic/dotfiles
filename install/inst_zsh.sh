@@ -14,7 +14,7 @@ if [ ! -d "$SETUP_HOME_DIR"/.oh-my-zsh/ ]; then
     # as_user sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 
-    rm -f "$SETUP_HOME_DIR"/.zshrc
+rm -f "$SETUP_HOME_DIR"/.zshrc
 
 if [ ! -d "$SETUP_HOME_DIR"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
     msg "Downloading syntax highlighting plugin ..."
