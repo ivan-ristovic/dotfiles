@@ -42,7 +42,7 @@ SETUP_DOTFILES=false
 SETUP_PACKAGES=false
 SETUP_PACKAGES_MANUAL=false
 SETUP_PATCHES=false
-SETUP_USER=$SUDO_USER
+SETUP_USER=$(logname)
 SETUP_HOME_DIR="/home/$SETUP_USER"
 
 SHORT_OPTS=v,s,u:,h
@@ -205,7 +205,34 @@ fi
 
 
 if $SETUP_DOTFILES ; then
-    source symlink "$SETUP_HOME_DIR"
+    # Ensure .config dir exists so that it is not
+    # symlinked (otherwise all programs would dump
+    # their config into the dotfiles directory)
+    mkdir -p "$SETUP_HOME_DIR/.config"
+
+    # Force overwrites of specified files (save backup to /tmp)
+    backup_dir=/tmp/dotfiles
+    rm -rf $backup_dir
+    force_overwrite_list=$(read_list ".link.force")
+    for entry in $force_overwrite_list; do
+        entry_path="$SETUP_HOME_DIR/$entry"
+        if [[ -f $entry_path && ! -h $entry_path ]]; then
+            mkdir -p $backup_dir
+            msg "Forcing overwrite of: $entry_path ; backup at $backup_dir"
+            mv "$entry_path" "$backup_dir"
+        fi
+    done
+
+    cd dotfiles
+    if stow --no-folding -v . -t "$SETUP_HOME_DIR" ; then 
+        suc "Dotfiles linked."
+    else
+        err "Failed linking dotfiles!"
+    fi
+    cd "$DOTFILES_ROOT_DIR"
+    
+    unset backup_dir
+    unset force_overwrite_list
 fi
 
 if $SETUP_PATCHES ; then
