@@ -51,8 +51,8 @@ This repository contains:
 - binaries and scripts added to the `PATH` for quick setup ([`bin/`](bin) directory)
 - package install lists ([`lists/`](lists) directory)
 - custom package install scripts ([`install/`](install) directory)
-- patches for global configuration files ([`patches`](patches) directory)
-- containers for sandboxing and testing ([`containers`](containers) directory)
+- patches for global configuration files ([`patches/`](patches) directory)
+- containers for sandboxing and testing ([`containers/`](containers) directory)
 
 Each directory has a README with more details.
 
