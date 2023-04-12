@@ -10,5 +10,5 @@ inst $@ \
     libretro-nestopia \
     libretro-picodrive
 
-inst_aur $@ libretro-fbneo
+inst_aur libretro-fbneo
 
