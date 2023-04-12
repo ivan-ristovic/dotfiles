@@ -1,0 +1,232 @@
+#!/bin/bash
+
+DOTFILES_ROOT_DIR=$(pwd)
+
+# Check for dotfiles root
+GIT_DIR=$(grep ivan-ristovic/dotfiles .git/config)
+if [ -z "$GIT_DIR" ]; then
+    echo "Not in dotfiles directory. Exiting ..."
+    exit 1
+fi
+if [ ! -d "install" ]; then
+    echo "install/ directory is not present. Exiting ..."
+    exit 1
+fi
+
+# Load utils
+source "install/utils.sh"
+
+function usage ()
+{
+    echo -e "usage: $0"
+    echo -e "\t[--user username | -u username]"
+    echo -e "\t[--dotfiles | --packages install_list_path | --patch[es] | --complete]"
+    echo -e "\t[--verbose | -v] [--strict | -s]"
+    echo -e "\t[--help | -h]"
+    echo
+    echo "  LEGEND:"
+    echo -e "\t--help -h             prints this manual"
+    echo -e "\t--strict -s           halt on error (set -e)"
+    echo -e "\t--verbose -v          runs the script in debug mode (set -x)"
+    echo -e "\t--remote              update git remote URL"
+    echo
+    echo -e "\t--dotfiles            link dotfiles (default)"
+    echo -e "\t--packages --install  install packages from the given install list"
+    echo -e "\t--patch --patches     perform patches"
+    echo -e "\t--complete --all      perform all of the above"
+    exit 2
+}
+
+SETUP_OVERRIDE=false
+SETUP_DOTFILES=false
+SETUP_PACKAGES=false
+SETUP_PACKAGES_MANUAL=false
+SETUP_PATCHES=false
+SETUP_USER=$SUDO_USER
+SETUP_HOME_DIR="/home/$SETUP_USER"
+
+SHORT_OPTS=v,s,u:,h
+LONG_OPTS=user:,username:,dotfiles,link,stow,packages:,install:,dotfiles,patch,patches,all,complete,help,strict,debug,verbose,remote,git
+OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --longoptions $LONG_OPTS -- "$@") 
+if [ $? -ne 0 ]; then
+    fat "failed to parse provided arguments"
+fi
+eval set -- $OPTS
+
+while :
+do
+    case "$1" in
+        --all | --complete)
+            SETUP_OVERRIDE=true
+            SETUP_DOTFILES=true
+            SETUP_PACKAGES=true
+            SETUP_PATCHES=true
+            ;;
+        --packages | --install)
+            SETUP_OVERRIDE=true
+            SETUP_PACKAGES=true
+            INSTALL_LIST="$2"
+            shift;
+            ;;
+        --dotfiles | --link | --stow)
+            SETUP_OVERRIDE=true
+            SETUP_DOTFILES=true
+            ;;
+        --patch | --patches)
+            SETUP_OVERRIDE=true
+            SETUP_PATCHES=true
+            ;;
+        --remote | --git)
+            git remote set-url origin git@github.com:ivan-ristovic/dotfiles.git
+            ;;
+        -v | --verbose | --debug)
+            msg "debug mode enabled"
+            set -x; 
+            ;;
+        -s | --strict)
+            msg "strict mode enabled"
+            set -e; 
+            ;;
+        -u | --user | --username)
+            SETUP_USER="$2"
+            SETUP_HOME_DIR="/home/$SETUP_USER"
+            ;;
+        -h | --help)
+            usage
+            ;;
+        --)
+            shift;
+            break
+            ;;
+        *)
+            err "unknown option: $1"
+            usage
+            ;;
+    esac
+    shift;
+done
+
+# Check if install list exists
+if $SETUP_PACKAGES ; then
+    if [ -z "$INSTALL_LIST" ]; then
+        INSTALL_LIST="$1"
+        if [ -z "$INSTALL_LIST" ]; then
+            fat "missing install list"
+        fi
+    fi
+    if [ ! -f "$INSTALL_LIST" ]; then
+        msg "can't find install list: $INSTALL_LIST"
+        msg "assuming entries to process are provided directly..."
+        SETUP_PACKAGES_MANUAL=true
+    fi
+fi
+
+# Check home dir
+if [ ! -d "$SETUP_HOME_DIR" ]; then
+    fat "invalid home directory: $SETUP_HOME_DIR"
+fi
+
+if ! $SETUP_OVERRIDE ; then 
+    SETUP_PACKAGES=false
+    SETUP_DOTFILES=true
+    SETUP_PATCHES=false
+fi
+
+# Check if running as root if setting up packages or patches
+if $SETUP_PACKAGES || $SETUP_PATCHES; then 
+    if [ "$EUID" -ne 0 ]; then 
+        echo "Not invoked as root. Exiting..."
+        exit
+    fi
+fi
+
+msg "user: $SETUP_USER"
+msg "home dir: $SETUP_HOME_DIR"
+msg "install list: $INSTALL_LIST"
+
+export SETUP_USER
+export SETUP_HOME_DIR
+
+
+### Start setup
+
+packages_requiring_linked_dotfiles=()
+
+if $SETUP_PACKAGES ; then
+
+    # Identify package manager
+    PM=$(pm_cmd)
+    msg "Package manager installation command identified as: $PM"
+
+    # Install packages
+    suc "Checks completed successfully, starting installations ..."
+
+    function process_list ()
+    {
+        for entry in "$@"; do
+            cd "install"
+            SETUP_SCRIPT="inst_$entry.sh"
+            AUR_PREFIX="aur:"
+            if [[ "$entry" == "+"* ]]; then
+                cd "$DOTFILES_ROOT_DIR"
+                to_include=${entry#"+"}
+                msg "Importing setup script: $to_include"
+                process_list $(read_list "lists/$to_include")
+            elif [[ "$entry" == "!"* ]]; then
+                to_post_install=${entry#"!"}
+                msg "Post-link install for : $to_post_install"
+                packages_requiring_linked_dotfiles+=(${to_post_install})
+            elif [ -f "$SETUP_SCRIPT" ]; then
+                msg "Setting up via script : $entry"
+                source "$SETUP_SCRIPT" "$PM"
+            elif [[ "$entry" == "$AUR_PREFIX"* ]]; then
+                pkg=${entry#"$AUR_PREFIX"}
+                msg "Installing from AUR   : $pkg"
+                inst_aur "$pkg"
+                suc "Successfully installed: $pkg"
+            else
+                msg "Installing package    : $entry"
+                inst "$PM" "$entry"
+                suc "Successfully installed: $entry"
+            fi
+            cd "$DOTFILES_ROOT_DIR"
+            sleep 1
+        done
+    }
+
+    if $SETUP_PACKAGES_MANUAL ; then
+        process_list "$INSTALL_LIST" "$@"
+    else
+        process_list $(read_list "$INSTALL_LIST")
+    fi
+
+    suc "Installations finished."
+fi
+
+
+if $SETUP_DOTFILES ; then
+    source symlink "$SETUP_HOME_DIR"
+fi
+
+if $SETUP_PATCHES ; then
+    if [ ! -d "patches" ]; then
+        err "patches/ directory is not present."
+    fi
+    cd patches
+    if [ -f "patch.sh" ]; then
+        source patch.sh
+    else
+        err "patches/patch.sh script is not present."
+    fi
+    cd "$DOTFILES_ROOT_DIR"
+fi
+
+if $SETUP_PACKAGES ; then
+    process_list "${packages_requiring_linked_dotfiles[@]}"
+fi
+
+unset SETUP_USER
+unset SETUP_HOME_DIR
+
+suc "Done! Have a nice day."
+
