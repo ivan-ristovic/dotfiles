@@ -2,7 +2,7 @@
 
 function usage ()
 {
-    echo "usage $(basename $0) build|run distro [docker run/build opts ...]"
+    echo "usage $(basename "$0") build|run distro [docker run/build opts ...]"
     exit 1
 }
 
@@ -23,19 +23,19 @@ shift 2
 
 set -e
 
-cd $distro
+cd "$distro"
 case "$cmd" in
     build)
         priv_key=$(cat ~/.ssh/id_rsa)
         pub_key=$(cat ~/.ssh/id_rsa.pub)
-        docker build -t $tag \
+        docker build -t "$tag" \
             --force-rm \
             --build-arg PRIVATE_KEY="$priv_key" \
             --build-arg PUBLIC_KEY="$pub_key" \
             .
     ;;
     run)
-        docker run $@ -v $dotfiles_dir:/home/user/dotfiles -it --rm $tag
+        docker run "$@" -v "$dotfiles_dir:/home/user/dotfiles" -it --rm "$tag"
     ;;
     *)
         usage
