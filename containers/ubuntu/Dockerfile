@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 RUN apt-get update
-RUN apt-get install -y sudo ssh
+RUN apt-get install -y sudo git ssh
 
 ARG PRIVATE_KEY
 ARG PUBLIC_KEY

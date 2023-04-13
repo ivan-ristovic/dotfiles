@@ -1,6 +1,7 @@
 yay
 
 base-devel
+binutils
 btop
 diff-so-fancy
 docker_arch

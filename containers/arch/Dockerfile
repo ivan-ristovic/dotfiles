@@ -1,7 +1,7 @@
 FROM archlinux:base
 
 RUN pacman --noconfirm -Syu
-RUN pacman --noconfirm -S openssh stow sudo vim
+RUN pacman --noconfirm -S openssh git stow sudo vim
 
 ARG PRIVATE_KEY
 ARG PUBLIC_KEY

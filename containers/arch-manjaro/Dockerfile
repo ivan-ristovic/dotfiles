@@ -1,7 +1,7 @@
 FROM manjarolinux/base
 
 RUN sudo pacman --noconfirm -Syu
-RUN sudo pacman --noconfirm -S openssh stow
+RUN sudo pacman --noconfirm -S openssh yay binutils git stow
 
 ARG PRIVATE_KEY
 ARG PUBLIC_KEY
