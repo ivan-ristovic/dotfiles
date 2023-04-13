@@ -46,7 +46,7 @@ SETUP_USER=$(logname)
 SETUP_HOME_DIR="/home/$SETUP_USER"
 
 SHORT_OPTS=v,s,u:,h
-LONG_OPTS=user:,username:,dotfiles,link,stow,packages:,install:,dotfiles,patch,patches,all,complete,help,strict,debug,verbose,remote,git
+LONG_OPTS=user:,username:,dotfiles,link,stow,packages,install,dotfiles,patch,patches,all,complete,help,strict,debug,verbose,remote,git
 OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --longoptions $LONG_OPTS -- "$@") 
 if [ $? -ne 0 ]; then
     fat "failed to parse provided arguments"
@@ -65,8 +65,6 @@ do
         --packages | --install)
             SETUP_OVERRIDE=true
             SETUP_PACKAGES=true
-            INSTALL_LIST="$2"
-            shift;
             ;;
         --dotfiles | --link | --stow)
             SETUP_OVERRIDE=true
@@ -106,18 +104,10 @@ do
     shift;
 done
 
-# Check if install list exists
+# Check if install arg exists
 if $SETUP_PACKAGES ; then
-    if [ -z "$INSTALL_LIST" ]; then
-        INSTALL_LIST="$1"
-        if [ -z "$INSTALL_LIST" ]; then
-            fat "missing install list"
-        fi
-    fi
-    if [ ! -f "$INSTALL_LIST" ]; then
-        msg "can't find install list: $INSTALL_LIST"
-        msg "assuming entries to process are provided directly..."
-        SETUP_PACKAGES_MANUAL=true
+    if [ $# -eq 0 ]; then
+        fat "missing install list(s) or entries to install"
     fi
 fi
 
@@ -142,7 +132,7 @@ fi
 
 msg "user: $SETUP_USER"
 msg "home dir: $SETUP_HOME_DIR"
-msg "install list: $INSTALL_LIST"
+msg "install list: $*"
 
 export SETUP_USER
 export SETUP_HOME_DIR
@@ -165,7 +155,7 @@ if $SETUP_PACKAGES ; then
     {
         for entry in "$@"; do
             cd "install"
-            SETUP_SCRIPT="inst_$entry.sh"
+            SETUP_SCRIPT="$entry.sh"
             AUR_PREFIX="aur:"
             if [[ "$entry" == "+"* ]]; then
                 cd "$DOTFILES_ROOT_DIR"
@@ -194,11 +184,13 @@ if $SETUP_PACKAGES ; then
         done
     }
 
-    if $SETUP_PACKAGES_MANUAL ; then
-        process_list "$INSTALL_LIST" "$@"
-    else
-        process_list $(read_list "$INSTALL_LIST")
-    fi
+    for arg in "$@" ; do
+        if [ -f "$arg" ]; then
+            process_list $(read_list "$arg")
+        else
+            process_list "$arg"
+        fi
+    done
 
     suc "Installations finished."
 fi
