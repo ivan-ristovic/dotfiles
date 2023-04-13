@@ -40,9 +40,8 @@ function usage ()
 SETUP_OVERRIDE=false
 SETUP_DOTFILES=false
 SETUP_PACKAGES=false
-SETUP_PACKAGES_MANUAL=false
 SETUP_PATCHES=false
-SETUP_USER=$(logname)
+SETUP_USER=${SUDO_USER:-$(logname > /dev/null 2>&1)}
 SETUP_HOME_DIR="/home/$SETUP_USER"
 
 SHORT_OPTS=v,s,u:,h
@@ -88,6 +87,7 @@ do
         -u | --user | --username)
             SETUP_USER="$2"
             SETUP_HOME_DIR="/home/$SETUP_USER"
+            shift;
             ;;
         -h | --help)
             usage
@@ -111,6 +111,18 @@ if $SETUP_PACKAGES ; then
     fi
 fi
 
+# Check if running as root if setting up packages or patches
+if $SETUP_PACKAGES || $SETUP_PATCHES; then 
+    if [ "$EUID" -ne 0 ]; then 
+        fat "installing/patching requires root access"
+    fi
+fi
+
+# Check username
+if [ -z "$SETUP_USER" ]; then
+    fat "cannot automatically detect user name - please provide one using the --username option"
+fi
+
 # Check home dir
 if [ ! -d "$SETUP_HOME_DIR" ]; then
     fat "invalid home directory: $SETUP_HOME_DIR"
@@ -120,14 +132,6 @@ if ! $SETUP_OVERRIDE ; then
     SETUP_PACKAGES=false
     SETUP_DOTFILES=true
     SETUP_PATCHES=false
-fi
-
-# Check if running as root if setting up packages or patches
-if $SETUP_PACKAGES || $SETUP_PATCHES; then 
-    if [ "$EUID" -ne 0 ]; then 
-        echo "Not invoked as root. Exiting..."
-        exit
-    fi
 fi
 
 msg "user: $SETUP_USER"
