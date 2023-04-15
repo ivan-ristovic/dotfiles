@@ -41,7 +41,7 @@ SETUP_OVERRIDE=false
 SETUP_DOTFILES=false
 SETUP_PACKAGES=false
 SETUP_PATCHES=false
-SETUP_USER=${SUDO_USER:-$(logname > /dev/null 2>&1)}
+SETUP_USER=${SUDO_USER:-$(logname 2> /dev/null)}
 SETUP_HOME_DIR="/home/$SETUP_USER"
 
 SHORT_OPTS=v,s,u:,h
