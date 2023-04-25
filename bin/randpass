@@ -14,8 +14,6 @@
 # the same terms as Perl itself.
 #
 # The LICENSE file contains the full text of the license.
-#
-#
 
 
 if [ ! -e /dev/urandom ]; then
@@ -34,7 +32,7 @@ cset="[:alnum:]"
 #
 len=8
 
-while getopts "h?fn:" opt; do
+while getopts "h?fgan:" opt; do
   case $opt in
     h)
       echo "Usage: $0 [-n N] [-f]"
@@ -44,8 +42,11 @@ while getopts "h?fn:" opt; do
       echo "Usage: $0 [-n N] [-f]"
       exit 0
       ;;
-    f)
+    g)
       cset="[:graph:]"
+      ;;
+    a)
+      cset="[:alpha:]"
       ;;
     n)
       len=$OPTARG
