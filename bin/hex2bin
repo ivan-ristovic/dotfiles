@@ -1,3 +1,0 @@
-#!/bin/bash
-
-base2base 16 2 $@

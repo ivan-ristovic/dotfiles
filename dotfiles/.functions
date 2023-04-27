@@ -33,3 +33,18 @@ function br {
         return "$code"
     fi
 }
+
+### Conversion functions
+function bin2oct () { base2base  2  8 "$@" ; }
+function bin2dec () { base2base  2 10 "$@" ; }
+function bin2hex () { base2base  2 16 "$@" ; }
+function oct2bin () { base2base  8  2 "$@" ; }
+function oct2dec () { base2base  8 10 "$@" ; }
+function oct2hex () { base2base  8 16 "$@" ; }
+function dec2bin () { base2base 10  2 "$@" ; }
+function dec2hex () { base2base 10 16 "$@" ; }
+function dec2oct () { base2base 10  8 "$@" ; }
+function hex2bin () { base2base 16  2 "$@" ; }
+function hex2dec () { base2base 16 10 "$@" ; }
+function hex2oct () { base2base 16  8 "$@" ; }
+### Conversion functions
