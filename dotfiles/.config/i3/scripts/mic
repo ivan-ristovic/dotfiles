@@ -32,7 +32,7 @@ case $(pacmd list-sources | grep -A 11 "$SOURCE" | awk '/muted/ {print $2; exit}
     yes)
       echo ""
       if $toggled ; then
-        notify-send "  |  Muted"
+        notify-send -t 500 "  |  Muted"
       fi
       ;;
     no)
@@ -40,7 +40,7 @@ case $(pacmd list-sources | grep -A 11 "$SOURCE" | awk '/muted/ {print $2; exit}
       echo ""
       echo "#D21A1A"
       if $toggled ; then
-        notify-send "  |  Unmuted"
+        notify-send -t 500 "  |  Unmuted"
       fi
       ;;
 esac
