@@ -232,14 +232,15 @@ if $SETUP_DOTFILES ; then
 fi
 
 if $SETUP_PATCHES ; then
-    if [ ! -d "patches" ]; then
-        err "patches/ directory is not present."
-    fi
-    cd patches
-    if [ -f "patch.sh" ]; then
-        source patch.sh
+    if [ -d "patches" ]; then
+        cd patches
+        if [ -f "patch.sh" ]; then
+            source patch.sh
+        else
+            err "patches/patch.sh script is not present."
+        fi
     else
-        err "patches/patch.sh script is not present."
+        err "patches/ directory is not present."
     fi
     cd "$DOTFILES_ROOT_DIR"
 fi
