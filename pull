@@ -19,8 +19,7 @@ unmerged_files=$(git diff --name-only --diff-filter=U)
 if [[ -n $unmerged_files ]]; then
     echo "The following files have merge conflicts after popping the stash:"
     printf %"s\n" "$unmerged_files"
-else
     echo "Updating dotfiles symlinks..."
-    source symlink.sh "$HOME"
+    ./setup --dotfiles
 fi
 
