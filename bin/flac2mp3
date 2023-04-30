@@ -1,4 +1,23 @@
 #!/bin/bash
 
-fd -t f -e flac -x ffmpeg -i "{}" -qscale:a 0 "{.}.mp3"
+if [ $# -eq 0 ]; then
+    echo "usage: $0 .flac|dir ..."
+    exit 2
+fi
+
+for arg in "$@"; do
+    if [ -f "$arg" ]; then
+        if [ "${arg: -5}" == ".flac" ]; then
+            ffmpeg -i "$arg" -qscale:a 0 "${arg%.*}.mp3"
+        else
+            echo "error: skipping $arg as it is not a FLAC file"
+        fi
+    elif [ -d "$arg" ]; then
+        fd -t f -e flac | parallel --jobs 80% --progress --bar "ffmpeg -i {} -qscale:a 0 {.}.mp3"
+    else
+        echo "error: unsupported file type: $arg"
+        exit 1
+    fi
+done
+
 

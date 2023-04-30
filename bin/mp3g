@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+    echo "usage: $0 .mp3|dir ..."
+    exit 2
+fi
+
+for arg in "$@"; do
+    if [ -f "$arg" ]; then
+        if [ "${arg: -4}" == ".mp3" ]; then
+            mp3gain -r "$arg"
+        else
+            echo "error: skipping $arg as it is not a MP3 file"
+        fi
+    elif [ -d "$arg" ]; then
+        fd -t f -e mp3 | parallel --jobs 80% --progress --bar "mp3gain -r {}"
+    else
+        echo "error: unsupported file type: $arg"
+        exit 1
+    fi
+done
+
+
