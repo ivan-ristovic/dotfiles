@@ -1,4 +1,4 @@
 #!/bin/bash
 
-yt-dlp --extract-audio --audio-format=mp3 $@
+yt-dlp -f "bestaudio" --extract-audio --audio-format=mp3 $@
 

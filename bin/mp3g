@@ -8,7 +8,7 @@ fi
 for arg in "$@"; do
     if [ -f "$arg" ]; then
         if [ "${arg: -4}" == ".mp3" ]; then
-            mp3gain -r "$arg"
+            mp3gain -q -c -r "$arg"
         else
             echo "error: skipping $arg as it is not a MP3 file"
         fi
