@@ -18,7 +18,7 @@
         "privacy": {
             "blockApi": {
                 "science": true,
-                "typingIndicator": false,
+                "typingIndicator": true,
                 "fingerprinting": true
             },
             "permissions": {
@@ -54,7 +54,7 @@
                 "radio": 0
             },
             "devel": {
-                "enabled": false
+                "enabled": true
             },
             "redirection": {
                 "warn": true
