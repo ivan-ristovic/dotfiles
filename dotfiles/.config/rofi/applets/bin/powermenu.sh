@@ -21,7 +21,7 @@ elif [[ ( "$theme" == *'type-2'* ) || ( "$theme" == *'type-4'* ) ]]; then
 	list_row='1'
 fi
 
-shutdown --show > /dev/null
+test -f /run/systemd/shutdown/scheduled
 is_shutdown=$?
 
 # Options
