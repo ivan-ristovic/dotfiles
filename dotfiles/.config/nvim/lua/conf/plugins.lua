@@ -39,6 +39,7 @@ return require('packer').startup(function(use)
     use 'nvim-lua/popup.nvim'       -- An implementation of the Popup API   
     use "akinsho/bufferline.nvim"   -- Buffer (tabs)
     use "sitiom/nvim-numbertoggle"  -- Absolute/Relative number autotoggle
+    use "mbbill/undotree"           -- Undo history
     use "mg979/vim-visual-multi"    -- Multi-cursors
     use {
         'nvim-lualine/lualine.nvim',

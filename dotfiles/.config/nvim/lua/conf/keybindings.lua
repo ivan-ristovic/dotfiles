@@ -18,8 +18,8 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Normal --
 -- Remap for dealing with word wrap
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Word wrap
 keymap("n", "<C-W>", ":set wrap!<CR>", opts)
@@ -71,6 +71,9 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 -- File Tree (NvimTree)
 keymap("n", "<leader>t", ":NvimTreeToggle<cr>", opts)
 keymap("n", "<leader>n", ":NvimTreeFocus<cr>", opts)
+
+-- Undo Tree (UndoTree)
+keymap('n', '<leader>u', ":UndotreeToggle<cr>", opts)
 
 -- Tab line (Bufferline)
 keymap("n", "<leader>1", ":BufferLineGoToBuffer 1<cr>", opts)
