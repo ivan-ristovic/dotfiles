@@ -90,8 +90,9 @@ if [ "$ALERT" != "null" ]; then
             WARN_START=$(date -d @"$WARN_START" "+%a %R")
             WARN_END=$(date -d @"$WARN_END" "+%a %R")
             ALERT_E=$(_jq '.event' | sed 's/"//g')
+            ALERT_S=$(_jq '.sender_name' | sed 's/"//g')
             ALERT_D=$(_jq '.description' | sed 's/"//g')
-            alerts+="\n[${WARN_START} - ${WARN_END}]\n${ALERT_E}\n${ALERT_D}\n"
+            alerts+="\n[${WARN_START} - ${WARN_END}]\n${ALERT_S}\n${ALERT_E}\n${ALERT_D}\n"
         done
 
         notify-send -u critical "  Weather alerts" "$alerts"
