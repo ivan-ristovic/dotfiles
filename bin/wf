@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+curl --silent --fail --show-error "wttr.in/${1:-}" | head -n -2 | less -r
+
