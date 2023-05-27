@@ -353,7 +353,7 @@ exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id sleep 1 && setxkbmap -layout 'us,rs,rs' -variant euro,latin,yz -option 'grp:rctrl_rshift_toggle,compose:ralt'
 
 # start conky
-exec_always --no-startup-id conky
+exec_always --no-startup-id ~/.config/conky/start_conky
 
 # set wallpaper
 exec --no-startup-id sleep 1 && feh --bg-fill ~/.config/i3/wp.png
