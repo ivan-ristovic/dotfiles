@@ -5,5 +5,5 @@ profile=${AUTORANDR_CURRENT_PROFILE:-$1}
 notify-send -i display "Display profile" "$profile"
 feh --bg-fill ~/.config/i3/wp.png
 killall conky
-conky -d
+~/.config/conky/start_conky 
 
