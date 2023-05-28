@@ -1,4 +1,4 @@
 #!/bin/bash
 
-conky -c ~/.config/conky/side.conf
-conky -c ~/.config/conky/weather.conf
+conky -c ~/.config/conky/side.conf -d
+conky -c ~/.config/conky/weather.conf -d
