@@ -15,12 +15,22 @@ trash_dirs=(
     .config/dunst
     .config/Kvantum
 )
-for dir in ${trash_dirs[@]}; do 
+for dir in "${trash_dirs[@]}" ; do 
     msg "Cleaning up junk dir: $dir"
-    rm $SETUP_HOME_USER/$dir -rf
+    rm "$SETUP_HOME_USER/${dir:?}" -rf
 done
 
-uninst clipit
-uninst conky-i3 conky manjaro-i3-settings
-uninst xfce-terminal
+bloat=(
+    clipit
+    conky
+    conky-i3
+    manjaro-i3-settings
+    manjaro-ranger-settings
+    manjaro-zsh-config
+    xfce-terminal
+)
+
+for package in "${bloat[@]}" ; do
+    uninst "$package"
+done
 
