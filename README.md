@@ -43,6 +43,12 @@ My custom (additional) features:
 ### File Manager (ranger)
 ![ranger](screenshots/ranger.png)
 
+### Alternative theming
+See the [themes](dotfiles/themes) directory for more information
+
+#### Presentation theme
+![presentation](screenshots/theming.png)
+
 
 ## Repository overview
 
