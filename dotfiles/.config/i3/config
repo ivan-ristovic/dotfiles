@@ -294,7 +294,7 @@ set $ws10 "10"
 assign [class="Alacritty"] $ws1
 assign [class="(?i)firefox"] $ws2
 assign [class="(Dis|Web)[cC]ord*"] $ws3
-assign [class="Steam"] $ws3
+assign [class="[Ss]team"] $ws3
 # assign [class="Thunar"] $ws4
 
 # automatic set focus new window if it opens on another workspace then the current:
