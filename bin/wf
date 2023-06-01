@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 
-curl --silent --fail --show-error "wttr.in/${1:-}" | head -n -2 | less -r
+(
+(curl --silent --fail --show-error "wttr.in/${1:-Belgrade}_m" | head -n -2)
+(curl --silent --fail --show-error "v2.wttr.in/${1:-Belgrade}_m" | head -n -2)
+) | pr -m -t | less -r
 
