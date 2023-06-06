@@ -35,11 +35,11 @@ len=8
 while getopts "h?fgan:" opt; do
   case $opt in
     h)
-      echo "Usage: $0 [-n N] [-f]"
+      echo "Usage: $0 [-n N] [-g] [-a]"
       exit 0
       ;;
     \?)
-      echo "Usage: $0 [-n N] [-f]"
+      echo "Usage: $0 [-n N] [-g] [-a]"
       exit 0
       ;;
     g)
