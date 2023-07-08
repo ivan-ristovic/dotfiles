@@ -12,6 +12,7 @@ lm_sensors
 noto-fonts noto-fonts-emoji
 taskwarrior-tui
 the_silver_searcher
+torbrowser-launcher
 
 aur:broot
 aur:cava
@@ -23,7 +24,6 @@ aur:ttf-hack-nerd
 aur:ttf-ms-fonts
 aur:timew
 aur:tmuxinator
-aur:tor-browser
 aur:ventoy-bin
 
 # Do not delete this line
