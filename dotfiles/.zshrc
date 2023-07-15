@@ -208,6 +208,16 @@ bindkey -M isearch " " magic-space
 source ~/.aliases.zsh
 source ~/.functions
 
+smartdots() {
+  if [[ $LBUFFER = *.. ]]; then
+    LBUFFER+=/..
+  else
+    LBUFFER+=.
+  fi
+}
+zle -N smartdots
+bindkey . smartdots
+
 ################ AUTOLOAD ################
 
 autoload -U zmv
