@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+    echo "usage: $0 <URL>"
+    exit 1
+fi
+
+wget --no-clobber --page-requisites --html-extension --convert-links --no-host-directories $@
