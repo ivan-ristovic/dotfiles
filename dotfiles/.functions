@@ -9,6 +9,11 @@ function o ()
 	fi;
 }
 
+function path ()
+{
+    echo -e ${PATH//:/\\n}
+}
+
 function mkd ()
 {
     mkdir -p "$@" && cd "$_";
