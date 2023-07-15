@@ -1,0 +1,24 @@
+#!/bin/bash
+
+host="@resolver1.opendns.com"
+version=""
+
+if [ $# -ge 0 ]; then
+    version=$1
+fi
+
+if [ ! -z $version ]; then
+    if [ $version == "4" ]; then
+        host="@resolver4.opendns.com"
+    elif [ $version == "6" ]; then
+        host="@resolver1.ipv6-sandbox.opendns.com AAAA"
+    else
+        echo "usage: $0 [4|6]"
+        exit 1
+    fi
+    version=-$version
+fi
+
+set -x;
+dig +short $host myip.opendns.com $version
+
