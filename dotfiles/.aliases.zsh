@@ -2,6 +2,7 @@ alias ...=../..
 alias .....=../../..
 alias .....=../../../..
 alias ......=../../../../..
+alias -- +x='chmod +x'
 alias cd1='cd -1'
 alias cd2='cd -2'
 alias cd3='cd -3'
