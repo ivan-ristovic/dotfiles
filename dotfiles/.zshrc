@@ -66,7 +66,7 @@ plugins=(
   universalarchive          # ua
   urltools                  # urlencode/urldecode aliases 
   wd                        # directory warp
-  web-search                # aliases for search engines
+  # web-search                # aliases for search engines
   # zsh-autosuggestions
   zsh-interactive-cd        # tab completion for cd 
   zsh-syntax-highlighting   # must be last!
