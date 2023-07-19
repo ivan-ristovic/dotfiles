@@ -16,12 +16,16 @@ fi
 # Load utils
 source "install/utils.sh"
 
+exec 1> >(tee -a setup.log)
+exec 2>&1
+
 function usage ()
 {
     echo -e "usage: $0"
     echo -e "\t[--user username | -u username]"
     echo -e "\t[--dotfiles | --packages install_list_path | --patch[es] | --complete]"
     echo -e "\t[--verbose | -v] [--strict | -s]"
+    echo -e "\t[--log | -l]"
     echo -e "\t[--help | -h]"
     echo
     echo "  LEGEND:"
@@ -29,6 +33,7 @@ function usage ()
     echo -e "\t--strict -s           halt on error (set -e)"
     echo -e "\t--verbose -v          runs the script in debug mode (set -x)"
     echo -e "\t--remote              update git remote URL"
+    echo -e "\t--log -l              output log to logfile"
     echo
     echo -e "\t--dotfiles            link dotfiles (default)"
     echo -e "\t--packages --install  install packages from the given install list"
@@ -46,8 +51,8 @@ SETUP_PATCHES=false
 SETUP_USER=${SUDO_USER:-$(logname 2> /dev/null)}
 SETUP_HOME_DIR="/home/$SETUP_USER"
 
-SHORT_OPTS=v,s,u:,h
-LONG_OPTS=user:,username:,dotfiles,link,stow,packages,install,dotfiles,patch,patches,all,complete,help,strict,debug,verbose,remote,git
+SHORT_OPTS=v,s,u:,h,l
+LONG_OPTS=user:,username:,dotfiles,link,stow,packages,install,dotfiles,patch,patches,all,complete,help,strict,debug,verbose,remote,git,log
 OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --longoptions $LONG_OPTS -- "$@") 
 if [ $? -ne 0 ]; then
     fat "failed to parse provided arguments"
@@ -82,6 +87,12 @@ do
             else 
                 exit $?
             fi
+            ;;
+        -l | --log)
+            logfile="setup-$(date +%s).log"
+            msg "logging output to: $logfile"
+            exec 1> >(tee -a $logfile)
+            exec 2>&1
             ;;
         -v | --verbose | --debug)
             msg "debug mode enabled"
