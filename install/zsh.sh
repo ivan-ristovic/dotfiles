@@ -3,10 +3,6 @@
 source "utils.sh"
 
 inst $@ zsh
-inst $@ python-pip
-
-msg "Installing powerline ..."
-as_user pip3 install powerline-status
 
 if [ ! -d "$SETUP_HOME_DIR"/.oh-my-zsh/ ]; then
     msg "Installing oh-my-zsh ..."
