@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
+# Note: This script is probably not sourced by i3blocks, check i3blocks config
+
 color=\#717171
 vpnstatus=""
 
-if nordvpn status | grep "Status: Connected" ; then
+if nordvpn status | grep -q "Status: Connected" ; then
     color=\#15d4ce
     server=$(nordvpn status | grep "Hostname:" | sed -e "s/Hostname: //" | grep -oE "^[^.]+")
     vpnstatus="[$server] "
