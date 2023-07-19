@@ -8,6 +8,7 @@ autorandr
 awesome-terminal-fonts
 # blueberry
 brightnessctl
+conky
 dex
 dmenu
 dunst
@@ -43,7 +44,6 @@ xed
 xorg-xbacklight
 xorg-xdpyinfo
 
-aur:conky-cairo
 aur:rofi-greenclip
 aur:xkblayout-state-git
 
