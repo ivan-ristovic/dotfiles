@@ -8,8 +8,8 @@ main.audio_input Default input
 main.quality high
 main.codec auto
 main.audio_codec opus
-main.advanced_view false
-main.overclock false
+main.advanced_view true
+main.overclock true
 streaming.service twitch
 streaming.key 
 streaming.start_recording_hotkey 65470 256
