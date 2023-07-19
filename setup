@@ -145,6 +145,7 @@ export SETUP_HOME_DIR
 ### Start setup
 
 packages_requiring_linked_dotfiles=()
+errored_entries=()
 
 if $SETUP_PACKAGES ; then
 
@@ -176,12 +177,18 @@ if $SETUP_PACKAGES ; then
             elif [[ "$entry" == "$AUR_PREFIX"* ]]; then
                 pkg=${entry#"$AUR_PREFIX"}
                 msg "Installing from AUR   : $pkg"
-                inst_aur "$pkg"
-                suc "Successfully installed: $pkg"
+                if inst_aur "$pkg"; then
+                    suc "Successfully installed: $pkg"
+                else
+                    errored_entries+=(${entry})
+                fi
             else
                 msg "Installing package    : $entry"
-                inst "$PM" "$entry"
-                suc "Successfully installed: $entry"
+                if inst "$PM" "$entry"; then
+                    suc "Successfully installed: $entry"
+                else
+                    errored_entries+=(${entry})
+                fi
             fi
             cd "$DOTFILES_ROOT_DIR"
             sleep 1
@@ -247,6 +254,10 @@ fi
 
 if $SETUP_PACKAGES ; then
     process_list "${packages_requiring_linked_dotfiles[@]}"
+
+    for errored_entry in "${errored_entries[@]}"; do
+        err "Failed to install: $errored_entry"
+    done
 fi
 
 unset SETUP_USER
