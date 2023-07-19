@@ -37,6 +37,8 @@ function usage ()
     exit 2
 }
 
+GIT_REMOTE="git@github.com:ivan-ristovic/dotfiles.git"
+
 SETUP_OVERRIDE=false
 SETUP_DOTFILES=false
 SETUP_PACKAGES=false
@@ -74,7 +76,12 @@ do
             SETUP_PATCHES=true
             ;;
         --remote | --git)
-            git remote set-url origin git@github.com:ivan-ristovic/dotfiles.git
+            if git remote set-url origin $GIT_REMOTE ; then
+                suc "Successfully updated remote: $GIT_REMOTE"
+                exit 0
+            else 
+                exit $?
+            fi
             ;;
         -v | --verbose | --debug)
             msg "debug mode enabled"
