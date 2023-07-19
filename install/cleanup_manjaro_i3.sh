@@ -27,6 +27,7 @@ bloat=(
     manjaro-i3-settings
     manjaro-ranger-settings
     manjaro-zsh-config
+    xdg-desktop-portal-gnome
     xfce-terminal
 )
 
