@@ -41,6 +41,7 @@ return require('packer').startup(function(use)
     use "sitiom/nvim-numbertoggle"  -- Absolute/Relative number autotoggle
     use "mbbill/undotree"           -- Undo history
     use "mg979/vim-visual-multi"    -- Multi-cursors
+    use { "j-hui/fidget.nvim", tag = 'legacy' } -- Fidget with status updates 
     use {
         'nvim-lualine/lualine.nvim',
         requires = { 'kyazdani42/nvim-web-devicons' }
