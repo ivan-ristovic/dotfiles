@@ -1,14 +1,5 @@
 #!/bin/bash
 
-function o ()
-{
-	if [ $# -eq 0 ]; then
-		$FILEMGR .;
-	else
-		xdg-open "$@";
-	fi;
-}
-
 function path ()
 {
     echo -e ${PATH//:/\\n}
