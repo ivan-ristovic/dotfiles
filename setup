@@ -16,9 +16,6 @@ fi
 # Load utils
 source "install/utils.sh"
 
-exec 1> >(tee -a setup.log)
-exec 2>&1
-
 function usage ()
 {
     echo -e "usage: $0"
