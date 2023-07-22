@@ -24,7 +24,6 @@ bloat=(
     clipit
     conky
     conky-i3
-    gnome-keyring
     manjaro-i3-settings
     manjaro-ranger-settings
     manjaro-zsh-config
