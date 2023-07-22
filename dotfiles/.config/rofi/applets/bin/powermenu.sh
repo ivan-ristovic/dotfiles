@@ -31,7 +31,7 @@ if [[ "$layout" == 'NO' ]]; then
 	option_2=" Logout"
 	option_3=" Suspend"
 	option_4=" Hibernate"
-	option_5="菱 Reboot"
+	option_5="󰜉 Reboot"
 	option_6=" Shutdown"
 	if [ $is_shutdown -eq 0 ] ; then
 		option_7="󰜺 Cancel scheduled shutdown"
@@ -45,7 +45,7 @@ else
 	option_2=""
 	option_3=""
 	option_4=""
-	option_5="菱"
+	option_5="󰜉"
 	option_6=""
 	if [ $is_shutdown -eq 0 ] ; then
 		option_7="󰜺"
