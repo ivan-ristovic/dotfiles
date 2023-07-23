@@ -6,7 +6,7 @@ main.merge_audio_tracks false
 main.audio_input Default output
 main.audio_input Default input
 main.quality high
-main.codec auto
+main.codec h264
 main.audio_codec opus
 main.advanced_view true
 main.overclock true
@@ -17,7 +17,7 @@ record.save_directory /hdd/recordings
 record.container mp4
 record.start_recording_hotkey 65470 256
 replay.save_directory /hdd/recordings
-replay.container matroska
+replay.container mp4
 replay.time 1200
 replay.start_recording_hotkey 65470 256
 replay.save_recording_hotkey 65471 256
