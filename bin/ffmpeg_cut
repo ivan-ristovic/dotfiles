@@ -5,6 +5,9 @@ if [ $# -ne 3 ]; then
     exit 1
 fi
 
+filename=$(basename -- "$1")
+filename="${filename%.*}"
+
 set -xe;
-ffmpeg -i "$1" -ss "$2" -to "$3" -c:v copy -c:a copy "cut_$1"
+ffmpeg -i "$1" -ss "$2" -to "$3" -filter_complex "[0:a:0][0:a:1]amix=2:longest[aout]" -map 0:V:0 -map "[aout]" -c:v copy -c:a aac -b:a 320k "cut_$filename.mp4"
 
