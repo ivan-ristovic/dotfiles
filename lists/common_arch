@@ -13,6 +13,7 @@ noto-fonts noto-fonts-emoji
 taskwarrior-tui
 the_silver_searcher
 torbrowser-launcher
+ttf-nerd-fonts-symbols
 
 aur:broot
 aur:cava
@@ -20,7 +21,6 @@ aur:kvantum-theme-matchama
 aur:linux-wifi-hotspot
 aur:mpdris2
 aur:taskwarrior-tui
-aur:ttf-hack-nerd
 aur:ttf-ms-fonts
 aur:timew
 aur:tmuxinator
