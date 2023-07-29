@@ -44,7 +44,6 @@ conky.config = {
 }
 
 conky.text = [[
---${execi 5 ~/.config/conky/conky-taskw.py}
 """
 
     COLORS = {
