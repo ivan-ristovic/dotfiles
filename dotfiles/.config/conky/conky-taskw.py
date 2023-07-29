@@ -260,7 +260,7 @@ if __name__ == '__main__':
         import sys
         sys.exit(1)
     conky_file  = home + '/.config/conky/task.conf'
-    shadow_file = home + '/.task.shadow'
+    shadow_file = home + '/.task/.shadow'
 
     from optparse import OptionParser
     parser = OptionParser('usage: %prog -f FILE')
