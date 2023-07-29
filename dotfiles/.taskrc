@@ -1,11 +1,1 @@
-# Files
-data.location=/hdd/nextcloud/Backup/taskwarrior
-
-alias.lo=priority:L
-alias.md=priority:M
-alias.hi=priority:H
-
-include ~/.config/task/.taskrc.projects
-
-alias.rr=recurring until: parent:
-
+.config/task/.taskrc
