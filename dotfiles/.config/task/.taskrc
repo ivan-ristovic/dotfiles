@@ -1,11 +1,21 @@
 # Files
 data.location=~/.task
 
+alias.rr=recurring until: parent:
+
 alias.lo=priority:L
 alias.md=priority:M
 alias.hi=priority:H
+alias.PL=priority:L
+alias.LP=priority:L
+alias.PM=priority:M
+alias.MP=priority:M
+alias.PH=priority:H
+alias.HP=priority:H
 
+# Public project tags
+include ~/.config/task/.taskrc.projects
+
+# Private projects
 include ~/.task/projects
-
-alias.rr=recurring until: parent:
 
