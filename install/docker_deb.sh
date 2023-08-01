@@ -3,7 +3,7 @@
 source "utils.sh"
 
 if is_installed docker ; then
-    print_already_installed docker
+    msg "docker already installed"
     return
 fi
 
