@@ -9,6 +9,7 @@ dog
 extra/bind
 gnu-netcat
 lm_sensors
+nextcloud-client libsecret
 noto-fonts noto-fonts-emoji
 taskwarrior-tui
 the_silver_searcher
