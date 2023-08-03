@@ -11,7 +11,7 @@ class TConky (object):
     CONKY_HEADER = """
 conky.config = {
     alignment = 'top_right',
-    background = false,
+    background = true,
     cpu_avg_samples = 2,
     --default_color = '656667',
     --default_outline_color = '828282',
