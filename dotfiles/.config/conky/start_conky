@@ -1,4 +1,18 @@
 #!/bin/bash
 
-conky -c ~/.config/conky/side.conf -d
-conky -c ~/.config/conky/weather.conf -d
+conky_cfg=~/.config/conky
+conky -c $conky_cfg/side.conf -d
+conky -c $conky_cfg/weather.conf -d
+
+conky_task_conf=$conky_cfg/task.conf
+if [ ! -f $conky_task_conf ]; then
+    touch $conky_task_conf
+fi
+conky -c $conky_task_conf
+
+tshadow=~/.task/.shadow
+if [ ! -f $tshadow ]; then
+    exit 1
+fi
+
+echo $tshadow | entr -s "~/$conky_cfg/conky-taskw.py"

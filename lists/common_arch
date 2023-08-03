@@ -11,7 +11,6 @@ gnu-netcat
 lm_sensors
 nextcloud-client libsecret
 noto-fonts noto-fonts-emoji
-taskwarrior-tui
 the_silver_searcher
 torbrowser-launcher
 ttf-nerd-fonts-symbols
@@ -21,9 +20,7 @@ aur:cava
 aur:kvantum-theme-matchama
 aur:linux-wifi-hotspot
 aur:mpdris2
-aur:taskwarrior-tui
 aur:ttf-ms-fonts
-aur:timew
 aur:tmuxinator
 aur:ventoy-bin
 

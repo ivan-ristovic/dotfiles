@@ -47,11 +47,6 @@ function is_installed ()
     fi
 }
 
-function print_already_installed ()
-{
-    echo "warning: $@ already installed -- skipping"
-}
-
 function as_user ()
 {
     sudo -u $SETUP_USER $@

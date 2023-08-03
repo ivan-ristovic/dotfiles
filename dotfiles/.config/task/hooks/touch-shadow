@@ -1,0 +1,9 @@
+#!/bin/python
+
+import sys
+import os
+
+os.system("touch ~/.task/.shadow")
+print(sys.stdin.readlines()[-1])
+sys.exit(0)
+
