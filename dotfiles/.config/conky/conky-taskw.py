@@ -1,15 +1,92 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 from taskw import TaskWarrior
-import os.path, time
+import os.path, sys
 
-class TConky (object):
+home = os.getenv("HOME")
+if home is None:
+    print("failed to read HOME env var")
+    sys.exit(1)
 
-    NONE = "--- \n"
+conky_file  = home + '/.config/conky/task.conf'
 
-    CONKY_HEADER = """
-conky.config = {
+filter = sys.argv[1] if len(sys.argv) > 1 else "pending"
+
+tw = TaskWarrior()
+tasks = tw.load_tasks(filter)
+
+colors = {
+    'H' : 'color2',
+    'M' : 'color1',
+    'L' : 'color1',
+}
+
+def task_to_key(task):
+    prio_trans = {
+        'L' : '3',
+        'M' : '2',
+        'H' : '1'
+    }
+    prio = prio_trans.get(task.get('priority')) if prio_trans.get(task.get('priority')) else '4'
+    date = prio_trans.get(task.get('due')) if prio_trans.get(task.get('due')) else '9999999999'
+    return "%s-%s-%s-%s" % (date, prio, task['id'], task['uuid'])
+
+def parse_tasks(tasks):
+    projects = {}
+
+    for task in tasks:
+        key = task_to_key(task)
+
+        due = task.get('due')
+        if due:
+            import datetime
+            task['formatted_date'] = datetime.datetime.fromtimestamp(int(due)).strftime('%d/%m') 
+        else:
+            task['formatted_date'] = None
+
+        project = task['project'] if task.get('project') else 'other'
+        if not projects.get(project):
+            projects[project] = {}
+        projects[project][key] = task
+
+    return projects
+     
+def format_tasks(projects):
+    formatted = ''
+    for (project, tasks) in sorted(projects.items()):
+        formatted += format_project(project, tasks)
+    return formatted
+
+def format_project(project, tasks, sort=True, indent=' ', maxw=40):
+    formatted = ''
+
+    if not tasks:
+        return formatted
+    
+    # header
+    formatted += "${color0}[%s] $color\n${voffset -8}${#212121}${hr}$color\n" % project
+
+    tasks = sorted(tasks.items()) if sort else tasks
+    for (_, task) in tasks:
+        formatted += indent
+        formatted += format_task(task, maxw)
+
+    return formatted
+
+def format_task(task, maxw=40):
+    color = colors[task.get('priority') if task.get('priority') else 'L']
+    date = task['formatted_date'] if task['formatted_date'] else '${#303030}inf${%s}' % color
+    task_string = "${%(color)s}[%(id)s] %(desc)s $alignr %(date)s $color\n"
+    return task_string % {
+        'color': color,
+        'id'   : task['id'],
+        'date' : date,
+        'desc' : task['description'].replace('#','\\#')[:maxw]
+    }
+
+def write_conky_conf(path, payload):
+    content = f"""
+conky.config = {{
     alignment = 'top_right',
     background = true,
     cpu_avg_samples = 2,
@@ -41,233 +118,20 @@ conky.config = {
     color0 = '5d7b86',
     color1 = 'a0a0a0',
     color2 = 'ba4141',
-}
+}}
 
 conky.text = [[
+{payload}
+]]
 """
+    
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write('%s\n' % content)
 
-    COLORS = {
-            'H' : {
-                'even': 'color2',
-                'odd' : 'color2',
-            },
-            'M' : {
-                'even': 'color1',
-                'odd' : 'color1',
-            },
-            'L' : {
-                'even': 'color1',
-                'odd' : 'color1',
-            },
-        }
+    return content
 
+parsed = parse_tasks(tasks[filter])
+formatted = format_tasks(parsed)
+print(formatted)
+write_conky_conf(conky_file, formatted)
 
-    def __init__(self):
-        warrior     = TaskWarrior()
-        tasks       = warrior.load_tasks()
-        self.tasks  = TConky.preprocess_tasks(tasks)
-        self.display_string = self.get_display_string()
-
-
-    @staticmethod
-    def preprocess_tasks(tasks):
-        return {
-            'pending'  : TConky.preprocess_task_list(tasks['pending']),
-            'completed': TConky.preprocess_task_list(tasks['completed'])
-        }
-
-
-    @staticmethod
-    def preprocess_task_list(tasks):
-        """
-        completed : [tag] / [project]
-        pending :
-        """
-        projects = {}
-        tags     = {}
-
-        id = 0
-        for task in tasks:
-
-            # ID
-            id += 1
-            task['id'] = '%0*d' % (2, id)
-            # DATE FORMAT:
-            due = task.get('due')
-            if due:
-                import datetime
-                task['formated_date'] = (datetime.datetime.fromtimestamp(int(due)).strftime('%d/%m'))
-            else:
-                task['formated_date'] = None
-
-            #PROJECTS:
-            projects['other'] = {}
-            if task.get('project'):
-                if not projects.get(task.get('project')):
-                    projects[task['project']] = {}
-                projects[task['project']][TConky.task_to_key(task)] = task
-            else:
-                projects['other'][TConky.task_to_key(task)] = task
-
-            #TAGS:
-            task['tags_list'] = []
-            if task.get('tags'):
-                for tag in task['tags']:
-                    task['tags_list'].append(tag)
-                    if not tags.get(tag):
-                        tags[tag] = {}
-                    tags[tag][TConky.task_to_key(task)] = task
-
-        return {
-            'projects': projects,
-            'tags'    : tags
-        }
-
-
-    @staticmethod
-    def task_to_key(task):
-        prio_trans = {
-            'L' : '3',
-            'M' : '2',
-            'H' : '1'
-        }
-        prio = prio_trans.get(task.get('priority')) if prio_trans.get(task.get('priority')) else '4'
-        date = prio_trans.get(task.get('due')) if prio_trans.get(task.get('due')) else '9999999999'
-        desc = (task['description'].replace(' ',''))[:25]
-        return "%s%s%s%s" % (date, prio, desc, task['entry'])
-
-
-    @staticmethod
-    def write_string_to_file(string, file):
-        f = open(file, 'w', encoding='utf-8')
-        f.write('%s\n' % string)
-        f.close()
-
-    @staticmethod
-    def key_in_list(needles, heystack):
-        return any([n in heystack for n in needles])
-
-    @staticmethod
-    def display_task_list(task_list, skip_tag=(), skip_id=False, skip_date=False):
-        return_string = ''
-        tkeys = sorted(    task_list.keys())
-        even = False
-        for task_key in tkeys:
-            task = task_list[task_key]
-            if not TConky.key_in_list(task['tags_list'], skip_tag):
-                even = not even
-                return_string += TConky.display_task(task, even, skip_id, skip_date)
-        return_string += "\n"
-        return return_string
-
-
-    def display_tag(self, tag, header=None, skip_tag=(), done=False, skip_id=False, skip_date=False):
-        return self.display_stuff('tags', tag, header, skip_tag, done, skip_id, skip_date)
-
-
-    def display_project(self, projects, header=None, skip_tag=(), done=False, skip_id=False, skip_date=False):
-        return self.display_stuff('projects', projects, header, skip_tag, done, skip_id, skip_date)
-
-
-    def display_stuff(self, type, stuff, header=None, skip_tag=(), done=False, skip_id=False, skip_date=False):
-        tasks = self.tasks['pending' if not done else 'completed'][type].get(stuff)
-        if not tasks:
-            return ''
-
-        tstring = ''
-        if not len(tasks):
-            return ''
-        try:
-            tstring += TConky.display_task_list(tasks, skip_tag, skip_id, skip_date)
-        except KeyError:
-            tstring += TConky.NONE
-
-        if len(tstring.strip()) > 0:
-            return TConky.print_headline(header if header else TConky.format_str(stuff)) + tstring
-        return ''
-
-    @staticmethod
-    def format_str(string):
-        return string[0].upper() + string[1:] if len(string) > 1 else string.upper()
-
-    @staticmethod
-    def update(conky_file, shadow_file):
-        should_update = False
-        import pathlib
-        try:
-            pathlib.Path.touch(conky_file, exist_ok=False)
-            should_update = True
-        except FileExistsError:
-            pass
-        try:
-            pathlib.Path.touch(shadow_file, exist_ok=False)
-            should_update = True
-        except FileExistsError:
-            pass
-
-        if should_update:
-            return True
-        
-        conky_file_time  = time.ctime(os.path.getmtime(conky_file))
-        shadow_file_time = time.ctime(os.path.getmtime(shadow_file))
-        return conky_file_time < shadow_file_time
-
-
-    ##
-    # CHANGE THIS
-    ##
-    @staticmethod
-    def display_task(task, even=False, skip_id=False, skip_date=False):
-        color = TConky.COLORS[task.get('priority') if task.get('priority') else 'L']['even' if even else 'odd']
-        date  = '' if skip_date else task['formated_date'] if task['formated_date'] else '${#303030}inf${%s}' % color
-        task_string = " ${%(color)s}[%(id)s] %(desc)s $alignr %(date)s $color\n" if not skip_id else " ${%(color)s}%(desc)s $alignr %(date)s $color\n"
-        return task_string % {
-                'color': color,
-                'id'   : task['id'],
-                'date' : date,
-                'desc' : task['description'].replace('#','\\#')[:40]
-            }
-
-    @staticmethod
-    def print_headline(headline):
-        return "${color0}%s $color\n${voffset -8}${#212121}${hr}$color\n" % headline
-
-    def get_display_string(self):
-        tstring = TConky.CONKY_HEADER
-
-        # TODAY:
-        tstring += self.display_tag('today', '[Today]')
-
-        # PROJECTS (ALL)
-        skip = ('',)
-        tkeys = sorted(self.tasks['pending']['projects'].keys())
-        for tasks_key in tkeys:
-            if tasks_key not in skip:
-                tstring += self.display_project(tasks_key, '[' + tasks_key + ']', ('today'))
-
-        # CHOSEN PROJECT
-        # tstring += self.display_project('projects', "[PRO] Projects", ('today'))
-
-        tstring += '\n]]'
-        return tstring
-
-if __name__ == '__main__':
-
-    home = os.getenv("HOME")
-    if home is None:
-        print("failed to read HOME env var")
-        import sys
-        sys.exit(1)
-    conky_file  = home + '/.config/conky/task.conf'
-    shadow_file = home + '/.task/.shadow'
-
-    from optparse import OptionParser
-    parser = OptionParser('usage: %prog -f FILE')
-    parser.add_option("-f", "--file", dest="file")
-    (opt, args) = parser.parse_args()
-
-    if opt.file or TConky.update(conky_file, shadow_file):
-        import os
-        os.system('task > /dev/null')
-        tc = TConky()
-        TConky.write_string_to_file(tc.display_string, conky_file)
