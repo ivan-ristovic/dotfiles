@@ -18,4 +18,4 @@ fi
 to_exec="$conky_cfg/conky-taskw.py"
 echo "monitoring: $tshadow"
 echo "executing on change: $to_exec"
-echo $tshadow | entr -s "echo 'entr pinged' && $to_exec"
+echo $tshadow | entr -n -s "echo 'entr pinged' && $to_exec"
