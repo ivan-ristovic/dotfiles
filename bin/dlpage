@@ -1,8 +1,10 @@
 #!/bin/bash
 
+wget_args="--no-clobber -r -p -k --wait=1"
 if [ $# -eq 0 ]; then
-    echo "usage: $0 <URL>"
+    echo "usage: $0 [additional wget args] <URL>"
+    echo "current wget args: $wget_args"
     exit 1
 fi
 
-wget --no-clobber --page-requisites --html-extension --convert-links --no-host-directories $@
+wget "$wget_args" "$@" 
