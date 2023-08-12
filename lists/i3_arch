@@ -29,7 +29,7 @@ numlockx
 playerctl
 polkit-gnome
 pulseaudio pavucontrol
-rofi
+rofi rofi-calc
 scrot
 sysstat
 thunar
