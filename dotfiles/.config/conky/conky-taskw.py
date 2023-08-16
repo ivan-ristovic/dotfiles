@@ -71,6 +71,7 @@ def format_project(project, tasks, sort=True, indent=' ', maxw=40):
         formatted += indent
         formatted += format_task(task, maxw)
 
+    formatted += "${voffset 16}"
     return formatted
 
 def format_task(task, maxw=40):

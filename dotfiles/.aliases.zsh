@@ -113,6 +113,7 @@ alias rd=rmdir
 alias rma='rm *'
 alias rmf='rm -rf'
 alias rmfa='rm -rf *'
+alias rss='newsboat'
 alias sa='alias | egrep -i'
 alias sortnr='sort -n -r'
 alias src='exec zsh'
