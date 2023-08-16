@@ -8,7 +8,7 @@ fi
 ibase=$1
 obase=$2
 shift 2
-nums=$(joinby ';' $@)
+nums=$(joinby ';' $@ | tr '[:lower:]' '[:upper:]')
 
 # Order matters! As soon as ibase is set, input must be in that base
 bc <<< "obase=$obase;ibase=$ibase;$nums"
