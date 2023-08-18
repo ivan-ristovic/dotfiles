@@ -1,0 +1,10 @@
+#!/bin/bash
+
+test -z "$1" && echo "usage: $(basename "$0") name" && exit 1
+
+echo "$PATH" | awk -F : '{ for (i=1;i<=NF;i++) print $i }' | while read -r cdir; do
+    ls "$cdir" | grep -- "$1"
+done | while read -r name; do
+    /usr/bin/which "$name"
+done | sort
+
