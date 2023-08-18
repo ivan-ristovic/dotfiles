@@ -1,0 +1,54 @@
+#!/bin/bash
+
+source ~/dotfiles/install/utils.sh
+
+function prompt () 
+{
+    msg "$*"
+    read -rp "Press enter to run..."
+}
+
+function execute ()
+{
+    msg "executing: $*"
+    "$@" 
+}
+
+prompt "List systemd errors:"
+execute systemctl --failed
+
+prompt "List systemd error logs:"
+journalctl -p 3 -b | less
+
+prompt "Checking for new packages:"
+list_loc=$NC_BACKUP/package_list.txt
+touch $list_loc
+if ! diff -u <(cat $list_loc) <(pacman -Qqe) ; then
+    err "Changes detected. Check whether install lists should be updated."
+    if ask "Update the backed up package list?" ; then
+        mv $list_loc $list_loc.bak
+        if pacman -Qqe > $list_loc ; then
+            suc "Package list updated"
+        else
+            err "Failed to update package list"
+        fi
+    fi
+fi
+unset list_loc
+
+prompt "Update packages (official)"
+execute pacman -Syu
+
+prompt "Update packages (AUR)"
+execute yay -Syu
+
+prompt "Show orphaned packages"
+execute pacman -Qtd
+
+prompt "Show foreign packages"
+execute pacman -Qm
+
+prompt "Cleaning package manager caches"
+execute paccache -r
+
+suc "Done. Have a nice day."
