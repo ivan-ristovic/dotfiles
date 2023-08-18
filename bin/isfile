@@ -1,8 +1,0 @@
-#!/bin/bash
-
-for f in "$@"; do
-    if ! test -f "$f"; then
-        exit 1
-    fi
-done
-
