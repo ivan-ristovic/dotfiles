@@ -37,7 +37,7 @@ fi
 unset list_loc
 
 prompt "Update packages (official)"
-execute pacman -Syu
+execute sudo pacman -Syu
 
 prompt "Update packages (AUR)"
 execute yay -Syu
