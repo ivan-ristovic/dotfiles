@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "utils.sh"
+source "../utils.sh"
 
 inst $@ fuse2 gtkmm linux-headers ncurses libcanberra pcsclite
 
