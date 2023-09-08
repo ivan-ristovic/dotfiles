@@ -54,7 +54,7 @@ See the [themes](dotfiles/themes) directory for more information
 
 This repository contains:
 - my personal dotfiles symlinked to the home directory ([`dotfiles/`](dotfiles) directory)
-- binaries and scripts added to the `PATH` for quick setup ([`bin/`](bin) directory)
+- binaries and scripts added to the `PATH` for quick invocation ([`bin/`](bin) directory)
 - package install lists ([`lists/`](lists) directory)
 - custom package install scripts ([`install/`](install) directory)
 - patches for global configuration files ([`patches/`](patches) directory)
@@ -77,6 +77,7 @@ Notable scripts:
 - install packages from the provided list or command line
 - link dotfiles to provided user's home directory
 - perform patches to global configuration files
+- install custom systemd services
 
 Also check out:
 - `lists/` directory for more information on the mass package installation lists
