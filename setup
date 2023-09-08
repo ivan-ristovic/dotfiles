@@ -181,10 +181,6 @@ if $SETUP_PACKAGES ; then
     function process_list ()
     {
         for entry in "$@"; do
-            if [[ "$entry" == "install/"* ]]; then
-                msg "Ignoring install/ pfix: $entry"
-                entry=${entry#"install/"}
-            fi
             cd "install"
             SETUP_SCRIPT="$entry"
             AUR_PREFIX="aur:"
@@ -222,7 +218,11 @@ if $SETUP_PACKAGES ; then
     }
 
     for arg in "$@" ; do
-        if [ -f "$arg" ] && [[ "$arg" != "install/"* ]]; then
+        if [[ "$arg" == "install/"* ]]; then
+            msg "Ignoring install/ pfix: $arg"
+            arg=${arg#"install/"}
+        fi
+        if [ -f "$arg" ]; then
             process_list $(read_list "$arg")
         else
             process_list "$arg"
@@ -265,8 +265,8 @@ if $SETUP_DOTFILES ; then
 fi
 
 if $SETUP_PATCHES ; then
-    patches_dir=patches
-    patches_script=patch
+    patches_dir="patches"
+    patches_script="patch"
     if [ -d "$patches_dir" ]; then
         cd $patches_dir
         if [ -f "$patches_script" ]; then
@@ -283,8 +283,8 @@ if $SETUP_PATCHES ; then
 fi
 
 if $SETUP_SERVICES ; then
-    services_dir=systemd
-    services_script=setup_services
+    services_dir="systemd"
+    services_script="setup_services"
     if [ -d "$services_dir" ]; then
         cd $services_dir
         if [ -f "$services_script" ]; then
