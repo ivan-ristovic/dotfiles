@@ -1,0 +1,21 @@
+#!/bin/bash
+
+source ../install/utils.sh
+
+user=$1
+stow_args="--no-folding -v"
+
+sudo ln -s $(pwd)/sbin /usr/sbin/dotfiles
+sudo stow $stow_args system -t /etc/systemd/system 
+sudo stow $stow_args user   -t /etc/systemd/user 
+
+while IFS= read -r service
+do
+    sudo systemctl enable --now "$(basename "$service")"
+done < "./enabled-system-services.txt"
+
+while IFS= read -r service
+do
+    as_user "$user" systemctl enable --now "$(basename "$service")"
+done < "./enabled-user-services.txt"
+

@@ -20,7 +20,7 @@ function usage ()
 {
     echo -e "usage: $0"
     echo -e "\t[--user username | -u username]"
-    echo -e "\t[--dotfiles | --packages install_list_path | --patch[es] | --complete]"
+    echo -e "\t[--dotfiles | --packages install_list_path | --patch[es] --services | --complete]"
     echo -e "\t[--verbose | -v] [--strict | -s]"
     echo -e "\t[--log | -l]"
     echo -e "\t[--help | -h]"
@@ -45,11 +45,12 @@ SETUP_OVERRIDE=false
 SETUP_DOTFILES=false
 SETUP_PACKAGES=false
 SETUP_PATCHES=false
+SETUP_SERVICES=false
 SETUP_USER=${SUDO_USER:-$(logname 2> /dev/null)}
 SETUP_HOME_DIR="/home/$SETUP_USER"
 
 SHORT_OPTS=v,s,u:,h,l
-LONG_OPTS=user:,username:,dotfiles,link,stow,packages,install,dotfiles,patch,patches,all,complete,help,strict,debug,verbose,remote,git,log
+LONG_OPTS=user:,username:,dotfiles,link,stow,packages,install,dotfiles,patch,patches,services,all,complete,help,strict,debug,verbose,remote,git,log
 OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --longoptions $LONG_OPTS -- "$@") 
 if [ $? -ne 0 ]; then
     fat "failed to parse provided arguments"
@@ -64,6 +65,7 @@ do
             SETUP_DOTFILES=true
             SETUP_PACKAGES=true
             SETUP_PATCHES=true
+            SETUP_SERVICES=true
             ;;
         --packages | --install)
             SETUP_OVERRIDE=true
@@ -76,6 +78,10 @@ do
         --patch | --patches)
             SETUP_OVERRIDE=true
             SETUP_PATCHES=true
+            ;;
+        --services)
+            SETUP_OVERRIDE=true
+            SETUP_SERVICES=true
             ;;
         --remote | --git)
             if git remote set-url origin $GIT_REMOTE ; then
@@ -147,6 +153,7 @@ if ! $SETUP_OVERRIDE ; then
     SETUP_PACKAGES=false
     SETUP_DOTFILES=true
     SETUP_PATCHES=false
+    SETUP_SERVICES=false
 fi
 
 msg "user: $SETUP_USER"
@@ -254,16 +261,38 @@ if $SETUP_DOTFILES ; then
 fi
 
 if $SETUP_PATCHES ; then
-    if [ -d "patches" ]; then
-        cd patches
-        if [ -f "patch.sh" ]; then
-            source patch.sh
+    patches_dir=patches
+    patches_script=patch.sh
+    if [ -d "$patches_dir" ]; then
+        cd $patches_dir
+        if [ -f "$patches_script" ]; then
+            source "$patches_script"
         else
-            err "patches/patch.sh script is not present."
+            err "$patches_dir/$patches_script script is not present."
         fi
     else
-        err "patches/ directory is not present."
+        err "$patches_dir/ directory is not present."
     fi
+    unset patches_dir
+    unset patches_script
+    cd "$DOTFILES_ROOT_DIR"
+fi
+
+if $SETUP_SERVICES ; then
+    services_dir=systemd
+    services_script=setup_services
+    if [ -d "$services_dir" ]; then
+        cd $services_dir
+        if [ -f "$services_script" ]; then
+            source "$services_script"
+        else
+            err "$services_dir/$services_script script is not present."
+        fi
+    else
+        err "$services_dir/ directory is not present."
+    fi
+    unset services_dir
+    unset services_script
     cd "$DOTFILES_ROOT_DIR"
 fi
 

@@ -59,6 +59,7 @@ This repository contains:
 - custom package install scripts ([`install/`](install) directory)
 - patches for global configuration files ([`patches/`](patches) directory)
 - containers for sandboxing and testing ([`containers/`](containers) directory)
+- custom `systemd` services ([`systemd/`](systemd) directory)
 
 Each directory has a README with more details.
 
@@ -81,4 +82,5 @@ Also check out:
 - `lists/` directory for more information on the mass package installation lists
 - `install/` directory for more information on how to use the scripts for custom package installations
 - `patches/` directory for more information on how to use the automatic config patching system
+- `systemd/` directory for more information on how to create custom `systemd` services
 

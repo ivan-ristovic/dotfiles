@@ -1,0 +1,8 @@
+[Unit]
+Description=Disables Intel CPU turbo boost on boot
+
+[Service]
+ExecStart=/usr/sbin/dotfiles/cpu-no-turbo.sh
+
+[Install]
+WantedBy=multi-user.target
