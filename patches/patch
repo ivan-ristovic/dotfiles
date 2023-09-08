@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../install/utils.sh
+source ../utils.sh
 
 function process_patch () 
 {

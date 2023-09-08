@@ -14,7 +14,7 @@ if [ ! -d "install" ]; then
 fi
 
 # Load utils
-source "install/utils.sh"
+source "utils.sh"
 
 function usage ()
 {
@@ -181,8 +181,12 @@ if $SETUP_PACKAGES ; then
     function process_list ()
     {
         for entry in "$@"; do
+            if [[ "$entry" == "install/"* ]]; then
+                msg "Ignoring install/ pfix: $entry"
+                entry=${entry#"install/"}
+            fi
             cd "install"
-            SETUP_SCRIPT="$entry.sh"
+            SETUP_SCRIPT="$entry"
             AUR_PREFIX="aur:"
             if [[ "$entry" == "+"* ]]; then
                 cd "$DOTFILES_ROOT_DIR"
@@ -195,7 +199,7 @@ if $SETUP_PACKAGES ; then
                 packages_requiring_linked_dotfiles+=(${to_post_install})
             elif [ -f "$SETUP_SCRIPT" ]; then
                 msg "Setting up via script : $entry"
-                source "$SETUP_SCRIPT" "$PM"
+                source ./"$SETUP_SCRIPT" "$PM"
             elif [[ "$entry" == "$AUR_PREFIX"* ]]; then
                 pkg=${entry#"$AUR_PREFIX"}
                 msg "Installing from AUR   : $pkg"
@@ -218,7 +222,7 @@ if $SETUP_PACKAGES ; then
     }
 
     for arg in "$@" ; do
-        if [ -f "$arg" ]; then
+        if [ -f "$arg" ] && [[ "$arg" != "install/"* ]]; then
             process_list $(read_list "$arg")
         else
             process_list "$arg"

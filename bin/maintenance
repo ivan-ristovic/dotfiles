@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ~/dotfiles/install/utils.sh
+source ~/dotfiles/utils.sh
 
 function prompt () 
 {

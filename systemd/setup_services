@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../install/utils.sh
+source ../utils.sh
 
 user=$1
 stow_args="--no-folding -v"
