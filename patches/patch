@@ -19,7 +19,7 @@ function swap_file ()
 }
 
 for patch in *.patch ; do
-    patched="$patch.patched"
+    patched="._$patch"
     if [[ -f $patched ]]; then
         msg "Skipping already performed patch: $patch"
     else

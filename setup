@@ -262,11 +262,11 @@ fi
 
 if $SETUP_PATCHES ; then
     patches_dir=patches
-    patches_script=patch.sh
+    patches_script=patch
     if [ -d "$patches_dir" ]; then
         cd $patches_dir
         if [ -f "$patches_script" ]; then
-            source "$patches_script"
+            source ./"$patches_script"
         else
             err "$patches_dir/$patches_script script is not present."
         fi
@@ -284,7 +284,7 @@ if $SETUP_SERVICES ; then
     if [ -d "$services_dir" ]; then
         cd $services_dir
         if [ -f "$services_script" ]; then
-            source "$services_script"
+            source ./"$services_script"
         else
             err "$services_dir/$services_script script is not present."
         fi
