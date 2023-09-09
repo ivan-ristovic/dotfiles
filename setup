@@ -256,7 +256,7 @@ if $SETUP_DOTFILES ; then
     if stow --no-folding -v . -t "$SETUP_HOME_DIR" ; then 
         suc "Dotfiles linked."
     else
-        err "Failed linking dotfiles!"
+        err "Failed linking dotfiles! Backup is kept at: $backup_dir"
     fi
     cd "$DOTFILES_ROOT_DIR"
     

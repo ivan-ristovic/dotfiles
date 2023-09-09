@@ -6,10 +6,11 @@
 # Force overwrites of the GTK configuration as it always creates new files, destroying the symlinks in the process
 .config/gtk-3.0/bookmarks
 .config/gtk-3.0/settings.ini
-.config/FreeTube/settings.db
 .config/mimeapps.list
 .gtkrc-2.0
 
-# These programs destroy symlinks so their config is forcefully re-symlinked
-.config/qBittorrent/qBittorrent.conf
+# These programs keep window state in the config, as well as periodically overwriting config
+.config/FreeTube/settings.db
 .config/MusicBrainz/Picard.ini
+.config/qBittorrent/qBittorrent.conf
+
