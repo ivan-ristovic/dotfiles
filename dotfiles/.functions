@@ -65,7 +65,7 @@ function until-suc ()
 
 function view-src ()
 {
-    if whence -v $1; then
+    if whence -v "$1"; then
         case $(whence -w "$1") in
             *": function")
                 which "$1" | bat --file-name="function: $1"

@@ -134,6 +134,6 @@ alias uz=ua
 alias ux=extract
 alias vim='nvim'
 alias vsc='codium .'
-alias which-command=whence
+alias which-command='whence -af'
 alias ytdl=yt-dlp
 
