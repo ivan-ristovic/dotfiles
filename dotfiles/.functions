@@ -49,17 +49,34 @@ function trim ()
     sed 's/^ *//; s/ *$//; /^$/d' "${1:-/dev/stdin}" 
 }
 
+function until-code ()
+{
+    code=$1
+    shift
+    while true; do
+        eval "$*"
+        if [ $? -eq "$code" ]; then
+            break
+        fi
+    done
+}
+
 function until-err ()
 {
-    while "$@" ; do
+    while eval "$*" ; do
         true
     done
 }
 
 function until-suc ()
 {
-    while ! "$@" ; do
-        true
+    until-code 0 "$@"
+}
+
+function loop ()
+{
+    while true; do
+        eval "$*"
     done
 }
 
