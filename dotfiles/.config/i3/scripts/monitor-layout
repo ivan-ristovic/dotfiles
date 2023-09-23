@@ -6,6 +6,7 @@ import os
 import re
 import subprocess
 import sys
+from functools import cmp_to_key
 
 env_dbg = os.getenv("DEBUG", "false").lower() == "true"
 env_res = int(os.getenv("RES_COUNT", 5))
@@ -17,7 +18,8 @@ env_res_pref_primary_max = list(map(int, env_res_pref_primary_max))
 env_res_pref_secondary_max = list(map(int, env_res_pref_secondary_max))
 
 positions = {
-    "default": "default",
+    "primary": "primary",
+    "secondary": "secondary",
     "left-of": "right-of",
     "right-of": "left-of",
     "above": "below",
@@ -39,6 +41,17 @@ disconnected_outputs = sorted([o for o in disconnected_outputs if o])
 xrandr_output = subprocess.check_output(xrandr_query_c, shell=True, text=True).split(os.linesep)
 
 msg('Disconnected outputs:', disconnected_outputs)
+
+def parse_res(res_str):
+    return list(map(int, res_str.split('x')))
+
+def cmp_rates(r1, r2):
+    res1, rate1 = parse_res(r1[0]), max(r1[1])
+    res2, rate2 = parse_res(r2[0]), max(r2[1])
+    if abs(rate1 - rate2) < rate_cmp_eps:
+        return 1 if res1 > res2 else (-1 if res1 < res2 else 0)
+    else:
+        return 1 if rate1 > rate2 else -1
 
 xrandr_outputs = [[]]
 for line in xrandr_output:
@@ -68,11 +81,11 @@ def is_preferred_rate(r):
     return abs(r - env_rate_pref) < rate_cmp_eps
 
 def is_viable_primary_resolution(r):
-    res = list(map(int, r.split('x')))
+    res = parse_res(r)
     return res <= env_res_pref_primary_max
 
 def is_viable_secondary_resolution(r):
-    res = list(map(int, r.split('x')))
+    res = parse_res(r)
     return res <= env_res_pref_secondary_max
 
 def xrandr_arg_disconnected(args):
@@ -89,10 +102,13 @@ def push_arg(is_primary, *args):
         xrandr_arg_secondary.extend([str(arg) for arg in args])
 
 output_primary = None
+output_second = None
 for output, info in outputs.items():
     is_primary = output.startswith('eDP')
     if is_primary:
         output_primary = output
+    else:
+        output_second = output
     
     if env_dbg:
         msg(output, '\t#1' if is_primary else '\t#2')
@@ -120,6 +136,7 @@ for output, info in outputs.items():
         msg('preferred resolutions: ', *preferred_resolutions)
 
     chosen_set = preferred_resolutions if any(preferred_resolutions) else viable_resolutions
+    chosen_set = sorted(chosen_set, key=cmp_to_key(cmp_rates), reverse=True)
     if any(chosen_set):
         best_res = chosen_set[0][0]
         best_rate = max(chosen_set[0][1])
@@ -128,7 +145,7 @@ for output, info in outputs.items():
 
 assert output_primary is not None
 
-if pos != 'default':
+if pos not in ['primary', 'secondary']:
     xrandr_cmd = f'''\
     xrandr \
     {xrandr_arg_off} \
@@ -139,10 +156,13 @@ else:
     if len(outputs) == 1:
         xrandr_cmd = f"xrandr {xrandr_arg_off} {' '.join(xrandr_arg_primary)} --primary"
     else:
-        xrandr_cmd = f"xrandr {xrandr_arg_off} --output {output_primary} --off {' '.join(xrandr_arg_secondary)} --primary"
+        assert output_second is not None
+        if pos == 'primary':
+            xrandr_cmd = f"xrandr {xrandr_arg_off} {' '.join(xrandr_arg_primary)} --primary --output {output_second} --off"
+        else:
+            xrandr_cmd = f"xrandr {xrandr_arg_off} --output {output_primary} --off {' '.join(xrandr_arg_secondary)} --primary"
 
-msg(xrandr_cmd)
-
+msg('executing: ' + xrandr_cmd)
 os.system(xrandr_cmd)
 
 postswitch = '~/.config/autorandr/postswitch'
