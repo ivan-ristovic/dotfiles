@@ -1,13 +1,19 @@
 #!/bin/bash
 
-if [ $# -ne 3 ]; then
-    echo "usage: $(basename $0) input_video hh:mm:ss hh:mm:ss"
+if [ $# -lt 2 ]; then
+    echo "usage: $(basename $0) input_video [hh]:mm:ss [[hh]:mm:ss]"
     exit 1
 fi
 
 filename=$(basename -- "$1")
 filename="${filename%.*}"
 
+from="-ss $2"
+to=""
+if [ $# -gt 2 ]; then
+    to="-to $3"
+fi
+
 set -xe;
-ffmpeg -i "$1" -ss "$2" -to "$3" -filter_complex "[0:a:0][0:a:1]amix=2:longest[aout]" -map 0:V:0 -map "[aout]" -c:v copy -c:a aac -b:a 320k "cut_$filename.mp4"
+ffmpeg -i "$1" $from $to -filter_complex "[0:a:0][0:a:1]amix=2:longest[aout]" -map 0:V:0 -map "[aout]" -c:v copy -c:a aac -b:a 320k "cut_$filename.mp4"
 
