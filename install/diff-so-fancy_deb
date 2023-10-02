@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "./utils.sh"
+source "../utils.sh"
 
 sudo add-apt-repository ppa:aos1/diff-so-fancy
 sudo apt update
