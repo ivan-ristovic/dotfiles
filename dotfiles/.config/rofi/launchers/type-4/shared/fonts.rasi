@@ -8,5 +8,5 @@
  **/
 
 * {
-    font: "FontAwesome 10";
+    font: "Noto Sans Regular 10";
 }
