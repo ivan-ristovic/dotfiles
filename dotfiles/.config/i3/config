@@ -527,7 +527,7 @@ bar {
 # Application menu handled by rofi: #
 #####################################
 
-bindsym $mod+d exec ~/.config/rofi/launchers/type-4/launcher.sh
+bindsym $mod+d exec ~/.config/rofi/launchers/selected/launcher.sh
 bindsym $mod+m exec ~/.config/rofi/applets/bin/mpd.sh
 
 # Clipboard
