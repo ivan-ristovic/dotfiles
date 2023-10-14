@@ -10,7 +10,7 @@
 /*****----- Configuration -----*****/
 configuration {
 	modi:                       "drun";
-    show-icons:                 false;
+    show-icons:                 true;
     display-drun:               "Run";
     display-run:                "";
     display-filebrowser:        "";
@@ -119,15 +119,15 @@ entry {
     enabled:                     true;
     expand:                      false;
     padding:                     5px 10px;
-    width:                       200px;
+    width:                       150px;
     border-radius:               0%;
     background-color:            @alternate-background;
     text-color:                  @foreground-colour;
     cursor:                      text;
-    placeholder:                 "Search...";
+    placeholder:                 " Search...";
     placeholder-color:           inherit;
     vertical-align:              0.5;
-    horizontal-align:            0.5;
+    horizontal-align:            0.2;
 }
 
 /*****----- Listview -----*****/
