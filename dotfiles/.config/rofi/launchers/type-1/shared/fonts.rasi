@@ -8,5 +8,5 @@
  **/
 
 * {
-    font: "Hack Nerd Font Mono 10";
+    font: "Noto Sans Regular 10";
 }
