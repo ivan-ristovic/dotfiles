@@ -11,7 +11,7 @@
 configuration {
 	modi:                       "drun";
     show-icons:                 true;
-    display-drun:               "Applications";
+    display-drun:               "";
 	drun-display-format:        "{name}";
 }
 
@@ -25,7 +25,7 @@ window {
     location:                    center;
     anchor:                      center;
     fullscreen:                  false;
-    width:                       700px;
+    width:                       750px;
     x-offset:                    0px;
     y-offset:                    0px;
 
@@ -33,7 +33,7 @@ window {
     margin:                      0px;
     padding:                     0px;
     border:                      0px solid;
-    border-radius:               16px;
+    border-radius:               12px;
     border-color:                @selected;
     background-color:            @background;
     cursor:                      "default";
@@ -42,9 +42,9 @@ window {
 /*****----- Main Box -----*****/
 mainbox {
     enabled:                     true;
-    spacing:                     10px;
+    spacing:                     0px;
     margin:                      0px;
-    padding:                     30px;
+    padding:                     0px;
     border:                      0px solid;
     border-radius:               0px 0px 0px 0px;
     border-color:                @selected;
@@ -55,23 +55,21 @@ mainbox {
 /*****----- Inputbar -----*****/
 inputbar {
     enabled:                     true;
-    spacing:                     0px;
+    spacing:                     10px;
     margin:                      0px;
-    padding:                     0px;
+    padding:                     15px;
     border:                      0px solid;
-    border-radius:               16px;
+    border-radius:               0px;
     border-color:                @selected;
-    background-color:            @background-alt;
-    text-color:                  @foreground;
+    background-color:            @selected;
+    text-color:                  @background;
     children:                    [ "prompt", "entry" ];
 }
 
 prompt {
     enabled:                     true;
-    padding:                     12px;
-    border-radius:               16px;
-    background-color:            @selected;
-    text-color:                  @background;
+    background-color:            inherit;
+    text-color:                  inherit;
 }
 textbox-prompt-colon {
     enabled:                     true;
@@ -82,7 +80,6 @@ textbox-prompt-colon {
 }
 entry {
     enabled:                     true;
-    padding:                     12px;
     background-color:            inherit;
     text-color:                  inherit;
     cursor:                      text;
@@ -93,8 +90,8 @@ entry {
 /*****----- Listview -----*****/
 listview {
     enabled:                     true;
-    columns:                     2;
-    lines:                       7;
+    columns:                     5;
+    lines:                       3;
     cycle:                       true;
     dynamic:                     true;
     scrollbar:                   false;
@@ -103,9 +100,9 @@ listview {
     fixed-height:                true;
     fixed-columns:               true;
     
-    spacing:                     10px;
+    spacing:                     5px;
     margin:                      0px;
-    padding:                     0px;
+    padding:                     10px;
     border:                      0px solid;
     border-radius:               0px;
     border-color:                @selected;
@@ -123,36 +120,29 @@ scrollbar {
 /*****----- Elements -----*****/
 element {
     enabled:                     true;
-    spacing:                     10px;
+    spacing:                     15px;
     margin:                      0px;
-    padding:                     5px;
+    padding:                     20px 10px;
     border:                      0px solid;
-    border-radius:               16px;
+    border-radius:               12px;
     border-color:                @selected;
-    background-color:            @background;
+    background-color:            transparent;
     text-color:                  @foreground;
+    orientation:                 vertical;
     cursor:                      pointer;
 }
 element normal.normal {
-    background-color:            @background-alt;
-    text-color:                  @foreground;
-}
-element alternate.normal {
-    background-color:            @background-alt;
+    background-color:            @background;
     text-color:                  @foreground;
 }
 element selected.normal {
-    border:                      0px 5px 0px 5px;
-    border-radius:               16px;
-    border-color:                @selected;
     background-color:            @background-alt;
-    text-color:                  @selected;
+    text-color:                  @foreground;
 }
 element-icon {
-    padding:                     0px 0px 0px 10px;
     background-color:            transparent;
     text-color:                  inherit;
-    size:                        32px;
+    size:                        64px;
     cursor:                      inherit;
 }
 element-text {
@@ -161,14 +151,14 @@ element-text {
     highlight:                   inherit;
     cursor:                      inherit;
     vertical-align:              0.5;
-    horizontal-align:            0.0;
+    horizontal-align:            0.5;
 }
 
 /*****----- Message -----*****/
 error-message {
     padding:                     15px;
     border:                      2px solid;
-    border-radius:               16px;
+    border-radius:               12px;
     border-color:                @selected;
     background-color:            @background;
     text-color:                  @foreground;

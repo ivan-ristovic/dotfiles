@@ -9,12 +9,12 @@
 
 /*****----- Configuration -----*****/
 configuration {
-	modi:                       "drun";
-    show-icons:                 true;
-    display-drun:               "";
-    display-run:                "";
-    display-filebrowser:        "";
-    display-window:             "";
+	modi:                       "drun,run,filebrowser,window";
+    show-icons:                 false;
+    display-drun:               "drun";
+    display-run:                "run";
+    display-filebrowser:        "files";
+    display-window:             "windows";
 	drun-display-format:        "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";
 	window-format:              "{w} · {c} · {t}";
 }
@@ -56,7 +56,7 @@ window {
     location:                    center;
     anchor:                      center;
     fullscreen:                  false;
-    width:                       800px;
+    width:                       600px;
     x-offset:                    0px;
     y-offset:                    0px;
 
@@ -76,12 +76,12 @@ mainbox {
     enabled:                     true;
     spacing:                     10px;
     margin:                      0px;
-    padding:                     50px;
+    padding:                     40px;
     border:                      0px solid;
     border-radius:               0px 0px 0px 0px;
     border-color:                @border-colour;
     background-color:            transparent;
-    children:                    [ "inputbar", "listview" ];
+    children:                    [ "inputbar", "message", "listview", "mode-switcher" ];
 }
 
 /*****----- Inputbar -----*****/
@@ -89,13 +89,13 @@ inputbar {
     enabled:                     true;
     spacing:                     10px;
     margin:                      0px;
-    padding:                     10px;
-    border:                      0px 0px 2px dash 0px;
+    padding:                     10px 5px;
+    border:                      0px 0px 1px 0px;
     border-radius:               0px;
     border-color:                @border-colour;
     background-color:            @background-colour;
     text-color:                  @foreground-colour;
-    children:                    [ "prompt", "entry" ];
+    children:                    [ "entry" ];
 }
 
 prompt {
@@ -106,7 +106,7 @@ prompt {
 textbox-prompt-colon {
     enabled:                     true;
     expand:                      false;
-    str:                         "::";
+    str:                         ":";
     background-color:            inherit;
     text-color:                  inherit;
 }
@@ -115,24 +115,24 @@ entry {
     background-color:            inherit;
     text-color:                  inherit;
     cursor:                      text;
-    placeholder:                 "Search...";
+    placeholder:                 "search...";
     placeholder-color:           inherit;
 }
 
 /*****----- Listview -----*****/
 listview {
     enabled:                     true;
-    columns:                     2;
-    lines:                       12;
+    columns:                     1;
+    lines:                       10;
     cycle:                       true;
     dynamic:                     true;
-    scrollbar:                   false;
+    scrollbar:                   true;
     layout:                      vertical;
     reverse:                     false;
     fixed-height:                true;
     fixed-columns:               true;
     
-    spacing:                     0px;
+    spacing:                     10px;
     margin:                      0px;
     padding:                     0px;
     border:                      0px solid;
@@ -143,7 +143,7 @@ listview {
     cursor:                      "default";
 }
 scrollbar {
-    handle-width:                5px ;
+    handle-width:                1px ;
     handle-color:                @handle-colour;
     border-radius:               0px;
     background-color:            @alternate-background;
@@ -154,7 +154,7 @@ element {
     enabled:                     true;
     spacing:                     10px;
     margin:                      0px;
-    padding:                     5px;
+    padding:                     2px;
     border:                      0px solid;
     border-radius:               0px;
     border-color:                @border-colour;
@@ -167,36 +167,36 @@ element normal.normal {
     text-color:                  var(normal-foreground);
 }
 element normal.urgent {
-    background-color:            var(urgent-background);
-    text-color:                  var(urgent-foreground);
+    background-color:            var(urgent-foreground);
+    text-color:                  var(urgent-background);
 }
 element normal.active {
-    background-color:            var(active-background);
-    text-color:                  var(active-foreground);
+    background-color:            var(active-foreground);
+    text-color:                  var(active-background);
 }
 element selected.normal {
-    background-color:            var(alternate-background);
+    background-color:            var(selected-normal-foreground);
     text-color:                  var(selected-normal-background);
 }
 element selected.urgent {
-    background-color:            var(selected-urgent-background);
-    text-color:                  var(selected-urgent-foreground);
+    background-color:            var(selected-urgent-foreground);
+    text-color:                  var(selected-urgent-background);
 }
 element selected.active {
-    background-color:            var(selected-active-background);
-    text-color:                  var(selected-active-foreground);
+    background-color:            var(selected-active-foreground);
+    text-color:                  var(selected-active-background);
 }
 element alternate.normal {
     background-color:            var(alternate-normal-background);
     text-color:                  var(alternate-normal-foreground);
 }
 element alternate.urgent {
-    background-color:            var(alternate-urgent-background);
-    text-color:                  var(alternate-urgent-foreground);
+    background-color:            var(alternate-urgent-foreground);
+    text-color:                  var(alternate-urgent-background);
 }
 element alternate.active {
-    background-color:            var(alternate-active-background);
-    text-color:                  var(alternate-active-foreground);
+    background-color:            var(alternate-active-foreground);
+    text-color:                  var(alternate-active-background);
 }
 element-icon {
     background-color:            transparent;
@@ -216,7 +216,7 @@ element-text {
 /*****----- Mode Switcher -----*****/
 mode-switcher{
     enabled:                     true;
-    spacing:                     10px;
+    spacing:                     0px;
     margin:                      0px;
     padding:                     0px;
     border:                      0px solid;
@@ -226,11 +226,11 @@ mode-switcher{
     text-color:                  @foreground-colour;
 }
 button {
-    padding:                     10px;
+    padding:                     5px;
     border:                      0px solid;
     border-radius:               0px;
     border-color:                @border-colour;
-    background-color:            @alternate-background;
+    background-color:            @background-colour;
     text-color:                  inherit;
     cursor:                      pointer;
 }
@@ -251,12 +251,12 @@ message {
     text-color:                  @foreground-colour;
 }
 textbox {
-    padding:                     10px;
+    padding:                     5px;
     border:                      0px solid;
     border-radius:               0px;
     border-color:                @border-colour;
-    background-color:            @alternate-background;
-    text-color:                  @foreground-colour;
+    background-color:            @background-colour;
+    text-color:                  @border-colour;
     vertical-align:              0.5;
     horizontal-align:            0.0;
     highlight:                   none;
@@ -265,7 +265,7 @@ textbox {
     markup:                      true;
 }
 error-message {
-    padding:                     10px;
+    padding:                     30px;
     border:                      0px solid;
     border-radius:               0px;
     border-color:                @border-colour;

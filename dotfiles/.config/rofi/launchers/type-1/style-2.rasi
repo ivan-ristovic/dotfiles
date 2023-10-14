@@ -10,8 +10,8 @@
 /*****----- Configuration -----*****/
 configuration {
 	modi:                       "drun";
-    show-icons:                 false;
-    display-drun:               "";
+    show-icons:                 true;
+    display-drun:               "drun";
     display-run:                "";
     display-filebrowser:        "";
     display-window:             "";
@@ -64,7 +64,7 @@ window {
     enabled:                     true;
     margin:                      0px;
     padding:                     0px;
-    border:                      1px solid;
+    border:                      0px solid;
     border-radius:               0px;
     border-color:                @border-colour;
     cursor:                      "default";
@@ -74,9 +74,9 @@ window {
 /*****----- Main Box -----*****/
 mainbox {
     enabled:                     true;
-    spacing:                     5px;
+    spacing:                     0px;
     margin:                      0px;
-    padding:                     5px;
+    padding:                     0px;
     border:                      0px solid;
     border-radius:               0px 0px 0px 0px;
     border-color:                @border-colour;
@@ -87,12 +87,12 @@ mainbox {
 /*****----- Inputbar -----*****/
 inputbar {
     enabled:                     true;
-    spacing:                     10px;
+    spacing:                     0px;
     margin:                      0px;
-    padding:                     5px;
-    border:                      0px 0px 1px dash 0px;
+    padding:                     0px;
+    border:                      0px 0px 1px 0px;
     border-radius:               0px;
-    border-color:                @border-colour;
+    border-color:                @alternate-background;
     background-color:            @background-colour;
     text-color:                  @foreground-colour;
     children:                    [ "prompt", "entry" ];
@@ -100,6 +100,10 @@ inputbar {
 
 prompt {
     enabled:                     true;
+    padding:                     15px;
+    border:                      0px 1px 0px 0px;
+    border-radius:               0px;
+    border-color:                @alternate-background;
     background-color:            inherit;
     text-color:                  inherit;
 }
@@ -112,10 +116,11 @@ textbox-prompt-colon {
 }
 entry {
     enabled:                     true;
+    padding:                     15px;
     background-color:            inherit;
     text-color:                  inherit;
     cursor:                      text;
-    placeholder:                 "Search...";
+    placeholder:                 "";
     placeholder-color:           inherit;
 }
 
@@ -123,7 +128,7 @@ entry {
 listview {
     enabled:                     true;
     columns:                     1;
-    lines:                       12;
+    lines:                       8;
     cycle:                       true;
     dynamic:                     true;
     scrollbar:                   false;
@@ -154,10 +159,10 @@ element {
     enabled:                     true;
     spacing:                     10px;
     margin:                      0px;
-    padding:                     5px;
-    border:                      0px solid;
+    padding:                     8px 15px;
+    border:                      0px 0px 1px 0px;
     border-radius:               0px;
-    border-color:                @border-colour;
+    border-color:                @alternate-background;
     background-color:            transparent;
     text-color:                  @foreground-colour;
     cursor:                      pointer;
@@ -175,8 +180,8 @@ element normal.active {
     text-color:                  var(active-foreground);
 }
 element selected.normal {
-    background-color:            var(selected-normal-background);
-    text-color:                  var(selected-normal-foreground);
+    background-color:            var(alternate-background);
+    text-color:                  var(foreground-colour);
 }
 element selected.urgent {
     background-color:            var(selected-urgent-background);
@@ -201,7 +206,7 @@ element alternate.active {
 element-icon {
     background-color:            transparent;
     text-color:                  inherit;
-    size:                        24px;
+    size:                        32px;
     cursor:                      inherit;
 }
 element-text {
@@ -251,7 +256,7 @@ message {
     text-color:                  @foreground-colour;
 }
 textbox {
-    padding:                     5px;
+    padding:                     10px;
     border:                      0px solid;
     border-radius:               0px;
     border-color:                @border-colour;
@@ -265,7 +270,7 @@ textbox {
     markup:                      true;
 }
 error-message {
-    padding:                     5px;
+    padding:                     0px;
     border:                      0px solid;
     border-radius:               0px;
     border-color:                @border-colour;

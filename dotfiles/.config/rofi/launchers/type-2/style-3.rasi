@@ -11,7 +11,7 @@
 configuration {
 	modi:                       "drun";
     show-icons:                 true;
-    display-drun:               "";
+    display-drun:               "Applications";
 	drun-display-format:        "{name}";
 }
 
@@ -42,9 +42,9 @@ window {
 /*****----- Main Box -----*****/
 mainbox {
     enabled:                     true;
-    spacing:                     0px;
+    spacing:                     10px;
     margin:                      0px;
-    padding:                     0px;
+    padding:                     30px;
     border:                      0px solid;
     border-radius:               0px 0px 0px 0px;
     border-color:                @selected;
@@ -55,21 +55,22 @@ mainbox {
 /*****----- Inputbar -----*****/
 inputbar {
     enabled:                     true;
-    spacing:                     10px;
+    spacing:                     0px;
     margin:                      0px;
-    padding:                     15px;
+    padding:                     0px;
     border:                      0px solid;
     border-radius:               0px;
     border-color:                @selected;
-    background-color:            @foreground;
-    text-color:                  @background;
+    background-color:            @background-alt;
+    text-color:                  @foreground;
     children:                    [ "prompt", "entry" ];
 }
 
 prompt {
     enabled:                     true;
-    background-color:            inherit;
-    text-color:                  inherit;
+    padding:                     12px;
+    background-color:            @selected;
+    text-color:                  @background;
 }
 textbox-prompt-colon {
     enabled:                     true;
@@ -80,6 +81,7 @@ textbox-prompt-colon {
 }
 entry {
     enabled:                     true;
+    padding:                     12px;
     background-color:            inherit;
     text-color:                  inherit;
     cursor:                      text;
@@ -100,9 +102,9 @@ listview {
     fixed-height:                true;
     fixed-columns:               true;
     
-    spacing:                     5px;
+    spacing:                     10px;
     margin:                      0px;
-    padding:                     10px;
+    padding:                     0px;
     border:                      0px solid;
     border-radius:               0px;
     border-color:                @selected;
@@ -122,23 +124,30 @@ element {
     enabled:                     true;
     spacing:                     10px;
     margin:                      0px;
-    padding:                     6px;
+    padding:                     5px;
     border:                      0px solid;
     border-radius:               0px;
     border-color:                @selected;
-    background-color:            transparent;
+    background-color:            @background;
     text-color:                  @foreground;
     cursor:                      pointer;
 }
 element normal.normal {
-    background-color:            @background;
+    background-color:            @background-alt;
+    text-color:                  @foreground;
+}
+element alternate.normal {
+    background-color:            @background-alt;
     text-color:                  @foreground;
 }
 element selected.normal {
-    background-color:            @selected;
-    text-color:                  @background;
+    border:                      0px 0px 0px 4px;
+    border-color:                @selected;
+    background-color:            @background-alt;
+    text-color:                  @selected;
 }
 element-icon {
+    padding:                     0px 0px 0px 10px;
     background-color:            transparent;
     text-color:                  inherit;
     size:                        32px;
