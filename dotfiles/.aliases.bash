@@ -113,9 +113,9 @@ alias tskm='task modify'
 alias tskrm='task delete'
 alias type='type -a'
 alias unexport=unset
-alias uz=ua
-alias ux=extract
+alias uz=extract
 alias vim='nvim'
 alias vsc='codium .'
 alias ytdl=yt-dlp
+alias z=ua
 

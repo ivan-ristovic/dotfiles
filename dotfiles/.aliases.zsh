@@ -131,10 +131,10 @@ alias tskm='task modify'
 alias tskrm='task delete'
 ialias type='type -a'
 alias unexport=unset
-alias uz=ua
-alias ux=extract
+ialias uz=extract
 alias vim='nvim'
 alias vsc='codium .'
 alias which-command='whence -af'
 alias ytdl=yt-dlp
+ialias z=ua
 
