@@ -1,15 +1,7 @@
 #!/usr/bin/env bash
 
-## Author  : Aditya Shakya (adi1090x)
-## Github  : @adi1090x
-#
-## Applets : MPD (music)
+theme="$HOME"/.config/rofi/applets/shared/theme.rasi
 
-# Import Current Theme
-source "$HOME"/.config/rofi/applets/shared/theme.bash
-theme="$type/$style"
-
-# Theme Elements
 status="`mpc status`"
 if [[ -z "$status" ]]; then
     prompt='Offline'
@@ -23,15 +15,9 @@ else
     fi
 fi
 
-if [[ ( "$theme" == *'type-1'* ) || ( "$theme" == *'type-3'* ) || ( "$theme" == *'type-5'* ) ]]; then
-    list_col='1'
-    list_row='7'
-elif [[ ( "$theme" == *'type-2'* ) || ( "$theme" == *'type-4'* ) ]]; then
-    list_col='7'
-    list_row='1'
-fi
+list_col='1'
+list_row='7'
 
-# Options
 layout=`cat ${theme} | grep 'USE_ICON' | cut -d'=' -f2`
 if [[ "$layout" == 'NO' ]]; then
     if [[ ${status} == *"[playing]"* ]]; then
@@ -59,10 +45,8 @@ else
     option_7=""
 fi
 
-# Toggle Actions
 active=''
 urgent=''
-# Repeat
 if [[ ${status} == *"repeat: on"* ]]; then
     active="-a 4"
 elif [[ ${status} == *"repeat: off"* ]]; then
@@ -70,7 +54,7 @@ elif [[ ${status} == *"repeat: off"* ]]; then
 else
     option_6=" Parsing Error"
 fi
-# Random
+
 if [[ ${status} == *"random: on"* ]]; then
     [ -n "$active" ] && active+=",5" || active="-a 5"
 elif [[ ${status} == *"random: off"* ]]; then
@@ -79,7 +63,6 @@ else
     option_7=" Parsing Error"
 fi
 
-# Rofi CMD
 rofi_cmd() {
     rofi -theme-str "listview {columns: $list_col; lines: $list_row;}" \
         -theme-str 'textbox-prompt-colon {str: "";}' \
@@ -91,12 +74,10 @@ rofi_cmd() {
         -theme ${theme}
 }
 
-# Pass variables to rofi dmenu
 run_rofi() {
     echo -e "$option_1\n$option_2\n$option_3\n$option_4\n$option_5\n$option_6\n$option_7" | rofi_cmd
 }
 
-# Execute Command
 run_cmd() {
     if [[ "$1" == '--opt1' ]]; then
         mpc -q toggle
@@ -115,7 +96,6 @@ run_cmd() {
     fi
 }
 
-# Actions
 chosen="$(run_rofi)"
 case ${chosen} in
     $option_1)
