@@ -38,7 +38,6 @@ HIST_STAMPS="dd/mm/yyyy"
 HIST_SIZE=500000
 
 plugins=(
-  ag                        # ag completion
   colored-man-pages         # man highlighting
   colorize                  # sh highlighting
   command-not-found         # "did you mean" on cmd 404
