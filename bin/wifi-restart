@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -x;
+
+sudo modprobe -a iwlwifi
+sudo ip link set wlp2s0 up
+sudo systemctl restart NetworkManager.service
+
