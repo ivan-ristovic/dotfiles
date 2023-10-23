@@ -37,7 +37,7 @@ My custom (additional) features:
 ### Music Player (mpd + ncmpcpp)
 ![fzf](screenshots/ncmpcpp.png)
 
-### Search (fzf fuzz search integrated with zsh, nvim and forgit; fd and ag)
+### Search (fzf fuzz search integrated with zsh, nvim and forgit; fd and rg)
 ![fzf](screenshots/fzf.png)
 
 ### File Manager (ranger)
