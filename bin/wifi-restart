@@ -2,6 +2,9 @@
 
 set -x;
 
+if modprobe iwlfiwi ; then
+    sudo modprobe -r iwlwifi
+fi
 sudo modprobe -a iwlwifi
 sudo ip link set wlp2s0 up
 sudo systemctl restart NetworkManager.service
