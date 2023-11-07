@@ -8,6 +8,7 @@ main.audio_input Default input
 main.quality high
 main.codec h264
 main.audio_codec opus
+main.framerate_mode auto
 main.advanced_view true
 main.overclock true
 streaming.service twitch
