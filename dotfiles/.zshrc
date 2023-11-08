@@ -63,7 +63,6 @@ plugins=(
   tmux                      # tmux completion and aliases
   tmuxinator                # tmuxinator completion and aliases
   universalarchive          # ua
-  urltools                  # urlencode/urldecode aliases 
   wd                        # directory warp
   # web-search                # aliases for search engines
   # zsh-autosuggestions

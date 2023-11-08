@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "$SH_LIB_ROOT/fmt.sh"
+source "$SHLIB_ROOT/fmt.sh"
 
 function std::usage ()
 {
@@ -75,7 +75,7 @@ function std::is_f ()
     std::is_all -f "$@"
 }
 
-function std::is_all
+function std::is_all ()
 {
     args="$1"
     shift 1
