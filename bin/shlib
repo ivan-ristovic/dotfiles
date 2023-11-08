@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source $SHLIB_ROOT/lib.sh
+
+"$@"
