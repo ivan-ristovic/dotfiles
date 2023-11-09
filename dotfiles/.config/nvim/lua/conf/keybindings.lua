@@ -70,7 +70,7 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 
 -- File Tree (NvimTree)
 keymap("n", "<leader>t", ":NvimTreeToggle<cr>", opts)
-keymap("n", "<leader>n", ":NvimTreeFocus<cr>", opts)
+keymap("n", "<leader>e", ":NvimTreeFocus<cr>", opts)
 
 -- Undo Tree (UndoTree)
 keymap('n', '<leader>u', ":UndotreeToggle<cr>", opts)
