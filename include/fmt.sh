@@ -44,12 +44,6 @@ function fmt::err ()
     fi
 }
 
-function fmt::fat ()
-{
-    fmt::err "$*"
-    exit 1
-}
-
 function fmt::_tprint ()
 {
     echo -en "$SHLIB_FMT_S_B[$(date +%T)]$2$SHLIB_FMT_PROMPT $1: $SHLIB_FMT_CLR"

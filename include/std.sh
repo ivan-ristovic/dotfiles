@@ -4,8 +4,13 @@ source "$SHLIB_ROOT/fmt.sh"
 
 function std::usage ()
 {
+    std:fat "usage: $*"
+}
+
+function std::fat ()
+{
     fmt::err "$*"
-    exit 1 
+    exit 1
 }
 
 function std::assert_argc ()
