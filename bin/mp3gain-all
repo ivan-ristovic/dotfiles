@@ -10,7 +10,7 @@ for arg in "$@"; do
         if [ "${arg: -4}" == ".mp3" ]; then
             mp3gain -q -c -r "$arg"
         else
-            echo "error: skipping $arg as it is not a MP3 file"
+            echo "warning: skipping $arg as it is not a MP3 file"
         fi
     elif [ -d "$arg" ]; then
         fd -t f -e mp3 | parallel --jobs 80% --progress --bar "mp3gain -r {}"

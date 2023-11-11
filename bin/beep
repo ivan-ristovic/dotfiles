@@ -1,12 +1,5 @@
 #!/bin/bash
 
-freq="${1:-1000}"
-duration="${2:-.2}"
-
-function beep_v () 
-{
-    speaker-test -Dpulse -f $1 --test sine -l 1 & sleep $2 && kill -9 $!
-}
-
-beep_v $freq $duration > /dev/null 2>&1
+source $SHLIB_ROOT/std.sh
+std::beep "$@"
 

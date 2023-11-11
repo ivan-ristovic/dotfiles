@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source include/fmt.sh
+source utils.sh
 
 fmt::msg "Stashing existing changes..."
 stash_result=$(git stash push -m "dotfiles: Before pull")
