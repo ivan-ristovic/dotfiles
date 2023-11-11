@@ -91,7 +91,7 @@ function std::is_all ()
     done
 }
 
-function is_installed ()
+function std::is_installed ()
 {
     if command -v "$@" &> /dev/null ; then
         return 0
