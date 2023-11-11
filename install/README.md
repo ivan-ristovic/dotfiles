@@ -8,27 +8,19 @@ source "../utils.sh"
 ```
 That way you can use functions such as `as_user` (to execute commands as the setup user instead of root) or `gcl` (to clone a git repository as the setup user).
 
-As an example, consider the script below that sets up `git` wtih custom settings. The file is named `git.sh`, so having `git` in the installation list will invoke this script:
+As an example, consider the script below that sets up `tmux` and `tpm` plugin manager. The file is named `tmux`, so having `tmux` in the installation list will invoke this script:
 ```sh
 #!/bin/bash
 
 source "../utils.sh"
 
-inst $@ git
+inst $@ tmux 
 
-# Consider putting these in the `.gitconfig` instead
-# They are here just as an example
-git config --global user.email "my@email.com"
-git config --global user.name "my-username"
-git config --global credential.helper 'cache --timeout=18000' 
+# Plugin support
+gcl https://github.com/tmux-plugins/tpm ${SETUP_HOME_DIR}/.tmux/plugins/tpm
+fmt::msg "Installing tmux plugins..."
+as_user TMUX_PLUGIN_MANAGER_PATH=${SETUP_HOME_DIR}/.tmux/plugins ${SETUP_HOME_DIR}/.tmux/plugins/tpm/scripts/install_plugins.sh
+fmt::msg "tmux plugins installed"
 ```
 
-As another (more realistic) example, check out [zsh.sh](zsh.sh).
-
-If your setup differs for different distributions, you can create multiple files and then use different names for different distributions:
-```sh
-mypkg_deb.sh
-mypkg_arch.sh
-```
-
-As an example, check out [docker_arch.sh](docker_arch.sh) and [docker_deb.sh](docker_deb.sh).
+To distinguish different procedures on different distributions, you can use different filenames (e.g., use a different suffix). Check out [docker_arch.sh](docker_arch.sh) and [docker_deb.sh](docker_deb.sh) for an example.
