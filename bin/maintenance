@@ -1,6 +1,8 @@
 #!/bin/bash
 
+source $SHLIB_ROOT/std.sh
 source $SHLIB_ROOT/fmt.sh
+SHLIB_FMT_TIME=true
 
 function prompt () 
 {
