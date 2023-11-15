@@ -4,7 +4,7 @@ source "$SHLIB_ROOT/fmt.sh"
 
 function std::usage ()
 {
-    std:fat "usage: $*"
+    std::fat "usage: $*"
 }
 
 function std::fat ()

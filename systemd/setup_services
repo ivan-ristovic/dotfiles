@@ -1,21 +1,30 @@
 #!/bin/bash
 
-source ../utils.sh
+# Make sure user is set so `as_user` works
+# This is done in case the script is invoked directly
+# and not through `setup --services`
+if [ -z $SETUP_USER ]; then
+    SETUP_USER=$USER
+    source ../utils.sh
+fi
 
-user=$1
 stow_args="--no-folding -v"
 
 sudo ln -s $(pwd)/sbin /usr/sbin/dotfiles
 sudo stow $stow_args system -t /etc/systemd/system 
 sudo stow $stow_args user   -t /etc/systemd/user 
 
-while IFS= read -r service
-do
-    sudo systemctl enable --now "$(basename "$service")"
-done < "./enabled-system-services.txt"
+for service in $(read_list "./enabled-system-services.txt"); do
+    fmt::msg "enabling system service: $service"
+    if ! sudo systemctl enable --now "$(basename "$service")"; then
+        fmt::err "failed to setup: $service"
+    fi
+done
 
-while IFS= read -r service
-do
-    as_user "$user" systemctl enable --now "$(basename "$service")"
-done < "./enabled-user-services.txt"
+for service in $(read_list "./enabled-user-services.txt"); do
+    fmt::msg "enabling user service: $service"
+    if ! sudo systemctl --user -M $SETUP_USER@ enable --now "$(basename "$service")"; then
+        fmt::err "failed to setup: $service"
+    fi
+done
 
