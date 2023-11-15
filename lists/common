@@ -27,6 +27,7 @@ imagemagick
 jq
 lftp
 lynx
+moreutils
 mpd
 ncmpcpp
 net-tools
