@@ -1,6 +1,6 @@
 # Services (systemd)
 
-`setup_services.sh` can be used to setup `systemd` services from the current directory.
+`setup_services` script can be used to setup `systemd` services from the current directory.
 The directory structure is as follows:
 - `sbin/` - Contains scripts that serve as service targets. Symlinked to `/usr/sbin`.
 - `system/` - Contains system-wide services. Symlinked to `/etc/systemd/system`.

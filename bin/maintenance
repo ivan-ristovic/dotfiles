@@ -1,16 +1,16 @@
 #!/bin/bash
 
-source ~/dotfiles/utils.sh
+source $SHLIB_ROOT/fmt.sh
 
 function prompt () 
 {
-    msg "$*"
+    fmt::msg "$*"
     read -rp "Press enter to run..."
 }
 
 function execute ()
 {
-    msg "executing: $*"
+    fmt::msg "executing: $*"
     "$@" 
 }
 
@@ -24,13 +24,13 @@ prompt "Checking for new packages:"
 list_loc=$NC_BACKUP/package_list.txt
 touch $list_loc
 if ! diff -u <(cat $list_loc) <(pacman -Qqe) ; then
-    err "Changes detected. Check whether install lists should be updated."
-    if ask "Update the backed up package list?" ; then
+    fmt::err "Changes detected. Check whether install lists should be updated."
+    if std::ask "Update the backed up package list?" ; then
         mv $list_loc $list_loc.bak
         if pacman -Qqe > $list_loc ; then
-            suc "Package list updated"
+            fmt::suc "Package list updated"
         else
-            err "Failed to update package list"
+            fmt::err "Failed to update package list"
         fi
     fi
 fi
@@ -51,4 +51,5 @@ execute pacman -Qm
 prompt "Cleaning package manager caches"
 execute paccache -r
 
-suc "Done. Have a nice day."
+fmt::suc "Done. Have a nice day."
+

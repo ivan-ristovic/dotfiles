@@ -58,6 +58,7 @@ This repository contains:
 - package install lists ([`lists/`](lists) directory)
 - custom package install scripts ([`install/`](install) directory)
 - patches for global configuration files ([`patches/`](patches) directory)
+- a small shell scripting library ([`include/`](include) directory)
 - containers for sandboxing and testing ([`containers/`](containers) directory)
 - custom `systemd` services ([`systemd/`](systemd) directory)
 
