@@ -5,7 +5,8 @@
 # and not through `setup --services`
 if [ -z $SETUP_USER ]; then
     SETUP_USER=$USER
-    source ../utils.sh
+    curr_dir=$PWD
+    cd .. && source utils.sh && cd $curr_dir
 fi
 
 stow_args="--no-folding -v"
