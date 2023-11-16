@@ -1,0 +1,66 @@
+# My custom gdb config
+# by ivan-ristovic
+
+
+####### General settings #######
+# No confirmations
+set confirm off
+
+
+######## gdb-dashboard #########
+
+# red label color
+dashboard -style divider_label_style_on_primary '1;31'
+
+# layout
+dashboard -layout !registers !assembly source variables stack
+dashboard source -style height 25
+
+
+########### Commands ############
+
+define pjtype
+    ptype $arg0
+end
+
+define pjobject
+    print *($arg0)
+end
+
+define phub
+  x/s (($arg0))->hub->name->value->data
+end
+
+define phubraw
+  x/s (('java.lang.Object' *)($arg0))->hub->name->value->data
+end
+
+define phubind
+    x/s (('_z_.java.lang.Object' *)($arg0))->hub->name->value->data
+end
+
+define phuball
+  print *((('java.lang.Object' *)($arg0))->hub)
+end
+
+define pclass
+    print '$arg0.class'
+end
+
+
+########## Hooks ###########
+
+define hookpost-up
+  dashboard
+end
+
+define hookpost-down
+  dashboard
+end
+
+define hookpost-frame
+  dashboard
+end
+
+############################
+
