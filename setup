@@ -17,6 +17,7 @@ for dir in "${required_dirs[@]}"; do
 done
 
 # Load utils
+export SHLIB_ROOT="$PWD/include"
 source "utils.sh"
 
 function usage ()

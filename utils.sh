@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "include/lib.sh" 
+source "$SHLIB_ROOT/lib.sh" 
 SHLIB_FMT_TIME=true
 
 function as_user ()
