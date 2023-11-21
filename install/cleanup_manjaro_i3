@@ -29,6 +29,8 @@ bloat=(
     manjaro-zsh-config
     xdg-desktop-portal-gnome
     xfce-terminal
+    xfce4-notifyd
+    xfce4-power-manager
 )
 
 for package in "${bloat[@]}" ; do
