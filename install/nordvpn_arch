@@ -2,7 +2,7 @@
 
 source "../utils.sh"
 
-inst_aur nordvpn-cli-bin
+inst_aur nordvpn-bin
 
 sudo usermod -aG nordvpn $SETUP_USER
 sudo systemctl enable nordvpnd

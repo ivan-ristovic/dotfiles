@@ -3,7 +3,7 @@
 {"_id":"bounds","value":{"x":17,"y":64,"width":1886,"height":999,"maximized":false,"fullScreen":false}}
 {"_id":"channelsHidden","value":"[\"UCGA2OgjW608QEaGwxA7aRTg\"]"}
 {"_id":"checkForBlogPosts","value":false}
-{"_id":"defaultQuality","value":"1080"}
+{"_id":"defaultQuality","value":"1200"}
 {"_id":"externalPlayer","value":"vlc"}
 {"_id":"sponsorBlockFiller","value":{"color":"Orange","skip":"showInSeekBar"}}
 {"_id":"sponsorBlockIntro","value":{"color":"Orange","skip":"showInSeekBar"}}
