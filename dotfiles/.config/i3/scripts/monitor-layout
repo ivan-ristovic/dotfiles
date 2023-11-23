@@ -8,6 +8,8 @@ import subprocess
 import sys
 from functools import cmp_to_key
 
+postswitch = '~/.config/autorandr/postswitch'
+
 env_dbg = os.getenv("DEBUG", "false").lower() == "true"
 env_res = int(os.getenv("RES_COUNT", 5))
 env_rate_pref = float(os.getenv("RATE_PREF", 144))
@@ -163,8 +165,7 @@ else:
             xrandr_cmd = f"xrandr {xrandr_arg_off} --output {output_primary} --off {' '.join(xrandr_arg_secondary)} --primary"
 
 msg('executing: ' + xrandr_cmd)
-os.system(xrandr_cmd)
-
-postswitch = '~/.config/autorandr/postswitch'
-os.system(f"{postswitch} {pos}")
+if not env_dbg:
+    os.system(xrandr_cmd)
+    os.system(f"{postswitch} {pos}")
 
