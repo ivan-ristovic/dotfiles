@@ -1,6 +1,6 @@
 {"_id":"autoplayPlaylists","value":false}
 {"_id":"autoplayVideos","value":false}
-{"_id":"bounds","value":{"x":17,"y":64,"width":1886,"height":1119,"maximized":false,"fullScreen":false}}
+{"_id":"bounds","value":{"x":17,"y":42,"width":1886,"height":1021,"maximized":false,"fullScreen":false}}
 {"_id":"channelsHidden","value":"[\"UCGA2OgjW608QEaGwxA7aRTg\"]"}
 {"_id":"checkForBlogPosts","value":false}
 {"_id":"checkForUpdates","value":false}
@@ -15,3 +15,4 @@
 {"_id":"useDeArrowTitles","value":true}
 {"_id":"useRssFeeds","value":false}
 {"_id":"useSponsorBlock","value":true}
+{"_id":"bounds","value":{"x":17,"y":64,"width":1886,"height":999,"maximized":false,"fullScreen":false}}
