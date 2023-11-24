@@ -11,10 +11,12 @@ from functools import cmp_to_key
 postswitch = '~/.config/autorandr/postswitch'
 
 env_dbg = os.getenv("DEBUG", "false").lower() == "true"
-env_res = int(os.getenv("RES_COUNT", 5))
+env_res = int(os.getenv("RES_COUNT", 10))
 env_rate_pref = float(os.getenv("RATE_PREF", 144))
 env_rate_min = float(os.getenv("RATE_MIN", 60))
-env_res_pref_primary_max = os.getenv("RES_PREF_PRIMARY_MAX", '1920x9999').split('x')
+env_rate_max_p = float(os.getenv("RATE_MAX_PRIMARY", 60))
+env_rate_max_s = float(os.getenv("RATE_MAX_SECONDARY", 144))
+env_res_pref_primary_max = os.getenv("RES_PREF_PRIMARY_MAX", '1920x1200').split('x')
 env_res_pref_secondary_max = os.getenv("RES_PREF_SECONDARY_MAX", '4096x9999').split('x')
 env_res_pref_primary_max = list(map(int, env_res_pref_primary_max))
 env_res_pref_secondary_max = list(map(int, env_res_pref_secondary_max))
@@ -44,17 +46,6 @@ xrandr_output = subprocess.check_output(xrandr_query_c, shell=True, text=True).s
 
 msg('Disconnected outputs:', disconnected_outputs)
 
-def parse_res(res_str):
-    return list(map(int, res_str.split('x')))
-
-def cmp_rates(r1, r2):
-    res1, rate1 = parse_res(r1[0]), max(r1[1])
-    res2, rate2 = parse_res(r2[0]), max(r2[1])
-    if abs(rate1 - rate2) < rate_cmp_eps:
-        return 1 if res1 > res2 else (-1 if res1 < res2 else 0)
-    else:
-        return 1 if rate1 > rate2 else -1
-
 xrandr_outputs = [[]]
 for line in xrandr_output:
     if line == "--":
@@ -76,19 +67,8 @@ for output in xrandr_outputs:
 
 assert len(outputs) <= 2, 'More than two displays are connected.'
 
-def is_viable_rate(r):
-    return r > env_rate_min - rate_cmp_eps
-
-def is_preferred_rate(r):
-    return abs(r - env_rate_pref) < rate_cmp_eps
-
-def is_viable_primary_resolution(r):
-    res = parse_res(r)
-    return res <= env_res_pref_primary_max
-
-def is_viable_secondary_resolution(r):
-    res = parse_res(r)
-    return res <= env_res_pref_secondary_max
+if len(outputs) == 1:
+    env_rate_max_p = env_rate_max_s
 
 def xrandr_arg_disconnected(args):
     return ' '.join([f'--output {arg} --off' for arg in args]) 
@@ -119,17 +99,51 @@ for output, info in outputs.items():
 
     push_arg(is_primary, '--output', output)
 
+    def parse_res(res_str):
+        return list(map(int, res_str.split('x')))
+
+    def is_viable_rate(r):
+        max_rate = env_rate_max_p if is_primary else env_rate_max_s
+        return (r > env_rate_min - rate_cmp_eps) and (r < max_rate + rate_cmp_eps)
+
+    def is_preferred_rate(r):
+        return abs(r - env_rate_pref) < rate_cmp_eps
+
+    def is_viable_primary_resolution(r):
+        res = parse_res(r)
+        return res <= env_res_pref_primary_max
+
+    def is_viable_secondary_resolution(r):
+        res = parse_res(r)
+        return res <= env_res_pref_secondary_max
+
     def contains_preferred_rate(res_info):
-        return any(filter(is_preferred_rate , res_info[1]))
+        viable = filter(is_viable_rate, res_info[1])
+        return any(filter(is_preferred_rate , viable)) \
     
     def contains_viable_rate(res_info):
-        return any(filter(is_viable_rate , res_info[1]))
+        return any(filter(is_viable_rate, res_info[1]))
 
     def primary_resolution_filter(res_info):
         return is_viable_primary_resolution(res_info[0]) and contains_viable_rate(res_info)
     
     def secondary_resolution_filter(res_info):
         return is_viable_secondary_resolution(res_info[0]) and contains_viable_rate(res_info)
+
+    def cmp_rates(r1, r2):
+        res1, rate1 = parse_res(r1[0]), max(r1[1])
+        res2, rate2 = parse_res(r2[0]), max(r2[1])
+        if is_viable_rate(rate1) and is_viable_rate(rate2):
+            if abs(rate1 - rate2) < rate_cmp_eps:
+                return 1 if res1 > res2 else (-1 if res1 < res2 else 0)
+            else:
+                return 1 if rate1 > rate2 else -1
+        elif is_viable_rate(rate1):
+            return 1
+        elif is_viable_rate(rate2):
+            return -1
+        else:
+            return 0
 
     viable_resolutions = list(filter(primary_resolution_filter if is_primary else secondary_resolution_filter, info))
     preferred_resolutions = list(filter(contains_preferred_rate, info))
@@ -141,7 +155,7 @@ for output, info in outputs.items():
     chosen_set = sorted(chosen_set, key=cmp_to_key(cmp_rates), reverse=True)
     if any(chosen_set):
         best_res = chosen_set[0][0]
-        best_rate = max(chosen_set[0][1])
+        best_rate = max(filter(is_viable_rate, chosen_set[0][1]))
         push_arg(is_primary, '--mode', best_res, '--rate', best_rate)
     push_arg(is_primary, '--rotate normal')
 
