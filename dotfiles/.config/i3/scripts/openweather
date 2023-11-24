@@ -67,7 +67,7 @@ case $CONDITION in
       fi
       ;;
   *)
-      WEATHER_ICON="🌫"
+      WEATHER_ICON=""
       ;;
 esac
 
