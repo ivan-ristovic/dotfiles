@@ -6,9 +6,9 @@
 if brightnessctl s "$*" ; then
     curr=$(brightnessctl g)
     max=$(brightnessctl m)
-    notify-send "  |  Brightness: $((100*$curr/$max))% ($curr/$max)"
+    notify-send -t 500 "  |  Brightness: $((100*$curr/$max))% ($curr/$max)"
 else
-    notify-send "  |  Failed to set display brightness!"
+    notify-send -t 500 "  |  Failed to set display brightness!"
     exit 1
 fi
 

@@ -1,6 +1,6 @@
 main.record_area_option window
 main.record_area_width 1920
-main.record_area_height 1080
+main.record_area_height 1200
 main.fps 60
 main.merge_audio_tracks false
 main.audio_input Default output
@@ -14,10 +14,10 @@ main.overclock true
 streaming.service twitch
 streaming.key 
 streaming.start_recording_hotkey 65470 256
-record.save_directory /hdd/recordings
+record.save_directory ~/recordings
 record.container mp4
 record.start_recording_hotkey 65470 256
-replay.save_directory /hdd/recordings
+replay.save_directory ~/recordings
 replay.container mp4
 replay.time 1200
 replay.start_recording_hotkey 65470 256
