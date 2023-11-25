@@ -1,0 +1,4 @@
+#!/bin/bash
+
+emoji_picker_dir='/opt/rofi-emoji-picker'
+cd $emoji_picker_dir && ./launch-rofi

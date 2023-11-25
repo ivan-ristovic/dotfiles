@@ -236,6 +236,8 @@ bindsym $mod+Shift+n exec $scriptdir/empty-workspace
 # toggle extreme cooling
 bindsym Ctrl+Shift+0 exec ec4Linux change-state
 
+# emoji picker
+bindsym $mod+p exec $scriptdir/emoji-picker
 
 # Multimedia Keys
 
