@@ -47,7 +47,7 @@ function str::split ()
 {
     delim=$1
     shift
-    IFS=$'\n' read -d "" -r arr <<< "${@//$delim/$'\n'}"
+    IFS=$'\n' read -d "" -r arr <<< "${@//"$delim"/$'\n'}"
     printf '%s\n' "${arr[@]}"
 }
 
