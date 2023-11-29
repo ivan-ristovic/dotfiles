@@ -9,6 +9,7 @@ pkgs=(
     texlive-fontsextra 
     texlive-bibtexextra
     texlive-science
+    texlive-xetex
 )
 
 inst $@ "${pkgs[@]}" 
