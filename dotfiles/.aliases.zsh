@@ -111,6 +111,7 @@ alias pacua='sudo pacman -Syu'
 alias ports='netstat -tulanp'
 alias py='python3'
 alias rd=rmdir
+alias rgd='rg -.'
 alias rgu='rg -u'
 alias rguu='rg -uu'
 alias rguuu='rg -uuu'
