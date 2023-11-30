@@ -359,7 +359,7 @@ exec --no-startup-id sleep 1 && setxkbmap -layout 'us,rs,rs' -variant euro,latin
 exec_always --no-startup-id ~/.config/conky/start_conky
 
 # set wallpaper
-exec --no-startup-id sleep 1 && feh --bg-fill ~/.config/i3/wp.png
+exec --no-startup-id sleep 1 && feh --bg-fill $confdir/wp.png
 
 # set powersavings for display:
 exec --no-startup-id xset s 480 dpms 600 600 600
@@ -367,9 +367,12 @@ exec --no-startup-id xset s 480 dpms 600 600 600
 # disable power saving (for example if using xscreensaver)
 #exec --no-startup-id xset -dpms
 
+# disable terminal bell
+exec --no-startup-id xset b off
+
 # automatic lock 
 # https://wiki.archlinux.org/title/Session_lock#xautolock
-exec --no-startup-id xautolock -time 10 -notify 60 -notifier "notify-send 'Auto-Locking in 1 minute...'" -locker "$scriptdir/lock-blur ~/.config/i3/wp.png"
+exec --no-startup-id xautolock -time 10 -notify 60 -notifier "notify-send 'Auto-Locking in 1 minute...'" -locker "$scriptdir/lock-blur $confdir/wp.png"
 
 # xscreensaver
 # https://www.jwz.org/xscreensaver
@@ -469,7 +472,7 @@ client.urgent		    	$urgentred	$urgentred	$white		$yellowbrown	$yellowbrown
 # Start i3bar to display a workspace bar
 bar {
     font pango: Noto Sans Regular 10
-    status_command SCRIPT_DIR=~/.config/i3/scripts i3blocks -c ~/.config/i3/i3blocks.conf
+    status_command SCRIPT_DIR=$scriptdir i3blocks -c $confdir/i3blocks.conf
     position top
     # i3bar_command i3bar --transparency
     # it could be that you have no primary display set: set one (xrandr --output <output> --primary)
