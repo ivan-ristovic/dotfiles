@@ -11,7 +11,7 @@ from functools import cmp_to_key
 postswitch = '~/.config/autorandr/postswitch'
 
 env_dbg = os.getenv("DEBUG", "false").lower() == "true"
-env_res = int(os.getenv("RES_COUNT", 10))
+env_res = int(os.getenv("RES_COUNT", 15))
 env_rate_pref = float(os.getenv("RATE_PREF", 144))
 env_rate_min = float(os.getenv("RATE_MIN", 60))
 env_rate_max_p = float(os.getenv("RATE_MAX_PRIMARY", 60))
