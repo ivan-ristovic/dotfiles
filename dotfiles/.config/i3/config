@@ -175,8 +175,8 @@ bindsym $mod+Ctrl+r restart
 bindsym $mod+Ctrl+m exec $scriptdir/mic 1 && pkill -RTMIN+11 i3blocks
 
 # Brightness control
-bindsym XF86MonBrightnessUp exec $scriptdir/brightness-ctl 10%+ 
-bindsym XF86MonBrightnessDown exec $scriptdir/brightness-ctl 10%- 
+bindsym XF86MonBrightnessUp exec $scriptdir/brightness-ctl 5%+ 
+bindsym XF86MonBrightnessDown exec $scriptdir/brightness-ctl 5%- 
 
 # Monitor output arrangement
 bindsym $mod+Ctrl+Left exec $scriptdir/monitor-layout left-of 
