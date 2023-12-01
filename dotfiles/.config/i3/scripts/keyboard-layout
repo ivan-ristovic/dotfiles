@@ -1,5 +1,23 @@
 #!/usr/bin/env bash
 
+function setxkbmap_query ()
+{
+    layouts=$(setxkbmap -query | grep layout | awk '{print $2;}')
+    variants=$(setxkbmap -query | grep variant | awk '{print $2;}')
+    IFS=',' read -r -a ls <<< "$layouts"
+    IFS=',' read -r -a vs <<< "$variants"
+
+    result=""
+    for (( i=0; i<${#ls[*]}; ++i)); do
+        result+="${ls[$i]}[${vs[$i]}] "
+    done
+    echo "$result"
+}
+
+if [ $BLOCK_BUTTON -ne 0 ]; then
+    layout=$(setxkbmap_query)
+    notify-send "$layout"
+fi
+
 KBD=$(/usr/bin/xkblayout-state print '%s[%v]')
 echo $KBD
-
