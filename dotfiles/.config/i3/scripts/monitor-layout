@@ -11,7 +11,6 @@ from functools import cmp_to_key
 postswitch = '~/.config/autorandr/postswitch'
 
 env_dbg = os.getenv("DEBUG", "false").lower() == "true"
-env_res = int(os.getenv("RES_COUNT", 15))
 env_rate_pref = float(os.getenv("RATE_PREF", 144))
 env_rate_min = float(os.getenv("RATE_MIN", 60))
 env_rate_max_p = float(os.getenv("RATE_MAX_PRIMARY", 60))
@@ -38,20 +37,23 @@ def msg(*args):
     if env_dbg:
         print(sys.argv[0], '| ', *args)
 
-xrandr_query_c = fr'xrandr | grep -A {env_res} \\bconnected\\b'
-xrandr_query_dc = r"xrandr | grep \\bdisconnected\\b | awk '{ print $1; }'"
-disconnected_outputs = subprocess.check_output(xrandr_query_dc, shell=True, text=True).split(os.linesep)
-disconnected_outputs = sorted([o for o in disconnected_outputs if o])
-xrandr_output = subprocess.check_output(xrandr_query_c, shell=True, text=True).split(os.linesep)
-
-msg('Disconnected outputs:', disconnected_outputs)
-
-xrandr_outputs = [[]]
-for line in xrandr_output:
-    if line == "--":
-        xrandr_outputs.append([])
-    elif line:
+xrandr_result = subprocess.check_output('xrandr', shell=True, text=True).split(os.linesep)
+disconnected_outputs = []
+xrandr_outputs = []
+for line in xrandr_result:
+    if not line or line.startswith('Screen'):
+        continue
+    if line.startswith(' '):  # rate
         xrandr_outputs[-1].append(line)
+    else:                     # output
+        name = line[:line.index(' ')]
+        if ' disconnected ' in line:
+            disconnected_outputs.append(name)
+        else:
+            xrandr_outputs.append([name])
+
+disconnected_outputs = sorted(disconnected_outputs)
+msg('Disconnected outputs:', disconnected_outputs)
 
 rate_regex = r'[0-9]+\.[0-9]+'
 
@@ -95,12 +97,13 @@ for output, info in outputs.items():
     if env_dbg:
         msg(output, '\t#1' if is_primary else '\t#2')
         for res in info:
-            msg('\t', res[0], '\t', res[1])
+            msg('  ', res[0], '\t', res[1])
 
     push_arg(is_primary, '--output', output)
 
     def parse_res(res_str):
-        return list(map(int, res_str.split('x')))
+        # e.g. 1024x768i 
+        return list(map(int, res_str.rstrip('i').split('x')))
 
     def is_viable_rate(r):
         max_rate = env_rate_max_p if is_primary else env_rate_max_s
