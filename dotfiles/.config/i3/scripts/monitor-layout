@@ -40,8 +40,19 @@ def msg(*args):
 xrandr_result = subprocess.check_output('xrandr', shell=True, text=True).split(os.linesep)
 disconnected_outputs = []
 xrandr_outputs = []
+
+def ignore_line(line):
+    line = line.strip()
+    if not line:
+        return True
+    skip_keywords = [ 'Screen', 'HSync', 'VSync', 'h:', 'v:', 'clock' ]
+    for kw in filter(lambda w: f'{w} ', skip_keywords):
+        if kw in line:
+            return True
+    return False
+
 for line in xrandr_result:
-    if not line or line.startswith('Screen'):
+    if ignore_line(line):
         continue
     if line.startswith(' '):  # rate
         xrandr_outputs[-1].append(line)
@@ -66,6 +77,8 @@ for output in xrandr_outputs:
         rates = sorted([float(v) for v in re.findall(rate_regex, res)], reverse=True)
         resolutions.append([res_value, rates]) 
     outputs[name] = resolutions
+
+print(outputs)
 
 assert len(outputs) <= 2, 'More than two displays are connected.'
 
