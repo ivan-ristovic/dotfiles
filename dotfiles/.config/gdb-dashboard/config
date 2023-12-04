@@ -20,11 +20,11 @@ dashboard source -style height 25
 ########### Commands ############
 
 define pjtype
-    ptype $arg0
+  ptype $arg0
 end
 
 define pjobject
-    print *($arg0)
+  print *($arg0)
 end
 
 define phub
@@ -36,7 +36,7 @@ define phubraw
 end
 
 define phubind
-    x/s (('_z_.java.lang.Object' *)($arg0))->hub->name->value->data
+  x/s (('_z_.java.lang.Object' *)($arg0))->hub->name->value->data
 end
 
 define phuball
@@ -44,9 +44,24 @@ define phuball
 end
 
 define pclass
-    print '$arg0.class'
+  print '$arg0.class'
 end
 
+define pb16
+  p/x $arg0
+end
+
+define pb8
+  p /o $arg0
+end
+
+define pb2
+  p /t $arg0
+end
+
+define pstr
+  p /s $arg0
+end
 
 ########## Hooks ###########
 
