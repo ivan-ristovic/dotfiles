@@ -155,6 +155,7 @@ bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+q kill
+bindsym --release $mod+Ctrl+k exec xkill
 
 # exit-menu
 bindsym $mod+Shift+e exec ~/.config/rofi/applets/bin/powermenu.sh
