@@ -8,7 +8,8 @@ inst $@ \
     libretro-mame \
     libretro-mesen \
     libretro-nestopia \
-    libretro-picodrive
+    libretro-picodrive \
+    libretro-retrodream
 
 inst_aur libretro-fbneo
 
