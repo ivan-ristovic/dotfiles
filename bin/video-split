@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ $# -lt 2 ]; then
+    echo "usage: $(basename $0) input_video timestamps_file [ffmpeg_args]"
+    exit 1
+fi
+
+vid=$1
+ext="${vid##*.}"
+tsf=$2
+shift 2
+
+IFS=$'\n' read -d '' -r -a ts < $tsf
+
+n=${#ts[@]}
+for (( i=0; i<n; i++ )); do
+    from="${ts[$i]%% *}"
+    to="${ts[$((i+1))]%% *}"
+    name="$i - ${ts[$i]#* }.$ext"
+    echo "$from - $to : $name"
+    if [ -z "$to" ]; then
+        ffmpeg -i "$vid" -ss "$from" -vcodec copy -acodec copy -y "$name" $* 
+    else
+        ffmpeg -i "$vid" -ss "$from" -to "$to" -vcodec copy -acodec copy -y "$name" $* 
+    fi
+done
