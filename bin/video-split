@@ -16,7 +16,7 @@ n=${#ts[@]}
 for (( i=0; i<n; i++ )); do
     from="${ts[$i]%% *}"
     to="${ts[$((i+1))]%% *}"
-    name="$i - ${ts[$i]#* }.$ext"
+    name="$((i+1)) - ${ts[$i]#* }.$ext"
     echo "$from - $to : $name"
     if [ -z "$to" ]; then
         ffmpeg -i "$vid" -ss "$from" -vcodec copy -acodec copy -y "$name" $* 
