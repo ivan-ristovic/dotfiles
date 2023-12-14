@@ -5,19 +5,19 @@ main.fps 60
 main.merge_audio_tracks false
 main.audio_input Default output
 main.audio_input Default input
-main.quality high
+main.quality very_high
 main.codec h264
 main.audio_codec opus
 main.framerate_mode auto
 main.advanced_view true
-main.overclock true
+main.overclock false
 streaming.service twitch
 streaming.key 
 streaming.start_recording_hotkey 65470 256
-record.save_directory ~/recordings
+record.save_directory /ramfs
 record.container mp4
 record.start_recording_hotkey 65470 256
-replay.save_directory ~/recordings
+replay.save_directory /ramfs
 replay.container mp4
 replay.time 1200
 replay.start_recording_hotkey 65470 256
