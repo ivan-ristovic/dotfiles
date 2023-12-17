@@ -61,7 +61,7 @@ valgrind
 vlc
 xsel
 yt-dlp aria2
-wine lib32-libxcomposite lib32-libxinerama
+wine  lib32-libxcomposite lib32-libxinerama  lib32-alsa-plugins lib32-libpulse lib32-openal
 yq
 
 # end
