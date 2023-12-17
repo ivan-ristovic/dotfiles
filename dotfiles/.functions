@@ -1,5 +1,27 @@
 #!/bin/bash
 
+function fm ()
+{
+    if [ "$FILEMGR_CLI" = "ranger" ]; then 
+        local IFS=$'\t\n'
+        local tempfile
+        tempfile="$(mktemp -t tmp.XXXXXX)"
+        local ranger_cmd=(
+            command
+            ranger
+            --cmd="map Q chain shell echo %d > $tempfile; quitall"
+        )
+        
+        ${ranger_cmd[@]} "$@"
+        if [[ -f "$tempfile" ]] && [[ "$(cat -- "$tempfile")" != "$(echo -n "$(pwd)")" ]]; then
+            cd -- "$(cat "$tempfile")" || return
+        fi
+        command rm -f -- "$tempfile" 2>/dev/null
+    else
+        "$FILEMGR_CLI" "$@"
+    fi
+}
+
 function cf ()
 {
     for f in "$@"; do
