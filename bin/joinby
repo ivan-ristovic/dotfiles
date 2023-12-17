@@ -2,17 +2,9 @@
 
 source $SHLIB_ROOT/lib.sh
 
-function join_by () 
-{
-    local d=${1-} f=${2-}
-    if shift 2; then
-        printf %s "$f" "${@/#/$d}"
-    fi
-}
-
 if [[ $# -lt 2 ]]; then
     std::usage "$(basename $0) delimiter args..."
 fi
 
-str::join $@
+str::join $*
 
