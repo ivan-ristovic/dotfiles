@@ -25,7 +25,7 @@ retroarch_arch
 qbittorrent
 steam
 
-aur:extremecooling4linux
+# aur:extremecooling4linux
 aur:freetube-bin
 aur:goverlay
 aur:gpu-screen-recorder-git gpu-screen-recorder-gtk-git
