@@ -1,0 +1,21 @@
+### Multimedia ###
+
+## Player
+mpv
+
+## The swiss knife of converters
+ffmpeg
+
+## Image utils
+imagemagick
+
+## Music
+mpd
+ncmpcpp
+
+## Document converters
+pandoc
+pdftk
+
+
+# end

@@ -1,0 +1,25 @@
+### Core functionality ###
+
+
+## Dotfiles management
+git
+stow
+
+## Editors
+neovim
+vi
+
+## Shell
+tmux
+zsh
+
+## Useful core tools 
+bat
+curl
+fd
+fzf
+ranger
+ripgrep
+
+
+### end ###

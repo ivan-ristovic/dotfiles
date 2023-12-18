@@ -1,0 +1,14 @@
+### Common Debian alternatives list ###
+
+
++core
+
+
+## Development packages (for building AUR packages)
+build-essential
+
+## fd 
+fd-find
+
+
+### end

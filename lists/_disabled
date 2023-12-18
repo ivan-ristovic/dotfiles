@@ -1,0 +1,39 @@
+### Tools that currently aren't used but are kept as a reference ###
+
+## System monitoring
+# btop
+
+## Directory-specific env
+# direnv
+
+## DNS client (dig alternative)
+# dog
+
+## Git frontentds
+# lazygit
+# tig
+
+## FTP utility
+# lftp
+
+## RSS reader
+# newsboat
+
+## GUI Music player
+# qmmp
+
+## Backups
+# timeshift
+
+
+## tmux organizer
+# aur:tmuxinator
+
+## Lenovo extreme cooling support
+# aur:extremecooling4linux
+
+## Optimus Prime support
+# aur:gdm-prime
+
+
+# end

@@ -1,11 +1,18 @@
-yay
+### i3 X11 Arch list ###
+
+
++core-arch
++fonts-arch
++x11
+
+
+i3-wm
 
 acpi
 alacritty
 arandr
 autorandr
 # archlinux-xdg-menu
-awesome-terminal-fonts
 # blueberry
 brightnessctl
 conky
@@ -19,7 +26,6 @@ i3blocks
 i3-gaps
 i3lock
 i3status
-jq
 lightdm
 lightdm-slick-greeter
 lxappearance-gtk3
@@ -35,8 +41,6 @@ sysstat
 thunar
 thunar-archive-plugin
 thunar-volman
-ttf-hack-nerd
-ttf-noto-nerd
 tumbler
 xautolock
 xbindkeys
@@ -44,10 +48,14 @@ xed
 xorg-xbacklight
 xorg-xdpyinfo
 
+
+aur:kvantum-theme-matchama
 aur:rofi-greenclip
 aur:xkblayout-state-git
+
 
 # Themes and icons come after dotfiles link
 !appearance
 
-# end
+
+### end

@@ -1,0 +1,18 @@
+### Common Arch list ###
+
+
++core
+
+
+## AUR helper
+yay
+
+
+## Development packages (for building AUR packages)
+base-devel
+
+## Addons for ripgrep
+ripgrep-all
+
+
+### end

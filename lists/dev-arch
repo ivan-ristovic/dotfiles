@@ -1,0 +1,29 @@
+### Development tools (Arch) ###
+
+
++dev
+
+
+## A collection of binary tools - assembler, linker, etc.
+## but also tools like: addr2line, objdump, readelf ...
+binutils
+
+## Better-looking diffs
+diff-so-fancy
+
+## Docker
+docker_arch
+
+## Bind utils
+extra/bind
+
+## GNU netcat
+gnu-netcat
+
+
+## Editors
+aur:rider
+aur:vscodium-bin
+
+
+# end

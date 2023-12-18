@@ -1,0 +1,18 @@
+### Fonts (Arch) ###
+
+
++fonts
+
+
+awesome-terminal-fonts
+noto-fonts
+noto-fonts-emoji
+ttf-hack-nerd
+ttf-nerd-fonts-symbols
+ttf-noto-nerd
+
+
+aur:ttf-ms-fonts
+
+
+# end

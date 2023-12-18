@@ -1,0 +1,56 @@
+### Misc utils
+
+
+## Calculator
+bc
+
+## Alternative to awk/sed for selecting output columns 
+choose
+
+## Alternative to df
+duf
+
+## Alternative to du
+dust
+
+## Events on file changes
+entr
+
+## HTTP client
+httpie
+
+## Benchmarking
+hyperfine
+time
+
+## JSON parser
+jq
+
+## TUI web browser 
+lynx
+
+## Moreutils collection:
+### chronic combine errno ifdata ifne isutf8 lckdo 
+### mispipe parallel pee sponge ts vidir vipe zrun
+moreutils
+
+## Progress monitoring
+pv
+
+## Alternative to sed
+sd
+
+## Task management (taskwarrior + timewarrior)
+taskw
+
+## Directory tree
+tree
+
+## Unarchiver
+unrar
+
+## YAML parser
+yq
+
+
+# end

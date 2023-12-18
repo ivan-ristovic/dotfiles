@@ -1,0 +1,13 @@
+### X11 list ###
+
+xorg-server
+
+
+## Utils
+xsel
+
+## Greeter
+lightdm
+lightdm-slick-greeter
+
+### end ###

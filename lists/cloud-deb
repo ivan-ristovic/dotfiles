@@ -1,0 +1,18 @@
+### Cloud server list ###
+
+
+updates_deb
+
+
++core-deb
++dev-deb
++media
++perf
++utils
+
+
+fonts-powerline
+yt-dlp-manual
+
+
+# end

@@ -1,0 +1,55 @@
+### My local pro5i list (Arch) ###
+
+
+updates_arch
+cleanup_manjaro_i3
+
+
++i3-x11-arch
++hardware-arch
++utils-arch
++perf-arch
++dev-arch
++media-arch
+
+
+audacity
+firefox
+filezilla
+flameshot
+gimp
+handbrake
+kdenlive
+kvantum-manjaro
+lg512_arch
+libreoffice-still
+# lutris
+neofetch
+nextcloud-client libsecret
+nordvpn_arch
+obs-studio
+picard
+polychromatic_arch
+qalculate-gtk
+qbittorrent
+retroarch_arch
+steam-native-runtime
+torbrowser-launcher
+vlc
+yt-dlp aria2
+wine lib32-libxcomposite lib32-libxinerama lib32-alsa-plugins lib32-libpulse lib32-openal
+
+aur:freetube-bin
+aur:goverlay
+aur:gpu-screen-recorder-git gpu-screen-recorder-gtk-git
+aur:lenovolegionlinux-dkms-git 
+aur:linux-wifi-hotspot
+aur:mp3gain
+aur:optimus-manager optimus-manager-qt 
+aur:oversteer
+aur:ventoy-bin
+aur:webcord-bin
+aur:wine-ge-custom-bin
+
+
+### end ###

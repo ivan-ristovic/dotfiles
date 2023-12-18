@@ -1,0 +1,19 @@
+### Development tools ###
+
+## Build systems or requirements
+cmake
+npm
+
+## Version control
+git
+subversion
+
+## Debugging
+gdb
+
+## Profiling
+perf
+valgrind
+
+
+# end
