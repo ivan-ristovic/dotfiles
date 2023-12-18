@@ -1,7 +1,7 @@
 ################ TMUX ################
 
 # Start tmux. Has to be before p10k instant prompt initialization!
-if [ -z "$TMUX" ]; then
+if command -v tmux > /dev/null && [ -z "$TMUX" ]; then
   exec tmux new-session -A
 fi
 
