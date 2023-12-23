@@ -1,1 +1,4 @@
+nvidia-powerd.service
+
 ./system/cpu-no-turbo.service
+
