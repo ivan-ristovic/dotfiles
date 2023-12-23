@@ -25,13 +25,12 @@ retroarch_arch
 qbittorrent
 steam
 
-# aur:extremecooling4linux
 aur:freetube-bin
 aur:goverlay
 aur:gpu-screen-recorder-git gpu-screen-recorder-gtk-git
+aur:lenovolegionlinux-dkms-git 
 aur:mp3gain
 aur:optimus-manager optimus-manager-qt 
-# aur:gdm-prime
 aur:oversteer
 aur:rider
 aur:vscodium-bin
