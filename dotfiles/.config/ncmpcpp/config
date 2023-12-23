@@ -9,7 +9,6 @@
 lyrics_directory = ~/.lyrics
 
 
-
 ##############
 # CONNECTION #
 ##############
@@ -28,7 +27,6 @@ mpd_music_dir = ~/Nextcloud/Music
 #random_exclude_pattern = "^(temp|midi_songs).*"
 
 
-
 ##############
 # VISUALIZER #
 ##############
@@ -42,9 +40,10 @@ visualizer_in_stereo = yes
 
 visualizer_type = ellipse
 visualizer_fps = 60
-#visualizer_autoscale = no
-visualizer_look = ●▮
-visualizer_color = 47, 83, 119, 155, 191, 227, 221, 215, 209, 203, 197, 161
+visualizer_autoscale = no
+# visualizer_look = ●▮
+visualizer_look = "|○"
+visualizer_color = 246, 245, 244, 243, 242, 241, 240, 239, 238, 237, 236, 235
 
 ## For terminals without 256k support
 #visualizer_color = blue, cyan, green, yellow, magenta, red
@@ -124,7 +123,6 @@ visualizer_color = 47, 83, 119, 155, 191, 227, 221, 215, 209, 203, 197, 161
 ##
 ## Note: colors can be nested.
 ##
-
 #song_list_format = {%a - }{%t}|{$8%f$9}$R{$3%l$9}
 #song_status_format = {{%a{ "%b"{ (%y)}} - }{%t}}|{%f}
 #song_library_format = {%n - }{%t}|{%f}
@@ -151,6 +149,15 @@ visualizer_color = 47, 83, 119, 155, 191, 227, 221, 215, 209, 203, 197, 161
 #browser_sort_mode = type
 #browser_sort_format = {%a - }{%t}|{%f} {%l}
 
+song_columns_list_format = "(3f)[239]{} (35)[green]{a} (30)[blue]{t|f} (30)[246]{b} (5f)[240]{l}"
+song_list_format = "{$5 %a$9 $1│$9 $8%t$9 }|{ $8%f$9}$R{$5%b $7}"
+song_status_format = "{{{$5%a$9}} $8-$9 {$2%t$9}|{$0%f$9}{ $8-$9 $3%b$9{ $8-$9 $5%y$9}}}"
+song_library_format = "{%n $8-$9 }{%t}|{%f}"
+now_playing_prefix = "$8$b➤"
+browser_playlist_prefix = "playlist"
+selected_item_prefix = "$5"
+selected_item_suffix = "$9"
+song_window_title_format = "{%t}|{%f} - {%a}"
 
 
 ###########
@@ -199,9 +206,9 @@ visualizer_color = 47, 83, 119, 155, 191, 227, 221, 215, 209, 203, 197, 161
 
 #execute_on_song_change = ""
 #execute_on_player_state_change = ""
-#playlist_show_mpd_host = no
-#playlist_show_remaining_time = no
-#playlist_shorten_total_times = no
+playlist_show_mpd_host = no
+playlist_show_remaining_time = no
+playlist_shorten_total_times = no
 playlist_separate_albums = yes
 
 ## Note: Possible display modes: classic, columns.
@@ -210,17 +217,17 @@ browser_display_mode = columns
 search_engine_display_mode = columns
 playlist_editor_display_mode = columns
 
-#discard_colors_if_item_is_selected = yes
+discard_colors_if_item_is_selected = no
 #show_duplicate_tags = yes
-#incremental_seeking = yes
+incremental_seeking = yes
 seek_time = 5
 volume_change_step = 5
-# autocenter_mode = no
+autocenter_mode = yes
 centered_cursor = yes
 
 ## Note: You can specify third character which will be used to build 'empty'
 ## part of progressbar.
-#progressbar_look = =>
+progressbar_look = "━➤─"
 
 ## Available values: database, playlist.
 #default_place_to_search_in = database
@@ -240,18 +247,18 @@ user_interface = alternative
 #default_find_mode = wrapped
 
 #default_tag_editor_pattern = %n - %t
-#header_visibility = yes
-#statusbar_visibility = yes
+header_visibility = no
+statusbar_visibility = no
 
 ## Show the "Connected to ..." message on startup
 #connected_message_on_startup = yes
 
-#titles_visibility = yes
-#header_text_scrolling = yes
+titles_visibility = no
+header_text_scrolling = yes
 #cyclic_scrolling = no
 
 lyrics_fetchers = musixmatch, azlyrics, genius, sing365, metrolyrics, justsomelyrics, jahlyrics, plyrics, tekstowo, zeneszoveg, internet
-#follow_now_playing_lyrics = no
+follow_now_playing_lyrics = yes
 #fetch_lyrics_for_current_song_in_background = no
 #store_lyrics_in_song_dir = no
 #generate_win32_compatible_filenames = yes
@@ -301,9 +308,9 @@ display_bitrate = yes
 #ignore_diacritics = no
 #block_search_constraints_change_if_items_found = yes
 
-#mouse_support = yes
+mouse_support = yes
 #mouse_list_scroll_whole_page = no
-#lines_scrolled = 5
+lines_scrolled = 2
 #empty_tag_marker = <empty>
 #tags_separator = " | "
 #tag_editor_extended_numeration = no
@@ -360,17 +367,17 @@ use_console_editor = yes
 ## transparent background.
 
 colors_enabled = yes
-#empty_tag_color = cyan
-#header_window_color = default
+empty_tag_color = white
+header_window_color = blue
 #volume_color = default
-#state_line_color = default
-#state_flags_color = default:b
-#main_window_color = yellow
+state_line_color = black
+state_flags_color = black
+main_window_color = 243
 #color1 = white
 #color2 = green
-#progressbar_color = black:b
-#progressbar_elapsed_color = green:b
-#statusbar_color = default
+progressbar_color = 240
+progressbar_elapsed_color = white
+statusbar_color = blue
 #statusbar_time_color = default:b
 #player_state_color = default:b
 #alternative_ui_separator_color = black:b
