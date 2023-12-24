@@ -23,7 +23,7 @@ picard
 polychromatic_arch
 retroarch_arch
 qbittorrent
-steam
+steam-native-runtime
 
 aur:freetube-bin
 aur:goverlay
