@@ -1,0 +1,26 @@
+import Control.Applicative
+import Control.Monad
+import Data.Char
+import Data.List
+import Data.Monoid
+import Data.String
+
+:set prompt "λ> "
+
+:set +t
+:set +c
+
+:m + Control.Arrow
+:m + Control.Applicative
+:m + Control.Monad
+:m + Data.Function
+:m + Data.List
+:m + Data.Maybe
+:m + Data.Monoid
+
+:set -Wall
+:set -fno-warn-missing-signatures
+:set -fno-warn-type-defaults
+:set -fno-warn-name-shadowing
+:set -fno-warn-unused-do-bind
+
