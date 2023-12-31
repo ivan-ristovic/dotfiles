@@ -1,0 +1,169 @@
+e_alias="alias"    # Expanded alias
+i_alias="alias"    # Ignored (non-expanded) alias
+
+# Shell-specific aliases
+shell=$(ps -hp $$ | awk '{print $5}')
+if [ "$shell" = "-zsh" ]; then
+
+    i_alias="ialias"
+
+    "$e_alias" -g B='| bat'
+    "$e_alias" -g BB='2>&1 | bat'
+    "$e_alias" -g C='| bat'
+    "$e_alias" -g CC='2>&1 | bat'
+    "$e_alias" -g CL='| xclip -sel clip'
+    "$e_alias" -g COL='| column -t'
+    "$e_alias" -g G='| grep'
+    "$e_alias" -g GG='2>&1 | grep'
+    "$e_alias" -g H='| head'
+    "$e_alias" -g HH='2>&1 | head'
+    "$e_alias" -g L='| less'
+    "$e_alias" -g LC='| wc -l'
+    "$e_alias" -g LL='2>&1 | less'
+    "$e_alias" -g M='| most'
+    "$e_alias" -g MM='2>&1 | most'
+    "$e_alias" -g NE='2> /dev/null'
+    "$e_alias" -g NUL='> /dev/null 2>&1'
+    "$e_alias" -g T='| tail'
+    "$e_alias" -g TT='2>&1 | tail'
+
+    "$i_alias" history=omz_history
+    "$e_alias" src='exec zsh'
+    "$e_alias" which-command='whence -af'
+
+elif [ "$shell" = "-bash" ]; then
+
+    "$i_alias" ..='cd ..'
+    "$e_alias" src='exec zsh'
+
+fi
+
+# Shared definitions
+"$e_alias" ...='cd ../..'
+"$e_alias" .....='cd ../../..'
+"$e_alias" .....='cd ../../../..'
+"$e_alias" ......='cd ../../../../..'
+"$e_alias" -- '-x'='chmod -x'
+"$e_alias" -- '+x'='chmod +x'
+"$e_alias" alert='notify-send -u normal -w'
+"$e_alias" cd1='cd -1'
+"$e_alias" cd2='cd -2'
+"$e_alias" cd3='cd -3'
+"$e_alias" cd4='cd -4'
+"$e_alias" cd5='cd -5'
+"$e_alias" cd6='cd -6'
+"$e_alias" cd7='cd -7'
+"$e_alias" cd8='cd -8'
+"$e_alias" cd9='cd -9'
+"$e_alias" _=sudo
+"$e_alias" aurs='yay -S'
+"$e_alias" aurq='yay -Q'
+"$e_alias" aurr='yay -R'
+"$e_alias" auru='yay -U'
+"$e_alias" aurua='yay -Syu'
+"$e_alias" b='bat'
+"$e_alias" bw='bandwhich'
+"$e_alias" bench='hyperfine'
+"$e_alias" c='cat -ns'
+"$i_alias" cp='cp -i'
+"$e_alias" d='docker'
+"$e_alias" dc='docker-compose'
+"$e_alias" dcu='docker-compose up -d'
+"$e_alias" dcd='docker-compose down'
+"$e_alias" dcl='docker-compose logs -f'
+"$e_alias" de='docker exec'
+"$e_alias" df='duf'
+"$e_alias" diffu='diff --unified'
+"$e_alias" diffs='diff --side-by-side'
+"$e_alias" di='docker image'
+"$e_alias" dils='docker image ls'
+"$e_alias" dirm='docker image rm'
+"$e_alias" dlin='docker login -u'
+"$e_alias" dp='docker push'
+"$e_alias" dps='docker ps'
+"$e_alias" dr='docker run -d'
+"$e_alias" drm='docker rm'
+"$e_alias" drmf='docker rm -f'
+"$e_alias" drp='docker run -dp'
+"$e_alias" drv='docker run -d -v'
+"$e_alias" ds='docker stop'
+"$e_alias" du='dust'
+"$e_alias" dv='docker volume'
+"$e_alias" dvc='docker volume create'
+"$e_alias" dvi='docker volume inspect'
+"$e_alias" dvls='docker volume ls'
+"$e_alias" dvp='docker volume prune'
+"$e_alias" dvrm='docker volume rm'
+"$i_alias" e='$EDITOR'
+"$e_alias" fda='fd -H --no-ignore'
+"$e_alias" getc='curl --continue-at - --location --progress-bar --remote-name --remote-time'
+"$e_alias" getw='wget --continue --progress=bar --timestamping'
+"$e_alias" gs='git status -s'
+"$e_alias" gsa='git submodule add'
+"$e_alias" grhhh='git reset --hard @{u}'
+"$i_alias" grep='grep --color'
+"$e_alias" h=history
+"$e_alias" hd='hexdump -C'
+"$e_alias" help=man
+"$e_alias" hgrep='fc -El 0 | grep'
+"$e_alias" k='kill -9'
+"$i_alias" l='ls -lFh'
+"$i_alias" lS='ls -1FSsh'
+"$i_alias" la='ls -lAFh'
+"$e_alias" lart='ls -1Fcart'
+"$e_alias" ldot='ls -ld .*'
+"$e_alias" lg='lazygit'
+"$i_alias" ll='ls -lFha'
+"$i_alias" lr='ls -tRFh'
+"$i_alias" lrt='ls -1Fcrt'
+"$i_alias" ls='ls --color=tty'
+"$i_alias" lt='ls -ltFh'
+"$e_alias" m=make
+"$e_alias" map='xargs -n1'
+"$e_alias" md='mkdir -p'
+"$e_alias" mk='make -B'
+"$i_alias" mp='$MPLAYER'
+"$i_alias" mv='mv -i'
+"$e_alias" p='ps -f'
+"$e_alias" pacs='sudo pacman -S'
+"$e_alias" pacq='sudo pacman -Q'
+"$e_alias" pacr='sudo pacman -R'
+"$e_alias" pacu='sudo pacman -U'
+"$e_alias" pacua='sudo pacman -Syu'
+"$e_alias" ports='netstat -tulanp'
+"$e_alias" py='python3'
+"$e_alias" rd=rmdir
+"$e_alias" rgd='rg -.'
+"$e_alias" rgu='rg -u'
+"$e_alias" rguu='rg -uu'
+"$e_alias" rguuu='rg -uuu'
+"$e_alias" rma='rm *'
+"$e_alias" rmf='rm -rf'
+"$e_alias" rmfa='rm -rf *'
+"$e_alias" rss='newsboat'
+"$e_alias" sa='alias | egrep -i'
+"$e_alias" sortnr='sort -n -r'
+"$e_alias" td='tmux detach'
+"$e_alias" tree='br'
+"$e_alias" tt='taskwarrior-tui'
+"$e_alias" tsk='taskwarrior-tui'
+"$e_alias" tska='task add'
+"$e_alias" tskad='task add due:'
+"$e_alias" tskadt='task add due:tomorrow'
+"$e_alias" tskd='task done'
+"$e_alias" tskl='task list'
+"$e_alias" tskm='task modify'
+"$e_alias" tskrm='task delete'
+"$i_alias" type='type -a'
+"$e_alias" unexport=unset
+"$i_alias" uz=extract
+"$e_alias" vim='nvim'
+"$e_alias" vsc='codium .'
+"$e_alias" ytdl=yt-dlp
+"$i_alias" z=ua
+
+# Unset vars introduced by this script
+unset shell
+unset e_alias
+unset i_alias
+

@@ -203,7 +203,7 @@ bindkey " " expand-alias-space
 bindkey "^M" expand-alias-enter
 bindkey -M isearch " " magic-space
 
-source ~/.aliases.zsh
+source ~/.aliases
 source ~/.functions
 
 smartdots() {
