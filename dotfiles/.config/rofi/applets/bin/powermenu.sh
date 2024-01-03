@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-theme="$HOME"/.config/rofi/applets/shared/theme.rasi
-prompt="`hostname`"
-mesg="Uptime : `uptime -p | sed -e 's/up //g'`"
+config_dir="$HOME"/.config
+theme="$config_dir/rofi/applets/shared/theme.rasi"
+prompt="$(hostname)"
+mesg="Uptime : $(uptime -p | sed -e 's/up //g')"
 
 list_col='1'
 list_row='7'
@@ -10,7 +11,7 @@ list_row='7'
 test -f /run/systemd/shutdown/scheduled
 is_shutdown=$?
 
-layout=`cat ${theme} | grep 'USE_ICON' | cut -d'=' -f2`
+layout=$(cat "$theme" | grep 'USE_ICON' | cut -d'=' -f2)
 if [[ "$layout" == 'NO' ]]; then
     option_1=" Lock"
     option_2="󰍃 Logout"
@@ -64,7 +65,7 @@ confirm_cmd() {
         -dmenu \
         -p 'Confirmation' \
         -mesg 'Are you Sure?' \
-        -theme ${theme}
+        -theme "$theme"
 }
 
 confirm_exit() {
@@ -82,7 +83,7 @@ confirm_run () {
 
 run_cmd() {
     if [[ "$1" == '--opt1' ]]; then
-        betterlockscreen -l
+        confirm_run "i3lock -i $config_dir/i3/wp.png -p default -t"            
     elif [[ "$1" == '--opt2' ]]; then
         confirm_run 'kill -9 -1'
     elif [[ "$1" == '--opt3' ]]; then
