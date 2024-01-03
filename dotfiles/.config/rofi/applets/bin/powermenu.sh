@@ -83,7 +83,7 @@ confirm_run () {
 
 run_cmd() {
     if [[ "$1" == '--opt1' ]]; then
-        confirm_run "i3lock -i $config_dir/i3/wp.png -p default -t"            
+        confirm_run "i3lock -i /usr/share/backgrounds/wp.png -p default -t"            
     elif [[ "$1" == '--opt2' ]]; then
         confirm_run 'kill -9 -1'
     elif [[ "$1" == '--opt3' ]]; then

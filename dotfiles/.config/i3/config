@@ -6,6 +6,7 @@
 # Variables (not recursive so $scriptdir cannot containt $confdir!)
 set $confdir ~/.config/i3
 set $scriptdir ~/.config/i3/scripts
+set $bg /usr/share/backgrounds/wp.png
 
 #######################
 # config starts here: #
@@ -162,7 +163,7 @@ bindsym $mod+Shift+e exec ~/.config/rofi/applets/bin/powermenu.sh
 
 # Lock the system
 # lock with a picture:
-bindsym $mod+Shift+l exec i3lock -i $confdir/wp.png -p default -t
+bindsym $mod+Shift+l exec i3lock -i $bg -p default -t
 # lock by blurring the screen:
 bindsym $mod+l exec $scriptdir/lock-blur
 
@@ -362,7 +363,7 @@ exec --no-startup-id sleep 1 && setxkbmap -layout 'us,rs,rs' -variant euro,latin
 exec_always --no-startup-id ~/.config/conky/start_conky
 
 # set wallpaper
-exec --no-startup-id sleep 1 && feh --bg-fill $confdir/wp.png
+exec --no-startup-id sleep 1 && feh --bg-fill $bg
 
 # set powersavings for display:
 exec --no-startup-id xset s 480 dpms 600 600 600
@@ -375,7 +376,7 @@ exec --no-startup-id xset b off
 
 # automatic lock 
 # https://wiki.archlinux.org/title/Session_lock#xautolock
-exec --no-startup-id xautolock -time 10 -notify 60 -notifier "notify-send 'Auto-Locking in 1 minute...'" -locker "$scriptdir/lock-blur $confdir/wp.png"
+exec --no-startup-id xautolock -time 10 -notify 60 -notifier "notify-send 'Auto-Locking in 1 minute...'" -locker "$scriptdir/lock-blur $bg"
 
 # xscreensaver
 # https://www.jwz.org/xscreensaver
