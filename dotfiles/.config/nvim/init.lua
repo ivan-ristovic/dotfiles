@@ -32,6 +32,7 @@ require "code.treesitter"
 require "code.autopairs"
 require "code.gitsigns"
 require "code.comments"
+require "code.colorizer"
 
 require "lsp.cmp"
 require "lsp.lsp"
