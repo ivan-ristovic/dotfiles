@@ -1,3 +1,0 @@
-/etc/modprobe.d/99-nobeep.conf
-
-blacklist pcspkr

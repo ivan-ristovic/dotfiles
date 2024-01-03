@@ -2,42 +2,22 @@
 
 source ../utils.sh
 
-function process_patch () 
-{
-    patch=$1
-    target_file=$(head -n 1 $patch) 
-    target_contents=$(tail -n +3 $patch)
-    echo "$target_contents" >> $target_file
-}
-
-function swap_file ()
-{
-    patch=$1
-    target_file=$(head -n 1 $patch) 
-    target_contents=$(tail -n +3 $patch)
-    echo "$target_contents" > $target_file
-}
-
-for patch in *.patch ; do
-    patched="._$patch"
-    if [[ -f $patched ]]; then
-        fmt::msg "Skipping already performed patch: $patch"
-    else
-        fmt::msg "Performing patch: $patch"
-        process_patch $patch
-        if [[ $? -eq 0 ]]; then
-            as_user touch $patched
+for patch in $(find ./*/ -type f) ; do
+    target_file=${patch:1} 
+    if [[ $patch == *.patch ]] ; then
+        target_file="${target_file%.patch}"
+        diff=$(comm -13 <(sort -u "$target_file") <(sort -u "$patch"))
+        if [ -n "$diff" ]; then
+            fmt::msg "Patching: $target_file"
+            cat "$patch" >> "$target_file"
         else
-            fmt::err "Patch failed: $patch"
+            fmt::msg "Skipping: $target_file"
         fi
-    fi
-done
-
-for swap in *.swap ; do
-    fmt::msg "Performing swap: $swap"
-    swap_file $swap
-    if [[ $? -ne 0 ]]; then
-        fmt::err "Swap failed: $swap"
+    else
+        fmt::msg "Swapping: $target_file"
+        if ! sudo cp --no-preserve=mode,ownership -rf "$patch" "$target_file" ; then
+            fmt::err "Swap failed: $patch"
+        fi
     fi
 done
 

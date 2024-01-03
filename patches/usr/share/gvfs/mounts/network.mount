@@ -1,7 +1,4 @@
-/usr/share/gvfs/mounts/network.mount 
-
 [Mount]
 Type=network
 Exec=/usr/lib/gvfsd-network
 AutoMount=false
-
