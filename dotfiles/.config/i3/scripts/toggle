@@ -8,7 +8,7 @@ if [[ -z ${COMMAND_ON} || -z ${COMMAND_OFF} || -z ${COMMAND_STATUS} ]]; then
   exit 1
 fi
 
-if ! command -v "$COMMAND_ON" &>/dev/null || ! command -v "$COMMAND_OFF" &>/dev/null || ! command -v "$COMMAND_STATUS" &>/dev/null; then
+if ! command -v "${COMMAND_ON%% *}" &>/dev/null || ! command -v "${COMMAND_OFF%% *}" &>/dev/null || ! command -v "${COMMAND_STATUS%% *}" &>/dev/null; then
   echo "${COMMAND_404:-}"
   echo "${COMMAND_404:-}"
   echo "$COLOR"
