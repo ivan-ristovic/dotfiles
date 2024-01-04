@@ -8,13 +8,13 @@
 * @website https://betterdiscord.app/theme/Nocturnal
 */
 @import url("https://xcruxiex.github.io/themes/themes-cores/nocturnal.css");
-@import url("https://xcruxiex.github.io/themes/core/badges.css");
+/* @import url("https://xcruxiex.github.io/themes/core/badges.css"); */
 @import url("https://xcruxiex.github.io/themes/core/custom-font.css");
 @import url("https://discordstyles.github.io/RadialStatus/dist/RadialStatus.css"); /* Radial Status */
 :root {
   --backgroundColor01: #08100a;
   --backgroundColor02: #030a05;
-  --mainColor: #7b7d7d;
+  --mainColor: #8c8c8c;
   --gradientColor01: #0575E6;
   --gradientColor02: #14301d;
 
@@ -37,4 +37,8 @@
   --rs-phone-color: var(--rs-online-color);
 
   --customFont: 'gg sans', sans-serif;
+}
+
+.modeUnreadImportant_efb53e .name__8d1ec {
+    color: #fff;
 }
