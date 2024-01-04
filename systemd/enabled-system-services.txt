@@ -1,4 +1,5 @@
 legion-linux.service
+lightdm.service
 nvidia-powerd.service
 polkit.service
 
