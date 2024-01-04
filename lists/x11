@@ -15,6 +15,7 @@ polkit-qt5
 lxsession-gtk3
 
 ## Utils
+libnotify
 numlockx
 xautolock
 xbindkeys
