@@ -4,11 +4,13 @@ source ../utils.sh
 
 for patch in $(find ./*/ -type f) ; do
     target_file=${patch:1} 
+    sudo mkdir -p "$(dirname "$target_file")"
     if [[ $patch == *.patch ]] ; then
         target_file="${target_file%.patch}"
         diff=$(comm -13 <(sort -u "$target_file") <(sort -u "$patch"))
         if [ -n "$diff" ]; then
             fmt::msg "Patching: $target_file"
+            echo >> "$target_file"
             cat "$patch" >> "$target_file"
         else
             fmt::msg "Skipping: $target_file"
