@@ -37,9 +37,8 @@ function inst_silent ()
 
 function inst_aur ()
 {
-    if ! echo y | sudo -u $SETUP_USER yay -S --needed --noconfirm --provides=false --answerdiff None --answerclean None --mflags "--noconfirm --needed" $@; then
+    if ! echo y | sudo -u $SETUP_USER yay -S --sudoloop --needed --noconfirm --provides=false --answerdiff None --answerclean None --mflags "--noconfirm --needed" $@; then
         fmt::err "An error occurred while installing from AUR: $@"
-        sleep 1
         return 1
     fi
 }
