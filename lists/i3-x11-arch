@@ -7,46 +7,31 @@
 
 
 i3-wm
+i3-gaps
+i3blocks
+i3lock
+i3status
 
 acpi
 alacritty
 arandr
 autorandr
-# archlinux-xdg-menu
 # blueberry
 brightnessctl
 conky
 dex
 dmenu
 dunst
-feh
 file-roller
 gtk-engine-murrine
-i3blocks
-i3-gaps
-i3lock
-i3status
-lightdm
-lightdm-slick-greeter
 lxappearance-gtk3
-mpv
 network-manager-applet
-numlockx
-playerctl
-polkit-gnome
-pulseaudio pavucontrol
 rofi rofi-calc
-scrot
-sysstat
 thunar
 thunar-archive-plugin
 thunar-volman
 tumbler
-xautolock
-xbindkeys
 xed
-xorg-xbacklight
-xorg-xdpyinfo
 
 
 aur:kvantum-theme-matchama

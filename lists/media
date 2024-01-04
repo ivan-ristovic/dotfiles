@@ -1,5 +1,9 @@
 ### Multimedia ###
 
+
+pulseaudio pavucontrol
+
+
 ## Player
 mpv
 
@@ -7,15 +11,19 @@ mpv
 ffmpeg
 
 ## Image utils
+feh
 imagemagick
+viewnior
 
 ## Music
 mpd
 ncmpcpp
+playerctl
 
 ## Document converters
 pandoc
 pdftk
+
 
 
 # end

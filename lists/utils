@@ -37,8 +37,14 @@ moreutils
 ## Progress monitoring
 pv
 
+## Screen capture
+scrot
+
 ## Alternative to sed
 sd
+
+## Monitoring tools for linux (iostat, mpstat, sar...)
+sysstat
 
 ## Task management (taskwarrior + timewarrior)
 taskw

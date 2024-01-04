@@ -1,13 +1,26 @@
 ### X11 list ###
 
-xorg-server
+
+xorg
 
 
-## Utils
-xsel
-
-## Greeter
+## DM
 lightdm
 lightdm-slick-greeter
+
+## Auth agents
+polkit
+polkit-gnome
+polkit-qt5
+lxsession-gtk3
+
+## Utils
+numlockx
+xautolock
+xbindkeys
+xorg-backlight
+xorg-xdpuinfo
+xsel
+
 
 ### end ###

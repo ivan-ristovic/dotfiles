@@ -1,5 +1,6 @@
 legion-linux.service
 nvidia-powerd.service
+polkit.service
 
 ./system/cpu-no-turbo.service
 

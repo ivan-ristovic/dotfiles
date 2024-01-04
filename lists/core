@@ -13,11 +13,12 @@ vi
 tmux
 zsh
 
-## Useful core tools 
+## Core packages 
 bat
 curl
 fd
 fzf
+openssl
 ranger
 ripgrep
 
