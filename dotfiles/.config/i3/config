@@ -235,9 +235,6 @@ bindsym $mod+a focus parent
 # open new empty workspace
 bindsym $mod+Shift+n exec $scriptdir/empty-workspace
 
-# toggle extreme cooling
-bindsym Ctrl+Shift+0 exec ec4Linux change-state
-
 # emoji picker
 bindsym $mod+p exec $scriptdir/emoji-picker
 
@@ -256,7 +253,7 @@ bindsym XF86AudioMute exec BLOCK_BUTTON=1 $scriptdir/volume && pkill -RTMIN+10 i
 
 # audio control
 # play-pause doesn't seem to work with mpd 
-bindsym XF86AudioPlay exec playerctl play-pause && mpc toggle
+bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioPause exec playerctl pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
