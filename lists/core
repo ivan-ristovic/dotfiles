@@ -19,6 +19,7 @@ curl
 fd
 fzf
 openssl
+p7zip
 ranger
 ripgrep
 wget

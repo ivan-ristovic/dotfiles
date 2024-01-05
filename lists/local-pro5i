@@ -5,12 +5,16 @@ updates_arch
 cleanup_manjaro_i3
 
 
+# Base
 +i3-x11-arch
 +hardware-arch
 +utils-arch
-+perf-arch
-+dev-arch
 +media-arch
+
+# Development
++dev-arch
++dev-dotnet-arch
++perf-arch
 
 
 audacity
