@@ -21,6 +21,7 @@ fzf
 openssl
 ranger
 ripgrep
+wget
 
 
 ### end ###
