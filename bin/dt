@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-[[ $(TZ=Europe/Berlin date +%Z) == CEST ]] && tz_width=4 || tz_width=3
+[[ $(TZ=Europe/Berlin date +%Z) == CEST ]] && tz_width=4 || tz_width=4
 
 for tz in America/{Los_Angeles,Chicago,New_York} UTC Europe/{London,Berlin,Belgrade} Asia/Taipei Australia/Melbourne; do
    tz_tail=${tz##*/}

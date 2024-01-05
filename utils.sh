@@ -24,9 +24,7 @@ function uninst ()
 function inst ()
 {
     if ! sudo $@; then
-        fmt::err "An error occurred while installing: $@"
-        sleep 1
-        return 1
+        std::fat "An error occurred while installing: $@"
     fi
 }
 
@@ -38,8 +36,7 @@ function inst_silent ()
 function inst_aur ()
 {
     if ! echo y | sudo -u $SETUP_USER yay -S --sudoloop --needed --noconfirm --provides=false --answerdiff None --answerclean None --mflags "--noconfirm --needed" $@; then
-        fmt::err "An error occurred while installing from AUR: $@"
-        return 1
+        std::fat "An error occurred while installing from AUR: $@"
     fi
 }
 
