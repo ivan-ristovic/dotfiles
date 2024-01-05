@@ -41,11 +41,11 @@ wine lib32-libxcomposite lib32-libxinerama lib32-alsa-plugins lib32-libpulse lib
 
 aur:freetube-bin
 aur:goverlay
-aur:gpu-screen-recorder-git gpu-screen-recorder-gtk-git
+aur:gpu-screen-recorder-git aur:gpu-screen-recorder-gtk-git
 aur:lenovolegionlinux-dkms-git 
 aur:linux-wifi-hotspot
 aur:mp3gain
-aur:optimus-manager optimus-manager-qt 
+aur:optimus-manager aur:optimus-manager-qt 
 aur:oversteer
 aur:ventoy-bin
 aur:webcord-bin
