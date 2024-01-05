@@ -1,8 +1,12 @@
 ### Multimedia ###
 
 
-pulseaudio pavucontrol
-
+## Audio server and tools
+pipewire pipewire-pulse 
+wireplumber 
+pavucontrol
+alsa-tools
+easyeffects lsp-plugins 
 
 ## Player
 mpv
@@ -23,7 +27,6 @@ playerctl
 ## Document converters
 pandoc
 pdftk
-
 
 
 # end

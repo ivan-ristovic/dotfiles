@@ -2,7 +2,7 @@
 
 script_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-amixer -D pulse sset Master $@
+amixer sset Master $@
 
 if [ $? -eq 0 ]; then
     pkill -RTMIN+10 i3blocks
