@@ -99,7 +99,12 @@ fi
 "$e_alias" getc='curl --continue-at - --location --progress-bar --remote-name --remote-time'
 "$e_alias" getw='wget --continue --progress=bar --timestamping'
 "$e_alias" gs='git status -s'
-"$e_alias" gsa='git submodule add'
+"$e_alias" gsma='git submodule add'
+"$e_alias" gsmd='git submodule deinit'
+"$e_alias" gsmf='git submodule foreach'
+"$e_alias" gsmi='git submodule init'
+"$e_alias" gsms='git submodule sync'
+"$e_alias" gsmu='git submodule update'
 "$e_alias" grhhh='git reset --hard @{u}'
 "$i_alias" grep='grep --color'
 "$e_alias" h=history
