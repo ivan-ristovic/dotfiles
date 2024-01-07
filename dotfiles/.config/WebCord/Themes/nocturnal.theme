@@ -14,7 +14,7 @@
 :root {
   --backgroundColor01: #08100a;
   --backgroundColor02: #030a05;
-  --mainColor: #8c8c8c;
+  --mainColor: #707070;
   --gradientColor01: #0575E6;
   --gradientColor02: #14301d;
 
