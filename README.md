@@ -5,8 +5,8 @@
 
 - **OS**: [Arch Linux](https://archlinux.org/) - [Manjaro](https://manjaro.org/)
 - **WM**: [i3](https://i3wm.org/)
-- **Shell**: [Zsh](https://www.zsh.org/) with [Oh My Zsh](https://ohmyz.sh/) and [powerlevel10k](https://github.com/romkatv/powerlevel10k) theme
-- **Terminal**: [Alacritty](https://github.com/alacritty/alacritty)
+- **Shell**: [zsh](https://www.zsh.org/) with [Oh My Zsh](https://ohmyz.sh/) and [powerlevel10k](https://github.com/romkatv/powerlevel10k) theme
+- **Terminal**: [alacritty](https://github.com/alacritty/alacritty)
 - **Editor**: [neovim](https://neovim.io/) (with Lua config)
 - **Session manager**: [tmux](https://github.com/tmux/tmux/wiki)
 - **File manager**: [ranger](https://github.com/ranger/ranger)
@@ -25,7 +25,8 @@ This repository contains my personal dotfiles, QOL scripts and binaries, as well
 My custom (additional) features:
 - Integration with tmux, nvim, fzf...
 - Automatic [alias expansion](dotfiles/.zshrc)
-- QOL [aliases](dotfiles/.aliases.zsh) and [functions](bin)
+- QOL [aliases](dotfiles/aliases) and [functions](bin)
+- Custom [shell library](include)
 - [Theming](dotfiles/themes)
 
 ### Session Manager (tmux)
