@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+command -v jq >/dev/null 2>&1 || { echo >&2 "Program 'jq' required but it is not installed. Aborting."; exit 1; }
+
+if [ -z "$SENSOR" ] || [ -z "$METRIC" ]; then
+    echo "SENSOR or METRIC not set"
+    exit 33
+fi
+
+if [ -z "${UNIT// }" ]; then
+    unit=""
+else
+    unit="$UNIT"
+fi
+sensor=${SENSOR}
+metric=${METRIC}
+t_warn=${T_WARN:-70}
+t_crit=${T_CRIT:-90}
+
+jq_filter=$(printf ".\"%s\".\"%s\"[]" "$sensor" "$metric")
+value=$(sensors -j | jq "$jq_filter") 
+if [ $? -ne 0 ] || [ "$value" = "null" ]; then
+    echo "$label ? $unit"
+    echo "$label ? $unit"
+    echo "#FF0000"
+    exit 1
+fi
+
+# Rounding
+value=$(printf "%.0f" "$value")
+
+if [ -z "$label" ]; then
+    if (( value < 45 )); then
+        label=''
+    elif (( value < 55 )); then
+        label=''
+    elif (( value < 65 )); then
+        label=''
+    elif (( value < 75 )); then
+        label=''
+    else
+        label=''
+    fi
+
+    printf "%s %.0f%s\n" "$label" "$value" "$unit"
+    printf "%s %.0f%s\n" "$label" "$value" "$unit"  
+else
+    printf " %.0f%s\n" "$value" "$unit"
+    printf " %.0f%s\n" "$value" "$unit"  
+fi
+
+
+if (( value >= t_crit )); then
+    echo "#FF0000"
+elif (( value >= t_warn )); then
+    echo "#FFFC00"
+fi
+
