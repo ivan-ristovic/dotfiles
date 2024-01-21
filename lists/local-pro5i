@@ -41,7 +41,7 @@ steam-native-runtime
 torbrowser-launcher
 vlc
 yt-dlp aria2
-wine lib32-libxcomposite lib32-libxinerama lib32-alsa-plugins lib32-libpulse lib32-openal
+wine winetricks lib32-libxcomposite lib32-libxinerama lib32-alsa-plugins lib32-libpulse lib32-openal
 
 aur:freetube-bin
 aur:goverlay
