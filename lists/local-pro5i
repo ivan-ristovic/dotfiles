@@ -11,7 +11,9 @@ cleanup_manjaro_i3
 +utils-arch
 +media-arch
 
+
 # Development
+# (keep close to top for build dependencies)
 +dev-arch
 +dev-dotnet-arch
 +perf-arch
@@ -41,7 +43,6 @@ steam-native-runtime
 torbrowser-launcher
 vlc
 yt-dlp aria2
-wine winetricks lib32-libxcomposite lib32-libxinerama lib32-alsa-plugins lib32-libpulse lib32-openal
 
 aur:freetube-bin
 aur:goverlay
@@ -53,7 +54,9 @@ aur:optimus-manager aur:optimus-manager-qt
 aur:oversteer
 aur:ventoy-bin
 aur:webcord-bin
-aur:wine-ge-custom-bin
+
+# Wine
++wine-arch
 
 
 ### end ###
