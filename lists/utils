@@ -55,7 +55,7 @@ tree
 ## Unarchiver
 unrar
 
-## YAML parser
+## JSON, YAML, XML, TOML parser
 yq
 
 
