@@ -17,14 +17,14 @@ function uninst ()
 {
     PMU=$(pm_uninst_cmd)
     if ! sudo $PMU $@; then
-        fmt::msg "An error occurred while uninstalling: $@"
+        fmt::wrn "An error occurred while uninstalling: $@"
     fi
 }
 
 function inst ()
 {
     if ! sudo $@; then
-        std::fat "An error occurred while installing: $@"
+        fmt::err "An error occurred while installing: $@"
     fi
 }
 
@@ -36,7 +36,7 @@ function inst_silent ()
 function inst_aur ()
 {
     if ! echo y | sudo -u $SETUP_USER yay -S --sudoloop --needed --noconfirm --provides=false --answerdiff None --answerclean None --mflags "--noconfirm --needed" $@; then
-        std::fat "An error occurred while installing from AUR: $@"
+        fmt::err "An error occurred while installing from AUR: $@"
     fi
 }
 
