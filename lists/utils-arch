@@ -4,6 +4,10 @@
 +utils
 
 
+# Task management (Arch specific additions)
+python-tasklib
+
+
 ## Tree alternative
 aur:broot
 
