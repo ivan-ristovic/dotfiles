@@ -13,6 +13,7 @@ trash_dirs=(
     Videos
     .i3
     .config/dunst
+    .config/ranger
     .config/Kvantum
 )
 for dir in "${trash_dirs[@]}" ; do 
@@ -24,6 +25,8 @@ bloat=(
     clipit
     conky
     conky-i3
+    dmenu-manjaro
+    lxappearance
     manjaro-i3-settings
     manjaro-ranger-settings
     manjaro-zsh-config
