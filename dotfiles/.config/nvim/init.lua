@@ -27,6 +27,7 @@ require "conf.colorscheme"
 require "conf.finder"
 require "conf.filetree"
 require "conf.tabline"
+require "conf.snippets"
 
 require "code.treesitter"
 require "code.autopairs"

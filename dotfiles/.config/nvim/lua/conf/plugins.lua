@@ -79,7 +79,8 @@ return require('packer').startup(function(use)
     use "hrsh7th/cmp-path"
     use "hrsh7th/cmp-cmdline"
     use "hrsh7th/cmp-nvim-lsp"
-    use "L3MON4D3/LuaSnip"
+    use { "L3MON4D3/LuaSnip", run = "make install_jsregexp" }
+    use "honza/vim-snippets"
     use "saadparwaiz1/cmp_luasnip"
 
     -- LSP 
