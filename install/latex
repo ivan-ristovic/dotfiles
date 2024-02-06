@@ -7,6 +7,7 @@ pkgs=(
     texlive-latexextra 
     texlive-langextra 
     texlive-langcyrillic 
+    texlive-luatex
     texlive-fontsextra 
     texlive-bibtexextra
     texlive-science
