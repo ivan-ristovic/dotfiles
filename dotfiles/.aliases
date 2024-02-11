@@ -136,7 +136,6 @@ fi
 "$e_alias" pacu='sudo pacman -U'
 "$e_alias" pacua='sudo pacman -Syu'
 "$e_alias" ports='netstat -tulanp'
-"$e_alias" py='python3'
 "$e_alias" rd=rmdir
 "$e_alias" rgd='rg -.'
 "$e_alias" rgu='rg -u'
