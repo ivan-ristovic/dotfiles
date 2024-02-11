@@ -7,4 +7,4 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-wget "$wget_args" "$@" 
+wget $wget_args $@ 
