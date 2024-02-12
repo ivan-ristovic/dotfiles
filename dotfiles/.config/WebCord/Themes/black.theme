@@ -3,8 +3,6 @@
     background-color: #000000 !important;
 }
 
-/* Server list */
-
 /* Channel list */
 .container__590e2 {
     background-color: #000000 !important;
@@ -21,7 +19,7 @@
 }
 
 /* Member list */
-.members__9f47b, .member_aa4760 {
+.members__9f47b, .member_aa4760, container_b2ce9c {
     background-color: #030a05 !important;
 }
 
