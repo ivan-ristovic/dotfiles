@@ -26,7 +26,7 @@
                 "audio": true,
                 "fullscreen": true,
                 "notifications": true,
-                "display-capture": true,
+                "display-capture": false,
                 "background-sync": false
             }
         },
@@ -63,7 +63,7 @@
                 "gpu": false
             },
             "webApi": {
-                "webGl": true
+                "webGl": false
             },
             "unix": {
                 "autoscroll": false
