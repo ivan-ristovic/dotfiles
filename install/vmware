@@ -2,15 +2,34 @@
 
 source "../utils.sh"
 
+if std::is_installed vmware-uninstall ; then
+    msg "VMware already installed. Exiting..."
+    return
+fi
+
 inst $@ fuse2 gtkmm linux-headers ncurses libcanberra pcsclite
 
-# sudo ./script.bundle --console --required --eulas-agreed
-yay -S --noconfirm --needed  vmware-workstation
+dir=/tmp/vmware-player-install
+mkdir -p "$dir"
+cd $!
+msg "Downloading VMware player to: $dir"
+wget --user-agent="Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0" https://www.vmware.com/go/getplayer-linux -O vmplayer
+sudo chmod +x vmplayer
+sudo ./vmplayer --console --required --eulas-agreed
 
-services=vmware-networks.service vmware-usbarbitrator.service vmware-hostd.service
-sudo systemctl enable $services
-sudo systemctl start $services
+msg "Cleaning up"
+sudo rm -rf "$dir"
 
+msg "Enabling VMware services"
+services=(
+    vmware-networks.service
+    vmware-usbarbitrator.service
+    vmware-hostd.service
+)
+sudo systemctl enable "${services[@]}"
+sudo systemctl start "${services[@]}"
+
+msg "Installing and loading VMware kernel modules"
 sudo vmware-modconfig --console --install-all
 sudo modprobe -a vmw_vmci vmmon
 
