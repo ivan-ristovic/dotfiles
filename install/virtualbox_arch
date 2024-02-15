@@ -1,0 +1,14 @@
+#!/bin/bash
+
+source "../utils.sh"
+
+if std::is_installed virtualbox ; then
+    msg "VirtualBox already installed. Exiting..."
+    return
+fi
+
+inst $@ virtualbox virtualbox-host-dkms
+inst $@ linux-headers
+
+sudo modprobe vboxdrv vboxnetadp vboxnetflt
+
