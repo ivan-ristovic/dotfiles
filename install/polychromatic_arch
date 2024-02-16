@@ -2,8 +2,8 @@
 
 source "../utils.sh"
 
+source ./linux-headers_arch
+
 inst_aur openrazer-meta polychromatic
 sudo gpasswd -a "$SETUP_USER" plugdev
-
-fmt::msg "Do not forget to install linux-headers"
 

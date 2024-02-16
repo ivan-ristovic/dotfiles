@@ -7,7 +7,8 @@ if std::is_installed vmware-installer ; then
     return
 fi
 
-inst fuse2 gtkmm linux-headers ncurses libcanberra pcsclite
+inst linux-headers
+inst fuse2 gtkmm ncurses libcanberra pcsclite
 
 dir=/tmp/vmware-player-install
 mkdir -p "$dir"
