@@ -3,7 +3,6 @@
 if [ "$DOTFILES_UTILS_SOURCED" == true ]; then
     return
 fi
-export DOTFILES_UTILS_SOURCED=true
 
 source "$SHLIB_ROOT/lib.sh" 
 SHLIB_FMT_TIME=true
@@ -102,3 +101,4 @@ function pm_uninst_cmd ()
 export PM_INSTALL_CMD=$(pm_cmd)
 export PM_UNINSTALL_CMD=$(pm_uninst_cmd)
 
+export DOTFILES_UTILS_SOURCED=true
