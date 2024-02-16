@@ -2,7 +2,7 @@
 
 source "../utils.sh"
 
-if std::is_installed vmware-uninstall ; then
+if std::is_installed vmware-installer ; then
     msg "VMware already installed. Exiting..."
     return
 fi
