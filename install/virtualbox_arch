@@ -7,8 +7,8 @@ if std::is_installed virtualbox ; then
     return
 fi
 
-inst $@ virtualbox virtualbox-host-dkms
-inst $@ linux-headers
+inst virtualbox virtualbox-host-dkms
+inst linux-headers
 
 sudo modprobe vboxdrv vboxnetadp vboxnetflt
 

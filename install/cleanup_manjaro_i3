@@ -20,6 +20,7 @@ for dir in "${trash_dirs[@]}" ; do
     fmt::msg "Cleaning up junk dir: $dir"
     rm "$SETUP_HOME_USER/${dir:?}" -rf
 done
+unset trash_dirs
 
 bloat=(
     clipit
@@ -39,4 +40,5 @@ bloat=(
 for package in "${bloat[@]}" ; do
     uninst "$package"
 done
+unset bloat
 

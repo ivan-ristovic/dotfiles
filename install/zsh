@@ -2,7 +2,7 @@
 
 source "../utils.sh"
 
-inst $@ zsh
+inst zsh
 
 if [ ! -d "$SETUP_HOME_DIR"/.oh-my-zsh/ ]; then
     fmt::msg "Installing oh-my-zsh ..."

@@ -4,7 +4,7 @@ source "../utils.sh"
 
 inst_aur nordvpn-bin
 
-sudo usermod -aG nordvpn $SETUP_USER
+sudo usermod -aG nordvpn "$SETUP_USER"
 sudo systemctl enable nordvpnd
 sudo systemctl set autoconnect on
 

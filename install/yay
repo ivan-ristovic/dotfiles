@@ -2,16 +2,14 @@
 
 source "../utils.sh"
 
-inst $@ binutils
-
 # Check if yay is already available in the repository
-if ! inst_silent $@ yay ; then
-    inst $@ base-devel
+if ! inst_silent "$@" yay ; then
+    inst base-devel binutils
     yaydir=/opt/yay
     mkdir -p $yaydir
-    chown $SETUP_USER:$SETUP_USER $yaydir
+    chown "$SETUP_USER":"$SETUP_USER" $yaydir
     gcl https://aur.archlinux.org/yay-bin.git $yaydir
-    pushd $yaydir
+    pushd $yaydir || (std::err "failed to create installation directory for yay: $yaydir" && return)
     as_user makepkg -si --noconfirm --needed
     popd
 fi

@@ -1,18 +1,20 @@
 #!/bin/bash
 
 source "../utils.sh"
-
-inst $@ \
-    retroarch \
-    retroarch-assets-ozone \
-    libretro-mame \
-    libretro-mesen \
-    libretro-nestopia \
-    libretro-picodrive \
+pkgs=(
+    retroarch
+    retroarch-assets-ozone
+    libretro-mame
+    libretro-mesen
+    libretro-nestopia
+    libretro-picodrive
     libretro-retrodream
+)
+inst "${pkgs[@]}" 
+unset pkgs
 
 inst_aur libretro-fbneo
 
-# Download GLSL shaders (as root as it is global install)
+# Download GLSL shaders (as root as it is a global install)
 git clone https://github.com/libretro/glsl-shaders /usr/share/libretro/shaders/glsl-shaders
 

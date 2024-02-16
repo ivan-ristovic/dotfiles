@@ -176,12 +176,7 @@ errored_entries=()
 
 if $SETUP_PACKAGES ; then
 
-    # Identify package manager
-    PM=$(pm_cmd)
-    fmt::msg "Package manager installation command identified as: $PM"
-
-    # Install packages
-    fmt::suc "Checks completed successfully, starting installations ..."
+    fmt::suc "Starting installations; command: '$PM_INSTALL_CMD'"
 
     function process_list ()
     {
@@ -200,7 +195,7 @@ if $SETUP_PACKAGES ; then
                 packages_requiring_linked_dotfiles+=(${to_post_install})
             elif [ -f "$SETUP_SCRIPT" ]; then
                 fmt::msg "Setting up via script : $entry"
-                source ./"$SETUP_SCRIPT" "$PM"
+                source ./"$SETUP_SCRIPT"
             elif [[ "$entry" == "$AUR_PREFIX"* ]]; then
                 pkg=${entry#"$AUR_PREFIX"}
                 fmt::msg "Installing from AUR   : $pkg"

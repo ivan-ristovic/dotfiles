@@ -1,11 +1,16 @@
 #!/bin/bash
 
+if [ "$DOTFILES_UTILS_SOURCED" == true ]; then
+    return
+fi
+export DOTFILES_UTILS_SOURCED=true
+
 source "$SHLIB_ROOT/lib.sh" 
 SHLIB_FMT_TIME=true
 
 function as_user ()
 {
-    sudo -u $SETUP_USER $@
+    sudo -u "$SETUP_USER" $@
 }
 
 function gcl ()
@@ -15,28 +20,38 @@ function gcl ()
 
 function uninst ()
 {
-    PMU=$(pm_uninst_cmd)
-    if ! sudo $PMU $@; then
+    if ! sudo $PM_UNINSTALL_CMD $@; then
         fmt::wrn "An error occurred while uninstalling: $@"
     fi
 }
 
 function inst ()
 {
-    if ! sudo $@; then
+    if ! inst_silent $@; then
         fmt::err "An error occurred while installing: $@"
     fi
 }
 
 function inst_silent ()
 {
-    sudo $@
+    sudo $PM_INSTALL_CMD $@
 }
 
 function inst_aur ()
 {
-    if ! echo y | sudo -u $SETUP_USER yay -S --sudoloop --needed --noconfirm --provides=false --answerdiff None --answerclean None --mflags "--noconfirm --needed" $@; then
+    if ! echo y | sudo -u "$SETUP_USER" yay -S --sudoloop --needed --noconfirm --provides=false --answerdiff None --answerclean None --mflags "--noconfirm --needed" $@; then
         fmt::err "An error occurred while installing from AUR: $@"
+    fi
+}
+
+function inst_pip ()
+{
+    if [ -f /etc/arch-release ]; then
+        local args=("$@")
+        inst "${args[@]/#/python-}"
+        unset args
+    else
+        pip install "$@"
     fi
 }
 
@@ -59,8 +74,7 @@ function pm_cmd ()
     osinfo[/etc/SuSE-release]='zypper install'
     osinfo[/etc/debian_version]="apt-get install -qq"
 
-    for f in ${!osinfo[@]}
-    do
+    for f in "${!osinfo[@]}"; do
         if [[ -f $f ]]; then
             echo "${osinfo["$f"]}"
             return
@@ -77,11 +91,14 @@ function pm_uninst_cmd ()
     osinfo[/etc/SuSE-release]='zypper remove'
     osinfo[/etc/debian_version]="apt-get remove -qq"
 
-    for f in ${!osinfo[@]}
-    do
+    for f in "${!osinfo[@]}"; do
         if [[ -f $f ]]; then
             echo "${osinfo["$f"]}"
             return 
         fi
     done
 }
+
+export PM_INSTALL_CMD=$(pm_cmd)
+export PM_UNINSTALL_CMD=$(pm_uninst_cmd)
+
