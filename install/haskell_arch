@@ -1,0 +1,16 @@
+#!/bin/bash
+
+source ../utils.sh
+
+inst_aur ghcup-hs-bin
+
+function ghcup_install ()
+{
+    fmt::suc "Installing through ghcup: $*"
+    as_user ghcup install "$@"
+}
+
+ghcup_install ghc
+ghcup_install stack
+ghcup_install hls
+ghcup_install cabal
