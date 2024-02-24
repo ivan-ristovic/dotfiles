@@ -138,6 +138,18 @@ function br {
     fi
 }
 
+# cht.sh support
+function cht () 
+{
+    local style=native
+    if command -v cht.sh > /dev/null ; then
+        CHTSH_QUERY_OPTIONS="style=$style" cht.sh $@
+    else
+        local sp="${*/ //}"
+        curl https://cht.sh/"${sp// /+}"\?style=native
+    fi
+}
+
 ### Conversion functions
 function bin2oct () { base2base  2  8 "$@" ; }
 function bin2dec () { base2base  2 10 "$@" ; }
