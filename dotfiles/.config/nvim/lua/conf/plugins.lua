@@ -70,6 +70,7 @@ return require('packer').startup(function(use)
     use "JoosepAlviste/nvim-ts-context-commentstring" -- Treesitter-guided comments
     use 'lukas-reineke/indent-blankline.nvim'         -- Line indendation
     use 'norcalli/nvim-colorizer.lua'                 -- CSS colors
+    use 'junegunn/vim-easy-align'                     -- Alignment
     use "lewis6991/gitsigns.nvim"                     -- Git indication
     use { "sakhnik/nvim-gdb", run = './install.sh' }  -- Debugging support
 
