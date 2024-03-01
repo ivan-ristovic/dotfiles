@@ -5,7 +5,7 @@ import Data.List
 import Data.Monoid
 import Data.String
 
-:set prompt "\ESC[34m\STXλ> \ESC[m\STX"
+:set prompt "\ESC[1m\ESC[34m\STXλ> \ESC[m\STX"
 
 :set +t
 :set +c
