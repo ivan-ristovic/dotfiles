@@ -52,6 +52,7 @@ execute pacman -Qm
 
 prompt "Cleaning package manager caches"
 execute paccache -r
+execute yaycache -r
 
 fmt::suc "Done. Have a nice day."
 
