@@ -17,5 +17,9 @@ diff-so-fancy
 ## Addons for ripgrep
 ripgrep-all
 
+## Package manager utils
+pacman-contrib
+aur:yaycache
+
 
 ### end
