@@ -148,6 +148,7 @@ fi
 "$e_alias" sa='alias | egrep -i'
 "$e_alias" sortnr='sort -n -r'
 "$e_alias" td='tmux detach'
+"$e_alias" tw='timew'
 "$e_alias" tree='br'
 "$e_alias" tt='taskwarrior-tui'
 "$e_alias" tsk='taskwarrior-tui'
