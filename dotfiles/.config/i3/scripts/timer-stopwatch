@@ -18,6 +18,16 @@ COMPACT=${COMPACT:-false}
 ###### Default environment variables ######
 
 ###### Functions ######
+play_sound(){
+    freq="${1:-1000}"
+    duration="${2:-.2}"
+    play_sound_v $freq $duration > /dev/null 2>&1
+}
+
+play_sound_v() {
+  speaker-test -Dpulse -f $1 --test sine -l 1 & sleep $2 && kill -9 $!
+}
+
 error() {
   echo Error: "$@" 1>&2
 }
@@ -158,7 +168,7 @@ if (( mode == 0 )); then
     fgcolor=$NEUTRAL_COLOR
     time=0
     pause
-    $HOME/dotfiles/bin/beep
+    play_sound
   elif (( time >= initial_time )); then
     bgcolor=$NEUTRAL_COLOR
     fgcolor=$IDLE_COLOR
