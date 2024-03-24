@@ -51,7 +51,16 @@ setw -g window-status-activity-style "none"
 setw -g window-status-separator ""
 setw -g window-status-style "none,fg=colour15,bg=colour252"
 set -g status-left "#[fg=colour15,bg=colour70] #S #[fg=colour70,bg=colour249,nobold,nounderscore,noitalics]"
-set -g status-right "#[fg=colour249,bg=colour252,nobold,nounderscore,noitalics]#[fg=colour0,bg=colour249] %Y-%m-%d  %H:%M #[fg=colour70,bg=colour249,nobold,nounderscore,noitalics]#[fg=colour15,bg=colour70] #h "
+set -g status-right "#{prefix_highlight}#[fg=colour249,bg=colour252,nobold,nounderscore,noitalics]#[fg=colour0,bg=colour249] %Y-%m-%d  %H:%M #[fg=colour70,bg=colour249,nobold,nounderscore,noitalics]#[fg=colour15,bg=colour70] #h "
+set -g @prefix_highlight_fg 'colour0'
+set -g @prefix_highlight_bg 'colour252'
+set -g @prefix_highlight_prefix_prompt '󰋽'
+set -g @prefix_highlight_show_copy_mode 'on'
+set -g @prefix_highlight_copy_prompt '󰋽'
+set -g @prefix_highlight_copy_mode_attr 'fg=blue'
+set -g @prefix_highlight_show_sync_mode 'on'
+set -g @prefix_highlight_sync_prompt '󰋽'
+set -g @prefix_highlight_sync_mode_attr 'fg=green'
 setw -g window-status-format "#[fg=colour0,bg=colour249] #I #[fg=colour0,bg=colour249] #W "
 setw -g window-status-current-format "#[fg=colour249,bg=colour245,nobold,nounderscore,noitalics]#[fg=colour0,bg=colour245] #I #[fg=colour0,bg=colour245] #W #[fg=colour245,bg=colour249,nobold,nounderscore,noitalics]"
 set -g mouse on 
