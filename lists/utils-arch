@@ -4,12 +4,15 @@
 +utils
 
 
-# Task management (Arch specific additions)
+## Task management (Arch specific additions)
 python-tasklib
 
 
 ## Tree alternative
 aur:broot
+
+## Markdown presentations
+aur:slides-bin
 
 
 # end
