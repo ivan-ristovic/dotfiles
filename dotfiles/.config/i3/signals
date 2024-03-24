@@ -1,2 +1,4 @@
+# A list of signals used by scripts
+
 10: volume
 11: micctl
