@@ -1,0 +1,114 @@
+#!/bin/bash
+
+function usage ()
+{
+    echo -e "usage: $(basename $0) video|directory output_dir [options]"
+    echo -e "options:"
+    echo -e "    (--scale   | -s) value     (e.g., '-s 720')"
+    echo -e "    (--quality | -q) [0..51]   (e.g., '-q 18' for visually lossless)"
+    echo -e "    (--preset  | -p) preset    (e.g., '-p veryslow')"
+    echo -e "    --subs                     (includes 1st subtitle track)"
+    echo -e "    --log   | -l               (log ffmpeg output to a file)"
+    echo -e "    --error | -e               (halt on ffmpeg error)"
+    exit 2
+}
+
+SHORT_OPTS=h,s:,q:,p:,s,l,e
+LONG_OPTS=help,scale:,quality:,preset:,subs,log,error
+OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --longoptions $LONG_OPTS -- "$@") 
+if [ $? -ne 0 ]; then
+    std::fat "failed to parse provided arguments"
+fi
+eval set -- $OPTS
+
+STRICT=false
+LOG_FILE="/dev/null"
+SUBS=""
+QUALITY=""
+SCALE=""
+PRESET=""
+
+while :
+do
+    case "$1" in
+        -l | --log)
+            LOG_FILE="ffmpeg_out_$(date +%s).log"
+            echo "logging output to: $LOG_FILE"
+            ;;
+        -e | --error)
+            STRICT=true
+            ;;
+        -s | --scale)
+            SCALE="-vf scale=-1:$2"
+            shift
+            ;;
+        -q | --quality)
+            QUALITY="-crf $2"
+            shift
+            ;;
+        -p | --preset)
+            PRESET="-preset $2"
+            shift
+            ;;
+        -h | --help)
+            usage
+            ;;
+        --subs)
+            SUBS="-map 0:s:0 -c:s mov_text -metadata:s:s:0 language=eng"
+            ;;
+        --)
+            shift;
+            break
+            ;;
+        *)
+            usage "unknown option: $1"
+            ;;
+    esac
+    shift;
+done
+
+if [ $# -ne 2 ]; then
+    usage
+fi
+
+errored_entries=()
+
+function process ()
+{
+    in="$1"
+    out="$2/${in/%mkv/mp4}"
+    mkdir -p "$(dirname "$out")"
+    echo "$in -> $out"
+
+    ffmpeg -nostdin -y \
+        -i "$in" \
+        $SCALE \
+        -map 0:v:0 \
+        -map 0:a:0 \
+        -c:v libx265 -vtag hvc1 $QUALITY $PRESET \
+        $SUBS \
+        "$out" \
+        2>> "$LOG_FILE"
+    if [ $? -ne 0 ] ; then
+        if $STRICT ; then
+            exit $?
+        fi
+        errored_entries+=("$in")
+        echo "error: $in"
+    fi
+}
+
+if [ -d "$1" ]; then
+    find "$1" -type f -print0 | 
+    while IFS= read -r -d '' f; do 
+        process "$f" "$2"
+    done
+else
+    process "$1" "$2"
+fi
+
+echo " --- errors ---"
+for errored_entry in "${errored_entries[@]}"; do
+    echo "$errored_entry"
+done
+
