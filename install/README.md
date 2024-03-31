@@ -18,9 +18,9 @@ inst $@ tmux
 
 # Plugin support
 gcl https://github.com/tmux-plugins/tpm ${SETUP_HOME_DIR}/.tmux/plugins/tpm
-fmt::msg "Installing tmux plugins..."
+log::msg "Installing tmux plugins..."
 as_user TMUX_PLUGIN_MANAGER_PATH=${SETUP_HOME_DIR}/.tmux/plugins ${SETUP_HOME_DIR}/.tmux/plugins/tpm/scripts/install_plugins.sh
-fmt::msg "tmux plugins installed"
+log::msg "tmux plugins installed"
 ```
 
 To distinguish different procedures on different distributions, you can use different filenames (e.g., use a different suffix). Check out [docker_arch.sh](docker_arch.sh) and [docker_deb.sh](docker_deb.sh) for an example.

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "$SHLIB_ROOT/fmt.sh"
+source "$SHLIB_ROOT/log.sh"
 
 function std::usage ()
 {
@@ -9,7 +9,7 @@ function std::usage ()
 
 function std::fat ()
 {
-    fmt::err "$*"
+    log::err "$*"
     exit 1
 }
 

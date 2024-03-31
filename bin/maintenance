@@ -1,18 +1,17 @@
 #!/bin/bash
 
-source $SHLIB_ROOT/std.sh
-source $SHLIB_ROOT/fmt.sh
+source $SHLIB_ROOT/lib.sh
 SHLIB_FMT_TIME=true
 
 function prompt () 
 {
-    fmt::msg "$*"
+    log::msg "$*"
     read -rp "Press enter to run..."
 }
 
 function execute ()
 {
-    fmt::msg "executing: $*"
+    log::msg "executing: $*"
     "$@" 
 }
 
@@ -26,13 +25,13 @@ prompt "Checking for new packages:"
 list_loc=$NC_BACKUP/package_list.txt
 touch $list_loc
 if ! diff -u <(cat $list_loc) <(pacman -Qqe) ; then
-    fmt::err "Changes detected. Check whether install lists should be updated."
+    log::err "Changes detected. Check whether install lists should be updated."
     if std::ask "Update the backed up package list?" ; then
         mv $list_loc $list_loc.bak
         if pacman -Qqe > $list_loc ; then
-            fmt::suc "Package list updated"
+            log::suc "Package list updated"
         else
-            fmt::err "Failed to update package list"
+            log::err "Failed to update package list"
         fi
     fi
 fi
@@ -54,5 +53,5 @@ prompt "Cleaning package manager caches"
 execute paccache -r
 execute yaycache -r
 
-fmt::suc "Done. Have a nice day."
+log::suc "Done. Have a nice day."
 

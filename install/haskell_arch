@@ -6,7 +6,7 @@ inst_aur ghcup-hs-bin
 
 function ghcup_install ()
 {
-    fmt::suc "Installing through ghcup: $*"
+    log::suc "Installing through ghcup: $*"
     as_user ghcup install "$@"
 }
 

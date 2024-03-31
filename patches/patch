@@ -9,16 +9,16 @@ for patch in $(find ./*/ -type f) ; do
         target_file="${target_file%.patch}"
         diff=$(comm -13 <(sort -u "$target_file") <(sort -u "$patch"))
         if [ -n "$diff" ]; then
-            fmt::msg "Patching: $target_file"
+            log::msg "Patching: $target_file"
             echo >> "$target_file"
             cat "$patch" >> "$target_file"
         else
-            fmt::msg "Skipping: $target_file"
+            log::msg "Skipping: $target_file"
         fi
     else
-        fmt::msg "Swapping: $target_file"
+        log::msg "Swapping: $target_file"
         if ! sudo cp --no-preserve=mode,ownership -rf "$patch" "$target_file" ; then
-            fmt::err "Swap failed: $patch"
+            log::err "Swap failed: $patch"
         fi
     fi
 done

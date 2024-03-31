@@ -16,11 +16,11 @@ pkgs=(
 inst "${pkgs[@]}" 
 unset pkgs
 
-fmt::msg "Compiling cyrillic fonts..."
+log::msg "Compiling cyrillic fonts..."
 if mktextfm larm1000 > /dev/null 2>&1 ; then
-    fmt::suc "Successfully compiled cyrillic fonts"
+    log::suc "Successfully compiled cyrillic fonts"
 else
-    fmt::err "Failed to compile cyrillic fonts"
-    fmt::err "Make sure to run mktextfm again manually"
+    log::err "Failed to compile cyrillic fonts"
+    log::err "Make sure to run mktextfm again manually"
 fi
 

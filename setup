@@ -89,25 +89,25 @@ do
             ;;
         --remote | --git)
             if git remote set-url origin $GIT_REMOTE ; then
-                fmt::suc "Successfully updated remote: $GIT_REMOTE"
+                log::suc "Successfully updated remote: $GIT_REMOTE"
                 exit 0
             else 
-                fmt::err "Failed to update remote"
+                log::err "Failed to update remote"
                 exit $?
             fi
             ;;
         -l | --log)
             logfile="setup-$(date +%s).log"
-            fmt::msg "logging output to: $logfile"
+            log::msg "logging output to: $logfile"
             exec 1> >(tee -a $logfile)
             exec 2>&1
             ;;
         -v | --verbose | --debug)
-            fmt::msg "debug mode enabled"
+            log::msg "debug mode enabled"
             set -x; 
             ;;
         -s | --strict)
-            fmt::msg "strict mode enabled"
+            log::msg "strict mode enabled"
             set -e; 
             ;;
         -u | --user | --username)
@@ -123,7 +123,7 @@ do
             break
             ;;
         *)
-            fmt::err "unknown option: $1"
+            log::err "unknown option: $1"
             usage
             ;;
     esac
@@ -161,9 +161,9 @@ if ! $SETUP_OVERRIDE ; then
     SETUP_SERVICES=false
 fi
 
-fmt::msg "user: $SETUP_USER"
-fmt::msg "home dir: $SETUP_HOME_DIR"
-fmt::msg "install list: $*"
+log::msg "user: $SETUP_USER"
+log::msg "home dir: $SETUP_HOME_DIR"
+log::msg "install list: $*"
 
 export SETUP_USER
 export SETUP_HOME_DIR
@@ -176,7 +176,7 @@ errored_entries=()
 
 if $SETUP_PACKAGES ; then
 
-    fmt::suc "Starting installations; command: '$PM_INSTALL_CMD'"
+    log::suc "Starting installations; command: '$PM_INSTALL_CMD'"
 
     function process_list ()
     {
@@ -187,27 +187,27 @@ if $SETUP_PACKAGES ; then
             if [[ "$entry" == "+"* ]]; then
                 cd "$DOTFILES_ROOT_DIR"
                 to_include=${entry#"+"}
-                fmt::msg "Importing setup script: $to_include"
+                log::msg "Importing setup script: $to_include"
                 process_list $(read_list "lists/$to_include")
             elif [[ "$entry" == "!"* ]]; then
                 to_post_install=${entry#"!"}
-                fmt::msg "Post-link install for : $to_post_install"
+                log::msg "Post-link install for : $to_post_install"
                 packages_requiring_linked_dotfiles+=(${to_post_install})
             elif [ -f "$SETUP_SCRIPT" ]; then
-                fmt::msg "Setting up via script : $entry"
+                log::msg "Setting up via script : $entry"
                 source ./"$SETUP_SCRIPT"
             elif [[ "$entry" == "$AUR_PREFIX"* ]]; then
                 pkg=${entry#"$AUR_PREFIX"}
-                fmt::msg "Installing from AUR   : $pkg"
+                log::msg "Installing from AUR   : $pkg"
                 if inst_aur "$pkg"; then
-                    fmt::suc "Successfully installed: $pkg"
+                    log::suc "Successfully installed: $pkg"
                 else
                     errored_entries+=(${entry})
                 fi
             else
-                fmt::msg "Installing package    : $entry"
+                log::msg "Installing package    : $entry"
                 if inst "$PM" "$entry"; then
-                    fmt::suc "Successfully installed: $entry"
+                    log::suc "Successfully installed: $entry"
                 else
                     errored_entries+=(${entry})
                 fi
@@ -219,7 +219,7 @@ if $SETUP_PACKAGES ; then
 
     for arg in "$@" ; do
         if [[ "$arg" == "install/"* ]]; then
-            fmt::msg "Ignoring install/ pfix: $arg"
+            log::msg "Ignoring install/ pfix: $arg"
             arg=${arg#"install/"}
         fi
         if [ -f "$arg" ]; then
@@ -229,7 +229,7 @@ if $SETUP_PACKAGES ; then
         fi
     done
 
-    fmt::suc "Installations finished."
+    log::suc "Installations finished."
 fi
 
 
@@ -247,16 +247,16 @@ if $SETUP_DOTFILES ; then
         entry_path="$SETUP_HOME_DIR/$entry"
         if [[ -f $entry_path && ! -h $entry_path ]]; then
             mkdir -p $backup_dir
-            fmt::msg "Forcing overwrite of: $entry_path ; backup at $backup_dir"
+            log::msg "Forcing overwrite of: $entry_path ; backup at $backup_dir"
             mv "$entry_path" "$backup_dir"
         fi
     done
 
     cd dotfiles
     if stow --no-folding -v . -t "$SETUP_HOME_DIR" ; then 
-        fmt::suc "Dotfiles linked."
+        log::suc "Dotfiles linked."
     else
-        fmt::err "Failed linking dotfiles! Backup is kept at: $backup_dir"
+        log::err "Failed linking dotfiles! Backup is kept at: $backup_dir"
     fi
     cd "$DOTFILES_ROOT_DIR"
     
@@ -272,10 +272,10 @@ if $SETUP_PATCHES ; then
         if [ -f "$patches_script" ]; then
             source ./"$patches_script"
         else
-            fmt::err "$patches_dir/$patches_script script is not present."
+            log::err "$patches_dir/$patches_script script is not present."
         fi
     else
-        fmt::err "$patches_dir/ directory is not present."
+        log::err "$patches_dir/ directory is not present."
     fi
     unset patches_dir
     unset patches_script
@@ -290,10 +290,10 @@ if $SETUP_SERVICES ; then
         if [ -f "$services_script" ]; then
             source ./"$services_script"
         else
-            fmt::err "$services_dir/$services_script script is not present."
+            log::err "$services_dir/$services_script script is not present."
         fi
     else
-        fmt::err "$services_dir/ directory is not present."
+        log::err "$services_dir/ directory is not present."
     fi
     unset services_dir
     unset services_script
@@ -304,12 +304,12 @@ if $SETUP_PACKAGES ; then
     process_list "${packages_requiring_linked_dotfiles[@]}"
 
     for errored_entry in "${errored_entries[@]}"; do
-        fmt::err "Failed to install: $errored_entry"
+        log::err "Failed to install: $errored_entry"
     done
 fi
 
 unset SETUP_USER
 unset SETUP_HOME_DIR
 
-fmt::suc "Done! Have a nice day."
+log::suc "Done! Have a nice day."
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source $SHLIB_ROOT/fmt.sh
 source $SHLIB_ROOT/std.sh
+source $SHLIB_ROOT/log.sh
 
 if [ $# -lt 1 ]; then
     std::usage "$0 user@server [path/to/pub/key]"
@@ -12,4 +12,4 @@ key="${2:-$HOME/.ssh/id_rsa.pub}"
 
 set -xe;
 ssh-copy-id -i "$key" "$dst"
-fmt::suc "Done!"
+log::suc "Done!"

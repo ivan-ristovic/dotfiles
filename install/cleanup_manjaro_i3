@@ -17,7 +17,7 @@ trash_dirs=(
     .config/Kvantum
 )
 for dir in "${trash_dirs[@]}" ; do 
-    fmt::msg "Cleaning up junk dir: $dir"
+    log::msg "Cleaning up junk dir: $dir"
     rm "$SETUP_HOME_USER/${dir:?}" -rf
 done
 unset trash_dirs
