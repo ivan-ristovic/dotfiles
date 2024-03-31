@@ -196,11 +196,11 @@ ansi::fmt::faint() {
     printf '%s2m' "$ANSI_CSI"
 }
 
-ansi::fmt::reverse() {
+ansi::fmt::inverse() {
     printf '%s7m' "$ANSI_CSI"
 }
 
-ansi::fmt::reverse_off() {
+ansi::fmt::inverse_off() {
     printf '%s27m' "$ANSI_CSI"
 }
 
@@ -819,7 +819,7 @@ ansi::ansi() {
                 ;;
 
             --inverse)
-                $supported && ansi::fmt::reverse
+                $supported && ansi::fmt::inverse
                 restoreText=true
                 m27="27;"
                 ;;
@@ -875,7 +875,7 @@ ansi::ansi() {
                 ;;
 
             --no-inverse)
-                $supported && ansi::fmt::reverse_off
+                $supported && ansi::fmt::inverse_off
                 ;;
 
             --visible)
@@ -1150,7 +1150,7 @@ ansi::ansi() {
                 ;;
 
             --reset-color)
-                $supported && ansi::resetColor
+                $supported && ansi::fg::reset
                 ;;
 
             --reset-font)
