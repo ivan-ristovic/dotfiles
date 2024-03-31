@@ -70,14 +70,14 @@ function std::beep ()
     std::_beep_v $freq $duration > /dev/null 2>&1
 }
 
-function std::is_d ()
+function std::is_defined_var () 
 {
-    std::is_all -d "$@"
+    [[ "${!1-X}" == "${!1-Y}" ]]
 }
 
-function std::is_f ()
+function std::var_has_value () 
 {
-    std::is_all -f "$@"
+    std::is_defined_var "$1" && [[ -n ${!1} ]]
 }
 
 function std::is_all ()

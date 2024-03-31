@@ -8,6 +8,12 @@ SHLIB_FMT_C_Y='\033[0;36m'
 SHLIB_FMT_S_B='\033[1m'
 SHLIB_FMT_CLR='\033[0m'
 
+function log::exec ()
+{
+    log::msg "executing: $*"
+    "$@"
+}
+
 function log::suc ()
 {
     if [ -z "$SHLIB_FMT_TIME" ]; then
