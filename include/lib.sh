@@ -5,4 +5,5 @@ for src in $SHLIB_ROOT/*.sh; do
         source $src
     fi
 done
+unset src
 
