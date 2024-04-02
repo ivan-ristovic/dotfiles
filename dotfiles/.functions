@@ -58,7 +58,7 @@ function mkd ()
 
 function path ()
 {
-    echo -e "${PATH//:/\\n}" | sort
+    echo -e "${PATH//:/\\n}"
 }
 
 function swturbo ()
