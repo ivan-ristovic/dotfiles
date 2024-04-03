@@ -1,5 +1,22 @@
 #!/bin/bash
 
+function str::format ()
+{
+    # Format a string.
+    #
+    # usage:
+    #   str_format format_string input [output_var|-]
+    
+    declare _format="$1" _input="$2" _return="$3"
+
+    if [[ -n "${_return}" && "${_return}" != "-" ]]; then
+        printf -v "${_return}" "${_format}" "${_input}"
+    else
+        printf "${_format}" "${_input}"
+    fi
+}
+
+
 function str::join () 
 {
     local d=${1-} f=${2-}
