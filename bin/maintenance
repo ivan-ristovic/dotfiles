@@ -9,14 +9,8 @@ function prompt ()
     read -rp "Press enter to run..."
 }
 
-function execute ()
-{
-    log::msg "executing: $*"
-    "$@" 
-}
-
 prompt "List systemd errors:"
-execute systemctl --failed
+log::exec systemctl --failed
 
 prompt "List systemd error logs:"
 journalctl -p 3 -b | less
@@ -38,20 +32,20 @@ fi
 unset list_loc
 
 prompt "Update packages (official)"
-execute sudo pacman -Syu
+log::exec sudo pacman -Syu
 
 prompt "Update packages (AUR)"
-execute yay -Syu
+log::exec yay -Syu
 
 prompt "Show orphaned packages"
-execute pacman -Qtd
+log::exec pacman -Qtd
 
 prompt "Show foreign packages"
-execute pacman -Qm
+log::exec pacman -Qm
 
 prompt "Cleaning package manager caches"
-execute paccache -r
-execute yaycache -r
+log::exec paccache -r
+log::exec yaycache -r
 
 log::suc "Done. Have a nice day."
 
