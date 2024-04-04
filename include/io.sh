@@ -114,7 +114,7 @@ function io::readlines ()
     declare _delim=$'\n'
 
     # parse param string
-    while [[ "$@" ]]; do
+    while [[ "$*" ]]; do
         case "$1" in
             --)
                 shift

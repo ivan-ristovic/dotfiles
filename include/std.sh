@@ -75,6 +75,11 @@ function std::is_defined_var ()
     [[ "${!1-X}" == "${!1-Y}" ]]
 }
 
+function std::is_defined_fn () 
+{ 
+    declare -f "$1" >/dev/null
+}
+
 function std::var_has_value () 
 {
     std::is_defined_var "$1" && [[ -n ${!1} ]]

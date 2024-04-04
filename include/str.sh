@@ -1,5 +1,10 @@
 #!/bin/bash
 
+function str::len ()
+{
+    printf "%s\\n" "${#1}"
+}
+
 function str::format ()
 {
     # Format a string.
@@ -9,13 +14,13 @@ function str::format ()
     
     declare _format="$1" _input="$2" _return="$3"
 
+    # shellcheck disable=SC2059
     if [[ -n "${_return}" && "${_return}" != "-" ]]; then
         printf -v "${_return}" "${_format}" "${_input}"
     else
         printf "${_format}" "${_input}"
     fi
 }
-
 
 function str::join () 
 {
@@ -123,3 +128,27 @@ function str::ends_with ()
     [[ "$*" == *"$needle" ]]
 }
 
+function str::is_match ()
+{
+    # shellcheck disable=SC2053
+    if [[ "$1" != $2 ]] ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+function str::is_digit ()
+{
+    str::is_match "$1" "*[!0-9]*"
+}
+
+function str::is_alpha ()
+{
+    str::is_match "$1" "*[!a-zA-Z]*"
+}
+
+function str::is_alnum ()
+{
+    str::is_match "$1" "*[!0-9a-zA-Z]*"
+}
