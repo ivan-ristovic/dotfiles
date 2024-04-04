@@ -26,7 +26,7 @@ My custom (additional) features:
 - Integration with tmux, nvim, fzf...
 - Automatic [alias expansion](dotfiles/.zshrc)
 - QOL [aliases](dotfiles/aliases) and [functions](bin)
-- Custom [shell library](include)
+- Custom [shell library](lib)
 - [Theming](dotfiles/themes)
 
 ### Session Manager (tmux)
@@ -59,7 +59,7 @@ This repository contains:
 - package install lists ([`lists/`](lists) directory)
 - custom package install scripts ([`install/`](install) directory)
 - patches for global configuration files ([`patches/`](patches) directory)
-- a small shell scripting library ([`include/`](include) directory)
+- a small shell scripting library ([`lib/`](lib) directory)
 - containers for sandboxing and testing ([`containers/`](containers) directory)
 - custom `systemd` services ([`systemd/`](systemd) directory)
 
