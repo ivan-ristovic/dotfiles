@@ -5,8 +5,7 @@ SHLIB_FMT_TIME=true
 
 function prompt () 
 {
-    log::msg "$*"
-    read -rp "Press enter to run..."
+    std::confirm log::msg "$*"
 }
 
 prompt "List systemd errors:"

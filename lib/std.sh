@@ -58,6 +58,13 @@ function std::ask ()
     done
 }
 
+function std::confirm ()
+{
+    "$@"
+    read -n 1 -s -r -p "Press any key to continue"
+    echo -ne "\r"
+}
+
 function std::_beep_v () 
 {
     speaker-test -Dpulse -f $1 --test sine -l 1 & sleep $2 && kill -9 $!
