@@ -25,9 +25,7 @@ function assert::pwd ()
         fi
     done
 
-    if ! $found ; then
-        std::fat "must be in any of following dirs: $*"
-    fi
+    assert::that "current dir must be any of: $*" $found
 }
 
 function test::var_defined () 
@@ -37,9 +35,7 @@ function test::var_defined ()
 
 function assert::var_defined ()
 {
-    if ! test::var_defined "$1" ; then
-        std::fat "$1 not defined"
-    fi
+    assert::that "var defined: $1" test::var_defined "$1"
 }
 
 function test::var_set () 
@@ -49,9 +45,7 @@ function test::var_set ()
 
 function assert::var_set ()
 {
-    if ! test::var_set "$1" ; then
-        std::fat "$1 not set"
-    fi
+    assert::that "var set: $1" test::var_set "$1"
 }
 
 function test::fn_defined () 
@@ -61,9 +55,7 @@ function test::fn_defined ()
 
 function assert::fn_defined ()
 {
-    if ! test::fn_defined "$1" ; then
-        std::fat "function $1 not defined"
-    fi
+    assert::that "function defined: $1" test::fn_defined "$1"
 }
 
 function test::all ()
@@ -105,4 +97,17 @@ function assert::that ()
     fi
 }
 
+function test::installed ()
+{
+    if command -v "$@" &> /dev/null ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+function assert::installed ()
+{
+    assert::that test::installed "command not found: $*" "$@"
+}
 

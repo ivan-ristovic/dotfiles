@@ -68,13 +68,3 @@ function std::beep ()
     std::_beep_v $freq $duration > /dev/null 2>&1
 }
 
-
-function std::is_installed ()
-{
-    if command -v "$@" &> /dev/null ; then
-        return 0
-    else
-        return 1
-    fi
-}
-
