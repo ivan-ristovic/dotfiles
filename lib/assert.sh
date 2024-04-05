@@ -57,7 +57,7 @@ function test::var_defined ()
 
 function assert::var_defined ()
 {
-    assert::that "var defined: $1" test::var_defined "$1"
+    assert::that "expect var defined: $1" test::var_defined "$1"
 }
 
 function test::var_set () 
@@ -67,7 +67,7 @@ function test::var_set ()
 
 function assert::var_set ()
 {
-    assert::that "var set: $1" test::var_set "$1"
+    assert::that "expect var set: $1" test::var_set "$1"
 }
 
 function test::fn_defined () 
@@ -77,7 +77,7 @@ function test::fn_defined ()
 
 function assert::fn_defined ()
 {
-    assert::that "function defined: $1" test::fn_defined "$1"
+    assert::that "expext function defined: $1" test::fn_defined "$1"
 }
 
 function test::all ()
@@ -130,6 +130,6 @@ function test::installed ()
 
 function assert::installed ()
 {
-    assert::that test::installed "command not found: $*" "$@"
+    assert::that "expect installed: $*" test::installed "$@"
 }
 
