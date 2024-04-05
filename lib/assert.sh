@@ -32,7 +32,8 @@ function assert::argc_ge ()
 
 function assert::args ()
 {
-    if [ $# -eq 0 ]; then
+    if [ $1 -eq 0 ]; then
+        shift
         std::usage "$*"
     fi
 }
