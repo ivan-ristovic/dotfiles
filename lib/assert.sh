@@ -16,6 +16,27 @@ function assert::argc ()
     fi
 }
 
+function assert::argc_ge ()
+{
+    local actual=$1
+    local expected=$2
+    shift 2
+    if [ "$expected" -lt "$actual" ]; then
+        if [ $# -gt 0 ]; then
+            std::usage "$*"
+        else
+            std::usage "expected $expected arguments, got $actual"
+        fi
+    fi
+}
+
+function assert::args ()
+{
+    if [ $# -eq 0 ]; then
+        std::usage "$*"
+    fi
+}
+
 function assert::pwd ()
 {
     local found=false
