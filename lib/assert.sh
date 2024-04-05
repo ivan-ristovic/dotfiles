@@ -21,7 +21,7 @@ function assert::argc_ge ()
     local actual=$1
     local expected=$2
     shift 2
-    if [ "$expected" -lt "$actual" ]; then
+    if [ "$actual" -lt "$expected" ]; then
         if [ $# -gt 0 ]; then
             std::usage "$*"
         else
