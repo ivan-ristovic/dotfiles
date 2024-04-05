@@ -1,11 +1,8 @@
 #!/bin/bash
 
-source $SHLIB_ROOT/std.sh
-source $SHLIB_ROOT/log.sh
+. include lib
 
-if [ $# -lt 1 ]; then
-    std::usage "$0 user@server [path/to/pub/key]"
-fi
+assert::argc_ge $# 1 "user@server [path/to/pub/key]"
 
 dst="$1"
 key="${2:-$HOME/.ssh/id_rsa.pub}"

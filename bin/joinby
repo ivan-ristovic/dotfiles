@@ -1,10 +1,7 @@
 #!/bin/bash
 
-source $SHLIB_ROOT/lib.sh
+. include lib
 
-if [[ $# -lt 2 ]]; then
-    std::usage "$(basename $0) delimiter args..."
-fi
-
+assert::argc_ge $# 2 "delimiter args..."
 str::join $*
 

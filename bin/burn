@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source $SHLIB_ROOT/lib.sh
+. include lib
 export SHLIB_FMT_TIME=true
 
 if [[ $# -lt 2 ]]; then

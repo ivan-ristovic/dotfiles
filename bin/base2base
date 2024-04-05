@@ -1,9 +1,8 @@
 #!/bin/bash
 
-if [[ $# -lt 3 ]]; then
-    echo "usage: $(basename $0) base_from base_to num [nums ...]"
-    exit 1
-fi
+. include assert
+
+assert::argc_ge $# 3 "base_from base_to num [nums ...]"
 
 ibase=$1
 obase=$2
