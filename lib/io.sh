@@ -1,20 +1,20 @@
 #!/bin/bash
 
-source "$SHLIB_ROOT/std.sh"
+source "$SHLIB_ROOT/assert.sh"
 
 function io::is_dir ()
 {
-    std::is_all -d "$@"
+    test::all -d "$@"
 }
 
 function io::is_dev ()
 {
-    std::is_all -b "$@"
+    test::all -b "$@"
 }
 
 function io::is_file ()
 {
-    std::is_all -f "$@"
+    test::all -f "$@"
 }
 
 function io::readline() 

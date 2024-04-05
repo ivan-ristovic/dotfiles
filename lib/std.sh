@@ -4,22 +4,13 @@ source "$SHLIB_ROOT/log.sh"
 
 function std::usage ()
 {
-    std::fat "usage: $*"
+    std::fat "usage: $(basename "$0") $*"
 }
 
 function std::fat ()
 {
-    log::err "$*"
+    log::log "FAT" "$SHLIB_FMT_C_R" "$*"
     exit 1
-}
-
-function std::assert_argc ()
-{
-    local expected=$1
-    local actual=$2
-    if [ "$expected" -ne "$actual" ]; then
-        std::usage "$0: expected $expected arguments, got $actual"
-    fi
 }
 
 function std::ask ()
@@ -77,31 +68,6 @@ function std::beep ()
     std::_beep_v $freq $duration > /dev/null 2>&1
 }
 
-function std::is_defined_var () 
-{
-    [[ "${!1-X}" == "${!1-Y}" ]]
-}
-
-function std::is_defined_fn () 
-{ 
-    declare -f "$1" >/dev/null
-}
-
-function std::var_has_value () 
-{
-    std::is_defined_var "$1" && [[ -n ${!1} ]]
-}
-
-function std::is_all ()
-{
-    args="$1"
-    shift 1
-    for f in "$@"; do
-        if ! test "$args" "$f"; then
-            return 1
-        fi
-    done
-}
 
 function std::is_installed ()
 {

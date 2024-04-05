@@ -1,10 +1,12 @@
 #!/bin/bash
 
-SHLIB_FMT_PROMPT=">"
+SHLIB_LOG_DEBUG=false
+SHLIB_FMT_PROMPT=": "
 SHLIB_FMT_C_R='\033[0;31m'
 SHLIB_FMT_C_G='\033[0;32m'
 SHLIB_FMT_C_Y='\033[0;33m'
 SHLIB_FMT_C_B='\033[0;34m'
+SHLIB_FMT_C_M='\033[0;34m'
 SHLIB_FMT_S_B='\033[1m'
 SHLIB_FMT_CLR='\033[0m'
 
@@ -12,6 +14,13 @@ function log::exec ()
 {
     log::msg "executing: $*"
     "$@"
+}
+
+function log::dbg ()
+{
+    if $SHLIB_LOG_DEBUG ; then
+        log::log "dbg" "$SHLIB_FMT_C_M" "$*"
+    fi
 }
 
 function log::suc ()
@@ -40,9 +49,9 @@ function log::log ()
     local color="$2"
     shift 2
     if [ -z "$SHLIB_FMT_TIME" ]; then
-        echo -e "${color}${SHLIB_FMT_PROMPT} $level: ${SHLIB_FMT_CLR}$*"
+        echo -e "${color}[$level]${SHLIB_FMT_PROMPT}${SHLIB_FMT_CLR}$*"
     else
-        echo -en "${SHLIB_FMT_S_B}[$(date +%T)]${color}${SHLIB_FMT_PROMPT} $level: ${SHLIB_FMT_CLR}"
+        echo -en "${SHLIB_FMT_S_B}[$(date +%T)]${color}[$level]${SHLIB_FMT_PROMPT}${SHLIB_FMT_CLR}"
         echo -e "$@"
     fi
 }
