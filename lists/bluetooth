@@ -1,0 +1,10 @@
+### Bluetooth functionality ###
+
+# Core
+bluez bluez-utils
+pulseaudio-bluetooth
+
+# GUI
+blueman
+
+### end ###
