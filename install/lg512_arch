@@ -8,6 +8,7 @@ sudo cp -f /etc/g810-led/samples/all_green /etc/g810-led/profile
 # Temp compilation fix until AUR package is updated
 # sudo git clone https://github.com/MatMoul/g810-led.git /opt/g810-led
 # pushd /opt/g810-led
+# sed -i '/#include <iostream>/a #include <cstdint>' src/helpers/help.h
 # make bin # for hidapi
 # make bin LIB=libusb # for libusb
 # sudo make install
