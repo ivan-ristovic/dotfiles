@@ -41,7 +41,7 @@ return require('packer').startup(function(use)
     use "sitiom/nvim-numbertoggle"  -- Absolute/Relative number autotoggle
     use "mbbill/undotree"           -- Undo history
     use "mg979/vim-visual-multi"    -- Multi-cursors
-    use { "j-hui/fidget.nvim", tag = 'legacy' } -- Fidget with status updates 
+    use "j-hui/fidget.nvim"         -- Fidget with status updates 
     use {
         'nvim-lualine/lualine.nvim',
         requires = { 'kyazdani42/nvim-web-devicons' }
@@ -64,6 +64,7 @@ return require('packer').startup(function(use)
     }
 
     -- Programming
+    use "tpope/vim-fugitive"                          -- Git
     use "windwp/nvim-autopairs"                       -- Bracket autoindent and pairing
     use "numToStr/Comment.nvim"                       -- Code comment
     use 'tpope/vim-sleuth'                            -- Detect ts and sw automatically

@@ -31,6 +31,7 @@ require "conf.snippets"
 
 require "code.treesitter"
 require "code.autopairs"
+require "code.git"
 require "code.gitsigns"
 require "code.comments"
 require "code.alignment"
