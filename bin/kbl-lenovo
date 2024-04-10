@@ -65,7 +65,12 @@
 import argparse
 import functools
 import sys
-import usb.core
+
+try:
+    import usb.core
+except ImportError:
+    print(f'Failed to find usb module. Install pyusb with pip.')
+    sys.exit(1)
 
 # Known keyboard light devices.
 # Integrated Technology Express, Inc. ITE Device(8295)

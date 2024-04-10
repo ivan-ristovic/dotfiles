@@ -6,5 +6,8 @@
 ## Sensors
 lm_sensors
 
+## Required for some hardware scripts
+python-pyusb
+
 
 # end
