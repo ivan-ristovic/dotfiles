@@ -9,22 +9,21 @@ if [ -z $SETUP_USER ]; then
     cd .. && source utils.sh && cd $curr_dir
 fi
 
-stow_args="--no-folding -v"
-
-sudo ln -s $(pwd)/sbin /usr/sbin/dotfiles
-sudo stow $stow_args system -t /etc/systemd/system 
-sudo stow $stow_args user   -t /etc/systemd/user 
+if [ ! -d /usr/sbin/dotfiles ]; then
+    log::msg "linking sbin to /usr/sbin"
+    sudo ln -s $(pwd)/sbin/ /usr/sbin/dotfiles
+fi
 
 for service in $(read_list "./enabled-system-services.txt"); do
     log::msg "enabling system service: $service"
-    if ! sudo systemctl enable --now "$(basename "$service")"; then
+    if ! sudo systemctl enable --now "$service"; then
         log::err "failed to setup: $service"
     fi
 done
 
 for service in $(read_list "./enabled-user-services.txt"); do
     log::msg "enabling user service: $service"
-    if ! sudo systemctl --user -M $SETUP_USER@ enable --now "$(basename "$service")"; then
+    if ! sudo systemctl --user -M $SETUP_USER@ enable --now "$service"; then
         log::err "failed to setup: $service"
     fi
 done

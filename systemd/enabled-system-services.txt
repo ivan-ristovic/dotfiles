@@ -3,5 +3,5 @@ lightdm.service
 nvidia-powerd.service
 polkit.service
 
-cpu-no-turbo.service
+./system/cpu-no-turbo.service
 
