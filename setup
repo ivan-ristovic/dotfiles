@@ -32,6 +32,7 @@ function usage ()
     echo "  LEGEND:"
     echo -e "\t--help -h             prints this manual"
     echo -e "\t--strict -s           halt on error (set -e)"
+    echo -e "\t--repair -r           repair dotfile symlinks"
     echo -e "\t--verbose -v          runs the script in debug mode (set -x)"
     echo -e "\t--remote              update git remote URL"
     echo -e "\t--log -l              output log to logfile"
@@ -45,6 +46,7 @@ function usage ()
 
 GIT_REMOTE="git@github.com:ivan-ristovic/dotfiles.git"
 
+STOW_EXTRA_ARGS=""
 SETUP_OVERRIDE=false
 SETUP_DOTFILES=false
 SETUP_PACKAGES=false
@@ -53,8 +55,8 @@ SETUP_SERVICES=false
 SETUP_USER=${SUDO_USER:-$(logname 2> /dev/null)}
 SETUP_HOME_DIR="/home/$SETUP_USER"
 
-SHORT_OPTS=v,s,u:,h,l
-LONG_OPTS=user:,username:,dotfiles,link,stow,packages,install,dotfiles,patch,patches,services,all,complete,help,strict,debug,verbose,remote,git,log
+SHORT_OPTS=v,s,u:,h,l,r
+LONG_OPTS=user:,username:,dotfiles,link,stow,packages,install,dotfiles,patch,patches,services,all,complete,help,strict,repair,debug,verbose,remote,git,log
 OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --longoptions $LONG_OPTS -- "$@") 
 if [ $? -ne 0 ]; then
     std::fat "failed to parse provided arguments"
@@ -105,6 +107,10 @@ do
         -v | --verbose | --debug)
             log::msg "debug mode enabled"
             set -x; 
+            ;;
+        -r | --repair)
+            log::msg "repairing dotfile symlinks"
+            STOW_EXTRA_ARGS="-R"
             ;;
         -s | --strict)
             log::msg "strict mode enabled"
@@ -253,7 +259,7 @@ if $SETUP_DOTFILES ; then
     done
 
     cd dotfiles
-    if stow --no-folding -v . -t "$SETUP_HOME_DIR" ; then 
+    if stow --no-folding $STOW_EXTRA_ARGS -v . -t "$SETUP_HOME_DIR" ; then 
         log::suc "Dotfiles linked."
     else
         log::err "Failed linking dotfiles! Backup is kept at: $backup_dir"
