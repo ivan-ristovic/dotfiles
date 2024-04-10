@@ -2,8 +2,7 @@
 vim.g.loaded_netrw       = 1
 vim.g.loaded_netrwPlugin = 1
 
-require "conf.options"
-require "conf.keybindings"
+require('core')
 
 local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
 local is_bootstrap = false
@@ -11,7 +10,7 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   is_bootstrap = true
 end
 
-require "conf.plugins"
+require('plugins')
 
 if is_bootstrap then
   print '=================================='
