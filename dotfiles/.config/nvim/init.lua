@@ -22,23 +22,9 @@ if is_bootstrap then
   return
 end
 
-require "conf.statusline"
-require "conf.colorscheme"
-require "conf.finder"
-require "conf.filetree"
-require "conf.tabline"
-require "conf.snippets"
-
-require "code.treesitter"
-require "code.autopairs"
-require "code.git"
-require "code.gitsigns"
-require "code.comments"
-require "code.alignment"
-require "code.colorizer"
-
-require "lsp.cmp"
-require "lsp.lsp"
+require('conf')
+require('code')
+require('lsp')
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=4 sts=4 sw=4 et
