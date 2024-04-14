@@ -86,8 +86,7 @@ def format_task(task, maxw=40):
     }
 
 def write_conky_conf(path, payload):
-    content = f"""
-conky.config = {{
+    content = f"""conky.config = {{
     alignment = 'top_right',
     background = true,
     cpu_avg_samples = 2,
