@@ -15,4 +15,5 @@
 .config/FreeTube/settings.db
 .config/MusicBrainz/Picard.ini
 .config/qBittorrent/qBittorrent.conf
+.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
 
