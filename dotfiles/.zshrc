@@ -116,10 +116,8 @@ compinit
 export DISABLE_FZF_AUTO_COMPLETION=false
 export DISABLE_FZF_KEY_BINDINGS=false
 
-# FIXME Find a better preview option
-export FZF_DEFAULT_OPTS="--layout=reverse --info inline --border --preview 'bat --style=numbers --color=always --line-range :500 {} || '" 
-
-export FORGIT_FZF_DEFAULT_OPTS="--layout=reverse ${FORGIT_FZF_DEFAULT_OPTS}"
+export FZF_DEFAULT_OPTS="--cycle --layout=reverse --info inline --border --preview 'preview {} || '" 
+export FORGIT_FZF_DEFAULT_OPTS="--cycle --layout=reverse ${FORGIT_FZF_DEFAULT_OPTS}"
 #export FORGIT_FZF_DEFAULT_OPTS="--exact --cycle --height '80%'"
 
 # Use ~~ as the trigger sequence instead of the default **
