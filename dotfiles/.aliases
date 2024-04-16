@@ -108,7 +108,7 @@ fi
 "$e_alias" grhhh='git reset --hard @{u}'
 "$i_alias" grep='grep --color'
 "$e_alias" h=history
-"$e_alias" hd='hexdump -C'
+"$e_alias" hd='hexyl'
 "$e_alias" help=man
 "$e_alias" hgrep='fc -El 0 | grep'
 "$e_alias" k='kill -9'

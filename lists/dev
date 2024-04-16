@@ -1,5 +1,8 @@
 ### Development tools ###
 
+## Hex viewer
+hexyl
+
 ## Build systems or requirements
 cmake
 npm
