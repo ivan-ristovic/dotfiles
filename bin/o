@@ -1,8 +1,48 @@
 #!/bin/bash
 
+function usage ()
+{
+    echo -e "usage: $0 [--shell|-s] <target>"
+    exit 2
+}
+
+SHORT_OPTS=s
+LONG_OPTS=shell
+OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --longoptions $LONG_OPTS -- "$@") 
+if [ $? -ne 0 ]; then
+    usage
+fi
+eval set -- $OPTS
+
+SHELL=false
+while :
+do
+    case "$1" in
+        -s | --shell)
+            SHELL=true
+            ;;
+        --)
+            shift;
+            break
+            ;;
+        *)
+            usage
+            ;;
+    esac
+    shift;
+done
+
+target="$*"
 if [ $# -eq 0 ]; then
-    $FILEMGR .
-else
-    xdg-open "$@"
+    target="."
 fi
 
+if [ "$SHELL" == true ]; then
+    if [ -f "$target" ]; then
+        $EDITOR "$target"
+    elif [ -d "$target" ]; then
+        cd "$target" || exit 1
+    fi
+else
+    xdg-open "$target"
+fi

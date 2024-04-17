@@ -19,5 +19,5 @@ INITIAL_QUERY="${*:-}"
     --prompt '[Ctrl+T to swap] 1. fd> ' \
     --delimiter : \
     --preview 'preview {1}' \
-    --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
-    --bind 'enter:become(vim {1} +{2})'
+    --preview-window 'up,60%,border-bottom' \
+    --bind "enter:become($EDITOR {1})"
