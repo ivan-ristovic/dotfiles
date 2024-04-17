@@ -5,7 +5,7 @@ FILE_PATH=$1
 bat=`/usr/bin/which bat || echo batcat`
 
 if [ -d "$FILE_PATH" ]; then
-	tree --du -C -L 2 "$FILE_PATH"
+	tree --du -h -C -L 2 "$FILE_PATH"
 elif ! [ -f "$FILE_PATH" ]; then
     echo "$FILE_PATH" | read -A tokens
     for token in $tokens; do
