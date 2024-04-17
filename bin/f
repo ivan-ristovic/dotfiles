@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# Two-phase filtering with fd and fzf
+# 1. Search for files using fd
+# 2. Interactively restart fd with reload action
+#    * Press alt-enter to switch to fzf-only filtering
+# 3. Preview matches
+# Switch between fd mode and fzf filtering mode (CTRL-T)
+
+FD_PREFIX="fd -H"
+INITIAL_QUERY="${*:-}"
+: | fzf --ansi --disabled --query "$INITIAL_QUERY" \
+    --bind "start:reload:$FD_PREFIX {q}" \
+    --bind "change:reload:sleep 0.1; $FD_PREFIX {q} || true" \
+    --bind 'ctrl-t:transform:[[ ! $FZF_PROMPT =~ fd ]] &&
+      echo "rebind(change)+change-prompt(1. fd> )+disable-search+transform-query:echo \{q} > /tmp/fd-fzf-f; cat /tmp/fd-fzf-r" ||
+      echo "unbind(change)+change-prompt(2. fzf> )+enable-search+transform-query:echo \{q} > /tmp/fd-fzf-r; cat /tmp/fd-fzf-f"' \
+    --color "hl:-1:underline,hl+:-1:underline:reverse" \
+    --prompt '[Ctrl+T to swap] 1. fd> ' \
+    --delimiter : \
+    --preview 'preview {1}' \
+    --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+    --bind 'enter:become(vim {1} +{2})'

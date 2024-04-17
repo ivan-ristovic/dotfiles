@@ -95,7 +95,7 @@ fi
 "$e_alias" dvp='docker volume prune'
 "$e_alias" dvrm='docker volume rm'
 "$i_alias" e='$EDITOR'
-"$e_alias" fda='fd -H --no-ignore'
+"$e_alias" fda='fd --unrestricted'
 "$e_alias" getc='curl --continue-at - --location --progress-bar --remote-name --remote-time'
 "$e_alias" getw='wget --continue --progress=bar --timestamping'
 "$e_alias" gs='git status -s'
