@@ -2,6 +2,7 @@ legion-linux.service
 lightdm.service
 nvidia-powerd.service
 polkit.service
+tlp.service
 
 system/cpu-no-turbo.service
 
