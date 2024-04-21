@@ -7,6 +7,7 @@
 # 3. Preview matches
 # Switch between fd mode and fzf filtering mode (CTRL-T)
 
+rm -f /tmp/fd-fzf-{r,f}
 FD_PREFIX="fd -H"
 INITIAL_QUERY="${*:-}"
 : | fzf --ansi --disabled --query "$INITIAL_QUERY" \
