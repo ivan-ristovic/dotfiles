@@ -1,0 +1,3 @@
+#!/bin/bash
+
+RG_OPTS="--hidden" ff "$@"

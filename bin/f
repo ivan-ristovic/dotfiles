@@ -8,7 +8,8 @@
 # Switch between fd mode and fzf filtering mode (CTRL-T)
 
 rm -f /tmp/fd-fzf-{r,f}
-FD_PREFIX="fd -H"
+FD_OPTS=${FD_OPTS:-""}
+FD_PREFIX="fd $FD_OPTS"
 INITIAL_QUERY="${*:-}"
 : | fzf --ansi --disabled --query "$INITIAL_QUERY" \
     --bind "start:reload:$FD_PREFIX {q}" \
