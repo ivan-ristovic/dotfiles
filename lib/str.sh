@@ -30,6 +30,14 @@ function str::join ()
     fi
 } 
 
+function str::replace ()
+{
+    local str="$1"
+    local pattern="$2"
+    local replacement="$3"
+    echo "${str//"$pattern"/"$replacement"}"
+}
+
 function str::trim ()
 {
     : "${1#"${1%%[![:space:]]*}"}"
