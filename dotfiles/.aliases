@@ -129,6 +129,7 @@ fi
 "$e_alias" mk='make -B'
 "$i_alias" mp='$MPLAYER'
 "$i_alias" mv='mv -i'
+"$e_alias" n='neith'
 "$e_alias" p='ps -f'
 "$e_alias" pacs='sudo pacman -S'
 "$e_alias" pacq='sudo pacman -Q'
