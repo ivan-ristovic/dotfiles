@@ -117,7 +117,6 @@ fi
 "$i_alias" la='ls -lAFh'
 "$e_alias" lart='ls -1Fcart'
 "$e_alias" ldot='ls -ld .*'
-"$e_alias" lg='lazygit'
 "$i_alias" ll='ls -lFha'
 "$i_alias" lr='ls -tRFh'
 "$i_alias" lrt='ls -1Fcrt'
