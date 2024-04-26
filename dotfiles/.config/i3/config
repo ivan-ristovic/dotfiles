@@ -329,9 +329,8 @@ for_window [class=Thunar] focus
 # install picom package (yay -S picom)
 # start using default config 
 #exec_always --no-startup-id picom -b
-#
 # for custom config:
-#exec_always --no-startup-id picom --config  ~/.config/picom.conf
+exec_always --no-startup-id picom --config ~/.config/picom.conf
 
 #############################################
 # autostart applications/services on login: #

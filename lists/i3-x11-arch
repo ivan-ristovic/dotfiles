@@ -25,6 +25,7 @@ file-roller
 gtk-engine-murrine
 lxappearance-gtk3
 network-manager-applet
+picom
 rofi rofi-calc
 thunar
 thunar-archive-plugin
