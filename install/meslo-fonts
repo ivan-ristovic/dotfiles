@@ -1,0 +1,20 @@
+#!/bin/bash
+
+source "../utils.sh"
+
+function install_font ()
+{
+    local font_install_dir=/usr/local/share/fonts 
+    local remote="https://github.com/romkatv/powerlevel10k-media/raw/master/"
+    sudo wget -q -P "$font_install_dir" "$remote/$1"
+}
+
+install_font "MesloLGS%20NF%20Regular.ttf"
+install_font "MesloLGS%20NF%20Bold.ttf"
+install_font "MesloLGS%20NF%20Italic.ttf"
+install_font "MesloLGS%20NF%20Bold%20Italic.ttf"
+
+fc-cache -fv
+
+unset install_font
+
