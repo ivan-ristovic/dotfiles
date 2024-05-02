@@ -2,7 +2,7 @@
 
 source "../utils.sh"
 
-if std::is_installed docker ; then
+if test::installed docker ; then
     log::msg "docker already installed"
     return
 fi

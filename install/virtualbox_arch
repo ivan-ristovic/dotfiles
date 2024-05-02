@@ -2,7 +2,7 @@
 
 source "../utils.sh"
 
-if std::is_installed virtualbox ; then
+if test::installed virtualbox ; then
     msg "VirtualBox already installed. Exiting..."
     return
 fi
