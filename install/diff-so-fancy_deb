@@ -2,8 +2,9 @@
 
 source "../utils.sh"
 
-sudo add-apt-repository ppa:aos1/diff-so-fancy
-sudo apt update
-
-inst diff-so-fancy
+if test::installed "diff-so-fancy"; then
+    sudo git clone https://github.com/so-fancy/diff-so-fancy /opt/diff-so-fancy
+    sudo chmod +x /opt/diff-so-fancy/diff-so-fancy
+    sudo ln -s /opt/diff-so-fancy/diff-so-fancy /usr/local/bin/diff-so-fancy
+fi
 

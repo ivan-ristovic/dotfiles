@@ -9,7 +9,7 @@ npm
 
 ## Version control
 git
-subversion
+#subversion
 
 ## Debugging
 gdb
