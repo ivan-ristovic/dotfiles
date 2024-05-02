@@ -18,7 +18,7 @@ curl
 fd
 fzf
 openssl
-p7zip
+p7zip zip unzip unrar
 ranger
 ripgrep
 wget
