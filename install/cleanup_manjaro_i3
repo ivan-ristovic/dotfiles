@@ -23,6 +23,7 @@ done
 unset trash_dirs
 
 bloat=(
+    bmenu
     clipit
     conky
     conky-i3
