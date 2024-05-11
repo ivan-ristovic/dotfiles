@@ -32,6 +32,7 @@ bloat=(
     manjaro-i3-settings
     manjaro-ranger-settings
     manjaro-zsh-config
+    palemoon
     xdg-desktop-portal-gnome
     xfce-terminal
     xfce4-notifyd
