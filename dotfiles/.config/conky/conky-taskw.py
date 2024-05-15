@@ -85,21 +85,24 @@ def format_task(task, maxw=40):
         'desc' : task['description'].replace('#','\\#')[:maxw]
     }
 
-def write_conky_conf(path, payload):
+def is_high_priority(t):
+    p = t.get('priority')
+    return p is not None and p == 'H'
+
+def write_conky_conf(path, payload, total, urgent):
     content = f"""conky.config = {{
     alignment = 'top_right',
     background = true,
     cpu_avg_samples = 2,
-    --default_color = '656667',
-    --default_outline_color = '828282',
     default_shade_color = '000000',
     double_buffer = true,
     draw_borders = false,
     draw_graph_borders = false,
     draw_outline = false,
     draw_shades = false,
-    gap_x = 300,
-    maximum_width = 500,
+    gap_x = 350,
+    gap_y = 40,
+    maximum_width = 400,
     no_buffers = true,
     override_utf8_locale = true,
     own_window = true,
@@ -111,16 +114,20 @@ def write_conky_conf(path, payload):
     update_interval = 1.0,
     use_xft = true,
     xftalpha = 0.1,
-    --font = 'Hack Nerd Font:regular:size=10',
     font = 'Bitstream Vera Sans:regular:size=9',
     default_outline_color = '5D7B86',
     default_color = '5D7B86',
-    color0 = '5d7b86',
-    color1 = 'a0a0a0',
-    color2 = 'ba4141',
+    color0 = '#5d7b86',
+    color1 = '#a0a0a0',
+    color2 = '#ba4141',
 }}
 
 conky.text = [[
+${{voffset 8}}$color0${{goto 30}}${{font Bitstream Vera Sans:size=18}}Tasks$font\
+${{voffset -8}}$alignr$color1${{font Bitstream Vera Sans:size=38}}{total}$font
+$color1${{voffset -25}}${{goto 30}}${{font Bitstream Vera Sans:size=13}}priority$font\
+${{voffset -3}}{'$color2' if urgent > 0 else '$color1'}${{goto 100}}${{font Bitstream Vera Sans:size=20}}{urgent} $font$color1$hr
+
 {payload}
 ]]
 """
@@ -133,5 +140,7 @@ conky.text = [[
 parsed = parse_tasks(tasks[filter])
 formatted = format_tasks(parsed)
 print(formatted)
-write_conky_conf(conky_file, formatted)
+total_tasks = sum(map(lambda it: len(it[1]), parsed.items()))
+urgent_tasks = sum(map(lambda it: sum([1 if is_high_priority(pt[1]) else 0 for pt in it[1].items()]), parsed.items()))
+write_conky_conf(conky_file, formatted, total_tasks, urgent_tasks)
 

@@ -14,7 +14,7 @@ conky -c $conky_task_conf
 
 tshadow=~/.task/.shadow
 if [ ! -f $tshadow ]; then
-    exit 1
+    touch $tshadow
 fi
 
 to_exec="$conky_cfg/conky-taskw.py"
