@@ -4,12 +4,11 @@
 +core
 
 
-## AUR helper
-yay
-
-
 ## Development packages (for building AUR packages)
 base-devel
+
+## AUR helper
+yay
 
 ## Better-looking diffs
 diff-so-fancy

@@ -14,7 +14,7 @@ As an example, consider the script below that sets up `tmux` and `tpm` plugin ma
 
 source "../utils.sh"
 
-inst $@ tmux 
+inst tmux 
 
 # Plugin support
 gcl https://github.com/tmux-plugins/tpm ${SETUP_HOME_DIR}/.tmux/plugins/tpm

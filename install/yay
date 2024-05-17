@@ -3,7 +3,7 @@
 source "../utils.sh"
 
 # Check if yay is already available in the repository
-if ! inst_silent "$@" yay ; then
+if ! inst_silent yay ; then
     inst base-devel binutils
     yaydir=/opt/yay
     mkdir -p $yaydir
