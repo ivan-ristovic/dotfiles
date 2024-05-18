@@ -1,0 +1,37 @@
+set window-title-basename "true"
+set selection-clipboard "clipboard"
+
+# Start in dark mode
+set recolor true
+
+
+# Theming
+
+set default-bg "#4f4f4f"
+set default-fg "#dcdfe4"
+set inputbar-bg "#464646"
+set inputbar-fg "#dcdfe4"
+set statusbar-bg "#222222"
+set statusbar-fg "#dcdfe4"
+
+set completion-bg "#464646"
+set completion-fg "#dcdfe4"
+set completion-group-bg "#464646"
+set completion-group-fg "#099709"
+set completion-highlight-bg "#6f6f6f"
+set completion-highlight-fg "#dcdfe4"
+
+set notification-bg "#464646"
+set notification-fg "#f6f0e1"
+set notification-warning-bg "#464646"
+set notification-warning-fg "#e8e815"
+set notification-error-bg "#c64242"
+set notification-error-fg "#f6f0e1"
+
+set index-bg "#3f3f3f"
+set index-fg "#dcdfe4"
+set index-active-bg "#4f4f4f"
+set index-active-fg "#dcdfe4"
+
+set recolor-lightcolor "#1e1e1e"
+set recolor-darkcolor "#dcdfe4"

@@ -58,5 +58,9 @@ unrar
 ## JSON, YAML, XML, TOML parser
 yq
 
+## PDF viewer(s)
+zathura zathura-pdf-mupdf
+okular
+
 
 # end
