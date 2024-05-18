@@ -64,16 +64,17 @@ return require('packer').startup(function(use)
     }
 
     -- Programming
-    use "tpope/vim-fugitive"                          -- Git
-    use "windwp/nvim-autopairs"                       -- Bracket autoindent and pairing
-    use "numToStr/Comment.nvim"                       -- Code comment
+    use 'tpope/vim-fugitive'                          -- Git
+    use 'windwp/nvim-autopairs'                       -- Bracket autoindent and pairing
+    use 'numToStr/Comment.nvim'                       -- Code comment
     use 'tpope/vim-sleuth'                            -- Detect ts and sw automatically
-    use "JoosepAlviste/nvim-ts-context-commentstring" -- Treesitter-guided comments
+    use 'JoosepAlviste/nvim-ts-context-commentstring' -- Treesitter-guided comments
     use 'lukas-reineke/indent-blankline.nvim'         -- Line indendation
     use 'norcalli/nvim-colorizer.lua'                 -- CSS colors
     use 'junegunn/vim-easy-align'                     -- Alignment
-    use "lewis6991/gitsigns.nvim"                     -- Git indication
-    use { "sakhnik/nvim-gdb", run = './install.sh' }  -- Debugging support
+    use 'lewis6991/gitsigns.nvim'                     -- Git indication
+    use 'lervag/vimtex'
+    use { 'sakhnik/nvim-gdb', run = './install.sh' }  -- Debugging support
 
     -- Completion
     use "hrsh7th/nvim-cmp"
