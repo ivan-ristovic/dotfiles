@@ -34,7 +34,7 @@ if [ "$shell" = "-zsh" ]; then
 elif [ "$shell" = "-bash" ]; then
 
     "$i_alias" ..='cd ..'
-    "$e_alias" src='exec zsh'
+    "$e_alias" src='source ~/.bashrc'
 
 fi
 
