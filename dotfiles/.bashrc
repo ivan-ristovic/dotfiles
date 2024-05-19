@@ -30,7 +30,7 @@ if [[ -d "${HOME}/dotfiles" ]]; then
     fi
 fi
 
-for file in ~/.{bash_prompt,aliases,env,functions}; do
+for file in ~/.{bash_prompt,aliases,functions}; do
 	if [[ -r "$file" ]] && [[ -f "$file" ]]; then
 		# shellcheck source=/dev/null
 		source "$file"
