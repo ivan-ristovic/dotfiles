@@ -56,8 +56,3 @@ _fzf_comprun() {
   esac
 }
 
-# Git support 
-if [[ -r "$HOME/.fzf-git.zsh" ]]; then
-  source "$HOME/.fzf-git.zsh"
-fi
-

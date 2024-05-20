@@ -88,7 +88,14 @@ fi
 
 zplug load
 
-########################## LS COLORS ##########################
+########################## MISC #############################
+
+# Git support for fzf
+if [[ -r "$HOME/.fzf-git.zsh" ]]; then
+  source "$HOME/.fzf-git.zsh"
+fi
+
+########################## LS COLORS ########################
 
 LS_COLORS="ow=01;36;40" && export LS_COLORS
 
