@@ -62,7 +62,7 @@ plugins=(
   sudo                      # esc to add/remove sudo
   taskwarrior               # taskw completion
   tmux                      # tmux completion and aliases
-  tmuxinator                # tmuxinator completion and aliases
+  # tmuxinator                # tmuxinator completion and aliases
   universalarchive          # ua
   wd                        # directory warp
   # web-search                # aliases for search engines
