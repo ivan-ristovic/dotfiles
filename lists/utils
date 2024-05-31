@@ -16,6 +16,9 @@ dust
 ## Events on file changes
 entr
 
+## HTML/XML utils (parsing)
+html-xml-utils
+
 ## HTTP client
 httpie
 
