@@ -1,1 +1,39 @@
-../dotfiles/.tmux/layout
+#!/bin/bash
+
+layouts_dir="$HOME/.tmux/layouts"
+
+if [ $# -eq 0 ]; then
+    echo "usage: $0 <layout>"
+    echo "available session layouts:"
+    ls -1 "$layouts_dir" 
+    exit 1
+fi
+
+SESSION_NAME="$1"
+ROOT_DIR="${2:-HOME}"
+
+# Check if the session already exists
+if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+    echo "Session $SESSION_NAME already exists. Attaching to it..."
+    sleep 1
+else
+    # Perform custom layout
+    layout="$layouts_dir/$SESSION_NAME"
+    if [ -f "$layout" ]; then
+        if ! tmux new-session -d -s "$SESSION_NAME" "$layout $SESSION_NAME $ROOT_DIR" ; then
+            echo "failed to create tmux session, check the layout file"
+            exit 1
+        fi
+    else
+        echo "error: unknown layout: $layout"
+        exit 1
+    fi
+    unset layout
+fi
+
+# Attach to the session
+tmux switch -t "$SESSION_NAME"
+
+unset SESSION_NAME
+unset ROOT_DIR
+unset layouts_dir
