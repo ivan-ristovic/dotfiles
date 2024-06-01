@@ -36,6 +36,7 @@ lynx
 ### chronic combine errno ifdata ifne isutf8 lckdo 
 ### mispipe parallel pee sponge ts vidir vipe zrun
 moreutils
+parallel
 
 ## Progress monitoring
 pv
