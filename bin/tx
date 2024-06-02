@@ -9,8 +9,8 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-SESSION_NAME="$1"
-ROOT_DIR="${2:-HOME}"
+export SESSION_NAME="$1"
+export ROOT_DIR="$2"
 
 # Check if the session already exists
 if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
@@ -20,10 +20,7 @@ else
     # Perform custom layout
     layout="$layouts_dir/$SESSION_NAME"
     if [ -f "$layout" ]; then
-        if ! tmux new-session -d -s "$SESSION_NAME" "$layout $SESSION_NAME $ROOT_DIR" ; then
-            echo "failed to create tmux session, check the layout file"
-            exit 1
-        fi
+        source "$layout"
     else
         echo "error: unknown layout: $layout"
         exit 1
