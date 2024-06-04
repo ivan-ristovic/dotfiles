@@ -4,18 +4,21 @@ function usage ()
 {
     echo -e "usage: $(basename $0) video|directory output_dir [options]"
     echo -e "options:"
+    echo -e "    (--codec   | -c) codec     (e.g., '-s x265')"
+    echo -e "    (--tag     | -t) vtag      (e.g., '-t hvc1')"
+    echo -e "    (--output  | -o) format    (e.g., '-o mp4')"
     echo -e "    (--scale   | -s) value     (e.g., '-s 720')"
     echo -e "    (--quality | -q) [0..51]   (e.g., '-q 18' for visually lossless)"
     echo -e "    (--preset  | -p) preset    (e.g., '-p veryslow')"
     echo -e "    --verbose  | -v            (do not suppress ffmpeg output)"
-    echo -e "    --subs                     (includes 1st subtitle track)"
+    echo -e "    --subs                     (includes subtitles)"
     echo -e "    --log   | -l               (log ffmpeg output to a file)"
     echo -e "    --error | -e               (halt on ffmpeg error)"
     exit 2
 }
 
-SHORT_OPTS=h,s:,q:,p:,s,l,e,v
-LONG_OPTS=help,scale:,quality:,preset:,verbose,subs,log,error
+SHORT_OPTS=h,s:,q:,p:,l,e,v,c:,t:,o:
+LONG_OPTS=help,codec:,scale:,tag:,output:,quality:,preset:,verbose,subs,log,error
 OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --longoptions $LONG_OPTS -- "$@") 
 if [ $? -ne 0 ]; then
     std::fat "failed to parse provided arguments"
@@ -24,6 +27,9 @@ eval set -- $OPTS
 
 STRICT=false
 LOG_FILE="/dev/null"
+CODEC="libx265"
+TAG="hvc1"
+OUT="mp4"
 SUBS=""
 QUALITY=""
 SCALE=""
@@ -46,6 +52,18 @@ do
             SCALE="-vf scale=-1:$2"
             shift
             ;;
+        -c | --codec)
+            CODEC="lib$2"
+            shift
+            ;;
+        -t | --tag)
+            TAG="$2"
+            shift
+            ;;
+        -o | --output)
+            OUT="$2"
+            shift
+            ;;
         -q | --quality)
             QUALITY="-crf $2"
             shift
@@ -58,7 +76,8 @@ do
             usage
             ;;
         --subs)
-            SUBS="-map 0:s:0 -c:s mov_text -metadata:s:s:0 language=eng"
+            SUBS="-map 0:s:0 -c:s copy -metadata:s:s:0 language=eng"
+            shift
             ;;
         --)
             shift;
@@ -80,7 +99,7 @@ errored_entries=()
 function process ()
 {
     in="$1"
-    out="$2/${in/%mkv/mp4}"
+    out="$2/${in/%mkv/$OUT}"
     mkdir -p "$(dirname "$out")"
     echo "$in -> $out"
 
@@ -89,7 +108,7 @@ function process ()
         $SCALE \
         -map 0:v:0 \
         -map 0:a:0 \
-        -c:v libx265 -vtag hvc1 $QUALITY $PRESET \
+        -c:v $CODEC -vtag $TAG $QUALITY $PRESET \
         $SUBS \
         -movflags faststart \
         "$out" \
