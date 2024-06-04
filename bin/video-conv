@@ -77,7 +77,6 @@ do
             ;;
         --subs)
             SUBS="-map 0:s:0 -c:s copy -metadata:s:s:0 language=eng"
-            shift
             ;;
         --)
             shift;
