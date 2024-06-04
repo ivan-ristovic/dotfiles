@@ -165,9 +165,15 @@ smartdots() {
 zle -N smartdots
 bindkey . smartdots
 
-################ AUTOLOAD ################
+################ MISC ################
 
+# zsh smart mv 
 autoload -U zmv
+
+# alt-tab for quoted completion
+autoload -Uz quote-and-complete-word
+zle -N quote-and-complete-word
+bindkey '^[[Z' quote-and-complete-word
 
 ################ P10K ################
 
