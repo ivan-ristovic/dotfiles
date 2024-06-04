@@ -91,6 +91,7 @@ function process ()
         -map 0:a:0 \
         -c:v libx265 -vtag hvc1 $QUALITY $PRESET \
         $SUBS \
+        -movflags faststart \
         "$out" \
         2>> "$LOG_FILE"
     if [ $? -ne 0 ] ; then
