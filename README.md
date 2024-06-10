@@ -32,11 +32,14 @@ My custom (additional) features:
 ### Session Manager (tmux)
 ![tmux](screenshots/tmux.png)
 
+My custom (additional features):
+- Custom [tmux layouting scripts](bin/tx)
+
 ### Editor (plugin-enriched Neovim with zsh, git and fzf integration)
 ![nvim](screenshots/nvim.png)
 
 ### Music Player (mpd + ncmpcpp)
-![fzf](screenshots/ncmpcpp.png)
+![ncmpcpp](screenshots/ncmpcpp.png)
 
 ### Search (fzf fuzz search integrated with zsh, nvim and forgit; fd and rg)
 ![fzf](screenshots/fzf.png)
@@ -73,7 +76,7 @@ Notable scripts:
 `bin/` directory is placed on the `PATH` automatically if this dotfiles directory is found in user's home directory.
 
 
-## Running the setup
+## Invoking the setup
 
 `setup` script can (see `setup --help`):
 - install packages from the provided list or command line
