@@ -162,10 +162,12 @@ bindsym --release $mod+Ctrl+k exec xkill
 bindsym $mod+Shift+e exec ~/.config/rofi/applets/bin/powermenu.sh
 
 # Lock the system
-# lock with a picture:
+#  with a picture:
 bindsym $mod+Shift+l exec i3lock -i $bg -p default -t
-# lock by blurring the screen:
+#  by blurring the screen:
 bindsym $mod+l exec $scriptdir/lock-blur
+#  toggle autolock
+bindsym $mod+Ctrl+l exec $scriptdir/lock-toggle
 
 # reload the configuration file
 bindsym $mod+Ctrl+c reload

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+tmp=/tmp/.xautolock-disabled
+if xautolock -toggle ; then
+    if [ -f "$tmp" ] ; then
+        rm -f "$tmp"
+        notify-send -t 500 "Enabled xautolock"
+    else
+        touch "$tmp"
+        notify-send -t 500 "Disabled xautolock"
+    fi
+else
+    notify-send -t 500 "Failed to toggle xautolock"
+fi
