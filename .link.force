@@ -9,6 +9,8 @@
 .config/gtk-3.0/gtk.css
 .config/gtk-3.0/settings.ini
 .config/mimeapps.list
+.config/user-dirs.dirs
+.config/user-dirs.locale
 .gtkrc-2.0
 
 # These programs keep window state in the config, as well as periodically overwriting config
