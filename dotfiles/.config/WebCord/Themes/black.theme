@@ -1,39 +1,34 @@
 /* Header */
-.title_d4ba1a {
+.title_a7d72e {
     background-color: #000000 !important;
 }
 
 /* Channel list */
-.container__590e2, .scroller__1f498 {
+.container_ee69e0, .scroller_c43953 {
     background-color: #000000 !important;
 }
 
 /* Message list */
-.messagesWrapper_ea2b0b {
+.messagesWrapper_e2e187 {
     background-color: #030a05 !important;
 }
 
 /* Chat */
-.chatContent_f087cb {
+.chatContent_a7d72e {
     background-color: #030a05 !important;
 }
 
 /* Chat box */
-.scrollableContainer_ff917f {
+.scrollableContainer_d0696b {
     background-color: #030a05 !important;
 }
 
 /* Member list */
-.content__690c5, .members__573eb, .member_aa4760 {
+container_cbd271, .members_cbd271, .member_a31c43 {
     background-color: #030a05 !important;
 }
 
-/* Friends page */
-.peopleColumn__0c784, .scroller__4b984, .container__5c7e7, .peopleList__2379e, .scroller__00e7e {
-    background-color: #030a05 !important;
-}
-
-/* Active now */
-.scroller__7c25e {
+/* Home page */
+.container_e44302., .content_a4d4d9 > div, .container_c2739c, .privateChannels_f0963d > div, .peopleColumn_c2739c, .nowPlayingColumn_c2739c > aside > div {
     background-color: #030a05 !important;
 }
