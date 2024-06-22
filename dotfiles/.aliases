@@ -164,6 +164,9 @@ fi
 "$i_alias" uz=extract
 "$e_alias" vim='nvim'
 "$e_alias" vsc='codium .'
+"$e_alias" wda='wd add'
+"$e_alias" wdl='wd list'
+"$e_alias" wdr='wd rm'
 "$e_alias" ytdl=yt-dlp
 "$i_alias" z=ua
 
