@@ -29,6 +29,7 @@ container_cbd271, .members_cbd271, .member_a31c43 {
 }
 
 /* Home page */
-.container_e44302., .content_a4d4d9 > div, .container_c2739c, .privateChannels_f0963d > div, .peopleColumn_c2739c, .nowPlayingColumn_c2739c > aside > div {
+.container_e44302, .scroller_c47fa9, .peopleColumn_c2739c, .scroller_bf550a {
     background-color: #030a05 !important;
 }
+
