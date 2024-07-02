@@ -8,7 +8,7 @@ if [[ $# -lt 2 ]]; then
     ls -lo /dev/disk/by-id/usb-*
     log::msg "Mountpoints:"
     lsblk
-    std::usage "$(basename $0) file.iso /dev/my-usb"
+    std::usage "file.iso /dev/my-usb"
 else
     iso=$1
     disk=$2
