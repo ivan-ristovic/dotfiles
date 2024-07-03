@@ -19,6 +19,9 @@ export DISABLE_FZF_AUTO_COMPLETION=false
 export DISABLE_FZF_KEY_BINDINGS=false
 
 export FZF_DEFAULT_OPTS="--cycle --layout=reverse --info inline --border --preview 'preview {} || '" 
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+ --color=pointer:#5f87af,marker:#48f513'
+
 export FORGIT_FZF_DEFAULT_OPTS="--cycle --layout=reverse ${FORGIT_FZF_DEFAULT_OPTS}"
 #export FORGIT_FZF_DEFAULT_OPTS="--exact --cycle --height '80%'"
 
