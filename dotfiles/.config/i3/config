@@ -391,10 +391,10 @@ exec --no-startup-id dbus-launch dunst --config ~/.config/dunst/dunstrc
 # Autostart apps
 exec --no-startup-id sleep 1 && optimus-manager-qt
 exec --no-startup-id sleep 2 && alacritty
-exec --no-startup-id sleep 5 && firefox 
 exec --no-startup-id sleep 3 && nextcloud --background
-exec --no-startup-id sleep 6 && webcord
-exec --no-startup-id sleep 10 && steam-native
+exec --no-startup-id sleep 4 && firefox 
+exec --no-startup-id sleep 5 && webcord
+exec --no-startup-id sleep 5 && steam-native
 
 ###############
 # system tray #
