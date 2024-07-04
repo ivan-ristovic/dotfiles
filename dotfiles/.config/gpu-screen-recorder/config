@@ -1,24 +1,32 @@
-main.record_area_option window
-main.record_area_width 1920
-main.record_area_height 1200
-main.fps 60
-main.merge_audio_tracks false
+main.advanced_view true
+main.audio_codec opus
 main.audio_input Default output
 main.audio_input Default input
-main.quality very_high
 main.codec h264
-main.audio_codec opus
+main.color_range limited
+main.fps 60
 main.framerate_mode auto
-main.advanced_view true
+main.hide_window_when_recording false
+main.merge_audio_tracks false
 main.overclock false
-streaming.service twitch
-streaming.key 
-streaming.start_recording_hotkey 65470 256
-record.save_directory /ramfs
+main.quality very_high
+main.record_area_height 1200
+main.record_area_option window
+main.record_area_width 1920
+main.record_cursor true
+main.show_notifications true
 record.container mp4
+record.pause_recording_hotkey 0 0
+record.save_directory /ramfs
 record.start_recording_hotkey 65470 256
-replay.save_directory /ramfs
 replay.container mp4
-replay.time 1200
-replay.start_recording_hotkey 65470 256
+replay.save_directory /ramfs
 replay.save_recording_hotkey 65471 256
+replay.start_recording_hotkey 65470 256
+replay.time 1200
+streaming.custom.container flv
+streaming.custom.url 
+streaming.service twitch
+streaming.start_recording_hotkey 65470 256
+streaming.twitch.key 
+streaming.youtube.key 
