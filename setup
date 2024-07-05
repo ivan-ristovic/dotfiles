@@ -8,7 +8,7 @@ if [ -z "$GIT_DIR" ]; then
     echo "Not in dotfiles directory. Exiting ..."
     exit 1
 fi
-required_dirs=("lib" "install")
+required_dirs=("shlib" "install")
 for dir in "${required_dirs[@]}"; do
     if [ ! -d "$dir" ]; then
         echo "$dir/ directory is not present. Exiting ..."
