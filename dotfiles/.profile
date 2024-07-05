@@ -1,5 +1,5 @@
 # Includes
-export SHLIB_ROOT=$HOME/dotfiles/lib/
+export SHLIB_ROOT=$HOME/dotfiles/shlib/lib/
 
 # Locale
 export LANG=en_US.UTF-8

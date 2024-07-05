@@ -17,7 +17,12 @@ for dir in "${required_dirs[@]}"; do
 done
 
 # Load utils
-export SHLIB_ROOT="$PWD/lib"
+echo "Pulling shlib and sourcing utils..."
+pushd "$PWD/shlib"
+git submodule init
+git submodule update
+popd
+export SHLIB_ROOT="$PWD/shlib/lib"
 source "utils.sh"
 
 function usage ()

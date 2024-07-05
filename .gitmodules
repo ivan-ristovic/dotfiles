@@ -1,0 +1,3 @@
+[submodule "shlib"]
+	path = shlib
+	url = https://github.com/ivan-ristovic/shlib.git
