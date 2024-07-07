@@ -33,6 +33,8 @@ export ZSH_COLORIZE_CHROMA_FORMATTER=terminal256
 # ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 
+fpath=(~/.config/zsh/completion $fpath)
+
 setopt HIST_IGNORE_SPACE
 HIST_STAMPS="dd/mm/yyyy"
 HIST_SIZE=500000
