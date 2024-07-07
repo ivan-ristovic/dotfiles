@@ -77,7 +77,8 @@ fi
 if is_installed hyperfine ; then
     "$e_alias" bench='hyperfine'
 fi
-"$e_alias" c='cat -ns'
+"$e_alias" c='cat'
+"$e_alias" cn='cat -ns'
 "$i_alias" cp='cp -i'
 "$e_alias" d='docker'
 "$e_alias" dc='docker-compose'
