@@ -16,6 +16,9 @@ dust
 ## Events on file changes
 entr
 
+## Alternative to ls
+eza
+
 ## HTML/XML utils (parsing)
 html-xml-utils
 
