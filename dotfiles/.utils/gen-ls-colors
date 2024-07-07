@@ -1,0 +1,360 @@
+#!/usr/bin/env python
+
+# https://gist.github.com/infused-kim/5b95ef5a4a49dda96e50c1fa4ce793eb
+#
+# What is this:
+# This script generates an LS_COLORS theme.
+#
+# By default it is using the same colors as the ls replacement exa. The
+# purpose is to generate an LS_COLORS theme that is consistent with exa's
+# colors so that it can be used by other tools like fzf.
+#
+# How to use it:
+#   - Optionally, adjust colors...
+#       - Scroll down to `# Color settings - Adjust this`
+#       - Don't touch anything else
+#   - Run the script with:
+#       `export LS_COLORS=$(python ./ls_colors_gen.py)`
+#   - Compare the output of exa and ls with:
+#       `echo "Exa colors:" &&  LS_COLORS='' exa -l && \
+#        echo "ls colors" && /bin/ls -l --color=auto`
+#   - If you are on macOS or BSD...
+#       - ls doesn't use LS_COLORS
+#       - Install gnuls with `brew install coreutils`
+#       - And then use `gls -l --color=auto`
+#       - Tools like fzf will use LS_COLORS even on macOS
+#   - Add the `export LS_COLORS` command to your .zshrc or .bashrc
+#
+
+import sys
+
+
+#
+# Color code definitions - Don't touch this
+#
+base_red = '31'
+base_green = '32'
+base_yellow = '33'
+base_blue = '34'
+base_magenta = '35'
+base_cyan = '36'
+base_white = '97'
+
+default = None
+red = f'0;{base_red}'
+green = f'0;{base_green}'
+yellow = f'0;{base_yellow}'
+blue = f'0;{base_blue}'
+magenta = f'0;{base_magenta}'
+cyan = f'0;{base_cyan}'
+white = f'0;{base_white}'
+
+red_bold = f'1;{base_red}'
+green_bold = f'1;{base_green}'
+yellow_bold = f'1;{base_yellow}'
+blue_bold = f'1;{base_blue}'
+magenta_bold = f'1;{base_magenta}'
+cyan_bold = f'1;{base_cyan}'
+white_bold = f'1;{base_white}'
+
+red_underline = f'4;{base_red}'
+green_underline = f'4;{base_green}'
+yellow_underline = f'4;{base_yellow}'
+blue_underline = f'4;{base_blue}'
+magenta_underline = f'4;{base_magenta}'
+cyan_underline = f'4;{base_cyan}'
+white_underline = f'4;{base_white}'
+
+red_bold_underline = f'1;4;{base_red}'
+green_bold_underline = f'1;4;{base_green}'
+yellow_bold_underline = f'1;4;{base_yellow}'
+blue_bold_underline = f'1;4;{base_blue}'
+magenta_bold_underline = f'1;4;{base_magenta}'
+cyan_bold_underline = f'1;4;{base_cyan}'
+white_bold_underline = f'1;4;{base_white}'
+
+#
+# Color settings - Adjust this
+#
+
+# Generated from
+# https://github.com/ogham/exa/blob/master/src/theme/default_theme.rs
+default_settings = {
+    'normal':       default,
+    'directory':    blue_bold,
+    'symlink':      cyan,
+    'pipe':         yellow,
+    'block_device': yellow_bold,
+    'char_device':  yellow_bold,
+    'socket':       red_bold,
+    'executable':   green_bold,
+}
+
+# Generated from code:
+# https://github.com/ogham/exa/blob/master/src/info/filetype.rs
+default_file_type_settings = {
+    'immediate': yellow_bold_underline,
+    'compressed': red,
+    'image': default,
+    'video': default,
+    'music': default,
+    'lossless': default,
+    'crypto': default,
+    'document': default,
+    'temp': default,
+    'compiled': default,
+}
+
+#
+# LS_COLORS maps - Don't touch this
+#
+settings_ls_color_map = {
+    'normal':       'fi',
+    'directory':    'di',
+    'symlink':      'ln',
+    'pipe':         'pi',
+    'block_device': 'bd',
+    'char_device':  'cd',
+    'socket':       'so',
+    'executable':   'ex',
+}
+
+# Generated from code:
+# https://github.com/ogham/exa/blob/master/src/info/filetype.rs
+file_type_map = {
+    'immediate': [
+        '*README',
+        '*README.txt',
+        '*README.md',
+        '*readme.txt',
+        '*readme.md',
+        '*.ninja',
+        '*Makefile', 
+        '*Cargo.toml',
+        '*SConstruct',
+        '*CMakeLists.txt',
+        '*build.gradle',
+        '*pom.xml',
+        '*Rakefile',
+        '*package.json',
+        '*Gruntfile.js',
+        '*Gruntfile.coffee',
+        '*BUILD',
+        '*BUILD.bazel',
+        '*WORKSPACE',
+        '*build.xml',
+        '*Podfile',
+        '*webpack.config.js',
+        '*meson.build',
+        '*composer.json',
+        '*RoboFile.php',
+        '*PKGBUILD',
+        '*Justfile',
+        '*Procfile',
+        '*Dockerfile',
+        '*Containerfile',
+        '*Vagrantfile',
+        '*Brewfile',
+        '*Gemfile',
+        '*Pipfile',
+        '*build.sbt',
+        '*mix.exs',
+        '*bsconfig.json',
+        '*tsconfig.json',
+    ],
+    'image': [
+        '*.png',
+        '*.jfi',
+        '*.jfif',
+        '*.jif',
+        '*.jpe',
+        '*.jpeg',
+        '*.jpg',
+        '*.gif',
+        '*.bmp',
+        '*.tiff',
+        '*.tif',
+        '*.ppm',
+        '*.pgm',
+        '*.pbm',
+        '*.pnm',
+        '*.webp',
+        '*.raw',
+        '*.arw',
+        '*.svg',
+        '*.stl',
+        '*.eps',
+        '*.dvi',
+        '*.ps',
+        '*.cbr',
+        '*.jpf',
+        '*.cbz',
+        '*.xpm',
+        '*.ico',
+        '*.cr2',
+        '*.orf',
+        '*.nef',
+        '*.heif',
+        '*.avif',
+        '*.jxl',
+    ],
+    'video': [
+        '*.avi',
+        '*.flv',
+        '*.m2v',
+        '*.m4v',
+        '*.mkv',
+        '*.mov',
+        '*.mp4',
+        '*.mpeg',
+        '*.mpg',
+        '*.ogm',
+        '*.ogv',
+        '*.vob',
+        '*.wmv',
+        '*.webm',
+        '*.m2ts',
+        '*.heic',
+    ],
+    'music': [
+        '*.aac',
+        '*.m4a',
+        '*.mp3',
+        '*.ogg',
+        '*.wma',
+        '*.mka',
+        '*.opus',
+    ],
+    'lossless': [
+        '*.alac',
+        '*.ape',
+        '*.flac',
+        '*.wav',
+    ],
+    'crypto': [
+        '*.asc',
+        '*.enc',
+        '*.gpg',
+        '*.pgp',
+        '*.sig',
+        '*.signature',
+        '*.pfx',
+        '*.p12',
+    ],
+    'document': [
+        '*.djvu',
+        '*.doc',
+        '*.docx',
+        '*.dvi',
+        '*.eml',
+        '*.eps',
+        '*.fotd',
+        '*.key',
+        '*.keynote',
+        '*.numbers',
+        '*.odp',
+        '*.odt',
+        '*.pages',
+        '*.pdf',
+        '*.ppt',
+        '*.pptx',
+        '*.rtf',
+        '*.xls',
+        '*.xlsx',
+    ],
+    'compressed': [
+        '*.zip',
+        '*.tar',
+        '*.Z',
+        '*.z',
+        '*.gz',
+        '*.bz2',
+        '*.a',
+        '*.ar',
+        '*.7z',
+        '*.iso',
+        '*.dmg',
+        '*.tc',
+        '*.rar',
+        '*.par',
+        '*.tgz',
+        '*.xz',
+        '*.txz',
+        '*.lz',
+        '*.tlz',
+        '*.lzma',
+        '*.deb',
+        '*.rpm',
+        '*.zst',
+        '*.lz4',
+    ],
+    'temp': [
+        '*~',
+        '*.tmp',
+        '*.swp',
+        '*.swo',
+        '*.swn',
+        '*.bak',
+        '*.bkp',
+        '*.bk',
+    ],
+    'compiled': [
+        '*.class',
+        '*.elc',
+        '*.hi',
+        '*.o',
+        '*.pyc',
+        '*.zwc',
+        '*.ko',
+    ],
+}
+
+
+#
+# LS_COLORS generator code
+#
+
+def gen_ls_colors():
+    ls_colors = []
+    for setting_name, color in default_settings.items():
+        try:
+            ls_code = settings_ls_color_map[setting_name]
+        except KeyError:
+            print(
+                f'WARNING: Could not generate LS_COLOR entry for '
+                f'setting `{setting_name}: '
+                f'Value is not present in settings map.',
+                file=sys.stderr,
+            )
+            continue
+
+        if color is not None:
+            ls_colors.append(f'{ls_code}={color}')
+
+    for file_type, color in default_file_type_settings.items():
+        try:
+            extensions = file_type_map[file_type]
+        except KeyError:
+            print(
+                f'WARNING: Could not generate LS_COLOR entry for '
+                f'file_type `{file_type}: '
+                f'Value is not present in file type map.',
+                file=sys.stderr,
+            )
+            continue
+
+        if color is not None:
+            for ext in extensions:
+                ls_colors.append(f'{ext}={color}')
+
+    ls_colors_env = ':'.join(ls_colors)
+    sep = '\n\t'
+    print(f'Generated settings:{sep}{sep.join(ls_colors)}', file=sys.stderr)
+    print(f'\n\nexport LS_COLORS="{ls_colors_env}"\n', file=sys.stderr)
+    print('LS_COLOR value:', file=sys.stderr)
+    print(f'{ls_colors_env}')
+
+
+if __name__ == "__main__":
+    gen_ls_colors()
+
