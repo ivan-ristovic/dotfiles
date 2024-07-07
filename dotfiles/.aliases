@@ -1,6 +1,15 @@
 e_alias="alias"    # Expanded alias
 i_alias="alias"    # Ignored (non-expanded) alias
 
+function is_installed ()
+{
+    if command -v $@ > /dev/null 2>&1 ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # Shell-specific aliases
 shell=$(ps -hp $$ | awk '{print $5}')
 if [ "$shell" = "-zsh" ]; then
@@ -62,8 +71,12 @@ fi
 "$e_alias" auru='yay -U'
 "$e_alias" aurua='yay -Syu'
 "$e_alias" b='bat'
+if is_installed bandwhich ; then
 "$e_alias" bw='bandwhich'
-"$e_alias" bench='hyperfine'
+fi
+if is_installed hyperfine ; then
+    "$e_alias" bench='hyperfine'
+fi
 "$e_alias" c='cat -ns'
 "$i_alias" cp='cp -i'
 "$e_alias" d='docker'
@@ -72,7 +85,9 @@ fi
 "$e_alias" dcd='docker-compose down'
 "$e_alias" dcl='docker-compose logs -f'
 "$e_alias" de='docker exec'
-"$e_alias" df='duf'
+if is_installed duf ; then
+    "$e_alias" df='duf'
+fi
 "$e_alias" diffu='diff --unified'
 "$e_alias" diffs='diff --side-by-side'
 "$e_alias" di='docker image'
@@ -87,7 +102,9 @@ fi
 "$e_alias" drp='docker run -dp'
 "$e_alias" drv='docker run -d -v'
 "$e_alias" ds='docker stop'
-"$e_alias" du='dust'
+if is_installed dust ; then
+    "$e_alias" du='dust'
+fi
 "$e_alias" dv='docker volume'
 "$e_alias" dvc='docker volume create'
 "$e_alias" dvi='docker volume inspect'
@@ -108,27 +125,44 @@ fi
 "$e_alias" grhhh='git reset --hard @{u}'
 "$i_alias" grep='grep --color'
 "$e_alias" h=history
-"$e_alias" hd='hexyl'
+if is_installed hexyl ; then
+    "$e_alias" hd='hexyl'
+fi
 "$e_alias" help=man
 "$e_alias" hgrep='fc -El 0 | grep'
 "$e_alias" k='kill -9'
-"$i_alias" l='ls -lFh'
-"$i_alias" lS='ls -1FSsh'
-"$i_alias" la='ls -lAFh'
-"$e_alias" lart='ls -1Fcart'
-"$e_alias" ldot='ls -ld .*'
-"$i_alias" ll='ls -lFha'
-"$i_alias" lr='ls -tRFh'
-"$i_alias" lrt='ls -1Fcrt'
-"$i_alias" ls='ls --color=tty'
-"$i_alias" lt='ls -ltFh'
+if is_installed eza ; then
+    "$i_alias" l='eza -l'
+    "$i_alias" ls='eza'
+    "$i_alias" lS='eza -l -A -F -h --sort=size --reverse'
+    "$i_alias" la='eza -l -A -F -h'
+    "$e_alias" lart='eza -1 -F -a -r -t modified'
+    "$e_alias" ldot='eza -ld .*'
+    "$i_alias" ll='eza -l -h -F -a'
+    "$i_alias" lr='eza -t modified -R -F -h'
+    "$i_alias" lrt='eza -1 -F -r -t modified'
+    "$i_alias" lt='eza -l -t modified -F -h'
+else
+    "$i_alias" l='ls -l'
+    "$i_alias" ls='ls --color=tty'
+    "$i_alias" lS='ls -1FSsh'
+    "$i_alias" la='ls -lAFh'
+    "$e_alias" lart='ls -1Fcart'
+    "$e_alias" ldot='ls -ld .*'
+    "$i_alias" ll='ls -lFha'
+    "$i_alias" lr='ls -tRFh'
+    "$i_alias" lrt='ls -1Fcrt'
+    "$i_alias" lt='ls -ltFh'
+fi
 "$e_alias" m=make
 "$e_alias" map='xargs -n1'
 "$e_alias" md='mkdir -p'
 "$e_alias" mk='make -B'
 "$i_alias" mp='$MPLAYER'
 "$i_alias" mv='mv -i'
-"$e_alias" n='neith'
+if is_installed neith ; then
+    "$e_alias" n='neith'
+fi
 "$e_alias" p='ps -f'
 "$e_alias" pacs='sudo pacman -S'
 "$e_alias" pacq='sudo pacman -Q'
@@ -144,12 +178,16 @@ fi
 "$e_alias" rma='rm *'
 "$e_alias" rmf='rm -rf'
 "$e_alias" rmfa='rm -rf *'
-"$e_alias" rss='newsboat'
+if is_installed newsboat ; then
+    "$e_alias" rss='newsboat'
+fi
 "$e_alias" sa='alias | egrep -i'
 "$e_alias" sortnr='sort -n -r'
 "$e_alias" td='tmux detach'
 "$e_alias" tw='timew'
-"$e_alias" tree='br'
+if is_installed br ; then
+    "$e_alias" tree='br'
+fi
 "$e_alias" tt='taskwarrior-tui'
 "$e_alias" tsk='taskwarrior-tui'
 "$e_alias" tska='task add'
@@ -170,8 +208,9 @@ fi
 "$e_alias" ytdl=yt-dlp
 "$i_alias" z=ua
 
-# Unset vars introduced by this script
+# Unset vars and functions introduced by this script
 unset shell
 unset e_alias
 unset i_alias
+unset is_installed
 
