@@ -158,6 +158,9 @@ fi
 "$e_alias" m=make
 "$e_alias" map='xargs -n1'
 "$e_alias" md='mkdir -p'
+if is_installed glow ; then
+    "$e_alias" mdp='glow'
+fi
 "$e_alias" mk='make -B'
 "$i_alias" mp='$MPLAYER'
 "$i_alias" mv='mv -i'

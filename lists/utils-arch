@@ -4,6 +4,9 @@
 +utils
 
 
+## Markdown preview
+glow
+
 ## Task management (Arch specific additions)
 python-tasklib
 

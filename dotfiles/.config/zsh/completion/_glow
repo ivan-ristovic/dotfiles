@@ -1,0 +1,21 @@
+#compdef glow
+
+# zsh completion for glow                                 -*- shell-script -*-
+
+__glow_debug()
+{
+    local file="$BASH_COMP_DEBUG_FILE"
+    if [[ -n ${file} ]]; then
+        echo "$*" >> "${file}"
+    fi
+}
+
+_glow()
+{
+    _files -g '*.md'
+}
+
+# don't run the completion function when being source-ed or eval-ed
+if [ "$funcstack[1]" = "_glow" ]; then
+    _glow
+fi
