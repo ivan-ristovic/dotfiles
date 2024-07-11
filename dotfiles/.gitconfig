@@ -99,3 +99,6 @@
 [url "https://github.com/"]
     insteadOf = github:
     insteadOf = gh:
+
+[pull]
+	rebase = false
