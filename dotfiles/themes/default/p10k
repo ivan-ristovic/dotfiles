@@ -103,7 +103,7 @@
     ram                     # free RAM
     # swap                    # used swap
     time                    # current time
-    battery                 # internal battery
+    # battery                 # internal battery
     # =========================[ Line #2 ]=========================
     newline                 # \n
     # ip                      # ip address and bandwidth usage for a specified network interface
