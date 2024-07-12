@@ -7,16 +7,12 @@ for patch in $(find ./*/ -type f) ; do
     sudo mkdir -p "$(dirname "$target_file")"
     if [[ $patch == *.patch ]] ; then
         target_file="${target_file%.patch}"
-        diff=$(comm -13 <(sort -u "$target_file") <(sort -u "$patch"))
-        if [ -n "$diff" ]; then
-            log::msg "Patching: $target_file"
-            echo >> "$target_file"
-            cat "$patch" >> "$target_file"
-        else
-            log::msg "Skipping: $target_file"
+        log::msg "Patch: $target_file"
+        if ! patch -s --reject-file=- "$target_file" < "$patch" ; then
+            log::err "Patch failed: $target_file"
         fi
     else
-        log::msg "Swapping: $target_file"
+        log::msg "Swap: $target_file"
         if ! sudo cp --no-preserve=mode,ownership -rf "$patch" "$target_file" ; then
             log::err "Swap failed: $patch"
         fi

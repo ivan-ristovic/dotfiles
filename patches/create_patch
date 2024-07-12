@@ -1,0 +1,21 @@
+#!/bin/bash
+
+source ../utils.sh
+
+assert::argc_ge $# 1 "file [file ...]"
+
+for file in "$@" ; do
+    mkdir -p "$(os::path::par "./$file")"
+    copy=$(os::path::abs "./$file")
+    patch="$copy.patch"
+    if io::is_file "$patch" ; then
+        if ! std::ask "overwrite $patch"; then
+            continue
+        fi
+    fi
+    cp "$file" "$copy"
+    "$EDITOR" "$copy"
+    diff -N -U 1 "$file" "$copy" > "$patch"
+    rm "$copy"
+    log::msg "created patch: $patch"
+done
