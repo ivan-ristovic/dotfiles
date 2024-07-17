@@ -2,4 +2,4 @@
 +++ /home/ivan/dotfiles/patches/etc/environment	2024-07-12 16:41:36.480005016 +0200
 @@ -6 +6,2 @@
  
-+export QT_STYLE_OVERRIDE=kvantum
++QT_STYLE_OVERRIDE=kvantum
