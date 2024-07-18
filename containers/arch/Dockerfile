@@ -1,4 +1,4 @@
-FROM archlinux:base
+FROM archlinux:multilib-devel
 
 RUN pacman --noconfirm -Syu
 RUN pacman --noconfirm -S openssh git stow sudo vim
