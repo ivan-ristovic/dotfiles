@@ -8,7 +8,7 @@ for patch in $(find ./*/ -type f) ; do
     if [[ $patch == *.patch ]] ; then
         target_file="${target_file%.patch}"
         log::msg "Patch: $target_file"
-        if ! patch -s --reject-file=- "$target_file" < "$patch" ; then
+        if ! sudo patch -N -s --reject-file=- "$target_file" < "$patch" ; then
             log::err "Patch failed: $target_file"
         fi
     else
