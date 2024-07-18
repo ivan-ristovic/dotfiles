@@ -1,17 +1,16 @@
 #!/bin/bash
 
-# Make sure user is set so `as_user` works
-# This is done in case the script is invoked directly
+# Make sure user is set in case the script is invoked directly
 # and not through `setup --services`
-if [ -z $SETUP_USER ]; then
+if [ -z "$SETUP_USER" ]; then
     SETUP_USER=$USER
     curr_dir=$PWD
-    cd .. && source utils.sh && cd $curr_dir
+    cd .. && source utils.sh && cd "$curr_dir"
 fi
 
 if [ ! -d /usr/sbin/dotfiles ]; then
     log::msg "linking sbin to /usr/sbin"
-    sudo ln -s $(pwd)/sbin/ /usr/sbin/dotfiles
+    sudo ln -s "$(pwd)/sbin/" /usr/sbin/dotfiles
 fi
 
 for service in $(read_list "./enabled-system-services.txt"); do
@@ -23,7 +22,7 @@ done
 
 for service in $(read_list "./enabled-user-services.txt"); do
     log::msg "enabling user service: $service"
-    if ! sudo systemctl --user -M $SETUP_USER@ enable --now "$service"; then
+    if ! sudo systemctl --user -M "$SETUP_USER"@ enable --now "$service"; then
         log::err "failed to setup: $service"
     fi
 done
