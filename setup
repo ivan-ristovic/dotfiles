@@ -13,24 +13,34 @@ if [ -z "$GIT_DIR" ]; then
     echo "Not in dotfiles directory. Exiting ..."
     exit 1
 fi
-required_dirs=("shlib" "install")
+
+# Check if core dirs are present
+required_dirs=("shlib" "dotfiles" "install" "patches" "systemd")
 for dir in "${required_dirs[@]}"; do
     if [ ! -d "$dir" ]; then
         echo "$dir/ directory is not present. Exiting ..."
         exit 1
     fi
 done
+unset required_dirs
+
+# Init submodules
+submodules=("shlib")
 if git submodule status | grep --quiet '^-'; then
     echo "Submodule(s) not initialized. Initializing..."
-    pushd "$PWD/shlib"
-    git submodule init
-    git submodule update
-    popd
+    for submodule in "${submodules[@]}"; do 
+        pushd "$submodule"
+        git submodule init
+        git submodule update
+        popd
+    done
 fi
+unset submodules
 
 # Load utils
 export SHLIB_ROOT="$PWD/shlib/lib"
 source "utils.sh"
+
 
 function usage ()
 {
@@ -55,6 +65,7 @@ function usage ()
     echo -e "\t--complete --all      perform all of the above"
     exit 2
 }
+
 
 GIT_REMOTE="git@github.com:ivan-ristovic/dotfiles.git"
 
