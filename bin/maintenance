@@ -14,11 +14,11 @@ log::exec systemctl --failed
 prompt "List systemd error logs:"
 journalctl -p 3 -b | less
 
-prompt "Checking for new packages:"
+prompt "Check package diffs:"
 list_loc=$NC_BACKUP/package_list.txt
 touch $list_loc
 if ! diff -u <(cat $list_loc) <(pacman -Qqe) ; then
-    log::err "Changes detected. Check whether install lists should be updated."
+    log::msg "Changes detected. Check whether install lists should be updated."
     if std::ask "Update the backed up package list?" ; then
         mv $list_loc $list_loc.bak
         if pacman -Qqe > $list_loc ; then
@@ -29,6 +29,7 @@ if ! diff -u <(cat $list_loc) <(pacman -Qqe) ; then
     fi
 fi
 unset list_loc
+log::suc "Package diffs processed."
 
 prompt "Update packages (official)"
 log::exec sudo pacman -Syu
