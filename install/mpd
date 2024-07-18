@@ -3,5 +3,5 @@
 source "../utils.sh"
 
 inst mpd mpc
-as_user mkdir -p "$SETUP_HOME_DIR/.config/mpd"
+mkdir -p "$SETUP_HOME_DIR/.config/mpd"
 

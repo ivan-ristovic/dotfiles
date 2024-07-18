@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$EUID" -eq 0 ]; then 
+    echo "Running as root is disallowed."
+    exit 1
+fi
+
 DOTFILES_ROOT_DIR=$(pwd)
 
 # Check for dotfiles root
@@ -147,13 +152,6 @@ done
 if $SETUP_PACKAGES ; then
     if [ $# -eq 0 ]; then
         std::fat "missing install list(s) or entries to install"
-    fi
-fi
-
-# Check if running as root if setting up packages or patches
-if $SETUP_PACKAGES || $SETUP_PATCHES; then 
-    if [ "$EUID" -ne 0 ]; then 
-        std::fat "installing/patching requires root access"
     fi
 fi
 

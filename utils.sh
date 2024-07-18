@@ -7,16 +7,6 @@ fi
 source "$SHLIB_ROOT/lib.sh" 
 SHLIB_FMT_TIME=true
 
-function as_user ()
-{
-    sudo -u "$SETUP_USER" $@
-}
-
-function gcl ()
-{
-    as_user git clone $@
-}
-
 function uninst ()
 {
     if ! sudo $PM_UNINSTALL_CMD $@; then
@@ -40,7 +30,7 @@ function inst_silent ()
 
 function inst_aur ()
 {
-    if ! echo y | sudo -u "$SETUP_USER" yay -S --sudoloop --needed --noconfirm --provides=false --answerdiff None --answerclean None --mflags "--noconfirm --needed" $@; then
+    if ! yay -S --sudoloop --needed --noconfirm --provides=false --answerdiff None --answerclean None --mflags "--noconfirm --needed" $@; then
         log::err "An error occurred while installing from AUR: $@"
         return 1
     fi
