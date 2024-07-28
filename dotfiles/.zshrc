@@ -1,11 +1,11 @@
-################ TMUX ################
+######################### TMUX #########################
 
 # Start tmux. Has to be before p10k instant prompt initialization!
 if command -v tmux > /dev/null && [ -z "$TMUX" ]; then
   exec tmux new-session -A
 fi
 
-################ P10K ################
+######################### P10K #########################
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -14,10 +14,23 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-############### ZSH ##################
+######################### INIT #########################
 
+ZINIT_HOME="${HOME}/.zinit/zinit.git"
+
+if [ ! -d "$ZINIT_HOME" ]; then
+   mkdir -p "$(dirname $ZINIT_HOME)"
+   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
+
+source "${ZINIT_HOME}/zinit.zsh"
+
+# Essential plugins (p10k, OMZ)
+zinit snippet OMZ::plugins/git/git.plugin.zsh
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+
+# Environment
 export ZSH="$HOME/.oh-my-zsh"
-# ZSH_CUSTOM=/path/to/new-custom-folder
 ZSH_THEME="powerlevel10k/powerlevel10k"
 ZSH_TMUX_AUTOSTART=true
 export ZSH_COLORIZE_TOOL=chroma
@@ -39,6 +52,7 @@ setopt HIST_IGNORE_SPACE
 HIST_STAMPS="dd/mm/yyyy"
 HIST_SIZE=500000
 
+# Oh-My-Zsh plugins 
 plugins=(
   colored-man-pages         # man highlighting
   colorize                  # sh highlighting
@@ -72,32 +86,24 @@ plugins=(
   zsh-interactive-cd        # tab completion for cd 
   zsh-syntax-highlighting   # must be last!
 )
-
 source $ZSH/oh-my-zsh.sh
 
-######################### ZPLUG ##########################
+# Other plugins
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light zsh-users/zsh-completions
+# zinit light zdharma-continuum/fast-syntax-highlighting  # TODO
+zinit light zdharma-continuum/zsh-diff-so-fancy
+zinit light wfxr/forgit
+# zinit light jeffreytse/zsh-vi-mode                      # TODO
 
-source ~/.zplug/init.zsh
-
-zplug 'wfxr/forgit'
-
-if ! zplug check; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
-fi
-
-zplug load
-
-########################## MISC #############################
+########################## MISC ###########################
 
 # Git support for fzf
 if [[ -r "$HOME/.fzf-git.zsh" ]]; then
   source "$HOME/.fzf-git.zsh"
 fi
 
-########################## LS COLORS ########################
+######################## LS COLORS ########################
 
 # Simple ls colors if not using eza
 # LS_COLORS="ow=01;36;40" && export LS_COLORS
@@ -113,7 +119,10 @@ zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 autoload -Uz compinit
 compinit
 
-########################## ALIASES ##########################
+# # Replay compdefs
+zinit cdreplay -q
+
+####################### ALIAS SUPPORT #######################
 
 # Blank aliases
 typeset -a baliases

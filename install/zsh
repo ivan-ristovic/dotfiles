@@ -4,28 +4,7 @@ source "../utils.sh"
 
 inst zsh
 
-if [ ! -d "$SETUP_HOME_DIR"/.oh-my-zsh/ ]; then
-    log::msg "Installing oh-my-zsh ..."
-    # git clone https://github.com/ohmyzsh/ohmyzsh.git "$SETUP_HOME_DIR"/.oh-my-zsh/
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-fi
-
 rm -f "$SETUP_HOME_DIR"/.zshrc
-
-if [ ! -d "$SETUP_HOME_DIR"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
-    log::msg "Downloading syntax highlighting plugin ..."
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$SETUP_HOME_DIR"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-fi
-
-if [ ! -d "$SETUP_HOME_DIR"/.oh-my-zsh/custom/themes/powerlevel10k ]; then
-    log::msg "Downloading powerlevel10k ..."
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$SETUP_HOME_DIR"/.oh-my-zsh/custom/themes/powerlevel10k
-fi
-
-if [ ! -d "$SETUP_HOME_DIR"/.zplug ]; then
-    log::msg "Downloading zplug ..."
-    git clone https://github.com/zplug/zplug.git $SETUP_HOME_DIR/.zplug
-fi
 
 sudo usermod --shell "$(which zsh)" $SETUP_USER
 
