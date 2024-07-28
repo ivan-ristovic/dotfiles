@@ -48,8 +48,9 @@ elif [ "$shell" = "-bash" ]; then
 fi
 
 # Shared definitions
+"$e_alias" ..='cd ..'
 "$e_alias" ...='cd ../..'
-"$e_alias" .....='cd ../../..'
+"$e_alias" ....='cd ../../..'
 "$e_alias" .....='cd ../../../..'
 "$e_alias" ......='cd ../../../../..'
 "$e_alias" -- '-x'='chmod -x'
