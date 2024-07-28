@@ -1,1 +1,1 @@
-themes/current/p10k
+themes/current/p10k.zsh

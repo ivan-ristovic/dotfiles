@@ -1,1 +1,1 @@
-../../../../themes/current/vim.statusline
+../../../../themes/current/vim-statusline.lua
