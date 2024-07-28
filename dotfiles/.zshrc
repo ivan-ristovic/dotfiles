@@ -2,7 +2,7 @@
 
 # Start tmux. Has to be before p10k instant prompt initialization!
 if command -v tmux > /dev/null && [ -z "$TMUX" ]; then
-  exec tmux new-session -A
+    exec tmux new-session -A
 fi
 
 ######################### P10K #########################
@@ -11,32 +11,12 @@ fi
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-######################### INIT #########################
+######################### ENV #########################
 
-ZINIT_HOME="${HOME}/.zinit/zinit.git"
-
-if [ ! -d "$ZINIT_HOME" ]; then
-   mkdir -p "$(dirname $ZINIT_HOME)"
-   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-fi
-
-source "${ZINIT_HOME}/zinit.zsh"
-
-# Essential plugins (p10k, OMZ)
-zinit snippet OMZ::plugins/git/git.plugin.zsh
-zinit ice depth=1; zinit light romkatv/powerlevel10k
-
-# Environment
-export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="powerlevel10k/powerlevel10k"
 ZSH_TMUX_AUTOSTART=true
-export ZSH_COLORIZE_TOOL=chroma
-export ZSH_COLORIZE_STYLE="solarized-dark"
-export ZSH_COLORIZE_CHROMA_FORMATTER=terminal256
-
 # CASE_SENSITIVE="true"
 # HYPHEN_INSENSITIVE="true"
 # DISABLE_AUTO_UPDATE="true"
@@ -45,17 +25,21 @@ export ZSH_COLORIZE_CHROMA_FORMATTER=terminal256
 # DISABLE_AUTO_TITLE="true"
 # ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
+HIST_STAMPS="dd/mm/yyyy"
+HIST_SIZE=500000
+setopt HIST_IGNORE_SPACE
 
 fpath=(~/.config/zsh/completion $fpath)
 
-setopt HIST_IGNORE_SPACE
-HIST_STAMPS="dd/mm/yyyy"
-HIST_SIZE=500000
+####################### PLUGINS #######################
 
-# Oh-My-Zsh plugins 
+if [ ! -d "$HOME"/.oh-my-zsh/ ]; then
+    echo "Installing oh-my-zsh ..."
+    git clone https://github.com/ohmyzsh/ohmyzsh.git "$HOME"/.oh-my-zsh/
+fi
+
 plugins=(
   colored-man-pages         # man highlighting
-  colorize                  # sh highlighting
   command-not-found         # "did you mean" on cmd 404
   copybuffer                # ctrl+o to copy buffer to clip
   copyfile                  # copies file to clip
@@ -68,39 +52,60 @@ plugins=(
   encode64                  # encode64/decode64 aliases
   extract                   # extract alias
   fancy-ctrl-z              # ctrl+z for fg and bg
-  fd                        # fd completion
   fzf                       # fzf completion
   git                       # git completion and aliases
-  nmap                      # nmap aliases
   per-directory-history     # ctrl+g to toggle global/dir history
   python                    # python aliases and venv management
   rsync                     # rsync aliases
   sudo                      # esc to add/remove sudo
   taskwarrior               # taskw completion
   tmux                      # tmux completion and aliases
-  # tmuxinator                # tmuxinator completion and aliases
   universalarchive          # ua
   wd                        # directory warp
-  # web-search                # aliases for search engines
   # zsh-autosuggestions
-  zsh-interactive-cd        # tab completion for cd 
-  zsh-syntax-highlighting   # must be last!
+  zsh-interactive-cd        # tab completion for cd
 )
-source $ZSH/oh-my-zsh.sh
 
-# Other plugins
-zinit light zsh-users/zsh-syntax-highlighting
-zinit light zsh-users/zsh-completions
-# zinit light zdharma-continuum/fast-syntax-highlighting  # TODO
+source $HOME/.oh-my-zsh/oh-my-zsh.sh
+
+ZINIT_HOME="${HOME}/.zinit/zinit.git"
+
+if [ ! -d "$ZINIT_HOME" ]; then
+    mkdir -p "$(dirname $ZINIT_HOME)"
+    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
+
+source "${ZINIT_HOME}/zinit.zsh"
+
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+zinit light zsh-users/zsh-completions       
 zinit light zdharma-continuum/zsh-diff-so-fancy
 zinit light wfxr/forgit
 # zinit light jeffreytse/zsh-vi-mode                      # TODO
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light zdharma-continuum/fast-syntax-highlighting
 
 ########################## MISC ###########################
 
-# Git support for fzf
+# Should reload fast-syntax-highlighting theme?
+__fsh_theme_dir="$HOME/.config/zsh/highlighting/"
+__fsh_theme_mod_time=$(date -r "$__fsh_theme_dir/theme.ini" "+%s")
+if [ -f "$__fsh_theme_dir/.theme-set" ]; then 
+    __fsh_saved_mod_time=$(cat "$__fsh_theme_dir/.theme-set")
+else
+    __fsh_saved_mod_time=$(date "+%s")
+fi
+if [ $__fsh_saved_mod_time != $__fsh_theme_mod_time ]; then
+    fast-theme "$HOME/.config/zsh/highlighting/theme.ini" > /dev/null
+    echo $__fsh_theme_mod_time > "$HOME/.config/zsh/highlighting/.theme-set"
+fi
+unset __fsh_theme_dir
+unset __fsh_theme_mod_time
+unset __fsh_saved_mod_time
+
+# Git support for fzf (Ctrl+G -> key)
 if [[ -r "$HOME/.fzf-git.zsh" ]]; then
-  source "$HOME/.fzf-git.zsh"
+    source "$HOME/.fzf-git.zsh"
 fi
 
 ######################## LS COLORS ########################
@@ -116,10 +121,14 @@ EZA_COLORS="ur=38;5;248:uw=38;5;248:ux=38;5;210:ue=38;5;248:gr=38;5;248:gw=38;5;
 
 # Make cd use the ls colours
 zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
+
+#######################  COMPLETION  #######################
+
+# zstyle ':completion:*' matcher-list 'r:|=*' 'l:|=* r:|=*'
 autoload -Uz compinit
 compinit
 
-# # Replay compdefs
+# Replay compdefs
 zinit cdreplay -q
 
 ####################### ALIAS SUPPORT #######################
