@@ -81,11 +81,16 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 zinit light zsh-users/zsh-completions       
 zinit light zdharma-continuum/zsh-diff-so-fancy
 zinit light wfxr/forgit
-# zinit light jeffreytse/zsh-vi-mode                      # TODO
+zinit light jeffreytse/zsh-vi-mode
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zdharma-continuum/fast-syntax-highlighting
 
 ########################## MISC ###########################
+
+# Vim mode cursors
+ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BLOCK
+ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
+ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_UNDERLINE
 
 # Should reload fast-syntax-highlighting theme?
 __fsh_theme_dir="$HOME/.config/zsh/highlighting/"
