@@ -9,7 +9,7 @@ export HISTORY_START_WITH_GLOBAL=true
 
 if [[ -d "${HOME}/dotfiles" ]]; then    
     if [[ ! -z $(grep ivan-ristovic/dotfiles "${HOME}/dotfiles/.git/config") ]]; then
-        export PATH="${PATH}:${HOME}/dotfiles/bin"
+        export PATH="${PATH}:${HOME}/dotfiles/bin:${HOME}/dotfiles/sbin"
     fi
 fi
 

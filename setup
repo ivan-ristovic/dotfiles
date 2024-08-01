@@ -281,9 +281,17 @@ if $SETUP_DOTFILES ; then
         log::err "Failed linking dotfiles! Backup is kept at: $backup_dir"
     fi
     cd "$DOTFILES_ROOT_DIR"
-    
+
     unset backup_dir
     unset force_overwrite_list
+    
+    cd sbin
+    if sudo stow --no-folding $STOW_EXTRA_ARGS -v . -t "/usr/local/bin" ; then 
+        log::suc "Binaries linked."
+    else
+        log::err "Failed linking binaries!"
+    fi
+    cd "$DOTFILES_ROOT_DIR" 
 fi
 
 if $SETUP_PATCHES ; then
