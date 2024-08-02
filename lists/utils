@@ -7,6 +7,9 @@ bc
 ## Alternative to awk/sed for selecting output columns 
 choose
 
+## Command-line calculations
+datamash
+
 ## Alternative to df
 duf
 
