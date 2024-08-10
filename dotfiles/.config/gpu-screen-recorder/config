@@ -14,19 +14,23 @@ main.record_area_height 1200
 main.record_area_option window
 main.record_area_width 1920
 main.record_cursor true
-main.show_notifications true
+main.restore_portal_session true
+main.show_recording_saved_notifications true
+main.show_recording_started_notifications false
+main.show_recording_stopped_notifications false
+main.software_encoding_warning_shown false
 record.container mp4
-record.pause_recording_hotkey 0 0
+record.pause_unpause_recording_hotkey 0 0
 record.save_directory /ramfs
-record.start_recording_hotkey 65470 256
+record.start_stop_recording_hotkey 65470 256
 replay.container mp4
 replay.save_directory /ramfs
 replay.save_recording_hotkey 65471 256
-replay.start_recording_hotkey 65470 256
+replay.start_stop_recording_hotkey 65470 256
 replay.time 1200
 streaming.custom.container flv
 streaming.custom.url 
 streaming.service twitch
-streaming.start_recording_hotkey 65470 256
+streaming.start_stop_recording_hotkey 65470 256
 streaming.twitch.key 
 streaming.youtube.key 
