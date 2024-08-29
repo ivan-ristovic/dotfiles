@@ -1,0 +1,25 @@
+### Pixel 7a list ###
+
+# Missing from default installation
+rsync
+which
+
+# Core
++core
+
+
+# Utils
+bc
+datamash
+eza
+hyperfine
+jq
+parallel
+sd
+time
+tree
+unrar
+yq
+
+
+# end

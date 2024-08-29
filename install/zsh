@@ -6,5 +6,5 @@ inst zsh
 
 rm -f "$SETUP_HOME_DIR"/.zshrc
 
-sudo usermod --shell "$(which zsh)" $SETUP_USER
+chsh -s zsh
 

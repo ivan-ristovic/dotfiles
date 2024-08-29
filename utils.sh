@@ -59,36 +59,12 @@ function read_list ()
 
 function pm_cmd ()
 {
-    declare -A osinfo;
-    osinfo[/etc/redhat-release]="yum -y install"
-    osinfo[/etc/arch-release]="pacman --noconfirm --needed -S"
-    osinfo[/etc/gentoo-release]='emerge'
-    osinfo[/etc/SuSE-release]='zypper install'
-    osinfo[/etc/debian_version]="apt-get install -qq"
-
-    for f in "${!osinfo[@]}"; do
-        if [[ -f $f ]]; then
-            echo "${osinfo["$f"]}"
-            return
-        fi
-    done
+    echo "pkg install"
 }
 
 function pm_uninst_cmd ()
 {
-    declare -A osinfo;
-    osinfo[/etc/redhat-release]="yum -y remove"
-    osinfo[/etc/arch-release]="pacman --noconfirm -R"
-    osinfo[/etc/gentoo-release]='emerge --deselect'
-    osinfo[/etc/SuSE-release]='zypper remove'
-    osinfo[/etc/debian_version]="apt-get remove -qq"
-
-    for f in "${!osinfo[@]}"; do
-        if [[ -f $f ]]; then
-            echo "${osinfo["$f"]}"
-            return 
-        fi
-    done
+    echo "pkg uninstall"
 }
 
 export PM_INSTALL_CMD=$(pm_cmd)
