@@ -1,0 +1,11 @@
+#!/bin/bash
+
+source "../utils.sh"
+
+__output_dir=/opt/FlameGraph
+
+sudo mkdir -p "$__output_dir"
+sudo chown "$SETUP_USER":"$SETUP_USER" "$__output_dir"
+git clone https://github.com/brendangregg/FlameGraph.git "$__output_dir"
+
+unset __output_dir
