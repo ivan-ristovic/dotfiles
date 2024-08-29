@@ -76,7 +76,7 @@ SETUP_PACKAGES=false
 SETUP_PATCHES=false
 SETUP_SERVICES=false
 SETUP_USER=${SUDO_USER:-$(logname 2> /dev/null)}
-SETUP_HOME_DIR="/home/$SETUP_USER"
+SETUP_HOME_DIR="$HOME"
 
 SHORT_OPTS=v,s,u:,h,l,r
 LONG_OPTS=user:,username:,dotfiles,link,stow,packages,install,dotfiles,patch,patches,services,all,complete,help,strict,repair,debug,verbose,remote,git,log
