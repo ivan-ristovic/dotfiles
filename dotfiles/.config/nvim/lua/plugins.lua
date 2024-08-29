@@ -52,9 +52,9 @@ return require('packer').startup(function(use)
     }
 
     -- Telescope
-    use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } }
-    use { 'nvim-telescope/telescope-media-files.nvim' }
-    use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+    --[[ use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } } ]]
+    --[[ use { 'nvim-telescope/telescope-media-files.nvim' } ]]
+    --[[ use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' } ]]
 
     -- Treesitter
     use "nvim-treesitter/nvim-treesitter" -- Syntax highlighting
@@ -86,17 +86,17 @@ return require('packer').startup(function(use)
     use "honza/vim-snippets"
     use "saadparwaiz1/cmp_luasnip"
 
-    -- LSP 
-    use {
-        'neovim/nvim-lspconfig',
-        requires = {
-            -- Automatically install LSPs to stdpath for neovim
-            'williamboman/mason.nvim',
-            'williamboman/mason-lspconfig.nvim',
-            -- Useful status updates for LSP
-            'j-hui/fidget.nvim',
-        },
-    }
+    --[[ -- LSP  ]]
+    --[[ use { ]]
+    --[[     'neovim/nvim-lspconfig', ]]
+    --[[     requires = { ]]
+    --[[         -- Automatically install LSPs to stdpath for neovim ]]
+    --[[         'williamboman/mason.nvim', ]]
+    --[[         'williamboman/mason-lspconfig.nvim', ]]
+    --[[         -- Useful status updates for LSP ]]
+    --[[         'j-hui/fidget.nvim', ]]
+    --[[     }, ]]
+    --[[ } ]]
 
     if is_bootstrap then
         require('packer').sync()
