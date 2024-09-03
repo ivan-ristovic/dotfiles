@@ -203,9 +203,10 @@ bindkey . smartdots
 autoload -U zmv
 
 # alt-tab for quoted completion
+# `showkey -a` can be used to help find keymaps
 autoload -Uz quote-and-complete-word
 zle -N quote-and-complete-word
-bindkey '^[[Z' quote-and-complete-word
+bindkey '^[\t' quote-and-complete-word
 
 ################ P10K ################
 
