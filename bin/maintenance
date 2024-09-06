@@ -32,10 +32,10 @@ unset list_loc
 log::suc "Package diffs processed."
 
 prompt "Update packages (official)"
-log::exec sudo pacman --noconfirm --needed -Syu
+log::exec sudo pacman -Syu
 
 prompt "Update packages (AUR)"
-log::exec yay --sudoloop --needed --noconfirm --provides=false --answerdiff None --answerclean None --mflags "--noconfirm --needed" -Syu
+log::exec yay -Syu
 
 prompt "Show orphaned packages"
 log::exec pacman -Qtd
