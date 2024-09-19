@@ -7,8 +7,9 @@ scrot -z $PICTURE
 # Use wallpaper as a lock screen
 # cp $1 $PICTURE
 
-BLUR="5x4"
+# http://www.imagemagick.org/Usage/blur/#blur_args
+BLUR="5x3"
 
-convert $PICTURE -blur $BLUR $PICTURE
-i3lock -i $PICTURE -p default -t
+convert $PICTURE -blur $BLUR - | magick composite -gravity center /usr/share/icons/lock.png - $PICTURE
+i3lock -i $PICTURE -t 
 rm $PICTURE
