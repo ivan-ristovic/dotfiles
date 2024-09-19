@@ -12,7 +12,7 @@ for patch in $(find ./*/ -type f) ; do
             log::err "Patch failed: $target_file"
         fi
     else
-        log::msg "Swap: $target_file"
+        log::msg "Swap:  $target_file"
         if ! sudo cp --no-preserve=mode,ownership -rf "$patch" "$target_file" ; then
             log::err "Swap failed: $patch"
         fi
