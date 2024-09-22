@@ -19,6 +19,7 @@ main.show_recording_saved_notifications true
 main.show_recording_started_notifications false
 main.show_recording_stopped_notifications false
 main.software_encoding_warning_shown false
+main.steam_deck_warning_shown false
 record.container mp4
 record.pause_unpause_recording_hotkey 0 0
 record.save_directory /ramfs
