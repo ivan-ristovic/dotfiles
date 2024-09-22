@@ -37,13 +37,11 @@ if [ "$shell" = "-zsh" ]; then
     "$e_alias" -g TT='2>&1 | tail'
 
     "$i_alias" history=omz_history
-    "$e_alias" src='exec zsh'
     "$e_alias" which-command='whence -af'
 
 elif [ "$shell" = "-bash" ]; then
 
     "$i_alias" ..='cd ..'
-    "$e_alias" src='source ~/.bashrc'
 
 fi
 

@@ -12,7 +12,7 @@ function fm ()
             --cmd="map Q chain shell echo %d > $tempfile; quitall"
         )
         
-        ${ranger_cmd[@]} "$@"
+        ${ranger_cmd[@]} "$@" 2>/dev/null
         if [[ -f "$tempfile" ]] && [[ "$(cat -- "$tempfile")" != "$(echo -n "$(pwd)")" ]]; then
             cd -- "$(cat "$tempfile")" || return
         fi
@@ -63,7 +63,7 @@ function path ()
 
 function swturbo ()
 {
-    sudo cpumode -b
+    cpumode -b
 }
 
 function trim ()
@@ -102,7 +102,7 @@ function loop ()
     done
 }
 
-function view-src ()
+function src ()
 {
     if whence -v "$1"; then
         case $(whence -w "$1") in
