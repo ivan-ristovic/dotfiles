@@ -27,6 +27,7 @@ positions = {
     "right-of": "left-of",
     "above": "below",
     "below": "above",
+    "same-as": "same-as",
 }
 if len(sys.argv) < 2 or sys.argv[1] not in positions:
     print('Expected position as argument, one of: ', list(positions.keys()))
