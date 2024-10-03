@@ -22,6 +22,9 @@ entr
 ## Alternative to ls
 eza
 
+## Sandboxing
+firejail
+
 ## HTML/XML utils (parsing)
 html-xml-utils
 
