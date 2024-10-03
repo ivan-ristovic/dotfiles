@@ -17,6 +17,9 @@ aur:broot
 ## Interactive jq results
 aur:jnv-bin
 
+## Notebook management
+aur:nb
+
 ## Markdown presentations
 aur:slides-bin
 
