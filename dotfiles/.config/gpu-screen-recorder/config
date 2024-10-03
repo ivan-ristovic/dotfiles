@@ -2,10 +2,12 @@ main.advanced_view true
 main.audio_codec opus
 main.audio_input Default output
 main.audio_input Default input
+main.av1_amd_bug_warning_shown false
 main.codec h264
 main.color_range limited
 main.fps 60
 main.framerate_mode auto
+main.hevc_amd_bug_warning_shown false
 main.hide_window_when_recording false
 main.merge_audio_tracks false
 main.overclock false
