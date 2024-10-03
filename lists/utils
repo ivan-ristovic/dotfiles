@@ -53,6 +53,9 @@ scrot
 ## Alternative to sed
 sd
 
+## Stream extractor
+streamlink
+
 ## Monitoring tools for linux (iostat, mpstat, sar...)
 sysstat
 
