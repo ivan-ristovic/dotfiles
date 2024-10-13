@@ -42,6 +42,7 @@ return require('packer').startup(function(use)
     use "mbbill/undotree"           -- Undo history
     use "mg979/vim-visual-multi"    -- Multi-cursors
     use "j-hui/fidget.nvim"         -- Fidget with status updates 
+    use 'RaafatTurki/hex.nvim'      -- Hex edit
     use {
         'nvim-lualine/lualine.nvim',
         requires = { 'kyazdani42/nvim-web-devicons' }
