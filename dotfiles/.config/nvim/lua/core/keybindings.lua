@@ -15,7 +15,6 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 --   term_mode = "t",
 --   command_mode = "c",
 
--- Normal --
 -- Remap for dealing with word wrap
 keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
@@ -32,40 +31,26 @@ keymap("n", "<C-A-Right>", ":vertical resize +2<CR>", opts)
 -- Navigate buffers/windows
 keymap("n", "<C>", "<C-w>h", opts)
 keymap("n", "<C-gt>", "<C-w>l", opts)
-keymap("n", "<A-Right>", ":bnext<CR>", opts)
 keymap("n", "<A-Left>", ":bprevious<CR>", opts)
 keymap("n", "<A-Right>", ":bnext<CR>", opts)
-keymap("n", "<A-Left>", ":bprevious<CR>", opts)
 
 -- Move text up and down
-keymap("n", "<A-Down>", "ddp", opts)
-keymap("n", "<A-Up>", "ddkkp", opts)
-
--- Visual --
--- Stay in indent mode
-keymap("v", "<", "<gv", opts)
-keymap("v", ">", ">gv", opts)
-
--- Move text up and down
-keymap("v", "<C-j>", "ddp", opts)
-keymap("v", "<C-k>", "ddkkp", opts)
-keymap("v", "<C-Down>", "ddp", opts)
-keymap("v", "<C-Up>", "ddkkp", opts)
+keymap("n", "<A-Up>", ":m -2<CR>==", opts)
+keymap("n", "<A-Down>", ":m +1<CR>==", opts)
+keymap("v", "<A-Up>", ":m '<-2<CR>gv=gv", opts)
+keymap("v", "<A-Down>", ":m '>+1<CR>gv=gv", opts)
 keymap("v", "p", '"_dP', opts)
-
--- Visual Block --
--- Move text up and down
 keymap("x", "J", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "K", ":move '<-2<CR>gv-gv", opts)
 keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 
--- Terminal --
--- Better terminal navigation
--- keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", term_opts)
--- keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
--- keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
--- keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
+-- Append next line keeping the curson in place
+keymap("n", "J", "mzJ`z", opts)
+
+-- Fix search results in the middle while moving
+keymap("n", "n", "nzzzv", opts)
+keymap("n", "N", "Nzzzv", opts)
 
 -- File Tree (NvimTree)
 keymap("n", "<leader>t", ":NvimTreeToggle<cr>", opts)
@@ -87,4 +72,26 @@ keymap("n", "<leader>9", ":BufferLineGoToBuffer 9<cr>", opts)
 
 -- Close buffers
 keymap("n", "<leader>q", ":enew<bar>bd #<CR>", opts)
+
+-- System clipboard
+keymap("n", "<leader>y", '"+y', opts)
+keymap("v", "<leader>y", '"+y', opts)
+
+-- Delete to void
+keymap("n", "<leader>d", '"_d', opts)
+keymap("v", "<leader>d", '"_d', opts)
+
+-- (Visual) Stay in indent mode
+keymap("v", "<", "<gv", opts)
+keymap("v", ">", ">gv", opts)
+
+-- Quickfix list
+keymap("n", "<leader>qn", "<cmd>cnext<CR>zz", opts)
+keymap("n", "<leader>qp", "<cmd>cprev<CR>zz", opts)
+
+-- Better terminal navigation
+-- keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", term_opts)
+-- keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
+-- keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
+-- keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 
