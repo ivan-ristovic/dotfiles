@@ -43,6 +43,10 @@ return require('packer').startup(function(use)
     use 'mg979/vim-visual-multi'    -- Multi-cursors
     use 'j-hui/fidget.nvim'         -- Fidget with status updates 
     use 'RaafatTurki/hex.nvim'      -- Hex edit
+    use {                           -- Quickfix list enhancements
+        'kevinhwang91/nvim-bqf',
+        ft = 'qf'
+    }
     use {                           -- Status line
         'nvim-lualine/lualine.nvim',
         requires = { 'nvim-tree/nvim-web-devicons' }
