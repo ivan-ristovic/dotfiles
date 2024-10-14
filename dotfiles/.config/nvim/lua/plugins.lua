@@ -77,6 +77,10 @@ return require('packer').startup(function(use)
     use 'lervag/vimtex'                               -- LaTeX support
     use { 'sakhnik/nvim-gdb', run = './install.sh' }  -- Debugging support
     use 'kylechui/nvim-surround'                      -- Edit surrounding text
+    use {                                             -- Split/Join blocks of code 
+        'Wansmer/treesj',
+        requires = { 'nvim-treesitter/nvim-treesitter' }
+    }
 
     -- Completion
     use 'hrsh7th/nvim-cmp'
