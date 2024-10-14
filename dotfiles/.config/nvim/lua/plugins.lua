@@ -43,11 +43,11 @@ return require('packer').startup(function(use)
     use "mg979/vim-visual-multi"    -- Multi-cursors
     use "j-hui/fidget.nvim"         -- Fidget with status updates 
     use 'RaafatTurki/hex.nvim'      -- Hex edit
-    use {
+    use {                           -- Status line
         'nvim-lualine/lualine.nvim',
-        requires = { 'kyazdani42/nvim-web-devicons' }
+        requires = { 'nvim-tree/nvim-web-devicons' }
     }
-    use {
+    use {                           -- File explorer
         'nvim-tree/nvim-tree.lua',
         requires = { 'nvim-tree/nvim-web-devicons' }
     }
