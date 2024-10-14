@@ -16,7 +16,7 @@ vim.cmd([[
 ]])
 
 -- Use a protected call so we don't error out on first use
-local status_ok, packer = pcall(require, "packer")
+local status_ok, packer = pcall(require, 'packer')
 if not status_ok then
     return
 end
@@ -25,7 +25,7 @@ end
 packer.init({
     display = {
         open_fn = function()
-            return require("packer.util").float({ border = "rounded" })
+            return require('packer.util').float({ border = 'rounded' })
         end,
     },
 })
@@ -37,11 +37,11 @@ return require('packer').startup(function(use)
     -- Appearance and general functionality
     use 'Mofiqul/vscode.nvim'       -- VSCode-like color scheme
     use 'nvim-lua/popup.nvim'       -- An implementation of the Popup API   
-    use "akinsho/bufferline.nvim"   -- Buffer (tabs)
-    use "sitiom/nvim-numbertoggle"  -- Absolute/Relative number autotoggle
-    use "mbbill/undotree"           -- Undo history
-    use "mg979/vim-visual-multi"    -- Multi-cursors
-    use "j-hui/fidget.nvim"         -- Fidget with status updates 
+    use 'akinsho/bufferline.nvim'   -- Buffer (tabs)
+    use 'sitiom/nvim-numbertoggle'  -- Absolute/Relative number autotoggle
+    use 'mbbill/undotree'           -- Undo history
+    use 'mg979/vim-visual-multi'    -- Multi-cursors
+    use 'j-hui/fidget.nvim'         -- Fidget with status updates 
     use 'RaafatTurki/hex.nvim'      -- Hex edit
     use {                           -- Status line
         'nvim-lualine/lualine.nvim',
@@ -58,7 +58,7 @@ return require('packer').startup(function(use)
     use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 
     -- Treesitter
-    use "nvim-treesitter/nvim-treesitter" -- Syntax highlighting
+    use 'nvim-treesitter/nvim-treesitter'
     use {
         'nvim-treesitter/nvim-treesitter-textobjects',
         after = 'nvim-treesitter',
@@ -74,18 +74,19 @@ return require('packer').startup(function(use)
     use 'norcalli/nvim-colorizer.lua'                 -- CSS colors
     use 'junegunn/vim-easy-align'                     -- Alignment
     use 'lewis6991/gitsigns.nvim'                     -- Git indication
-    use 'lervag/vimtex'
+    use 'lervag/vimtex'                               -- LaTeX support
     use { 'sakhnik/nvim-gdb', run = './install.sh' }  -- Debugging support
+    use 'kylechui/nvim-surround'                      -- Edit surrounding text
 
     -- Completion
-    use "hrsh7th/nvim-cmp"
-    use "hrsh7th/cmp-buffer"
-    use "hrsh7th/cmp-path"
-    use "hrsh7th/cmp-cmdline"
-    use "hrsh7th/cmp-nvim-lsp"
-    use { "L3MON4D3/LuaSnip", run = "make install_jsregexp" }
-    use "honza/vim-snippets"
-    use "saadparwaiz1/cmp_luasnip"
+    use 'hrsh7th/nvim-cmp'
+    use 'hrsh7th/cmp-buffer'
+    use 'hrsh7th/cmp-path'
+    use 'hrsh7th/cmp-cmdline'
+    use 'hrsh7th/cmp-nvim-lsp'
+    use { 'L3MON4D3/LuaSnip', run = 'make install_jsregexp' }
+    use 'honza/vim-snippets'
+    use 'saadparwaiz1/cmp_luasnip'
 
     -- LSP 
     use {
