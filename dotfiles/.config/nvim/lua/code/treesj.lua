@@ -6,7 +6,7 @@ end
 treesj.setup {
 
   -- Use default keymaps (<space>m - toggle, <space>j - join, <space>s - split)
-  use_default_keymaps = true,
+  use_default_keymaps = false,
 
   -- Node with syntax error will not be formatted
   check_syntax_error = true,
@@ -33,3 +33,10 @@ treesj.setup {
   -- langs = {}, -- See the default presets in lua/treesj/langs
 }
 
+-- For default preset
+vim.keymap.set('n', '<leader>m', treesj.toggle)
+
+-- For extending default preset with `recursive = true`
+vim.keymap.set('n', '<leader>M', function()
+    treesj.toggle({ split = { recursive = true } })
+end)
