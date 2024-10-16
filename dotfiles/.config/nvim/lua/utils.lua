@@ -17,7 +17,6 @@ function M.is_win()
     end
 end
 
-
 -----------------------------------------------------------
 -- Function equivalent to basename in POSIX systems.
 -- @param str the path string.

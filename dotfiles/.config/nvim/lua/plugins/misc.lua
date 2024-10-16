@@ -10,10 +10,10 @@ return {
   -- Text alignment
   {
     'junegunn/vim-easy-align',
-    command = function ()
-      U.keymap("n", "ga", "<Plug>(EasyAlign)", "Align")
-      U.keymap("x", "ga", "<Plug>(EasyAlign)", "Align")
-    end
+    keys = {
+      { "<leader>ga", "<Plug>(EasyAlign)", desc = "EasyAlign", mode = "n" },
+      { "<leader>ga", "<Plug>(EasyAlign)", desc = "EasyAlign", mode = "x" },
+    }
   },
 
   -- Colorizer
@@ -35,9 +35,9 @@ return {
   -- Undo history
   {
     'mbbill/undotree',
-    init = function ()
-      U.keymap("n", "<leader>u", ":UndotreeToggle<cr>", "Toggle undotree")
-    end
+    keys = {
+      { "<leader>u", "<Cmd>UndotreeToggle<CR>", desc = "Toggle undotree", mode = "n" },
+    }
   },
 
   -- Hex edit for binary files
@@ -67,6 +67,7 @@ return {
   -- Quickfix list enhancements
   {
     'kevinhwang91/nvim-bqf'
-  }
+  },
 
 }
+

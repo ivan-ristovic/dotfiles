@@ -71,50 +71,44 @@ return {
   {
     'Wansmer/treesj',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    command = function ()
-      local status_ok, treesj = pcall(require, "treesj")
-      if not status_ok then
-        return
-      end
+    opts = {
 
-      treesj.setup {
+      -- Use default keymaps (<space>m - toggle, <space>j - join, <space>s - split)
+      use_default_keymaps = false,
 
-        -- Use default keymaps (<space>m - toggle, <space>j - join, <space>s - split)
-        use_default_keymaps = false,
+      -- Node with syntax error will not be formatted
+      check_syntax_error = true,
 
-        -- Node with syntax error will not be formatted
-        check_syntax_error = true,
+      -- If line after join will be longer than max value, node will not be formatted
+      max_join_length = 120,
 
-        -- If line after join will be longer than max value, node will not be formatted
-        max_join_length = 120,
+      ---Cursor behavior:
+      ---hold - cursor follows the node/place on which it was called
+      ---start - cursor jumps to the first symbol of the node being formatted
+      ---end - cursor jumps to the last symbol of the node being formatted
+      cursor_behavior = 'hold',
 
-        ---Cursor behavior:
-        ---hold - cursor follows the node/place on which it was called
-        ---start - cursor jumps to the first symbol of the node being formatted
-        ---end - cursor jumps to the last symbol of the node being formatted
-        cursor_behavior = 'hold',
+      -- Notify about possible problems or not
+      notify = true,
 
-        -- Notify about possible problems or not
-        notify = true,
+      -- Use `dot` for repeat action
+      dot_repeat = true,
 
-        -- Use `dot` for repeat action
-        dot_repeat = true,
+      -- Callback for treesj error handler. func (err_text, level, ...other_text)
+      on_error = nil,
 
-        -- Callback for treesj error handler. func (err_text, level, ...other_text)
-        on_error = nil,
-
-        -- Presets for languages
-        -- langs = {}, -- See the default presets in lua/treesj/langs
-      }
-
-      -- For default preset
-      vim.keymap.set('n', '<leader>m', treesj.toggle)
-
-      -- For extending default preset with `recursive = true`
-      vim.keymap.set('n', '<leader>M', function()
-        treesj.toggle({ split = { recursive = true } })
-      end)
-    end,
+      -- Presets for languages
+      -- langs = {}, -- See the default presets in lua/treesj/langs
+    },
+    keys = {
+      { "<leader>m", require('treesj').toggle, desc = "Toggle multiline object split" },
+      {
+        "<leader>M",
+        function()
+          require('treesj').toggle({ split = { recursive = true } })
+        end,
+        desc = "Toggle multiline object split" },
+    }
   },
 
 }

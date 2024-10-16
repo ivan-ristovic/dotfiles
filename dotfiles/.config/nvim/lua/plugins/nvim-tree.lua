@@ -33,15 +33,12 @@ local function on_attach(bufnr)
   vim.keymap.set('n', 'v', api.node.open.vertical, opts('Open: Vertical Split'))
 end
 
-local U = require('utils')
-U.keymap("n", "<leader>t", ":NvimTreeToggle<cr>", "Toggle nvim-tree")
-U.keymap("n", "<leader>e", ":NvimTreeFocus<cr>", "Focus nvim-tree")
-
 return {
 
   {
     'nvim-tree/nvim-tree.lua',
     requires = { 'nvim-tree/nvim-web-devicons' },
+
     opts = {
       on_attach = on_attach,
       update_focused_file = {
@@ -91,6 +88,11 @@ return {
         --[[ height = 30, ]]
         side = "left",
       },
+    },  -- end opts
+
+    keys = {
+       { "<leader>t", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file explorer" },
+       { "<leader>e", "<cmd>NvimTreeFocus<cr>", desc = "Focus file explorer" },
     }
   }
 

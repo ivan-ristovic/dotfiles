@@ -169,7 +169,7 @@ return {
         --   bg = { attribute = "bg", highlight = "Normal" },
         -- },
       },
-    }
+    }   -- end opts
   }
 }
 
