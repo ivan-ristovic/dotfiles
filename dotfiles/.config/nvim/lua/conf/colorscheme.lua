@@ -1,1 +1,0 @@
-../../../../themes/current/vim-colors.lua
