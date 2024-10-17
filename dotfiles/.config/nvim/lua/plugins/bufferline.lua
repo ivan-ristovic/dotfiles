@@ -1,16 +1,20 @@
--- Buffer tabs
+-- Buffer/Tab line
 
 return {
   {
     'akinsho/bufferline.nvim',
     dependencies = "nvim-tree/nvim-web-devicons",
+    lazy = false,
+
     opts = {
       options = {
+        mode = "tabs",
         numbers = "ordinal", -- | "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string,
-        close_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
-        right_mouse_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
-        left_mouse_command = "buffer %d", -- can be a string | function, see "Mouse actions"
-        middle_mouse_command = nil, -- can be a string | function, see "Mouse actions"
+        --[[ close_command = ":tabclose!", -- can be a string | function, see "Mouse actions" ]]
+        --[[ close_command = "bdelete! %d", -- can be a string | function, see "Mouse actions" ]]
+        --[[ right_mouse_command = "bdelete! %d", -- can be a string | function, see "Mouse actions" ]]
+        --[[ left_mouse_command = "buffer %d", -- can be a string | function, see "Mouse actions" ]]
+        --[[ middle_mouse_command = nil, -- can be a string | function, see "Mouse actions" ]]
         -- NOTE: this plugin is designed with this icon in mind,
         -- and so changing this is NOT recommended, this is intended
         -- as an escape hatch for people who cannot bear it for whatever reason
@@ -70,7 +74,7 @@ return {
         -- [focused and unfocused]. eg: { '|', '|' }
         separator_style = "thin",
         enforce_regular_tabs = true,
-        always_show_bufferline = true,
+        always_show_bufferline = false,
         -- sort_by = 'id' | 'extension' | 'relative_directory' | 'directory' | 'tabs' | function(buffer_a, buffer_b)
         --   -- add custom logic
         --   return buffer_a.modified > buffer_b.modified
@@ -169,7 +173,19 @@ return {
         --   bg = { attribute = "bg", highlight = "Normal" },
         -- },
       },
-    }   -- end opts
+    },    -- end opts
+
+    keys = {
+      { "<leader>1", ":BufferLineGoToBuffer 1<cr>", "Select tab 1" },
+      { "<leader>2", ":BufferLineGoToBuffer 2<cr>", "Select tab 2" },
+      { "<leader>3", ":BufferLineGoToBuffer 3<cr>", "Select tab 3" },
+      { "<leader>4", ":BufferLineGoToBuffer 4<cr>", "Select tab 4" },
+      { "<leader>5", ":BufferLineGoToBuffer 5<cr>", "Select tab 5" },
+      { "<leader>6", ":BufferLineGoToBuffer 6<cr>", "Select tab 6" },
+      { "<leader>7", ":BufferLineGoToBuffer 7<cr>", "Select tab 7" },
+      { "<leader>8", ":BufferLineGoToBuffer 8<cr>", "Select tab 8" },
+      { "<leader>9", ":BufferLineGoToBuffer 9<cr>", "Select tab 9" },
+    }
   }
 }
 
