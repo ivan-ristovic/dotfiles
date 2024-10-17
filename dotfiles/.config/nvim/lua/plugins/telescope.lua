@@ -129,14 +129,14 @@ return {
         })
       end, { desc = '[/] Fuzzily search in current buffer]' })
 
-      vim.keymap.set('n', '<leader>sf',  builtin.find_files,          { desc = '[S]earch [F]iles'           })
-      vim.keymap.set('n', '<leader>sh',  builtin.help_tags,           { desc = '[S]earch [H]elp'            })
-      vim.keymap.set('n', '<leader>sw',  builtin.grep_string,         { desc = '[S]earch current [W]ord'    })
-      vim.keymap.set('n', '<leader>sg',  builtin.live_grep,           { desc = '[S]earch by [G]rep'         })
-      vim.keymap.set('n', '<leader>sd',  builtin.diagnostics,         { desc = '[S]earch [D]iagnostics'     })
-      vim.keymap.set('n', '<leader>su',  builtin.lsp_references,      { desc = '[S]earch [U]sages'          })
-      vim.keymap.set('n', '<leader>sd',  builtin.lsp_definitions,     { desc = '[S]earch [D]efinitions'     })
-      vim.keymap.set('n', '<leader>si',  builtin.lsp_implementations, { desc = '[S]earch [I]mplementations' })
+      vim.keymap.set('n', '<leader>ff',  builtin.find_files,          { desc = '[F]ind [F]iles'           })
+      vim.keymap.set('n', '<leader>fg',  builtin.live_grep,           { desc = '[F]ind by [G]grep'         })
+      vim.keymap.set('n', '<leader>fh',  builtin.help_tags,           { desc = '[F]ind [H]elp'            })
+      vim.keymap.set('n', '<leader>fw',  builtin.grep_string,         { desc = '[F]ind current [W]ord'    })
+      vim.keymap.set('n', '<leader>fd',  builtin.diagnostics,         { desc = '[F]ind [D]iagnostics'     })
+      vim.keymap.set('n', '<leader>fu',  builtin.lsp_references,      { desc = '[F]ind [U]sages'          })
+      vim.keymap.set('n', '<leader>fd',  builtin.lsp_definitions,     { desc = '[F]ind [D]efinitions'     })
+      vim.keymap.set('n', '<leader>fi',  builtin.lsp_implementations, { desc = '[F]ind [I]mplementations' })
 
     end   -- end config
 
