@@ -15,18 +15,25 @@ return {
         event = "LspAttach"
       },
       -- LuaLS
-      "folke/neodev.nvim",
+      {
+        "folke/lazydev.nvim",
+        ft = "lua", -- only load on lua files
+        opts = {
+          library = {
+            -- See the configuration section for more details
+            -- Load luvit types when the `vim.uv` word is found
+            { path = "luvit-meta/library", words = { "vim%.uv" } },
+          },
+        },
+      },
       -- Highlight symbols under cursor
       "RRethy/vim-illuminate",
     },
 
     config = function ()
 
-      -- Neodev setup before LSP config
-      require("neodev").setup()
-
       -- Turn on LSP status information
-      require("fidget").setup()
+      require("fidget").setup({})
 
       -- Setup mason so it can manage external tooling
       require('mason').setup()
@@ -105,7 +112,6 @@ return {
           end
         end, { desc = 'Format current buffer with LSP' })
       end
-
 
       -- nvim-cmp supports additional completion capabilities
       local capabilities = vim.lsp.protocol.make_client_capabilities()

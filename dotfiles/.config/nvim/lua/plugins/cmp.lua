@@ -143,7 +143,8 @@ return {
           { name = 'luasnip' },
           { name = 'buffer' },
           { name = 'path' },
-          { name = 'cmdline' },
+          --[[ { name = 'cmdline' }, ]]
+          { name = 'lazydev', group_index = 0}
         },
         confirm_opts = {
           behavior = cmp.ConfirmBehavior.Replace,

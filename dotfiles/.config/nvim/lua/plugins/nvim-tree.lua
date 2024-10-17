@@ -38,6 +38,7 @@ return {
   {
     'nvim-tree/nvim-tree.lua',
     requires = { 'nvim-tree/nvim-web-devicons' },
+    lazy = false,
 
     opts = {
       on_attach = on_attach,
