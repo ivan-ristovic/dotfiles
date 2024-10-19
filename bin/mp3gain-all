@@ -13,7 +13,7 @@ for arg in "$@"; do
             echo "warning: skipping $arg as it is not a MP3 file"
         fi
     elif [ -d "$arg" ]; then
-        fd -t f -e mp3 | parallel --jobs 80% --progress --bar "mp3gain -r {}"
+        fd -t f -e mp3 . "$arg" | parallel --jobs 80% --progress --bar "mp3gain -r {}"
     else
         echo "error: unsupported file type: $arg"
         exit 1

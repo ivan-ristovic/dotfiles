@@ -13,7 +13,7 @@ for arg in "$@"; do
             echo "warning: skipping $arg as it is not a FLAC file"
         fi
     elif [ -d "$arg" ]; then
-        fd -t f -e flac | parallel --jobs 80% --progress --bar "ffmpeg -i {} -qscale:a 0 {.}.mp3"
+        fd -t f -e flac . "$arg" | parallel --jobs 80% --progress --bar "ffmpeg -i {} -qscale:a 0 {.}.mp3"
     else
         echo "error: unsupported file type: $arg"
         exit 1
