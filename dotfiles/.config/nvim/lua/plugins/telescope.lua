@@ -119,7 +119,6 @@ return {
       pcall(telescope.load_extension, 'fzf')
 
       -- See `:help telescope.builtin`
-      vim.keymap.set('n', '<leader>?', builtin.oldfiles, { desc = '[?] Find recently opened files' })
       vim.keymap.set('n', '<leader><space>', builtin.buffers, { desc = '[ ] Find existing buffers' })
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to telescope to change theme, layout, etc.
@@ -129,14 +128,15 @@ return {
         })
       end, { desc = '[/] Fuzzily search in current buffer]' })
 
-      vim.keymap.set('n', '<leader>ff',  builtin.find_files,          { desc = '[F]ind [F]iles'           })
-      vim.keymap.set('n', '<leader>fg',  builtin.live_grep,           { desc = '[F]ind by [G]grep'         })
-      vim.keymap.set('n', '<leader>fh',  builtin.help_tags,           { desc = '[F]ind [H]elp'            })
-      vim.keymap.set('n', '<leader>fw',  builtin.grep_string,         { desc = '[F]ind current [W]ord'    })
-      vim.keymap.set('n', '<leader>fd',  builtin.diagnostics,         { desc = '[F]ind [D]iagnostics'     })
-      vim.keymap.set('n', '<leader>fu',  builtin.lsp_references,      { desc = '[F]ind [U]sages'          })
-      vim.keymap.set('n', '<leader>fd',  builtin.lsp_definitions,     { desc = '[F]ind [D]efinitions'     })
-      vim.keymap.set('n', '<leader>fi',  builtin.lsp_implementations, { desc = '[F]ind [I]mplementations' })
+      vim.keymap.set('n', '<leader>ff', builtin.find_files,          { desc = '[F]ind [F]iles'           })
+      vim.keymap.set('n', '<leader>fr', builtin.oldfiles,            { desc = '[F]ind [R]ecently opened files' })
+      vim.keymap.set('n', '<leader>fg', builtin.live_grep,           { desc = '[F]ind by [G]grep'         })
+      vim.keymap.set('n', '<leader>fh', builtin.help_tags,           { desc = '[F]ind [H]elp'            })
+      vim.keymap.set('n', '<leader>fw', builtin.grep_string,         { desc = '[F]ind current [W]ord'    })
+      vim.keymap.set('n', '<leader>fd', builtin.diagnostics,         { desc = '[F]ind [D]iagnostics'     })
+      vim.keymap.set('n', '<leader>fu', builtin.lsp_references,      { desc = '[F]ind [U]sages'          })
+      vim.keymap.set('n', '<leader>fd', builtin.lsp_definitions,     { desc = '[F]ind [D]efinitions'     })
+      vim.keymap.set('n', '<leader>fi', builtin.lsp_implementations, { desc = '[F]ind [I]mplementations' })
 
     end   -- end config
 
