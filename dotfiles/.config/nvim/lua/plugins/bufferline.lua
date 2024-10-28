@@ -175,17 +175,18 @@ return {
       },
     },    -- end opts
 
-    keys = {
-      { "<leader>1", ":BufferLineGoToBuffer 1<cr>", "Select tab 1" },
-      { "<leader>2", ":BufferLineGoToBuffer 2<cr>", "Select tab 2" },
-      { "<leader>3", ":BufferLineGoToBuffer 3<cr>", "Select tab 3" },
-      { "<leader>4", ":BufferLineGoToBuffer 4<cr>", "Select tab 4" },
-      { "<leader>5", ":BufferLineGoToBuffer 5<cr>", "Select tab 5" },
-      { "<leader>6", ":BufferLineGoToBuffer 6<cr>", "Select tab 6" },
-      { "<leader>7", ":BufferLineGoToBuffer 7<cr>", "Select tab 7" },
-      { "<leader>8", ":BufferLineGoToBuffer 8<cr>", "Select tab 8" },
-      { "<leader>9", ":BufferLineGoToBuffer 9<cr>", "Select tab 9" },
-    }
+    -- keys = {
+    --   { "<leader>1", ":BufferLineGoToBuffer 1<cr>", "Select tab 1" },
+    --   { "<leader>2", ":BufferLineGoToBuffer 2<cr>", "Select tab 2" },
+    --   { "<leader>3", ":BufferLineGoToBuffer 3<cr>", "Select tab 3" },
+    --   { "<leader>4", ":BufferLineGoToBuffer 4<cr>", "Select tab 4" },
+    --   { "<leader>5", ":BufferLineGoToBuffer 5<cr>", "Select tab 5" },
+    --   { "<leader>6", ":BufferLineGoToBuffer 6<cr>", "Select tab 6" },
+    --   { "<leader>7", ":BufferLineGoToBuffer 7<cr>", "Select tab 7" },
+    --   { "<leader>8", ":BufferLineGoToBuffer 8<cr>", "Select tab 8" },
+    --   { "<leader>9", ":BufferLineGoToBuffer 9<cr>", "Select tab 9" },
+    -- }
+
   }
 }
 

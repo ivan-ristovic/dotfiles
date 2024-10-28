@@ -23,6 +23,8 @@ U.keymap("n", "<leader>s", "<cmd>wa<cr>", "Save all")
 U.keymap("n", "<leader>x", "<cmd>x<cr>", "Save and exit")
 U.keymap("n", "<leader>q", "<cmd>q!<cr>", "Exit without saving")
 U.keymap("n", "<leader>z", "<cmd>qa!<cr>", "Exit all without saving")
+U.keymap("n", "<A-Left>", ":bprevious<CR>")
+U.keymap("n", "<A-Right>", ":bnext<CR>")
 
 -- Shell-like moving to begin/end of line
 U.keymap("n", "<C-a>", "^", "Go to beginning of line")
