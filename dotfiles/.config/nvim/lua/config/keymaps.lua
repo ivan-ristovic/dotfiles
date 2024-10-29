@@ -14,9 +14,6 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 --   term_mode = "t",
 --   command_mode = "c",
 
--- Remap increment to C-i 
-U.keymap("n", "<C-i>", "<C-a>", "Increment selection")
-
 -- Common actions
 U.keymap("n", "<leader>w", "<cmd>w<cr>", "Save")
 U.keymap("n", "<leader>s", "<cmd>wa<cr>", "Save all")
@@ -51,8 +48,6 @@ U.keymap_expr('n', '<Down>', "v:count == 0 ? 'gj' : 'j'", "Wrap-aware navigation
 -- Note: <C-PgUp>/gT and <C-PgDown>/gt are default tabpage navigation keymaps!
 U.keymap("n", "<C-A-q>", ":tabclose!<cr>")
 U.keymap("n", "<C-A-c>", ":tabedit<cr>")
-U.keymap("n", "<leader>hs", ":hs<cr>")
-U.keymap("n", "<leader>vs", ":vs<cr>")
 U.keymap("n", "<A-Left>", ":bprevious<cr>")
 U.keymap("n", "<A-Right>", ":bnext<cr>")
 
