@@ -27,21 +27,21 @@ return {
           })
           :find()
       end
-      vim.keymap.set("n", "<leader>h", function()
+      vim.keymap.set("n", "<leader>m", function()
         local harpoon = require("harpoon")
         toggle_telescope_with_harpoon(harpoon:list())
       end, { desc = "List marks (Telescope)" })
     end,
     keys = {
       {
-        "<C-H>",
+        "<C-M>",
         function()
           require("harpoon"):list():add()
         end,
         desc = "Mark file",
       },
       {
-        "<leader>H",
+        "<leader>M",
         function()
           local harpoon = require("harpoon")
           harpoon.ui:toggle_quick_menu(harpoon:list())
@@ -68,6 +68,13 @@ return {
           require("harpoon"):list():select(3)
         end,
         desc = "Go to mark 3",
+      },
+      {
+        "<leader>4",
+        function()
+          require("harpoon"):list():select(4)
+        end,
+        desc = "Go to mark 4",
       },
     },
   },

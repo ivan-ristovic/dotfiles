@@ -23,9 +23,6 @@ U.keymap("n", ";", ":")
 -- Better redo
 U.keymap("n", "U", "<C-r>", "Redo")
 
--- Select all
-U.keymap("n", "<C-a>", ":keepjumps normal! ggyG<cr>", "Select all")
-
 -- Clear highlights after search
 U.keymap("n", "<C-l>", ":nohlsearch<cr>", "Clear highlights")
 
