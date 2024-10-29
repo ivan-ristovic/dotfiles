@@ -17,7 +17,7 @@ return {
         desc = "Diagnostics (current buffer)",
       },
       {
-        "<leader>S",
+        "<leader>s",
         "<cmd>Trouble symbols toggle focus=false<cr>",
         desc = "Diagnostics Focus (Trouble)",
       },

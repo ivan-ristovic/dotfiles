@@ -14,18 +14,24 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 --   term_mode = "t",
 --   command_mode = "c",
 
--- Common actions
-U.keymap("n", "<leader>w", "<cmd>w<cr>", "Save")
-U.keymap("n", "<leader>s", "<cmd>wa<cr>", "Save all")
-U.keymap("n", "<leader>x", "<cmd>x<cr>", "Save and exit")
-U.keymap("n", "<leader>q", "<cmd>q!<cr>", "Exit without saving")
-U.keymap("n", "<leader>z", "<cmd>qa!<cr>", "Exit all without saving")
+-- Unmap Ctrl + q
+U.keymap("n", "<C-q>", "")
+
+-- Easier :
+U.keymap("n", ";", ":")
+
+-- Better redo
+U.keymap("n", "U", "<C-r>", "Redo")
+
+-- Select all
+U.keymap("n", "<C-a>", ":keepjumps normal! ggyG<cr>", "Select all")
+
+-- Clear highlights after search
+U.keymap("n", "<C-l>", ":nohlsearch<cr>", "Clear highlights")
 
 -- Shell-like moving to begin/end of line
 U.keymap("n", "ga", "^", "Go to beginning of line")
 U.keymap("n", "ge", "$", "Go to end of line")
-U.keymap("n", "<C-a", "^", "Go to beginning of line")
-U.keymap("n", "<C-e>", "$", "Go to end of line")
 
 -- Jump motions
 U.keymap("n", "<C-A-Left>", "<C-O>", "[G]o to [P]revious Cursor Position")
@@ -84,9 +90,6 @@ U.keymap("v", ">", ">gv")
 -- Quickfix list
 U.keymap("n", "<leader>ln", "<cmd>cnext<cr>zz")
 U.keymap("n", "<leader>lp", "<cmd>cprev<cr>zz")
-
--- Clear highlights after search
-U.keymap("n", "<leader>c", "<cmd>nohl<cr>", "Clear highlights")
 
 -- Better terminal navigation
 -- U.keymap("t", "<C-h>", "<C-\\><C-N><C-w>h")

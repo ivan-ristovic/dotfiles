@@ -101,9 +101,9 @@ return {
       -- langs = {}, -- See the default presets in lua/treesj/langs
     },
     keys = {
-      { "<leader>k", require('treesj').toggle, desc = "Toggle multiline object split" },
+      { "<leader>z", require('treesj').toggle, desc = "Toggle multiline object split" },
       {
-        "<leader>K",
+        "<leader>Z",
         function()
           require('treesj').toggle({ split = { recursive = true } })
         end,
