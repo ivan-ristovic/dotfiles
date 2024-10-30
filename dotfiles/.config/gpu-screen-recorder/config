@@ -3,6 +3,7 @@ main.audio_codec opus
 main.audio_input Default output
 main.audio_input Default input
 main.av1_amd_bug_warning_shown false
+main.change_video_resolution false
 main.codec h264
 main.color_range limited
 main.fps 60
@@ -22,6 +23,9 @@ main.show_recording_started_notifications false
 main.show_recording_stopped_notifications false
 main.software_encoding_warning_shown false
 main.steam_deck_warning_shown false
+main.video_bitrate 5000
+main.video_height 1080
+main.video_width 1920
 record.container mp4
 record.pause_unpause_recording_hotkey 0 0
 record.save_directory /ramfs

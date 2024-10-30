@@ -1,3 +1,4 @@
+gpu-screen-recorder-ui
 psd.service
 
 user/mpDris2.service

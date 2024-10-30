@@ -1,0 +1,82 @@
+main.config_file_version 1
+main.software_encoding_warning_shown false
+record.container mp4
+record.pause_unpause_recording_hotkey 0 0
+record.record_options.advanced_view true
+record.record_options.audio_codec opus
+record.record_options.audio_track default_output
+record.record_options.change_video_resolution false
+record.record_options.codec h264
+record.record_options.color_range limited
+record.record_options.fps 60
+record.record_options.framerate_mode vfr
+record.record_options.merge_audio_tracks false
+record.record_options.overclock false
+record.record_options.record_area_height 1080
+record.record_options.record_area_option eDP-1-1
+record.record_options.record_area_width 1920
+record.record_options.record_cursor true
+record.record_options.restore_portal_session true
+record.record_options.video_bitrate 5000
+record.record_options.video_height 1080
+record.record_options.video_quality very_high
+record.record_options.video_width 1920
+record.save_directory /home/ivan/recordings
+record.show_recording_started_notifications true
+record.show_video_saved_notifications true
+record.start_stop_recording_hotkey 0 0
+replay.container mp4
+replay.record_options.advanced_view true
+replay.record_options.audio_codec opus
+replay.record_options.audio_track default_output
+replay.record_options.audio_track default_input
+replay.record_options.change_video_resolution false
+replay.record_options.codec h264
+replay.record_options.color_range limited
+replay.record_options.fps 60
+replay.record_options.framerate_mode vfr
+replay.record_options.merge_audio_tracks false
+replay.record_options.overclock false
+replay.record_options.record_area_height 1080
+replay.record_options.record_area_option eDP-1-1
+replay.record_options.record_area_width 1920
+replay.record_options.record_cursor true
+replay.record_options.restore_portal_session true
+replay.record_options.video_bitrate 5000
+replay.record_options.video_height 1080
+replay.record_options.video_quality very_high
+replay.record_options.video_width 1920
+replay.save_directory /ramfs
+replay.save_recording_hotkey 65471 256
+replay.show_replay_saved_notifications true
+replay.show_replay_started_notifications true
+replay.show_replay_stopped_notifications true
+replay.start_stop_recording_hotkey 0 0
+replay.time 600
+streaming.custom.container flv
+streaming.custom.url 
+streaming.record_options.advanced_view true
+streaming.record_options.audio_codec opus
+streaming.record_options.audio_track default_output
+streaming.record_options.change_video_resolution false
+streaming.record_options.codec h264
+streaming.record_options.color_range limited
+streaming.record_options.fps 60
+streaming.record_options.framerate_mode vfr
+streaming.record_options.merge_audio_tracks true
+streaming.record_options.overclock false
+streaming.record_options.record_area_height 1080
+streaming.record_options.record_area_option eDP-1-1
+streaming.record_options.record_area_width 1920
+streaming.record_options.record_cursor true
+streaming.record_options.restore_portal_session true
+streaming.record_options.video_bitrate 5000
+streaming.record_options.video_height 1080
+streaming.record_options.video_quality custom
+streaming.record_options.video_width 1920
+streaming.service twitch
+streaming.show_streaming_started_notifications true
+streaming.show_streaming_stopped_notifications true
+streaming.start_stop_recording_hotkey 0 0
+streaming.twitch.key 
+streaming.youtube.key 
