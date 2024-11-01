@@ -2,18 +2,18 @@ main.config_file_version 1
 main.software_encoding_warning_shown false
 record.container mp4
 record.pause_unpause_recording_hotkey 0 0
-record.record_options.advanced_view true
+record.record_options.advanced_view false
 record.record_options.audio_codec opus
 record.record_options.audio_track default_output
 record.record_options.change_video_resolution false
 record.record_options.codec h264
-record.record_options.color_range limited
+record.record_options.color_range full
 record.record_options.fps 60
 record.record_options.framerate_mode vfr
 record.record_options.merge_audio_tracks false
 record.record_options.overclock false
 record.record_options.record_area_height 1080
-record.record_options.record_area_option eDP-1-1
+record.record_options.record_area_option focused
 record.record_options.record_area_width 1920
 record.record_options.record_cursor true
 record.record_options.restore_portal_session true
@@ -38,7 +38,7 @@ replay.record_options.framerate_mode vfr
 replay.record_options.merge_audio_tracks false
 replay.record_options.overclock false
 replay.record_options.record_area_height 1080
-replay.record_options.record_area_option eDP-1-1
+replay.record_options.record_area_option focused
 replay.record_options.record_area_width 1920
 replay.record_options.record_cursor true
 replay.record_options.restore_portal_session true
