@@ -10,6 +10,7 @@ export LC_NAME=$LANG
 
 # Programs
 export EDITOR='nvim'
+export VISUIAL="$EDITOR"
 export FILEMGR='thunar'
 export FILEMGR_CLI='ranger'
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
