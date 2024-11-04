@@ -32,7 +32,7 @@ replay.record_options.audio_track default_output
 replay.record_options.audio_track default_input
 replay.record_options.change_video_resolution false
 replay.record_options.codec h264
-replay.record_options.color_range limited
+replay.record_options.color_range full
 replay.record_options.fps 60
 replay.record_options.framerate_mode vfr
 replay.record_options.merge_audio_tracks false
@@ -51,6 +51,7 @@ replay.save_recording_hotkey 65471 256
 replay.show_replay_saved_notifications true
 replay.show_replay_started_notifications true
 replay.show_replay_stopped_notifications true
+replay.start_replay_automatically true
 replay.start_stop_recording_hotkey 0 0
 replay.time 600
 streaming.custom.container flv
