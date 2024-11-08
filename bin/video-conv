@@ -8,6 +8,7 @@ function usage ()
     echo -e "    (--tag     | -t) vtag      (e.g., '-t hvc1')"
     echo -e "    (--output  | -o) format    (e.g., '-o mp4')"
     echo -e "    (--scale   | -s) value     (e.g., '-s 720')"
+    echo -e "    (--aspect  | -a) ratio     (e.g., '-a 16/9')"
     echo -e "    (--quality | -q) [0..51]   (e.g., '-q 18' for visually lossless)"
     echo -e "    (--preset  | -p) preset    (e.g., '-p veryslow')"
     echo -e "    --verbose  | -v            (do not suppress ffmpeg output)"
@@ -17,8 +18,8 @@ function usage ()
     exit 2
 }
 
-SHORT_OPTS=h,s:,q:,p:,l,e,v,c:,t:,o:
-LONG_OPTS=help,codec:,scale:,tag:,output:,quality:,preset:,verbose,subs,log,error
+SHORT_OPTS=h,s:,a:,q:,p:,l,e,v,c:,t:,o:
+LONG_OPTS=help,codec:,scale:,aspect:,tag:,output:,quality:,preset:,verbose,subs,log,error
 OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --longoptions $LONG_OPTS -- "$@") 
 if [ $? -ne 0 ]; then
     std::fat "failed to parse provided arguments"
@@ -33,6 +34,7 @@ OUT="mp4"
 SUBS=""
 QUALITY=""
 SCALE=""
+ASPECT=""
 PRESET=""
 
 while :
@@ -50,6 +52,10 @@ do
             ;;
         -s | --scale)
             SCALE="-vf scale=-1:$2"
+            shift
+            ;;
+        -a | --aspect)
+            ASPECT="-aspect $2"
             shift
             ;;
         -c | --codec)
@@ -107,7 +113,7 @@ function process ()
         $SCALE \
         -map 0:v:0 \
         -map 0:a:0 \
-        -c:v $CODEC -vtag $TAG $QUALITY $PRESET \
+        -c:v $CODEC -vtag $TAG $ASPECT $QUALITY $PRESET \
         $SUBS \
         -movflags faststart \
         "$out" \
