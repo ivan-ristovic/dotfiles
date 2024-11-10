@@ -105,6 +105,12 @@ function process ()
 {
     in="$1"
     out="$2/${in/%mkv/$OUT}"
+    i=1
+    while [ -f "$out" ]; do
+        out="${out/%".$OUT"/"_${i}.${OUT}"}"
+        i=$((i+1))
+    done
+
     mkdir -p "$(dirname "$out")"
     echo "$in -> $out"
 
