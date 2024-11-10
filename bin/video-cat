@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ $# -lt 2 ]; then
+    echo "usage: $(basename $0) input_video ..."
+    exit 1
+fi
+
+output="merged.mp4"
+i=1
+while [ -f "$output" ]; do
+    output="merged_${i}.mp4"
+    i=$((i+1))
+done
+
+set -xe;
+ffmpeg -f concat -safe 0 -i <(for f in "$@"; do echo "file '$(realpath $f)'"; done) -c copy "$output"
+
