@@ -77,8 +77,8 @@ def plot(w, output_path):
     xs = [datetime.datetime.fromtimestamp(h['dt']).strftime('%d.\n%Hh') for h in w['hourly'][:32]]
     ts = [h['temp'] for h in w['hourly'][:32]]
     ps = [h['pop'] for h in w['hourly'][:32]]
-    rs = [h['rain'] if 'rain' in h else 0 for h in w['hourly'][:32]]
-    ss = [h['snow'] if 'rain' in h else 0 for h in w['hourly'][:32]]
+    rs = [h['rain']['1h'] if 'rain' in h else 0 for h in w['hourly'][:32]]
+    ss = [h['snow']['1h'] if 'snow' in h else 0 for h in w['hourly'][:32]]
     cs = [color_map[int(max(0, min(t // 10 + 1, len(color_map))))] for t in ts]
     assert len(xs) == len(ts)
 
@@ -97,12 +97,12 @@ def plot(w, output_path):
     for i, p in enumerate(ps):
         if p > 0:
             has_pop = True
-            plt.gca().annotate(f'{p}%', (i, ts[i]), color='#87cefa')
+            plt.gca().annotate(f'{int(p*100)}%', (i, ts[i]), color='#ffffff')
 
     # Plot rain and snow
     if has_pop:
-        plt.bar(xs, rs, color='blue', alpha=0.4)
-        plt.bar(xs, ss, color='white', alpha=0.4)
+        plt.bar(xs, rs, color='#3399ff', alpha=0.5)
+        plt.bar(xs, ss, color='#ffffff', alpha=0.5)
     
     # Show every 2nd label
     for label in plt.gca().xaxis.get_ticklabels()[::2]:
