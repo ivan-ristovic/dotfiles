@@ -3,7 +3,7 @@
 source "../utils.sh"
 
 if test::installed virtualbox ; then
-    msg "VirtualBox already installed. Exiting..."
+    log::msg "VirtualBox already installed. Exiting..."
     return
 fi
 
