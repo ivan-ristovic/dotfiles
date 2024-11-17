@@ -254,7 +254,7 @@ titles_visibility = no
 header_text_scrolling = yes
 #cyclic_scrolling = no
 
-lyrics_fetchers = musixmatch, azlyrics, genius, sing365, metrolyrics, justsomelyrics, jahlyrics, plyrics, tekstowo, zeneszoveg, internet
+lyrics_fetchers = tags, justsomelyrics, genius, jahlyrics, plyrics, tekstowo, zeneszoveg, internet
 follow_now_playing_lyrics = yes
 #fetch_lyrics_for_current_song_in_background = no
 #store_lyrics_in_song_dir = no
