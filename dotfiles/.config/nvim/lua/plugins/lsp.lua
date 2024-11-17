@@ -42,22 +42,23 @@ return {
       -- Commented ones should be installed manually
       local servers = {
         'bashls',                           -- bash lsp
-        'clangd',                           -- clang lsp
-        --[[ 'cpplint',                          -- cpp linter ]]
-        'dockerls',                          -- docker lsp
+        'clangd',                           -- C/C++ lsp
+        'cmake',                            -- CMake lsp
+        'dockerls',                         -- docker lsp
         'docker_compose_language_service',  -- docker-compose lsp
+        'gradle_ls',                        -- gradle lsp
         --[[ 'editorconfig-checker',             -- .editorconfig check  ]]
         'html',                             -- html lsp
-        --[[ 'java_language_server',             -- java lsp ]]
+        'jdtls',                            -- java lsp
         'jsonls',                           -- json lsp
         'lemminx',                          -- xml lsp
         'lua_ls',                           -- lua lsp and linter
         'marksman',                         -- markdown lsp
         --[[ 'misspell',                         -- english word correction ]]
         --[[ 'pylint',                           -- python linter ]]
-        'jedi_language_server',             -- python lsp
+        'omnisharp',                        -- csharp lsp
+        'pylsp',                            -- python lsp
         'pyright',                          -- python static type checker 
-        'rust_analyzer',                    -- rust lsp
         --[[ 'shellcheck',                       -- bash static analysis ]]
         --[[ 'shfmt',                            -- bash formatter ]]
         'texlab',                           -- latex lsp
