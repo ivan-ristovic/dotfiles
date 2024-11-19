@@ -97,7 +97,8 @@ def plot(w, output_path):
     for i, p in enumerate(ps):
         if p > 0:
             has_pop = True
-            plt.gca().annotate(f'{int(p*100)}%', (i, ts[i]), color='#ffffff')
+            """ plt.gca().annotate(f'{int(p*100)}%', (i, rs[i]), color='#ffffff') """
+            plt.text(i, max(rs[i], ss[i]) + 0.25, f'{int(p*100)}%', color='#ffffff', ha='center', fontsize='xx-small')
 
     # Plot rain and snow
     if has_pop:
@@ -111,7 +112,7 @@ def plot(w, output_path):
     # Vertical lines for day separators
     ds = filter(lambda p: p[1].endswith('00h'), enumerate(xs))
     for i, d in ds:
-        plt.axvline(x = i, color = 'w', label = 'day', alpha = 0.2, c = 'gray')
+        plt.axvline(x=i, color='w', label='day', alpha=0.2, c='gray')
 
     plt.savefig(output_path, transparent=True)
 
