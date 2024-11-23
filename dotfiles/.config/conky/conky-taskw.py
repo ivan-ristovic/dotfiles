@@ -8,7 +8,7 @@ if home is None:
     print("failed to read HOME env var")
     sys.exit(1)
 
-conky_file  = home + '/.config/conky/task.conf'
+conky_file = home + '/.config/conky/task.conf'
 
 filter = sys.argv[1] if len(sys.argv) > 1 else "pending"
 
@@ -16,20 +16,20 @@ tw = TaskWarrior()
 tasks = tw.load_tasks(filter)
 
 colors = {
-    'H' : 'color2',
-    'M' : 'color1',
-    'L' : 'color1',
+    'H': 'color2',
+    'M': 'color1',
+    'L': 'color1',
 }
 
 def task_to_key(task):
     prio_trans = {
-        'L' : '3',
-        'M' : '2',
-        'H' : '1'
+        'L': '3',
+        'M': '2',
+        'H': '1',
     }
     prio = prio_trans.get(task.get('priority')) if prio_trans.get(task.get('priority')) else '4'
     date = prio_trans.get(task.get('due')) if prio_trans.get(task.get('due')) else '9999999999'
-    return "%s-%s-%s-%s" % (date, prio, task['id'], task['uuid'])
+    return "%s-%s-%4d-%s" % (date, prio, task['id'], task['uuid'])
 
 def parse_tasks(tasks):
     projects = {}
@@ -123,10 +123,10 @@ def write_conky_conf(path, payload, total, urgent):
 }}
 
 conky.text = [[
-${{voffset 8}}$color0${{goto 30}}${{font Bitstream Vera Sans:size=18}}Tasks$font\
+${{voffset 8}}$color0${{goto 100}}${{font Bitstream Vera Sans:size=18}}Tasks$font\
 ${{voffset -8}}$alignr$color1${{font Bitstream Vera Sans:size=38}}{total}$font
-$color1${{voffset -25}}${{goto 30}}${{font Bitstream Vera Sans:size=13}}priority$font\
-${{voffset -3}}{'$color2' if urgent > 0 else '$color1'}${{goto 100}}${{font Bitstream Vera Sans:size=20}}{urgent} $font$color1$hr
+$color1${{voffset -25}}${{goto 50}}${{font Bitstream Vera Sans:size=13}}priority$font\
+${{voffset -3}}{'$color2' if urgent > 0 else '$color1'}${{goto 120}}${{font Bitstream Vera Sans:size=20}}{urgent} $font$color1$hr
 
 {payload}
 ]]
@@ -136,6 +136,7 @@ ${{voffset -3}}{'$color2' if urgent > 0 else '$color1'}${{goto 100}}${{font Bits
         f.write('%s\n' % content)
 
     return content
+
 
 parsed = parse_tasks(tasks[filter])
 formatted = format_tasks(parsed)
