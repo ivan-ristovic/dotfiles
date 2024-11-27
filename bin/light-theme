@@ -1,0 +1,14 @@
+#!/bin/bash
+
+function usage ()
+{
+    echo -e "usage: $0 [--shell|-s] <target>"
+    exit 2
+}
+
+if [ $# -lt 1 ]; then
+    usage
+fi
+
+QT_STYLE_OVERRIDE=Fusion GTK_THEME=KvArc $@ 
+
