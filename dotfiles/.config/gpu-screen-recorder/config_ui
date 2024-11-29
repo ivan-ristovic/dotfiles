@@ -2,10 +2,10 @@ main.config_file_version 1
 main.software_encoding_warning_shown false
 record.container mp4
 record.pause_unpause_recording_hotkey 0 0
-record.record_options.advanced_view false
+record.record_options.advanced_view true
 record.record_options.application_audio_invert false
 record.record_options.audio_codec opus
-record.record_options.audio_track default_output
+record.record_options.audio_track device:default_output
 record.record_options.change_video_resolution false
 record.record_options.codec h264
 record.record_options.color_range full
