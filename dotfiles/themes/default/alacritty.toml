@@ -1,3 +1,4 @@
+[general]
 live_config_reload = true
 
 [colors.normal]
@@ -36,8 +37,8 @@ style = "Italic"
 family = "Hack Nerd Font"
 style = "Regular"
 
-[shell]
-program = "/bin/zsh"
+[terminal]
+# program = "/bin/zsh"
 
 [window]
 dynamic_padding = true
