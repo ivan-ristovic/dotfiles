@@ -46,7 +46,7 @@ yt-dlp aria2
 
 aur:freetube-bin
 aur:goverlay
-aur:gpu-screen-recorder-git aur:gpu-screen-recorder-gtk-git aur:gpu-screen-recorder-notification aur:gpu-screen-recorder-ui
+aur:gpu-screen-recorder aur:gpu-screen-recorder-gtk aur:gpu-screen-recorder-notification aur:gpu-screen-recorder-ui
 aur:lenovolegionlinux-dkms-git 
 aur:linux-wifi-hotspot
 aur:mp3gain
