@@ -5,16 +5,16 @@ import sys
 import json
 import time
 import requests
-import json
 import datetime
 from matplotlib import pyplot as plt
-import matplotlib.colors as mcolors
 
 debug = len(sys.argv) > 1 and sys.argv[1] == '-v'
+
 
 def dbg(msg):
     if debug:
         print(msg)
+
 
 def get_settings():
     lat = os.getenv('LAT', 44.8178131)
@@ -32,6 +32,7 @@ def get_settings():
             sys.exit(1)
     return (lat, lon, api_key, cache_path, chart_path)
 
+
 def perform_request(api_key, lat, lon):
     url = f'https://api.openweathermap.org/data/3.0/onecall?units=metric&lat={lat}&lon={lon}&exclude=current,minutely,daily&appid={api_key}'
     dbg(url)
@@ -47,6 +48,7 @@ def perform_request(api_key, lat, lon):
 
     return response.json()
 
+
 def get_cached_response(path, alive_time=1800):
     r = None
     if os.path.exists(path):
@@ -59,6 +61,7 @@ def get_cached_response(path, alive_time=1800):
             except:
                 pass
     return r
+
 
 def cache_response(r, path):
     try:
