@@ -22,6 +22,8 @@ if [ "$shell" = "-zsh" ]; then
     "$e_alias" -g CC='2>&1 | cat'
     "$e_alias" -g CL='| xclip -sel clip'
     "$e_alias" -g COL='| column -t'
+    "$e_alias" -g F='| fzf'
+    "$e_alias" -g FF='2>&1 | fzf'
     "$e_alias" -g G='| grep'
     "$e_alias" -g GG='2>&1 | grep'
     "$e_alias" -g H='| head'
@@ -158,6 +160,9 @@ else
     "$i_alias" lr='ls -tRFh'
     "$i_alias" lrt='ls -1Fcrt'
     "$i_alias" lt='ls -ltFh'
+fi
+if is_installed lazygit ; then
+    "$e_alias" lg='lazygit'
 fi
 "$e_alias" m=make
 "$e_alias" map='xargs -n1'
