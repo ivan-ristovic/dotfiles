@@ -1,5 +1,6 @@
 main.config_file_version 1
 main.software_encoding_warning_shown false
+main.tint_color nvidia
 record.container mp4
 record.pause_unpause_recording_hotkey 0 0
 record.record_options.advanced_view true
