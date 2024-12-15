@@ -3,7 +3,7 @@
 {"_id":"autoplayVideos","value":false}
 {"_id":"backendPreference","value":"local"}
 {"_id":"barColor","value":false}
-{"_id":"bounds","value":{"x":17,"y":64,"width":1886,"height":1119,"maximized":false,"fullScreen":false}}
+{"_id":"bounds","value":{"x":17,"y":64,"width":1886,"height":1119,"maximized":true,"fullScreen":false}}
 {"_id":"channelsHidden","value":"[]"}
 {"_id":"checkForBlogPosts","value":false}
 {"_id":"checkForUpdates","value":false}
