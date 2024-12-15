@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 from taskw import TaskWarrior
-import os.path, sys
+import os.path
+import sys
 
 home = os.getenv("HOME")
 if home is None:
@@ -19,7 +20,9 @@ colors = {
     'H': 'color2',
     'M': 'color1',
     'L': 'color1',
+    'S': 'color3',
 }
+
 
 def task_to_key(task):
     prio_trans = {
@@ -31,6 +34,7 @@ def task_to_key(task):
     date = prio_trans.get(task.get('due')) if prio_trans.get(task.get('due')) else '9999999999'
     return "%s-%s-%4d-%s" % (date, prio, task['id'], task['uuid'])
 
+
 def parse_tasks(tasks):
     projects = {}
 
@@ -40,7 +44,7 @@ def parse_tasks(tasks):
         due = task.get('due')
         if due:
             import datetime
-            task['formatted_date'] = datetime.datetime.fromtimestamp(int(due)).strftime('%d/%m') 
+            task['formatted_date'] = datetime.datetime.fromtimestamp(int(due)).strftime('%d/%m')
         else:
             task['formatted_date'] = None
 
@@ -51,18 +55,20 @@ def parse_tasks(tasks):
 
     return projects
      
+
 def format_tasks(projects):
     formatted = ''
     for (project, tasks) in sorted(projects.items()):
         formatted += format_project(project, tasks)
     return formatted
 
+
 def format_project(project, tasks, sort=True, indent=' ', maxw=40):
     formatted = ''
 
     if not tasks:
         return formatted
-    
+
     # header
     formatted += "${color0}[%s] $color\n${voffset -8}${#212121}${hr}$color\n" % project
 
@@ -74,20 +80,26 @@ def format_project(project, tasks, sort=True, indent=' ', maxw=40):
     formatted += "${voffset 16}"
     return formatted
 
+
 def format_task(task, maxw=40):
-    color = colors[task.get('priority') if task.get('priority') else 'L']
+    if 'start' in task:
+        color = colors['S']
+    else:
+        color = colors[task.get('priority') if task.get('priority') else 'L']
     date = task['formatted_date'] if task['formatted_date'] else '${#303030}inf${%s}' % color
     task_string = "${%(color)s}[%(id)s] %(desc)s $alignr %(date)s $color\n"
     return task_string % {
         'color': color,
-        'id'   : task['id'],
-        'date' : date,
-        'desc' : task['description'].replace('#','\\#')[:maxw]
+        'id': task['id'],
+        'date': date,
+        'desc': task['description'].replace('#', '\\#')[:maxw]
     }
+
 
 def is_high_priority(t):
     p = t.get('priority')
     return p is not None and p == 'H'
+
 
 def write_conky_conf(path, payload, total, urgent):
     content = f"""conky.config = {{
@@ -120,6 +132,7 @@ def write_conky_conf(path, payload, total, urgent):
     color0 = '#5d7b86',
     color1 = '#a0a0a0',
     color2 = '#ba4141',
+    color3 = '#ffc067',
 }}
 
 conky.text = [[
@@ -131,7 +144,7 @@ ${{voffset -3}}{'$color2' if urgent > 0 else '$color1'}${{goto 120}}${{font Bits
 {payload}
 ]]
 """
-    
+
     with open(path, 'w', encoding='utf-8') as f:
         f.write('%s\n' % content)
 
@@ -144,4 +157,3 @@ print(formatted)
 total_tasks = sum(map(lambda it: len(it[1]), parsed.items()))
 urgent_tasks = sum(map(lambda it: sum([1 if is_high_priority(pt[1]) else 0 for pt in it[1].items()]), parsed.items()))
 write_conky_conf(conky_file, formatted, total_tasks, urgent_tasks)
-
