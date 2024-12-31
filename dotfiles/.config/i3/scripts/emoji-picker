@@ -1,4 +1,5 @@
 #!/bin/bash
 
-emoji_picker_dir='/opt/rofi-emoji-picker'
-cd $emoji_picker_dir && ./launch-rofi
+emoji_picker_dir='/opt/rofi-emoji-picker-custom/'
+cd "$emoji_picker_dir" && \
+    ./_picker/launch "https://cdn.ristovic.net" -theme "$HOME/.config/rofi/launchers/type-3/style-5.rasi"
