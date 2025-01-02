@@ -120,7 +120,8 @@ zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' menu no
 # zstyle ':fzf-tab:*' use-fzf-default-opts yes
-zstyle ':fzf-tab:*' fzf-flags  --color=pointer:#5f87af,marker:#48f513 --border --cycle --info inline --multi --bind alt-backspace:toggle
+zstyle ':fzf-tab:*' fzf-flags --color=pointer:#5f87af,marker:#48f513 --border --cycle --info inline --multi --bind alt-backspace:toggle
+zstyle ':fzf-tab:*' fzf-pad 3
 zstyle ':fzf-tab:*' switch-group '<' '>'
 # zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
