@@ -84,6 +84,7 @@ zinit light wfxr/forgit
 # zinit light jeffreytse/zsh-vi-mode
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zdharma-continuum/fast-syntax-highlighting
+zinit light Aloxaf/fzf-tab
 
 ########################## MISC ###########################
 
@@ -112,6 +113,16 @@ unset __fsh_saved_mod_time
 if [[ -r "$HOME/.fzf-git.zsh" ]]; then
     source "$HOME/.fzf-git.zsh"
 fi
+
+# Configuration for zsh-tab
+zstyle ':completion:*:git-checkout:*' sort false
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' menu no
+# zstyle ':fzf-tab:*' use-fzf-default-opts yes
+zstyle ':fzf-tab:*' fzf-flags  --color=pointer:#5f87af,marker:#48f513 --border --cycle --info inline --multi --bind alt-backspace:toggle
+zstyle ':fzf-tab:*' switch-group '<' '>'
+# zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
 ######################## LS COLORS ########################
 
