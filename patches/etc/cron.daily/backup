@@ -1,0 +1,4 @@
+#!/bin/bash
+
+touch /home/ivan/backup-job-completed
+source $NC_ROOT/Backup/cron/daily
