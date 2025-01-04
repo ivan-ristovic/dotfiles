@@ -3,6 +3,10 @@
 source ../utils.sh
 
 for patch in $(find ./*/ -type f) ; do
+    if [[ "$(basename "$patch")" == .* ]] ; then
+        log::wrn "Skip: $patch"
+        continue
+    fi
     target_file=${patch:1} 
     sudo mkdir -p "$(dirname "$target_file")"
     if [[ $patch == *.patch ]] ; then
