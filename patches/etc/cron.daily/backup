@@ -1,4 +1,3 @@
 #!/bin/bash
 
-touch /home/ivan/backup-job-completed
-source $NC_ROOT/Backup/cron/daily
+sudo -u ivan /bin/bash -c 'source $HOME/.profile; $NC_BACKUP/cron/daily'
