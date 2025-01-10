@@ -9,6 +9,7 @@
 {"_id":"checkForUpdates","value":false}
 {"_id":"defaultQuality","value":"1080"}
 {"_id":"disableSmoothScrolling","value":true}
+{"_id":"displayVideoPlayButton","value":false}
 {"_id":"expandSideBar","value":false}
 {"_id":"externalPlayer","value":"mpv"}
 {"_id":"forceLocalBackendForLegacy","value":false}
