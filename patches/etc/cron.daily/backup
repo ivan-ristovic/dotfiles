@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo -u ivan /bin/bash -c 'source $HOME/.profile; $NC_BACKUP/cron/daily'
+sudo -u ivan /bin/bash -c 'source $HOME/.profile && cd $NC_BACKUP/cron && ./daily'
