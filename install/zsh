@@ -6,5 +6,9 @@ inst zsh
 
 rm -f "$SETUP_HOME_DIR"/.zshrc
 
-sudo usermod --shell "$(which zsh)" $SETUP_USER
+if is_android ; then
+    chsh -s zsh
+else
+    sudo usermod --shell "$(which zsh)" $SETUP_USER
+fi
 

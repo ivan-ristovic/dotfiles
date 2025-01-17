@@ -57,8 +57,22 @@ function read_list ()
     echo $(rm_comments $1)
 }
 
+function is_android () 
+{
+    if [ "$OSTYPE" == "linux-android" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 function pm_cmd ()
 {
+    if is_android ; then
+        echo "pkg install"
+        return
+    fi
+
     declare -A osinfo;
     osinfo[/etc/redhat-release]="yum -y install"
     osinfo[/etc/arch-release]="pacman --noconfirm --needed -S"
@@ -76,6 +90,11 @@ function pm_cmd ()
 
 function pm_uninst_cmd ()
 {
+    if is_android ; then
+        echo "pkg uninstall"
+        return
+    fi
+
     declare -A osinfo;
     osinfo[/etc/redhat-release]="yum -y remove"
     osinfo[/etc/arch-release]="pacman --noconfirm -R"
