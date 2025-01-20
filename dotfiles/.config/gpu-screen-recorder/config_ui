@@ -1,4 +1,5 @@
 main.config_file_version 1
+main.hotkeys_enable_option enable_hotkeys
 main.software_encoding_warning_shown false
 main.tint_color nvidia
 record.container mp4
@@ -50,7 +51,7 @@ replay.record_options.video_bitrate 5000
 replay.record_options.video_height 1080
 replay.record_options.video_quality very_high
 replay.record_options.video_width 1920
-replay.save_directory /home/ivan/recordings
+replay.save_directory /ramfs
 replay.save_recording_hotkey 65471 256
 replay.save_video_in_game_folder false
 replay.show_replay_saved_notifications true
