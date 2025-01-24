@@ -207,8 +207,8 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # move entire workspace
-bindsym $mod+Shift+less move workspace to output left
-bindsym $mod+Shift+greater move workspace to output up
+bindsym $mod+Shift+less move workspace to output primary
+bindsym $mod+Shift+greater move workspace to output nonprimary
 
 # split in horizontal orientation
 bindsym $mod+h split h
