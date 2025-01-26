@@ -177,11 +177,6 @@ if is_installed neith ; then
     "$e_alias" n='neith'
 fi
 "$e_alias" p='ps -f'
-"$e_alias" pacs='sudo pacman -S'
-"$e_alias" pacq='sudo pacman -Q'
-"$e_alias" pacr='sudo pacman -R'
-"$e_alias" pacu='sudo pacman -U'
-"$e_alias" pacua='sudo pacman -Syu'
 "$e_alias" ports='netstat -tulanp'
 "$e_alias" rd=rmdir
 "$e_alias" rgd='rg -.'
