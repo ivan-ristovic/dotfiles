@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+# Works only with zsh!
+
+function fzf_action () {
+    sels=( "${(@a)$(fd "${fd_default[@]}" "${@:2}" | fzf --multi )}" )
+    test -n "$sels" && print -z -- "$1 ${sels[@]:q:q}"
+}
+
+fzf_action "$@"
