@@ -148,6 +148,12 @@ compinit
 # Replay compdefs
 zinit cdreplay -q
 
+# Alt-Tab for quoted completion
+# `showkey -a` can be used to help find keymaps
+autoload -Uz quote-and-complete-word
+zle -N quote-and-complete-word
+bindkey '^[\t' quote-and-complete-wordq
+
 ####################### ALIAS SUPPORT #######################
 
 # Blank aliases
@@ -234,12 +240,6 @@ zle -N fzf-man-widget
 
 # Smart mv 
 autoload -U zmv
-
-# Alt-Tab for quoted completion
-# `showkey -a` can be used to help find keymaps
-autoload -Uz quote-and-complete-word
-zle -N quote-and-complete-word
-bindkey '^[\t' quote-and-complete-word
 
 ################ P10K ################
 
