@@ -61,15 +61,15 @@ fi
 "$e_alias" -- '-x'='chmod -x'
 "$e_alias" -- '+x'='chmod +x'
 "$e_alias" alert='notify-send -u normal -w'
-"$e_alias" cd1='cd -1'
-"$e_alias" cd2='cd -2'
-"$e_alias" cd3='cd -3'
-"$e_alias" cd4='cd -4'
-"$e_alias" cd5='cd -5'
-"$e_alias" cd6='cd -6'
-"$e_alias" cd7='cd -7'
-"$e_alias" cd8='cd -8'
-"$e_alias" cd9='cd -9'
+#"$e_alias" cd1='cd -1'
+#"$e_alias" cd2='cd -2'
+#"$e_alias" cd3='cd -3'
+#"$e_alias" cd4='cd -4'
+#"$e_alias" cd5='cd -5'
+#"$e_alias" cd6='cd -6'
+#"$e_alias" cd7='cd -7'
+#"$e_alias" cd8='cd -8'
+#"$e_alias" cd9='cd -9'
 "$e_alias" _=sudo
 "$e_alias" aurs='yay -S'
 "$e_alias" aurq='yay -Q'
@@ -78,7 +78,7 @@ fi
 "$e_alias" aurua='yay -Syu'
 "$e_alias" b='bat'
 if is_installed bandwhich ; then
-"$e_alias" bw='bandwhich'
+    "$e_alias" bw='bandwhich'
 fi
 if is_installed hyperfine ; then
     "$e_alias" bench='hyperfine'
