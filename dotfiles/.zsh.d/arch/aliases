@@ -1,0 +1,6 @@
+alias pacs='sudo pacman -S'
+alias pacq='sudo pacman -Q'
+alias pacr='sudo pacman -R'
+alias pacu='sudo pacman -U'
+alias pacua='sudo pacman -Syu'
+

@@ -215,6 +215,20 @@ smartdots() {
 zle -N smartdots
 bindkey . smartdots
 
+############## COND CONF #############
+
+if [ -d "$HOME/.zsh.d" ] ; then
+    for dir in "$HOME/.zsh.d"/*/ ; do 
+        if [ -f "$dir/.include" ] && "$dir/.include" ; then
+            for f in "$dir"/* ; do
+                source "$f"
+            done
+        fi
+    done
+    unset dir
+    unset f
+fi
+
 ################ MISC ################
 
 # Man search with fzf (Ctrl+H)

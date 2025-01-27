@@ -1,0 +1,2 @@
+alias agi='apt-get install'
+alias agr='apt-get remove'
