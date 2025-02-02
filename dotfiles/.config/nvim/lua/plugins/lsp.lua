@@ -27,7 +27,9 @@ return {
         },
       },
       -- Highlight symbols under cursor
-      "RRethy/vim-illuminate",
+      'RRethy/vim-illuminate',
+      -- Better method overloads
+      'Issafalcon/lsp-overloads.nvim',
     },
 
     config = function ()
@@ -71,7 +73,7 @@ return {
       }
 
       --  This function gets run when an LSP connects to a particular buffer.
-      local on_attach = function(_, bufnr)
+      local on_attach = function(client, bufnr)
         -- In this case, we create a function that lets us more easily define mappings specific
         -- for LSP related items. It sets the mode, buffer and description for us each time.
         local nmap = function(keys, func, desc)
@@ -79,6 +81,25 @@ return {
             desc = 'LSP: ' .. desc
           end
           vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+        end
+
+        if client.server_capabilities.signatureHelpProvider then
+          require('lsp-overloads').setup(client, {
+            ui = {
+              close_events = { "CursorMoved", "CursorMovedI", "InsertCharPre" },
+              floating_window_above_cur_line = true,
+            },
+            keymaps = {
+              next_signature = "<Down>",
+              previous_signature = "<Up>",
+              next_parameter = "<Right>",
+              previous_parameter = "<Left>",
+              close_signature = "<A-CR>"
+            },
+            display_automatically = false,
+          })
+          vim.api.nvim_set_keymap("n", "<A-CR>", "<cmd>LspOverloadsSignature<CR>", { noremap = true, silent = true })
+          vim.api.nvim_set_keymap("i", "<A-CR>", "<cmd>LspOverloadsSignature<CR>", { noremap = true, silent = true })
         end
 
         nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
@@ -132,6 +153,6 @@ return {
       end
 
     end     -- end config
-  }
+  },
 
 }
