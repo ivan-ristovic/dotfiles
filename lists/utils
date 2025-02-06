@@ -10,6 +10,9 @@ choose
 ## Command-line calculations
 datamash
 
+## Directory environments
+direnv
+
 ## Alternative to df
 duf
 

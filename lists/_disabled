@@ -3,9 +3,6 @@
 ## System monitoring
 # btop
 
-## Directory-specific env
-# direnv
-
 ## DNS client (dig alternative)
 # dog
 
