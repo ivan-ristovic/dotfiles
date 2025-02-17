@@ -3,7 +3,7 @@
     display: none !important;
 }
 .visual-refresh {
-    --custom-app-top-bar-height: 0px !important;
+    --custom-app-top-bar-height: 1px !important;
 }
 
 /* Servers sidebar */
