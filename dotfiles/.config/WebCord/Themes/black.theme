@@ -1,35 +1,48 @@
+/* Title */
+.bar_c38106 {
+    display: none !important;
+}
+.visual-refresh {
+    --custom-app-top-bar-height: 0px !important;
+}
+
+/* Servers sidebar */
+.wrapper_ef3116, .guilds_c48ade {
+    background-color: #000000 !important;
+}
+
 /* Header */
-.title_a7d72e {
+.header_f37cb1, .title_f75fb0 {
     background-color: #000000 !important;
 }
 
 /* Channel list */
-.container_ee69e0, .scroller_c43953 {
+.content__99f8c, .scroller__629e4 {
     background-color: #000000 !important;
 }
 
-/* Message list */
-.messagesWrapper_e2e187 {
-    background-color: #030a05 !important;
-}
-
 /* Chat */
-.chatContent_a7d72e {
+.scroller__36d07 {
     background-color: #030a05 !important;
 }
 
-/* Chat box */
-.scrollableContainer_d0696b {
+/* Chat input box */
+.channelBottomBarArea_f75fb0, .scrollableContainer__74017 {
     background-color: #030a05 !important;
 }
 
 /* Member list */
-container_cbd271, .members_cbd271, .member_a31c43 {
+.members_c8ffbb, .memberInner__5d473, .member__5d473 {
+    background-color: #030a05 !important;
+}
+
+/* Profile bottom-left */
+.container__37e49 {
     background-color: #030a05 !important;
 }
 
 /* Home page */
-.container_e44302, .scroller_c47fa9, .peopleColumn_c2739c, .scroller_bf550a {
+.scroller__7d20c, .itemCard__7e549, .peopleColumn__133bf, .searchBar__35e86, .container__9293f { 
     background-color: #030a05 !important;
 }
 
