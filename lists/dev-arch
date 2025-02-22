@@ -19,7 +19,7 @@ gnu-netcat
 
 
 ## Editors
-aur:vscodium-bin
+# aur:vscodium-bin
 
 ## Bitwise utils
 aur:bitwise
