@@ -14,6 +14,20 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+####################### PATCHES #######################
+
+# Redefine COMPLETION_WAITING_DOTSas it messes with fzf-tab
+expand-or-complete-with-dots() {
+    COMPLETION_WAITING_DOTS="%F{red}…%f"
+    printf '\e[?7l%s\e[?7h' "${(%)COMPLETION_WAITING_DOTS}"
+    zle expand-or-complete
+    # zle redisplay <--- this causes lines to be eaten
+}
+zle -N expand-or-complete-with-dots
+bindkey -M emacs "^I" expand-or-complete-with-dots
+bindkey -M viins "^I" expand-or-complete-with-dots
+bindkey -M vicmd "^I" expand-or-complete-with-dots
+
 ######################### ENV #########################
 
 ZSH_TMUX_AUTOSTART=true
@@ -24,7 +38,7 @@ ZSH_TMUX_AUTOSTART=true
 # DISABLE_LS_COLORS="true"
 # DISABLE_AUTO_TITLE="true"
 # ENABLE_CORRECTION="true"
-COMPLETION_WAITING_DOTS="true"
+# COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="dd/mm/yyyy"
 HIST_SIZE=500000
 setopt HIST_IGNORE_SPACE
