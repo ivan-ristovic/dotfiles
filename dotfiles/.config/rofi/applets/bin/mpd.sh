@@ -78,19 +78,23 @@ run_rofi() {
     echo -e "$option_1\n$option_2\n$option_3\n$option_4\n$option_5\n$option_6\n$option_7" | rofi_cmd
 }
 
+show_notification() {
+    notify-send -u low -t 2000 "  `mpc current`"
+}
+
 run_cmd() {
     if [[ "$1" == '--opt1' ]]; then
         mpc -q toggle
     elif [[ "$1" == '--opt2' ]]; then
         mpc -q stop
     elif [[ "$1" == '--opt3' ]]; then
-        mpc -q prev && notify-send -u low -t 2000 " `mpc current`"
+        mpc -q prev && show_notification
     elif [[ "$1" == '--opt4' ]]; then
-        mpc -q next && notify-send -u low -t 2000 " `mpc current`"
+        mpc -q next && show_notification
     elif [[ "$1" == '--opt5' ]]; then
         mpc -q repeat
     elif [[ "$1" == '--opt6' ]]; then
-        mpc -q random && notify-send -u low -t 2000 " `mpc current`"
+        mpc -q random && show_notification
     elif [[ "$1" == '--opt7' ]]; then
         mpc -q seek 0%
     fi
