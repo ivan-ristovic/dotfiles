@@ -10,6 +10,6 @@ scrot -z $PICTURE
 # http://www.imagemagick.org/Usage/blur/#blur_args
 BLUR="5x3"
 
-convert $PICTURE -blur $BLUR - | magick composite -gravity center /usr/share/icons/lock.png - $PICTURE
+magick convert $PICTURE -blur $BLUR - | magick composite -gravity center /usr/share/icons/lock.png - $PICTURE
 i3lock -i $PICTURE -t 
 rm $PICTURE
