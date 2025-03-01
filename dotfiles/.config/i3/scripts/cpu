@@ -17,6 +17,8 @@ my $t_crit = $ENV{T_CRIT} // 80;
 my $cpu_usage = -1;
 my $decimals = $ENV{DECIMALS} // 0;
 my $label = $ENV{LABEL} // "";
+my $label1 = $ENV{LABEL_1} // "";
+my $label2 = $ENV{LABEL_2} // "";
 
 sub help {
     print "Usage: cpu_usage [-w <warning>] [-c <critical>] [-d <decimals>]\n";
@@ -44,6 +46,17 @@ while (<MPSTAT>) {
 close(MPSTAT);
 
 $cpu_usage eq -1 and die 'Can\'t find CPU information';
+
+# Get turbo boost information
+open (NO_TURBO, '/sys/devices/system/cpu/intel_pstate/no_turbo') or die "Can't find boost information";
+my $boost = do { local $/; <NO_TURBO> };
+chomp($boost);
+close(NO_TURBO);
+if ($boost eq "1") {
+    $label = $label1;
+} else {
+    $label = $label2;
+}
 
 # Print short_text, full_text
 print "${label}";
