@@ -1,0 +1,30 @@
+#!/bin/bash
+
+source $SHLIB_ROOT/lib.sh
+
+for plugin in *.lua ; do
+    log::msg "checking $plugin"
+    hashfile="$(os::path::file_noext "$plugin").hash"
+    if [ -f "$hashfile" ]; then
+        io::readlines contents < "$hashfile"
+        url=${contents[0]}
+        remote=$(curl --silent "$url")
+        remote_hash=$(echo "$remote" | sha1sum)
+        hash=${contents[1]}
+        if [ "$remote_hash" != "$hash" ]; then
+            diff "$plugin" <(echo "$remote")
+            if std::ask "updates found, proceed" Y ; then
+                mv "$plugin" "$plugin.old"
+                log::wrn "old file saved as $plugin.old" 
+                echo "$remote" > "$plugin"
+                echo "$url" > "$hashfile"
+                echo "$remote_hash" >> "$hashfile"
+                log::suc "updated $plugin"
+            fi
+        else
+            log::suc "no updates for $plugin"
+        fi
+    else
+        log::err "no hash found for $plugin"
+    fi
+done

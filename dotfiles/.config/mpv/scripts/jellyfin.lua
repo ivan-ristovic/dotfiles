@@ -364,4 +364,3 @@ if input_success then
 	mp.add_key_binding("Ctrl+f", "jf_search", search_input)
 end
 if options.show_by_default == "on" then toggle_overlay() end
-
