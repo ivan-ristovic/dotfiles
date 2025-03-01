@@ -5,12 +5,17 @@ source $SHLIB_ROOT/lib.sh
 for plugin in *.lua ; do
     log::msg "checking $plugin"
     hashfile="$(os::path::file_noext "$plugin").hash"
+    log::dbg "$hashfile"
     if [ -f "$hashfile" ]; then
+        contents=()
         io::readlines contents < "$hashfile"
         url=${contents[0]}
+        log::dbg "url: $url"
         remote=$(curl --silent "$url")
         remote_hash=$(echo "$remote" | sha1sum)
         hash=${contents[1]}
+        log::dbg "local : $hash"
+        log::dbg "remote: $remote_hash"
         if [ "$remote_hash" != "$hash" ]; then
             diff "$plugin" <(echo "$remote")
             if std::ask "updates found, proceed" Y ; then
@@ -19,6 +24,7 @@ for plugin in *.lua ; do
                 echo "$remote" > "$plugin"
                 echo "$url" > "$hashfile"
                 echo "$remote_hash" >> "$hashfile"
+                echo >> "$hashfile"
                 log::suc "updated $plugin"
             fi
         else
