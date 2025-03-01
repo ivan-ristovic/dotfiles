@@ -19,3 +19,5 @@ include ~/.config/task/.taskrc.projects
 # Private projects
 include ~/.task/projects
 
+# Misc
+news.version=3.3.0
