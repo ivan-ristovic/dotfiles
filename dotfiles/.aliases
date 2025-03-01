@@ -209,6 +209,9 @@ fi
 "$e_alias" unexport=unset
 "$i_alias" uz=extract
 "$e_alias" vim='nvim'
+if is_installed nordvpn ; then
+    "$e_alias" vpn='nordvpn'
+fi
 "$e_alias" vsc='codium .'
 "$e_alias" wda='wd add'
 "$e_alias" wdl='wd list'
