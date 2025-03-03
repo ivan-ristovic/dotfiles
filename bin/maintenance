@@ -47,5 +47,8 @@ prompt "Cleaning package manager caches"
 log::exec paccache -r
 log::exec yaycache -r
 
+prompt "Checking for .pacnew files"
+log::exec sudo pacdiff
+
 log::suc "Done. Have a nice day."
 
