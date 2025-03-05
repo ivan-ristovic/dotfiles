@@ -7,6 +7,11 @@ return {
     'tpope/vim-sleuth'
   },
 
+  -- Complementary [ and ] mappings
+  {
+    'tpope/vim-unimpaired'
+  },
+
   -- Text alignment
   {
     'junegunn/vim-easy-align',
