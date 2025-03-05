@@ -3,7 +3,7 @@
 
 
 ####### General settings #######
-#
+
 # No confirmations
 set confirm off
 
