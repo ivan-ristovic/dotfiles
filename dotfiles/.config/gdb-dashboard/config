@@ -3,9 +3,9 @@
 
 
 ####### General settings #######
+#
 # No confirmations
 set confirm off
-
 
 ######## gdb-dashboard #########
 
@@ -16,36 +16,7 @@ dashboard -style divider_label_style_on_primary '1;31'
 dashboard -layout !registers !assembly source variables stack
 dashboard source -style height 25
 
-
 ########### Commands ############
-
-define pjtype
-  ptype $arg0
-end
-
-define pjobject
-  print *($arg0)
-end
-
-define phub
-  x/s (($arg0))->hub->name->value->data
-end
-
-define phubraw
-  x/s (('java.lang.Object' *)($arg0))->hub->name->value->data
-end
-
-define phubind
-  x/s (('_z_.java.lang.Object' *)($arg0))->hub->name->value->data
-end
-
-define phuball
-  print *((('java.lang.Object' *)($arg0))->hub)
-end
-
-define pclass
-  print '$arg0.class'
-end
 
 define pb16
   p/x $arg0
