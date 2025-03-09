@@ -29,10 +29,14 @@ bloat=(
     conky-i3
     dmenu-manjaro
     lxappearance
+    manjaro-application-utility
+    manjaro-hello
     manjaro-i3-settings
     manjaro-ranger-settings
     manjaro-zsh-config
     palemoon
+    pamac-cli
+    pamac-gtk
     xdg-desktop-portal-gnome
     xfce-terminal
     xfce4-notifyd
