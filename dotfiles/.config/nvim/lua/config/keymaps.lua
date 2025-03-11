@@ -23,12 +23,15 @@ U.keymap("n", ";", ":")
 -- Better redo
 U.keymap("n", "U", "<C-r>", "Redo")
 
+-- Remap increment to C-I
+U.keymap("n", "<C-I>", "<C-A>")
+
 -- Clear highlights after search
 U.keymap("n", "<C-l>", ":nohlsearch<cr>", "Clear highlights")
 
 -- Shell-like moving to begin/end of line
-U.keymap("n", "ga", "^", "Go to beginning of line")
-U.keymap("n", "ge", "$", "Go to end of line")
+U.keymap("n", "<C-a>", "^", "Go to beginning of line")
+U.keymap("n", "<C-e>", "$", "Go to end of line")
 
 -- Jump motions
 U.keymap("n", "<C-A-Left>", "<C-O>", "[G]o to [P]revious Cursor Position")
