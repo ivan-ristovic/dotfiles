@@ -190,6 +190,7 @@ if is_installed neith ; then
 fi
 "$e_alias" p='ps -f'
 "$e_alias" ports='netstat -tulanp'
+"$i_alias" q=exit
 "$e_alias" rd=rmdir
 "$e_alias" rgd='rg -.'
 "$e_alias" rgu='rg -u'
