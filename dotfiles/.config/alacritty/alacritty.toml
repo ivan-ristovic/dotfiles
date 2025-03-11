@@ -1,1 +1,17 @@
-../../themes/current/alacritty.toml
+[general]
+live_config_reload = true
+
+import = [
+  "~/.config/alacritty/theme.toml"
+]
+
+[terminal]
+# program = "/bin/zsh"
+
+[window]
+dynamic_padding = true
+
+[window.padding]
+x = 10
+y = 10
+
