@@ -93,7 +93,7 @@ return {
     end,
     keys = {
        { "<leader>t", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file explorer" },
-       { "<leader>e", "<cmd>NvimTreeFocus<cr>", desc = "Focus file explorer" },
+       --[[ { "<leader>e", "<cmd>NvimTreeFocus<cr>", desc = "Focus file explorer" }, ]]
     }
   }
 
