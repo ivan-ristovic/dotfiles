@@ -32,7 +32,7 @@ U.keymap("n", "ge", "$", "Go to end of line")
 
 -- Jump motions
 U.keymap("n", "<C-A-Left>", "<C-O>", "[G]o to [P]revious Cursor Position")
-U.keymap("n", "<C-A-Right", "<C-I>", "[G]o to [N]ext Cursor Position")
+U.keymap("n", "<C-A-Right>", "<C-I>", "[G]o to [N]ext Cursor Position")
 U.keymap("n", "gp", "<C-O>", "[G]o to [P]revious Cursor Position")
 U.keymap("n", "gn", "<C-I>", "[G]o to [N]ext Cursor Position")
 
