@@ -33,6 +33,7 @@ set-option -g display-panes-active-colour colour33 #blue
 set-option -g display-panes-colour colour166 #orange
 
 # clock
+set-window-option -g clock-mode-style 24
 set-window-option -g clock-mode-colour colour64 #green
 
 # tmuxline
