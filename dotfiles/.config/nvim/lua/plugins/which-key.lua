@@ -11,6 +11,16 @@ return {
       -- refer to the configuration section below
       preset = 'helix'
     },
+    config = function ()
+      require("which-key").setup {
+        plugins = {
+          spelling = {
+            enabled = true,
+            suggestions = 20,
+          },
+        },
+      }
+    end,
     keys = {
       {
         "<leader>?",
