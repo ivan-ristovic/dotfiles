@@ -9,18 +9,14 @@ return {
       -- your configuration comes here
       -- or leave it empty to use the default settings
       -- refer to the configuration section below
-      preset = 'helix'
-    },
-    config = function ()
-      require("which-key").setup {
-        plugins = {
-          spelling = {
-            enabled = true,
-            suggestions = 20,
-          },
+      preset = 'helix',
+      plugins = {
+        spelling = {
+          enabled = true,
+          suggestions = 20,
         },
-      }
-    end,
+      },
+    },
     keys = {
       {
         "<leader>?",
