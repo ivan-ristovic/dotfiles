@@ -1,0 +1,24 @@
+#!/bin/bash
+
+label=${LABEL}
+label_cmd=""
+status_cmd=${COMMAND_STATUS}
+
+if $status_cmd > /dev/null 2>&1 ; then
+  COLOR=${COLOR_ON}
+  label=${LABEL_ON:-$LABEL}
+  label_cmd=${LABEL_CMD_ON:-$label_cmd}
+else
+  COLOR=${COLOR_OFF:-#555555}
+  label=${LABEL_OFF:-$LABEL}
+  label_cmd=${LABEL_CMD_OFF:-$label_cmd}
+fi
+
+if [ -n "$label_cmd" ]; then
+  label=$(eval echo "$label_cmd")
+fi
+
+echo $label
+echo $label 
+echo $COLOR
+
