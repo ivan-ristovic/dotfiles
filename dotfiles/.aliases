@@ -151,6 +151,7 @@ fi
 "$e_alias" gsmi='git submodule init'
 "$e_alias" gsms='git submodule sync'
 "$e_alias" gsmu='git submodule update'
+"$e_alias" grbih='git rebase -i HEAD~'
 "$e_alias" grhhh='git reset --hard @{u}'
 "$i_alias" grep='grep --color'
 "$e_alias" h=history
