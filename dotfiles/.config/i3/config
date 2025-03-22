@@ -194,6 +194,9 @@ bindsym $mod+Ctrl+Up    exec $scriptdir/monitor-layout above
 bindsym $mod+Ctrl+Down  exec $scriptdir/monitor-layout secondary
 bindsym $mod+Ctrl+Home  exec $scriptdir/monitor-layout primary
 bindsym $mod+Ctrl+End   exec $scriptdir/monitor-layout same-as
+bindsym $mod+Ctrl+Shift+Left  exec $scriptdir/monitor-layout left-of  --swap
+bindsym $mod+Ctrl+Shift+Right exec $scriptdir/monitor-layout right-of --swap
+bindsym $mod+Ctrl+Shift+Up    exec $scriptdir/monitor-layout above    --swap
 
 ## Change focus
 bindsym $mod+Left  focus left
