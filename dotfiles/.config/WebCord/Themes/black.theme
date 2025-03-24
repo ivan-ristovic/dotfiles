@@ -46,3 +46,7 @@
     background-color: #030a05 !important;
 }
 
+/* Context menu (Right click) */
+.menu_c1e9c4, .flexible_c1e9c4 {
+    background-color: #030a05 !important;
+}
