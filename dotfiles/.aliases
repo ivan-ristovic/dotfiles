@@ -1,3 +1,5 @@
+# vi: ft=bash
+
 unalias 1
 unalias 2
 unalias 3
@@ -160,6 +162,9 @@ if is_installed hexyl ; then
 fi
 "$e_alias" help=man
 "$e_alias" hgrep='fc -El 0 | grep'
+if is_installed jnv ; then
+    "$e_alias" jqi='jnv'
+fi
 "$e_alias" k='kill -9'
 if is_installed eza ; then
     "$i_alias" l='eza -g --smart-group -l'
