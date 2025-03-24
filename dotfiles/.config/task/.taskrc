@@ -21,3 +21,9 @@ include ~/.task/projects
 
 # Misc
 news.version=3.3.0
+
+# Taskwarrior-tui
+uda.taskwarrior-tui.mark.indicator=
+uda.taskwarrior-tui.selection.indicator=
+uda.taskwarrior-tui.mark-selection.indicator=󰄴
+uda.taskwarrior-tui.unmark-selection.indicator=󰐾
