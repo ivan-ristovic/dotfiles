@@ -1,52 +1,52 @@
-/* Title */
-.bar_c38106 {
-    display: none !important;
-}
-.visual-refresh {
-    --custom-app-top-bar-height: 1px !important;
-}
-
-/* Servers sidebar */
-.wrapper_ef3116, .guilds_c48ade {
-    background-color: #000000 !important;
-}
-
-/* Header */
-.header_f37cb1, .title_f75fb0 {
-    background-color: #000000 !important;
-}
-
-/* Channel list */
-.content__99f8c, .scroller__629e4 {
-    background-color: #000000 !important;
-}
-
-/* Chat */
-.scroller__36d07 {
-    background-color: #030a05 !important;
-}
-
-/* Chat input box */
-.channelBottomBarArea_f75fb0, .scrollableContainer__74017 {
-    background-color: #030a05 !important;
-}
-
-/* Member list */
-.members_c8ffbb, .memberInner__5d473, .member__5d473 {
-    background-color: #030a05 !important;
-}
-
-/* Profile bottom-left */
-.container__37e49 {
-    background-color: #030a05 !important;
-}
-
-/* Home page */
-.scroller__7d20c, .itemCard__7e549, .peopleColumn__133bf, .searchBar__35e86, .container__9293f { 
-    background-color: #030a05 !important;
-}
-
-/* Context menu (Right click) */
-.menu_c1e9c4, .flexible_c1e9c4 {
-    background-color: #030a05 !important;
-}
+<!-- /* Title */ -->
+<!-- .bar_c38106 { -->
+<!--     display: none !important; -->
+<!-- } -->
+<!-- .visual-refresh { -->
+<!--     --custom-app-top-bar-height: 1px !important; -->
+<!-- } -->
+<!---->
+<!-- /* Servers sidebar */ -->
+<!-- .wrapper_ef3116, .guilds_c48ade { -->
+<!--     background-color: #000000 !important; -->
+<!-- } -->
+<!---->
+<!-- /* Header */ -->
+<!-- .header_f37cb1, .title_f75fb0 { -->
+<!--     background-color: #000000 !important; -->
+<!-- } -->
+<!---->
+<!-- /* Channel list */ -->
+<!-- .content__99f8c, .scroller__629e4 { -->
+<!--     background-color: #000000 !important; -->
+<!-- } -->
+<!---->
+<!-- /* Chat */ -->
+<!-- .scroller__36d07 { -->
+<!--     background-color: #030a05 !important; -->
+<!-- } -->
+<!---->
+<!-- /* Chat input box */ -->
+<!-- .channelBottomBarArea_f75fb0, .scrollableContainer__74017 { -->
+<!--     background-color: #030a05 !important; -->
+<!-- } -->
+<!---->
+<!-- /* Member list */ -->
+<!-- .members_c8ffbb, .memberInner__5d473, .member__5d473 { -->
+<!--     background-color: #030a05 !important; -->
+<!-- } -->
+<!---->
+<!-- /* Profile bottom-left */ -->
+<!-- .container__37e49 { -->
+<!--     background-color: #030a05 !important; -->
+<!-- } -->
+<!---->
+<!-- /* Home page */ -->
+<!-- .scroller__7d20c, .itemCard__7e549, .peopleColumn__133bf, .searchBar__35e86, .container__9293f {  -->
+<!--     background-color: #030a05 !important; -->
+<!-- } -->
+<!---->
+<!-- /* Context menu (Right click) */ -->
+<!-- .menu_c1e9c4, .flexible_c1e9c4 { -->
+<!--     background-color: #030a05 !important; -->
+<!-- } -->
