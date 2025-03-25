@@ -1,11 +1,11 @@
-<!-- /* Title */ -->
-<!-- .bar_c38106 { -->
-<!--     display: none !important; -->
-<!-- } -->
-<!-- .visual-refresh { -->
-<!--     --custom-app-top-bar-height: 1px !important; -->
-<!-- } -->
-<!---->
+/* Title */
+.bar_c38106 {
+    display: none !important;
+}
+.visual-refresh {
+    --custom-app-top-bar-height: 1px !important;
+}
+
 <!-- /* Servers sidebar */ -->
 <!-- .wrapper_ef3116, .guilds_c48ade { -->
 <!--     background-color: #000000 !important; -->
