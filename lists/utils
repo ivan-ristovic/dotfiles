@@ -50,6 +50,9 @@ lynx
 moreutils
 parallel
 
+## VPN client
+openconnect
+
 ## Progress monitoring
 pv
 
