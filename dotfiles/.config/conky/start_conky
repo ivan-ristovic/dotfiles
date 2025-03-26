@@ -1,6 +1,5 @@
 #!/bin/bash
 
-killall "$0"
 killall conky
 
 conky_cfg=~/.config/conky
@@ -11,7 +10,7 @@ conky_task_conf=$conky_cfg/task.conf
 if [ ! -f $conky_task_conf ]; then
     touch $conky_task_conf
 fi
-conky -c $conky_task_conf
+conky -c $conky_task_conf -d
 
 tshadow=~/.task/.shadow
 if [ ! -f $tshadow ]; then
