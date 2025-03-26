@@ -9,13 +9,13 @@ noto-fonts noto-fonts-emoji noto-fonts-extra
 ttf-dejavu 
 ttf-droid
 ttf-hack-nerd
-ttf-meslo-nerd-font-powerlevel10k
 ttf-nerd-fonts-symbols
 ttf-noto-nerd
 
 
 aur:ttf-font-icons
 aur:ttf-ms-fonts
+aur:ttf-meslo-nerd-font-powerlevel10k
 
 
 # end
