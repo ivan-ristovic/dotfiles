@@ -108,20 +108,22 @@ ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
 ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_UNDERLINE
 
 # Should reload fast-syntax-highlighting theme?
-__fsh_theme_dir="$HOME/.config/zsh/highlighting/"
-__fsh_theme_mod_time=$(date -r "$__fsh_theme_dir/theme.ini" "+%s")
-if [ -f "$__fsh_theme_dir/.theme-set" ]; then 
-    __fsh_saved_mod_time=$(cat "$__fsh_theme_dir/.theme-set")
-else
-    __fsh_saved_mod_time=$(date "+%s")
+if command -v fast-theme > /dev/null 2>&1 ; then
+    __fsh_theme_dir="$HOME/.config/zsh/highlighting/"
+    __fsh_theme_mod_time=$(date -r "$__fsh_theme_dir/theme.ini" "+%s")
+    if [ -f "$__fsh_theme_dir/.theme-set" ]; then 
+        __fsh_saved_mod_time=$(cat "$__fsh_theme_dir/.theme-set")
+    else
+        __fsh_saved_mod_time=$(date "+%s")
+    fi
+    if [ $__fsh_saved_mod_time != $__fsh_theme_mod_time ]; then
+        fast-theme "$HOME/.config/zsh/highlighting/theme.ini" > /dev/null
+        echo $__fsh_theme_mod_time > "$HOME/.config/zsh/highlighting/.theme-set"
+    fi
+    unset __fsh_theme_dir
+    unset __fsh_theme_mod_time
+    unset __fsh_saved_mod_time
 fi
-if [ $__fsh_saved_mod_time != $__fsh_theme_mod_time ]; then
-    fast-theme "$HOME/.config/zsh/highlighting/theme.ini" > /dev/null
-    echo $__fsh_theme_mod_time > "$HOME/.config/zsh/highlighting/.theme-set"
-fi
-unset __fsh_theme_dir
-unset __fsh_theme_mod_time
-unset __fsh_saved_mod_time
 
 # Git support for fzf (Ctrl+G -> key)
 if [[ -r "$HOME/.fzf-git.zsh" ]]; then
