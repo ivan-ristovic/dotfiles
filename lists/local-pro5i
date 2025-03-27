@@ -31,7 +31,7 @@ lg512_arch
 libreoffice-still
 # lutris
 neofetch
-nextcloud-client libsecret
+nextcloud-client libsecret gnome-keyring
 nordvpn_arch
 obs-studio
 picard
