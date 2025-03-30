@@ -1,8 +1,8 @@
 ### i3 X11 Arch list ###
 
 
-+core-arch
-+fonts-arch
++arch/core
++arch/fonts
 +x11
 
 
@@ -34,10 +34,10 @@ tumbler
 xed
 
 
-aur:kvantum-theme-matchama
-aur:rofi-greenclip
-aur:xcursor-breeze
-aur:xkblayout-state-git
+aur/kvantum-theme-matchama
+aur/rofi-greenclip
+aur/xcursor-breeze
+aur/xkblayout-state-git
 
 
 # Themes and icons come after dotfiles link

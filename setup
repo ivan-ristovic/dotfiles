@@ -48,8 +48,9 @@ function usage ()
     echo -e "\t[--user username | -u username]"
     echo -e "\t[--dotfiles | --packages install_list_path | --patch[es] --services | --complete]"
     echo -e "\t[--verbose | -v] [--strict | -s]"
-    echo -e "\t[--log | -l]"
+    echo -e "\t[--log  | -l]"
     echo -e "\t[--help | -h]"
+    echo -e "\t[--dry  | -d]"
     echo
     echo "  LEGEND:"
     echo -e "\t--help -h             prints this manual"
@@ -58,6 +59,7 @@ function usage ()
     echo -e "\t--verbose -v          runs the script in debug mode (set -x)"
     echo -e "\t--remote              update git remote URL"
     echo -e "\t--log -l              output log to logfile"
+    echo -e "\t--dry -d              dry run"
     echo
     echo -e "\t--dotfiles            link dotfiles (default)"
     echo -e "\t--packages --install  install packages from the given install list"
@@ -70,16 +72,18 @@ function usage ()
 GIT_REMOTE="git@github.com:ivan-ristovic/dotfiles.git"
 
 STOW_EXTRA_ARGS=""
+SETUP_SCRIPT_EXTRA_ARGS=""
 SETUP_OVERRIDE=false
 SETUP_DOTFILES=false
 SETUP_PACKAGES=false
 SETUP_PATCHES=false
 SETUP_SERVICES=false
+DRY_RUN=false
 SETUP_USER=${SUDO_USER:-$(logname 2> /dev/null)}
 SETUP_HOME_DIR="/home/$SETUP_USER"
 
-SHORT_OPTS=v,s,u:,h,l,r
-LONG_OPTS=user:,username:,dotfiles,link,stow,packages,install,dotfiles,patch,patches,services,all,complete,help,strict,repair,debug,verbose,remote,git,log
+SHORT_OPTS=v,s,u:,h,l,r,d
+LONG_OPTS=user:,username:,dotfiles,link,stow,packages,install,dotfiles,patch,patches,services,all,complete,help,strict,repair,debug,verbose,remote,git,log,dry
 OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --longoptions $LONG_OPTS -- "$@") 
 if [ $? -ne 0 ]; then
     std::fat "failed to parse provided arguments"
@@ -133,7 +137,7 @@ do
             ;;
         -r | --repair)
             log::msg "repairing dotfile symlinks"
-            STOW_EXTRA_ARGS="-R"
+            STOW_EXTRA_ARGS="$STOW_EXTRA_ARGS -R"
             ;;
         -s | --strict)
             log::msg "strict mode enabled"
@@ -143,6 +147,11 @@ do
             SETUP_USER="$2"
             SETUP_HOME_DIR="/home/$SETUP_USER"
             shift;
+            ;;
+        -d | --dry)
+            DRY_RUN=true
+            STOW_EXTRA_ARGS="$STOW_EXTRA_ARGS --simulate"
+            SETUP_SCRIPT_EXTRA_ARGS="$SETUP_SCRIPT_EXTRA_ARGS --dry"
             ;;
         -h | --help)
             usage
@@ -198,44 +207,54 @@ errored_entries=()
 
 if $SETUP_PACKAGES ; then
 
-    log::suc "Starting installations; command: '$PM_INSTALL_CMD'"
+    log::suc "Starting installations; Command: '$PM_INSTALL_CMD'"
 
     function process_list ()
     {
         for entry in "$@"; do
             cd "install"
             SETUP_SCRIPT="$entry"
-            AUR_PREFIX="aur:"
+            AUR_PREFIX="aur/"
             if [[ "$entry" == "+"* ]]; then
                 cd "$DOTFILES_ROOT_DIR"
-                to_include=${entry#"+"}
-                log::msg "Importing setup script: $to_include"
+                to_include="include/${entry#"+"}"
+                log::msg "Including list file   : $to_include"
                 process_list $(read_list "lists/$to_include")
             elif [[ "$entry" == "!"* ]]; then
                 to_post_install=${entry#"!"}
-                log::msg "Post-link install for : $to_post_install"
+                log::msg "Post-link install set : $to_post_install"
                 packages_requiring_linked_dotfiles+=(${to_post_install})
             elif [ -f "$SETUP_SCRIPT" ]; then
-                log::msg "Setting up via script : $entry"
-                source ./"$SETUP_SCRIPT"
+                log::msg "Setting up via script : $SETUP_SCRIPT"
+                script_rel_path=${SETUP_SCRIPT%*/}
+                log::dbg "Script path: $script_rel_path"
+                if ! $DRY_RUN ; then
+                    source ./"$script_rel_path"
+                fi
             elif [[ "$entry" == "$AUR_PREFIX"* ]]; then
                 pkg=${entry#"$AUR_PREFIX"}
                 log::msg "Installing from AUR   : $pkg"
-                if inst_aur "$pkg"; then
-                    log::suc "Successfully installed: $pkg"
-                else
-                    errored_entries+=(${entry})
+                if ! $DRY_RUN ; then
+                    if inst_aur "$pkg"; then
+                        log::suc "Successfully installed: $pkg"
+                    else
+                        errored_entries+=(${entry})
+                    fi
                 fi
             else
                 log::msg "Installing package    : $entry"
-                if inst "$PM" "$entry"; then
-                    log::suc "Successfully installed: $entry"
-                else
-                    errored_entries+=(${entry})
+                if ! $DRY_RUN ; then
+                    if inst "$PM" "$entry"; then
+                        log::suc "Successfully installed: $entry"
+                    else
+                        errored_entries+=(${entry})
+                    fi
                 fi
             fi
             cd "$DOTFILES_ROOT_DIR"
-            sleep 1
+            if ! $DRY_RUN ; then
+                sleep 1
+            fi
         done
     }
 
@@ -292,7 +311,7 @@ if $SETUP_PATCHES ; then
     if [ -d "$patches_dir" ]; then
         cd $patches_dir
         if [ -f "$patches_script" ]; then
-            source ./"$patches_script"
+            source ./"$patches_script" "$SETUP_SCRIPT_EXTRA_ARGS"
         else
             log::err "$patches_dir/$patches_script script is not present."
         fi
@@ -310,7 +329,7 @@ if $SETUP_SERVICES ; then
     if [ -d "$services_dir" ]; then
         cd $services_dir
         if [ -f "$services_script" ]; then
-            source ./"$services_script"
+            source ./"$services_script" "$SETUP_SCRIPT_EXTRA_ARGS"
         else
             log::err "$services_dir/$services_script script is not present."
         fi

@@ -1,7 +1,7 @@
 ### Development tools (Arch) ###
 
 
-+dev
++devel
 
 
 ## A collection of binary tools - assembler, linker, etc.
@@ -9,7 +9,7 @@
 binutils
 
 ## Docker
-docker_arch
+arch/docker
 
 ## Bind utils
 extra/bind
@@ -22,7 +22,7 @@ gnu-netcat
 # aur:vscodium-bin
 
 ## Bitwise utils
-aur:bitwise
+aur/bitwise
 
 
 # end

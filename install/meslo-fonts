@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source "../utils.sh"
-
 function install_font ()
 {
     local font_install_dir=/usr/local/share/fonts 

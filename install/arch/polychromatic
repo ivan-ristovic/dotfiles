@@ -1,8 +1,6 @@
 #!/bin/bash
 
-source "../utils.sh"
-
-source ./linux-headers_arch
+source ./linux-headers
 
 inst_aur openrazer-meta polychromatic
 sudo gpasswd -a "$SETUP_USER" plugdev

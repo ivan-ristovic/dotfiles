@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source "../utils.sh"
-
 pkgs=(
     texlive-binextra
     texlive-latexextra 

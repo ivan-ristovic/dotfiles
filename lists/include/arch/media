@@ -5,10 +5,10 @@
 
 
 ## Music visualizer
-aur:cava
+aur/cava
 
 ## MPRIS2 support for mpd
-aur:mpdris2
+aur/mpdris2
 
 
 # end

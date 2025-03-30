@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source "../utils.sh"
-
 inst_aur nordvpn-bin
 
 sudo usermod -aG nordvpn "$SETUP_USER"

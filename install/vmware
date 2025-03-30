@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source "../utils.sh"
-
 if test::installed vmware-installer ; then
     msg "VMware already installed. Exiting..."
     return

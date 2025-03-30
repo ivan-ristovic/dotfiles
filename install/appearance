@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source "../utils.sh"
-
 unzip -q -o "$SETUP_HOME_DIR/.themes/*.zip" -d "$SETUP_HOME_DIR/.themes"
 tar --xz -xf "$SETUP_HOME_DIR/.icons/*.tar.xz" -C "$SETUP_HOME_DIR/.icons"
 

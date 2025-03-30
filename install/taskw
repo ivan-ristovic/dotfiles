@@ -1,6 +1,4 @@
 #!/bin/bash
 
-source "../utils.sh"
-
 inst task timew taskwarrior-tui
 inst_pip tasklib taskw

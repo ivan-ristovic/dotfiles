@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source "../utils.sh"
 pkgs=(
     retroarch
     retroarch-assets-ozone

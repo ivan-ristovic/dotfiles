@@ -1,22 +1,22 @@
 ### My local pro5i list (Arch) ###
 
 
-updates_arch
+arch/updates
 cleanup_manjaro_i3
 
 
 # Base
-+i3-x11-arch
-+hardware-arch
-+utils-arch
-+media-arch
++arch/i3-x11
++arch/hardware
++arch/utils
++arch/media
 
 
 # Development
 # (keep close to top for build dependencies)
-+dev-arch
-+dev-dotnet-arch
-+perf-arch
++arch/devel
++arch/devel-dotnet
++arch/perf
 
 
 audacity
@@ -27,36 +27,39 @@ gimp
 handbrake
 kdenlive
 kvantum-manjaro
-lg512_arch
+arch/lg512
 libreoffice-still
 # lutris
 neofetch
 nextcloud-client libsecret gnome-keyring
-nordvpn_arch
+arch/nordvpn
 obs-studio
 picard
-polychromatic_arch
+arch/polychromatic
 qalculate-gtk
 qbittorrent
-retroarch_arch
+arch/retroarch
 steam-native-runtime
 torbrowser-launcher
 vlc
 yt-dlp aria2
 
-aur:freetube-bin
-aur:goverlay
-aur:gpu-screen-recorder aur:gpu-screen-recorder-gtk aur:gpu-screen-recorder-notification aur:gpu-screen-recorder-ui
-aur:lenovolegionlinux-dkms-git 
-aur:linux-wifi-hotspot
-aur:mp3gain
-aur:optimus-manager aur:optimus-manager-qt 
-aur:oversteer
-aur:ventoy-bin
-aur:webcord-bin
+aur/freetube-bin
+aur/goverlay
+aur/gpu-screen-recorder
+aur/gpu-screen-recorder-gtk
+aur/gpu-screen-recorder-notification
+aur/gpu-screen-recorder-ui
+aur/lenovolegionlinux-dkms-git 
+aur/linux-wifi-hotspot
+aur/mp3gain
+aur/optimus-manager aur:optimus-manager-qt 
+aur/oversteer
+aur/ventoy-bin
+aur/webcord-bin
 
 # Wine
-+wine-arch
++arch/wine
 
 
 ### end ###

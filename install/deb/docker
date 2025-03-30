@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source "../utils.sh"
-
 if test::installed docker ; then
     log::msg "docker already installed"
     return

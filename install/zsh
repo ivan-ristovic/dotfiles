@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source "../utils.sh"
-
 inst zsh
 
 rm -f "$SETUP_HOME_DIR"/.zshrc

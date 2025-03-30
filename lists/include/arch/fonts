@@ -13,9 +13,9 @@ ttf-nerd-fonts-symbols
 ttf-noto-nerd
 
 
-aur:ttf-font-icons
-aur:ttf-ms-fonts
-aur:ttf-meslo-nerd-font-powerlevel10k
+aur/ttf-font-icons
+aur/ttf-ms-fonts
+aur/ttf-meslo-nerd-font-powerlevel10k
 
 
 # end

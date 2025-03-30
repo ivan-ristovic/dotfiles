@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source "../utils.sh"
-
 sdk_version=35
 emu_device="pixel_7a"
 

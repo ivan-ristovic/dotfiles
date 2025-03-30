@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source ../utils.sh
-
 inst_aur ghcup-hs-bin
 
 function ghcup_install ()
@@ -14,3 +12,5 @@ ghcup_install ghc
 ghcup_install stack
 ghcup_install hls
 ghcup_install cabal
+
+unset ghcup_install

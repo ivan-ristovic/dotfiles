@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source "../utils.sh"
-
 inst snapd
 sudo systemctl enable snapd.socket
 

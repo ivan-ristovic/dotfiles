@@ -2,6 +2,11 @@
 
 source ../utils.sh
 
+__dry_run=false
+if [ $1 == "--dry" ]; then
+    __dry_run=true
+fi
+
 for patch in $(find ./*/ -type f) ; do
     if [[ "$(basename "$patch")" == .* ]] ; then
         log::wrn "Skip: $patch"
@@ -12,14 +17,19 @@ for patch in $(find ./*/ -type f) ; do
     if [[ $patch == *.patch ]] ; then
         target_file="${target_file%.patch}"
         log::msg "Patch: $target_file"
-        if ! sudo patch -N -s --reject-file=- "$target_file" < "$patch" ; then
-            log::err "Patch failed: $target_file"
+        if ! $__dry_run ; then
+            if ! sudo patch -N -s --reject-file=- "$target_file" < "$patch" ; then
+                log::err "Patch failed: $target_file"
+            fi
         fi
     else
         log::msg "Swap:  $target_file"
-        if ! sudo cp --no-preserve=mode,ownership -rf "$patch" "$target_file" ; then
-            log::err "Swap failed: $patch"
+        if ! $__dry_run ; then
+            if ! sudo cp --no-preserve=mode,ownership -rf "$patch" "$target_file" ; then
+                log::err "Swap failed: $patch"
+            fi
         fi
     fi
 done
 
+unset __dry_run

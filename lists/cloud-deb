@@ -1,19 +1,19 @@
 ### Cloud server list ###
 
 
-updates_deb
+deb/updates
 
 
-+core-deb
-+dev-deb
-+fonts-deb
++deb/core
++deb/dev
++deb/fonts
 +media
 +perf
 +utils
 
 
 smartmontools
-yt-dlp-manual
+yt-dlp-git
 
 
 # end

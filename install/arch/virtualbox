@@ -1,13 +1,11 @@
 #!/bin/bash
 
-source "../utils.sh"
-
 if test::installed virtualbox ; then
     log::msg "VirtualBox already installed. Exiting..."
     return
 fi
 
-source ./linux-headers_arch
+source ./linux-headers
 inst virtualbox virtualbox-host-dkms
 
 sudo modprobe vboxdrv vboxnetadp vboxnetflt

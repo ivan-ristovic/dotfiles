@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source "../utils.sh"
-
 inst firefox profile-sync-daemon
 xdg-settings set default-web-browser firefox.desktop
 

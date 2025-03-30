@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source "../utils.sh"
-
 inst docker 
 
 sudo getent group docker || sudo groupadd docker
