@@ -6,6 +6,6 @@ notify-send -i display "Display profile" "$profile"
 
 feh --bg-fill /usr/share/backgrounds/wp.png
 
-killall start_conky
+killall -9 start_conky
 ~/.config/conky/start_conky 
 
