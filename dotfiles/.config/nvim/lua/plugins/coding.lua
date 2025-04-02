@@ -100,16 +100,17 @@ return {
       -- Presets for languages
       -- langs = {}, -- See the default presets in lua/treesj/langs
     },
-    keys = {
-      { "<leader>z", require('treesj').toggle, desc = "Toggle multiline object split" },
-      {
+    config = function ()
+      vim.keymap.set('n', "<leader>z", require('treesj').toggle, { desc = "Toggle multiline object split" })
+      vim.keymap.set(
+        'n',
         "<leader>Z",
         function()
           require('treesj').toggle({ split = { recursive = true } })
         end,
-        desc = "Toggle multiline object split"
-      },
-    }
+        { desc = "Toggle multiline recursive object split" }
+      )
+    end
   },
 
 }
