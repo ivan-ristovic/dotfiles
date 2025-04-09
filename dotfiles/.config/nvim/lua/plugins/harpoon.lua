@@ -77,6 +77,41 @@ return {
         end,
         desc = "Go to mark 4",
       },
+      {
+        "<leader>5",
+        function()
+          require("harpoon"):list():select(5)
+        end,
+        desc = "Go to mark 5",
+      },
+      {
+        "<leader>6",
+        function()
+          require("harpoon"):list():select(6)
+        end,
+        desc = "Go to mark 6",
+      },
+      {
+        "<leader>7",
+        function()
+          require("harpoon"):list():select(7)
+        end,
+        desc = "Go to mark 7",
+      },
+      {
+        "<leader>8",
+        function()
+          require("harpoon"):list():select(8)
+        end,
+        desc = "Go to mark 8",
+      },
+      {
+        "<leader>9",
+        function()
+          require("harpoon"):list():select(9)
+        end,
+        desc = "Go to mark 9",
+      }
     },
   },
 
