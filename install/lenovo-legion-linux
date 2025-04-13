@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# FIXME 
+# Package is present in repositories, e.g. for Arch:
+# Currently it does not build for kernels 6.11+
+# inst_aur lenovolegionlinux-dkms-git
+
+# Temp compilation fix until packages are updated
+sudo git clone https://github.com/johnfanv2/LenovoLegionLinux.git /opt/LenovoLegionLinux
+pushd /opt/LenovoLegionLinux
+cd ./kernel_module
+make
+sudo make dkms
+popd
+
