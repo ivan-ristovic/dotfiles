@@ -88,6 +88,7 @@ return {
             ui = {
               close_events = { "CursorMoved", "CursorMovedI", "InsertCharPre" },
               floating_window_above_cur_line = true,
+              border = "single",
             },
             keymaps = {
               next_signature = "<Down>",
