@@ -1,15 +1,5 @@
 # vi: ft=bash
 
-unalias 1
-unalias 2
-unalias 3
-unalias 4
-unalias 5
-unalias 6
-unalias 7
-unalias 8
-unalias 9
-
 e_alias="alias"    # Expanded alias
 i_alias="alias"    # Ignored (non-expanded) alias
 
@@ -25,6 +15,16 @@ function is_installed ()
 # Shell-specific aliases
 shell=$(ps -hp $$ | awk '{print $5}')
 if [ "$shell" = "-zsh" ]; then
+
+    unalias 1
+    unalias 2
+    unalias 3
+    unalias 4
+    unalias 5
+    unalias 6
+    unalias 7
+    unalias 8
+    unalias 9
 
     i_alias="ialias"
 
