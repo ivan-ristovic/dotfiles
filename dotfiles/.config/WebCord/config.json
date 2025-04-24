@@ -28,7 +28,8 @@
                 "notifications": true,
                 "display-capture": false,
                 "background-sync": false,
-                "speaker-selection": false
+                "speaker-selection": false,
+                "clipboard-sanitized-write": true
             }
         },
         "advanced": {
