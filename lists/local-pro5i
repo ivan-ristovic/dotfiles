@@ -53,7 +53,7 @@ aur/gpu-screen-recorder-ui
 aur/lenovolegionlinux-dkms-git 
 aur/linux-wifi-hotspot
 aur/mp3gain
-aur/optimus-manager aur:optimus-manager-qt 
+aur/optimus-manager-git aur/optimus-manager-qt 
 aur/oversteer
 aur/ventoy-bin
 aur/webcord-bin
