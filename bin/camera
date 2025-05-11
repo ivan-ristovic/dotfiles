@@ -1,0 +1,21 @@
+#!/bin/bash
+
+dev=/dev/video48
+
+if [ ! -f "$dev" ]; then
+    sudo modprobe v4l2loopback devices=8 exclusive_caps=1
+fi
+
+gst-launch-1.0 libcamerasrc \
+    ! queue \
+    ! videoconvert \
+    ! videoscale method=1 add-borders=true \
+    ! videorate \
+    ! tee name=displaypipe \
+    ! tee name=recordpipe \
+    ! queue \
+    ! v4l2sink device="$dev" \
+    \
+    displaypipe. \
+    ! queue \
+    ! autovideosink \

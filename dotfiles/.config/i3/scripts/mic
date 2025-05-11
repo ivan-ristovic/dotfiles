@@ -28,7 +28,7 @@ case $BLOCK_BUTTON in
     ;;
 esac
 
-case $(pacmd list-sources | grep -A 11 "$SOURCE" | awk '/muted/ {print $2; exit}') in
+case $(pactl list | grep -A 11 "$SOURCE" | grep 'Mute' | awk '{print $2}') in
     yes)
       echo ""
       if $toggled ; then
