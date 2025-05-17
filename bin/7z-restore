@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+    echo "usage: $0 backup.tar.7z"
+    exit 1
+fi
+
+7za x -so "$1" | tar xf -
