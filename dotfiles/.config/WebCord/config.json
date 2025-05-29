@@ -18,6 +18,7 @@
         "privacy": {
             "blockApi": {
                 "science": true,
+                "sentry": true,
                 "typingIndicator": true,
                 "fingerprinting": true
             },
