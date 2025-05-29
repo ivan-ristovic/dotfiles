@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 config_dir="$HOME"/.config
+i3_script_dir="$config_dir/i3/scripts"
 theme="$config_dir/rofi/applets/shared/theme.rasi"
 prompt="$(hostname)"
 mesg="Uptime : $(uptime -p | sed -e 's/up //g')"
@@ -75,7 +76,7 @@ confirm_exit() {
 confirm_run () {    
     selected="$(confirm_exit)"
     if [[ "$selected" == "$yes" ]]; then
-        ${1} && ${2} && ${3}
+        ${1} ; ${2} ; ${3}
     else
         exit
     fi  
@@ -83,11 +84,11 @@ confirm_run () {
 
 run_cmd() {
     if [[ "$1" == '--opt1' ]]; then
-        confirm_run "i3lock -i /usr/share/backgrounds/wp.png -p default -t"            
+        confirm_run "$i3_script_dir/lock-bg"            
     elif [[ "$1" == '--opt2' ]]; then
         confirm_run 'kill -9 -1'
     elif [[ "$1" == '--opt3' ]]; then
-        confirm_run 'mpc -q pause' 'amixer set Master mute' 'systemctl suspend'
+        confirm_run 'mpc -q pause' "BLOCK_BUTTON=1 $i3_script_dir/volume" 'systemctl suspend'
     elif [[ "$1" == '--opt4' ]]; then
         confirm_run 'systemctl hibernate'
     elif [[ "$1" == '--opt5' ]]; then

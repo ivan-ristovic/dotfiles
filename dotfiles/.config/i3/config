@@ -167,7 +167,7 @@ bindsym --release $mod+Ctrl+k exec xkill
 
 ## Lock the system
 ##  with a picture:
-bindsym $mod+Shift+l exec --no-startup-id i3lock -i $bg -p default -t
+bindsym $mod+Shift+l exec --no-startup-id $scriptdir/lock-bg
 ##  by blurring the screen:
 bindsym $mod+l exec --no-startup-id $scriptdir/lock-blur
 

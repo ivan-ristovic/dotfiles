@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+PICTURE=/usr/share/backgrounds/wp.png
+i3lock -i "$PICTURE" -p default -t
