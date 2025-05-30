@@ -18,7 +18,6 @@ lxsession-gtk3
 libnotify
 numlockx
 udisks2 udiskie
-xautolock
 xbindkeys
 xorg-xbacklight
 xorg-xdpyinfo
