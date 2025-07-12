@@ -16,16 +16,6 @@ function is_installed ()
 shell=$(ps -hp $$ | awk '{print $5}')
 if [ "$shell" = "-zsh" ]; then
 
-    unalias 1
-    unalias 2
-    unalias 3
-    unalias 4
-    unalias 5
-    unalias 6
-    unalias 7
-    unalias 8
-    unalias 9
-
     i_alias="ialias"
 
     "$e_alias" -g B='| bat'
@@ -51,7 +41,6 @@ if [ "$shell" = "-zsh" ]; then
     "$e_alias" -g T='| tail'
     "$e_alias" -g TT='2>&1 | tail'
 
-    "$i_alias" history=omz_history
     "$e_alias" which-command='whence -af'
 
 elif [ "$shell" = "-bash" ]; then
@@ -73,15 +62,15 @@ fi
 "$e_alias" -- '-x'='chmod -x'
 "$e_alias" -- '+x'='chmod +x'
 "$e_alias" alert='notify-send -u normal -w'
-#"$e_alias" cd1='cd -1'
-#"$e_alias" cd2='cd -2'
-#"$e_alias" cd3='cd -3'
-#"$e_alias" cd4='cd -4'
-#"$e_alias" cd5='cd -5'
-#"$e_alias" cd6='cd -6'
-#"$e_alias" cd7='cd -7'
-#"$e_alias" cd8='cd -8'
-#"$e_alias" cd9='cd -9'
+# "$e_alias" cd1='cd -1'
+# "$e_alias" cd2='cd -2'
+# "$e_alias" cd3='cd -3'
+# "$e_alias" cd4='cd -4'
+# "$e_alias" cd5='cd -5'
+# "$e_alias" cd6='cd -6'
+# "$e_alias" cd7='cd -7'
+# "$e_alias" cd8='cd -8'
+# "$e_alias" cd9='cd -9'
 "$e_alias" _=sudo
 "$e_alias" aurs='yay -S'
 "$e_alias" aurq='yay -Q'
