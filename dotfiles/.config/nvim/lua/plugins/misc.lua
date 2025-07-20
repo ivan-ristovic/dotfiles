@@ -79,5 +79,20 @@ return {
     'kevinhwang91/nvim-bqf'
   },
 
+  -- Enhanced Search/Replace
+  {
+    "chrisgrieser/nvim-rip-substitute",
+    cmd = "RipSubstitute",
+    opts = {},
+    keys = {
+      {
+        "<leader>fR",
+        function() require("rip-substitute").sub() end,
+        mode = { "n", "x" },
+        desc = "[F]ind and [R]eplace (interactive)",
+      },
+    },
+  },
+
 }
 
