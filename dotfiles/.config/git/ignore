@@ -1,0 +1,29 @@
+# Common build artifacts
+*.log
+node_modules
+.venv
+__pycache__
+*.pyc
+
+# Microsoft Office temporary files
+~$*.docx
+~$*.xlsx
+~$*.pptx
+
+# Prevent sensitive data being accidentally added
+*.kdb
+*.kdbx
+*.gpg
+*.pfx
+*.key
+.*_history
+*.env
+.env
+
+# Prevent accidental inclusion of big files or partial downloads
+*.part
+*.crdownload
+*.mp4
+*.mkv
+*.tiff
+*.heic
