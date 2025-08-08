@@ -1,12 +1,9 @@
 setup-*.log
 
-# Created by https://www.toptal.com/developers/gitignore/api/vim
-# Edit at https://www.toptal.com/developers/gitignore?templates=vim
-
 ### Vim ###
 # Swap
 [._]*.s[a-v][a-z]
-!*.svg  # comment out if you don't need vector files
+!*.svg
 [._]*.sw[a-p]
 [._]s[a-rt-v][a-z]
 [._]ss[a-gi-z]
@@ -19,10 +16,7 @@ Sessionx.vim
 # Temporary
 .netrwhist
 *~
-# Auto-generated tag files
 tags
 # Persistent undo
 [._]*.un~
-
-# End of https://www.toptal.com/developers/gitignore/api/vim
 
