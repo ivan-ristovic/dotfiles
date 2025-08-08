@@ -85,22 +85,24 @@ screenshot.save_screenshot_in_game_folder false
 screenshot.show_screenshot_saved_notifications true
 screenshot.take_screenshot_hotkey 0 0
 screenshot.take_screenshot_region_hotkey 102 4
-streaming.custom.container flv
-streaming.custom.url 
+screenshot.take_screenshot_window_hotkey 102 1
+streaming.custom.container mp4
+streaming.custom.url rtmp://stream.ristovic.net:1935/live/
 streaming.record_options.advanced_view true
 streaming.record_options.application_audio_invert false
 streaming.record_options.audio_codec opus
 streaming.record_options.audio_track_item false [add_audio_track]
 streaming.record_options.audio_track_item false device:default_output
+streaming.record_options.audio_track_item false device:default_input
 streaming.record_options.change_video_resolution false
 streaming.record_options.codec h264
 streaming.record_options.color_range limited
 streaming.record_options.fps 60
-streaming.record_options.framerate_mode vfr
+streaming.record_options.framerate_mode auto
 streaming.record_options.merge_audio_tracks true
 streaming.record_options.overclock false
 streaming.record_options.record_area_height 1080
-streaming.record_options.record_area_option eDP-1-1
+streaming.record_options.record_area_option focused
 streaming.record_options.record_area_width 1920
 streaming.record_options.record_cursor true
 streaming.record_options.restore_portal_session true
@@ -108,7 +110,8 @@ streaming.record_options.video_bitrate 5000
 streaming.record_options.video_height 1080
 streaming.record_options.video_quality custom
 streaming.record_options.video_width 1920
-streaming.service twitch
+streaming.rumble.key 
+streaming.service custom
 streaming.show_streaming_started_notifications true
 streaming.show_streaming_stopped_notifications true
 streaming.start_stop_hotkey 93 16
