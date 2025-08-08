@@ -1,0 +1,11 @@
+#compdef _src src
+
+_src ()
+{
+    _command_names
+}
+
+# don't run the completion function when being source-ed or eval-ed
+if [ "$funcstack[1]" = "_src" ]; then
+    _src
+fi
