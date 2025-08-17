@@ -41,7 +41,7 @@ qbittorrent
 arch/retroarch
 steam-native-runtime
 torbrowser-launcher
-vlc
+vlc vlc-plugins-all
 yt-dlp aria2
 
 aur/freetube-bin
