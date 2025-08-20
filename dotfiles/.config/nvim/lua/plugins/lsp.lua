@@ -66,7 +66,6 @@ return {
         --[[ 'misspell',                         -- english word correction ]]
         --[[ 'pylint',                           -- python linter ]]
         'omnisharp',                        -- csharp lsp
-        'pylsp',                            -- python lsp
         'pyright',                          -- python static type checker 
         --[[ 'shellcheck',                       -- bash static analysis ]]
         --[[ 'shfmt',                            -- bash formatter ]]
