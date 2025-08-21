@@ -9,7 +9,7 @@ if [ -z "$SETUP_USER" ]; then
 fi
 
 __dry_run=false
-if [ $1 == "--dry" ]; then
+if [ "$1" == "--dry" ]; then
     __dry_run=true
 fi
 
