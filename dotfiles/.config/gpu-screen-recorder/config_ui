@@ -1,6 +1,7 @@
 main.config_file_version 2
 main.hotkeys_enable_option enable_hotkeys
 main.joystick_hotkeys_enable_option disable_hotkeys
+main.notification_speed normal
 main.show_hide_hotkey 26 16
 main.software_encoding_warning_shown false
 main.tint_color nvidia
@@ -82,11 +83,13 @@ screenshot.record_cursor true
 screenshot.restore_portal_session true
 screenshot.save_directory /home/ivan/
 screenshot.save_screenshot_in_game_folder false
+screenshot.save_screenshot_to_clipboard false
 screenshot.show_screenshot_saved_notifications true
 screenshot.take_screenshot_hotkey 0 0
 screenshot.take_screenshot_region_hotkey 102 4
 screenshot.take_screenshot_window_hotkey 102 1
 streaming.custom.container mp4
+streaming.custom.key 
 streaming.custom.url rtmp://stream.ristovic.net:1935/live/
 streaming.record_options.advanced_view true
 streaming.record_options.application_audio_invert false
