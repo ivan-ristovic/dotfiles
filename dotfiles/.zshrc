@@ -76,7 +76,7 @@ plugins=(
   tmux                      # tmux completion and aliases
   universalarchive          # ua
   wd                        # directory warp
-  # zsh-autosuggestions
+  # zsh-autosuggestions       # interactive gray autosuggestions
   zsh-interactive-cd        # tab completion for cd
 )
 
