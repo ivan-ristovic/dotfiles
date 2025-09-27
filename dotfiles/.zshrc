@@ -68,7 +68,7 @@ plugins=(
   fancy-ctrl-z              # ctrl+z for fg and bg
   fzf                       # fzf completion
   git                       # git completion and aliases
-  per-directory-history     # ctrl+g to toggle global/dir history
+  # per-directory-history     # ctrl+g to toggle global/dir history
   python                    # python aliases and venv management
   rsync                     # rsync aliases
   sudo                      # esc to add/remove sudo
