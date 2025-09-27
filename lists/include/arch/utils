@@ -9,7 +9,7 @@ glow
 
 ## Task management (Arch specific additions)
 python-tasklib
-
+aur/python-taskw
 
 ## Tree alternative
 aur/broot
