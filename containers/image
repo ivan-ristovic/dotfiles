@@ -26,8 +26,8 @@ set -e
 cd "$distro"
 case "$cmd" in
     build)
-        priv_key=$(cat ~/.ssh/id_rsa)
-        pub_key=$(cat ~/.ssh/id_rsa.pub)
+        priv_key=$(cat ~/.ssh/id)
+        pub_key=$(cat ~/.ssh/id.pub)
         docker build -t "$tag" \
             --force-rm \
             --build-arg PRIVATE_KEY="$priv_key" \

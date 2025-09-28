@@ -5,7 +5,7 @@
 assert::argc_ge $# 1 "user@server [path/to/pub/key]"
 
 dst="$1"
-key="${2:-$HOME/.ssh/id_rsa.pub}"
+key="${2:-$HOME/.ssh/id.pub}"
 
 set -xe;
 ssh-copy-id -i "$key" "$dst"

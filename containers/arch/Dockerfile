@@ -16,10 +16,10 @@ USER user:user
 WORKDIR /home/user
 RUN touch .bash_profile
 RUN mkdir -p .ssh
-RUN echo "$PRIVATE_KEY" > .ssh/id_rsa
-RUN echo "$PUBLIC_KEY" > .ssh/id_rsa.pub
-RUN chmod 600 .ssh/id_rsa
-RUN chmod 600 .ssh/id_rsa.pub
+RUN echo "$PRIVATE_KEY" > .ssh/id
+RUN echo "$PUBLIC_KEY" > .ssh/id.pub
+RUN chmod 600 .ssh/id
+RUN chmod 600 .ssh/id.pub
 RUN ssh-keyscan github.com >> .ssh/known_hosts
 
 RUN mkdir -p dotfiles
