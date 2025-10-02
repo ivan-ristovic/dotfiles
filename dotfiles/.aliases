@@ -244,7 +244,9 @@ fi
 if is_installed vlc ; then
     "$e_alias" vlca='vlc --sout '#display' --sout-all'
 fi
-"$e_alias" vsc='codium .'
+if is_installed codium ; then
+    "$e_alias" vsc='codium .'
+fi
 "$e_alias" wda='wd add'
 "$e_alias" wdl='wd list'
 "$e_alias" wdr='wd rm'
