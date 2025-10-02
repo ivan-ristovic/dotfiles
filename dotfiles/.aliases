@@ -241,6 +241,9 @@ fi
 if is_installed nordvpn ; then
     "$e_alias" vpn='nordvpn'
 fi
+if is_installed vlc ; then
+    "$e_alias" vlca='vlc --sout '#display' --sout-all'
+fi
 "$e_alias" vsc='codium .'
 "$e_alias" wda='wd add'
 "$e_alias" wdl='wd list'
