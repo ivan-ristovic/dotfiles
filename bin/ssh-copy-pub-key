@@ -2,11 +2,21 @@
 
 . include lib
 
-assert::argc_ge $# 1 "user@server [path/to/pub/key]"
+assert::argc_ge $# 1 "[path/to/pub/key] user@server"
 
-dst="$1"
-key="${2:-$HOME/.ssh/id.pub}"
+function get_key_path () 
+{
+    echo "${1:-$HOME/.ssh/id.pub}"
+}
 
-set -xe;
+if [ $# -ge 2 ]; then
+    dst="$2"
+    key=$(get_key_path "$1")
+else
+    dst="$1"
+    key=$(get_key_path)
+fi
+
+set -e;
 ssh-copy-id -i "$key" "$dst"
 log::suc "Done!"
