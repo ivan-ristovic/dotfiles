@@ -9,16 +9,13 @@
 
 rm -f /tmp/fd-fzf-{r,f}
 FD_OPTS=${FD_OPTS:-""}
-FD_PREFIX="fd $FD_OPTS"
+FD_PREFIX="fdfind $FD_OPTS"
 INITIAL_QUERY="${*:-}"
 : | fzf --ansi --disabled --query "$INITIAL_QUERY" \
     --bind "start:reload:$FD_PREFIX {q}" \
     --bind "change:reload:sleep 0.1; $FD_PREFIX {q} || true" \
-    --bind 'ctrl-t:transform:[[ ! $FZF_PROMPT =~ fd ]] &&
-      echo "rebind(change)+change-prompt(1. fd> )+disable-search+transform-query:echo \{q} > /tmp/fd-fzf-f; cat /tmp/fd-fzf-r" ||
-      echo "unbind(change)+change-prompt(2. fzf> )+enable-search+transform-query:echo \{q} > /tmp/fd-fzf-r; cat /tmp/fd-fzf-f"' \
     --color "hl:-1:underline,hl+:-1:underline:reverse" \
-    --prompt '[Ctrl+T to swap] 1. fd> ' \
+    --prompt 'fd> ' \
     --delimiter : \
     --preview 'preview {1}' \
     --preview-window 'up,60%,border-bottom' \
