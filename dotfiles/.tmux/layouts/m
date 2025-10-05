@@ -5,7 +5,8 @@ tmux new-session -d -s "$SESSION_NAME" -c "${ROOT_DIR:-$HOME}"
 
 # win 1
 tmux rename-window -t "$SESSION_NAME":1 ncmpcpp
-tmux send-keys -t "$SESSION_NAME":ncmpcpp "mp" C-l Enter A Enter y Enter
+# tmux send-keys -t "$SESSION_NAME":ncmpcpp "mp" C-l Enter A Enter y Enter
+tmux send-keys -t "$SESSION_NAME":ncmpcpp "mp" C-l Enter 2
 
 # win 2
 tmux new-window -t "$SESSION_NAME" -n ramfs -c "/ramfs"
