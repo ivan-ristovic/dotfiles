@@ -87,14 +87,15 @@
 
 [url "git@github.com:ivan-ristovic/"]
     insteadOf = ir:
-    insteadOf = me:
     insteadOf = ivan-ristovic:
 
+[url "git@ristovic.net:ivan/"]
+    insteadOf = me:
+    insteadOf = cloud:
 
 [url "git://github.com/"]
     insteadOf = ggithub:
     insteadOf = ggh:
-
 
 [url "https://github.com/"]
     insteadOf = github:
