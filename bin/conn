@@ -25,6 +25,7 @@ fi
 
 SID=$1
 ENDPOINT=""
+EX_ARGS=""
 while read line; do
     IFS=' ' read -a split <<< $line
     SERVER_IDS=${split[0]}
@@ -34,6 +35,7 @@ while read line; do
     for spl in ${split[@]} ; do
         if [[ $spl == $SID ]]; then
             ENDPOINT=$EP
+            EX_ARGS="${EXTRA_ARGS[@]}"
         fi
     done
 done < ~/.known_hosts 
@@ -44,5 +46,5 @@ if [[ -z $ENDPOINT ]]; then
 fi
 
 set -xe;
-${PROTOCOL} "${EXTRA_ARGS[@]}" ${ENDPOINT}
+${PROTOCOL} $EX_ARGS ${ENDPOINT}
 
