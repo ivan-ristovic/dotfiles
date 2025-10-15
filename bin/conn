@@ -29,7 +29,7 @@ while read line; do
     IFS=' ' read -a split <<< $line
     SERVER_IDS=${split[0]}
     EP=${split[1]}
-    EXTRA_ARGS=${split[2]}
+    EXTRA_ARGS=("${split[@]:2}")
     IFS=',' read -a split <<< $SERVER_IDS
     for spl in ${split[@]} ; do
         if [[ $spl == $SID ]]; then
@@ -44,5 +44,5 @@ if [[ -z $ENDPOINT ]]; then
 fi
 
 set -xe;
-${PROTOCOL} ${EXTRA_ARGS} ${ENDPOINT}
+${PROTOCOL} "${EXTRA_ARGS[@]}" ${ENDPOINT}
 
