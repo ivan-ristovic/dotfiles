@@ -18,7 +18,11 @@ ext="${media##*.}"
 tsf=$2
 shift 2
 
-IFS=$'\n' read -d '' -r -a ts < $tsf
+# remove leading/trailing spaces
+sed -i 's/^[[:space:]]*//;s/[[:space:]]*$//' "$tsf"
+
+# read lines
+IFS=$'\n' read -d '' -r -a ts < "$tsf"
 
 # test first line of the file to determine if ts is first or title
 ts_first=false
@@ -33,9 +37,9 @@ for (( i=0; i<n; i++ )); do
         to="${ts[$((i+1))]%% *}"
         name="$((i+1)) - ${ts[$i]#* }.$ext"
     else
-        from="${ts[$i]#* }"
-        to="${ts[$((i+1))]#* }"
-        name="$((i+1)) - ${ts[$i]%% *}.$ext"
+        from="${ts[$i]##* }"
+        to="${ts[$((i+1))]##* }"
+        name="$((i+1)) - ${ts[$i]% *}.$ext"
     fi
     echo "$from - ${to:-xx:xx} | $name"
     if [ -z "$to" ]; then
