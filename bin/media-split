@@ -26,7 +26,8 @@ IFS=$'\n' read -d '' -r -a ts < "$tsf"
 
 # test first line of the file to determine if ts is first or title
 ts_first=false
-if [[ "${ts[0]%% *}" =~ ^([0-9]{2}:)?[0-9]{2}:[0-9]{2}$ ]] ; then
+if [[ "${ts[0]%% *}" =~ ^([0-9]{1,2}:)?[0-9]{1,2}:[0-9]{2}$ ]] ; then
+    echo "ts f"
     ts_first=true  
 fi
 
@@ -42,9 +43,9 @@ for (( i=0; i<n; i++ )); do
         name="$((i+1)) - ${ts[$i]% *}.$ext"
     fi
     echo "$from - ${to:-xx:xx} | $name"
-    if [ -z "$to" ]; then
-        ffmpeg -i "$media" -ss "$from" -vcodec copy -acodec copy -y "$name" $* 
-    else
-        ffmpeg -i "$media" -ss "$from" -to "$to" -vcodec copy -acodec copy -y "$name" $* 
-    fi
+    # if [ -z "$to" ]; then
+    #     ffmpeg -i "$media" -ss "$from" -vcodec copy -acodec copy -y "$name" $* 
+    # else
+    #     ffmpeg -i "$media" -ss "$from" -to "$to" -vcodec copy -acodec copy -y "$name" $* 
+    # fi
 done
