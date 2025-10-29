@@ -43,9 +43,9 @@ for (( i=0; i<n; i++ )); do
         name="$((i+1)) - ${ts[$i]% *}.$ext"
     fi
     echo "$from - ${to:-xx:xx} | $name"
-    # if [ -z "$to" ]; then
-    #     ffmpeg -i "$media" -ss "$from" -vcodec copy -acodec copy -y "$name" $* 
-    # else
-    #     ffmpeg -i "$media" -ss "$from" -to "$to" -vcodec copy -acodec copy -y "$name" $* 
-    # fi
+    if [ -z "$to" ]; then
+        ffmpeg -i "$media" -ss "$from" -vcodec copy -acodec copy -y "$name" $* 
+    else
+        ffmpeg -i "$media" -ss "$from" -to "$to" -vcodec copy -acodec copy -y "$name" $* 
+    fi
 done
