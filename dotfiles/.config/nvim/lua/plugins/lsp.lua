@@ -44,7 +44,12 @@ return {
       require("fidget").setup({})
 
       -- Setup mason so it can manage external tooling
-      require('mason').setup()
+      require('mason').setup({
+        registries = {
+          "github:mason-org/mason-registry",
+          "github:Crashdummyy/mason-registry",
+        },
+      })
 
       -- Enable the following language servers
       -- Commented ones should be installed manually
@@ -65,7 +70,7 @@ return {
         'marksman',                         -- markdown lsp
         --[[ 'misspell',                         -- english word correction ]]
         --[[ 'pylint',                           -- python linter ]]
-        'omnisharp',                        -- csharp lsp
+        --[[ 'omnisharp',                        -- csharp lsp ]]
         'pyright',                          -- python static type checker 
         --[[ 'shellcheck',                       -- bash static analysis ]]
         --[[ 'shfmt',                            -- bash formatter ]]
@@ -169,5 +174,14 @@ return {
 
     end     -- end config
   },
+
+  {
+    "seblyng/roslyn.nvim",
+    ---@module 'roslyn.config'
+    ---@type RoslynNvimConfig
+    opts = {
+      -- your configuration comes here; leave empty for default settings
+    },
+  }
 
 }
