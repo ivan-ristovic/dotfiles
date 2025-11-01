@@ -85,21 +85,21 @@
 [mergetool "nvimdiff"]
     cmd = nvim -c "Gvdiffsplit!" "$MERGED"
 
+[url "https://github.com/"]
+    insteadOf = github:
+    insteadOf = gh:
+
 [url "git@github.com:ivan-ristovic/"]
     insteadOf = ir:
     insteadOf = ivan-ristovic:
 
-[url "git@ristovic.net:ivan/"]
-    insteadOf = me:
-    insteadOf = cloud:
-
-[url "git://github.com/"]
+[url "git@github.com/"]
     insteadOf = ggithub:
     insteadOf = ggh:
 
-[url "https://github.com/"]
-    insteadOf = github:
-    insteadOf = gh:
+[url "git@ristovic.net:ivan/"]
+    insteadOf = me:
+    insteadOf = cloud:
 
 [pull]
     rebase = true ; https://blog.sffc.xyz/post/185195398930/why-you-should-use-git-pull-ff-only
