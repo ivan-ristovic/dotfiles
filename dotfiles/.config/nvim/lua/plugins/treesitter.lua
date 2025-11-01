@@ -96,7 +96,16 @@ return {
       separator = nil,
       zindex = 20,
     }
+  },
 
+  {
+    "chrisgrieser/nvim-various-textobjs",
+    event = "VeryLazy",
+    opts = {
+      keymaps = {
+        useDefaults = true
+      }
+    },
   },
 
 }
