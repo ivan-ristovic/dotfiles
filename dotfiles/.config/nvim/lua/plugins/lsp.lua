@@ -154,10 +154,10 @@ return {
       capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
       for _, lsp in ipairs(servers) do
-        require('lspconfig')[lsp].setup {
+        vim.lsp.config(lsp, {
           on_attach = on_attach,
           capabilities = capabilities,
-        }
+        })
       end
 
       -- signs
