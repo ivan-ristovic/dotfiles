@@ -1,3 +1,7 @@
+-- Source:
+-- https://github.com/chrisgrieser/.config/blob/main/nvim/after/ftplugin/python.lua
+--------------------------------------------------------------------------------
+
 -- python standard
 vim.bo.expandtab = true
 vim.bo.shiftwidth = 4
