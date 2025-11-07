@@ -1,76 +1,71 @@
-#!/usr/bin/perl
-#
+#!/bin/bash
+
 # Copyright 2014 Pierre Mavro <deimos@deimos.fr>
 # Copyright 2014 Vivien Didelot <vivien@didelot.org>
 # Copyright 2014 Andreas Guldstrand <andreas.guldstrand@gmail.com>
 #
 # Licensed under the terms of the GNU GPL v3, or any later version.
 
-use strict;
-use warnings;
-use utf8;
-use Getopt::Long;
+# Default values
+t_warn="${T_WARN:-50}"
+t_crit="${T_CRIT:-80}"
+cpu_usage=-1
+decimals="${DECIMALS:-0}"
+label="${LABEL:-}"
+label1="${LABEL_1:-}"
+label2="${LABEL_2:-}"
 
-# default values
-my $t_warn = $ENV{T_WARN} // 50;
-my $t_crit = $ENV{T_CRIT} // 80;
-my $cpu_usage = -1;
-my $decimals = $ENV{DECIMALS} // 0;
-my $label = $ENV{LABEL} // "";
-my $label1 = $ENV{LABEL_1} // "";
-my $label2 = $ENV{LABEL_2} // "";
-
-sub help {
-    print "Usage: cpu_usage [-w <warning>] [-c <critical>] [-d <decimals>]\n";
-    print "-w <percent>: warning threshold to become yellow\n";
-    print "-c <percent>: critical threshold to become red\n";
-    print "-d <decimals>:  Use <decimals> decimals for percentage (default is $decimals) \n"; 
-    exit 0;
+# Help function
+help() {
+    echo "Usage: cpu_usage [-w <warning>] [-c <critical>] [-d <decimals>]"
+    echo "-w <percent>: warning threshold to become yellow"
+    echo "-c <percent>: critical threshold to become red"
+    echo "-d <decimals>: Use <decimals> decimals for percentage (default is $decimals)"
+    exit 0
 }
 
-GetOptions("help|h" => \&help,
-           "w=i"    => \$t_warn,
-           "c=i"    => \$t_crit,
-           "d=i"    => \$decimals,
-);
+# Parse command-line options
+while getopts "hw:c:d:" opt; do
+    case $opt in
+        h) help ;;
+        w) t_warn=$OPTARG ;;
+        c) t_crit=$OPTARG ;;
+        d) decimals=$OPTARG ;;
+        *) help ;;
+    esac
+done
 
 # Get CPU usage
-$ENV{LC_ALL}="en_US"; # if mpstat is not run under en_US locale, things may break, so make sure it is
-open (MPSTAT, 'mpstat 1 1 |') or die;
-while (<MPSTAT>) {
-    if (/^.*\s+(\d+\.\d+)[\s\x00]?$/) {
-        $cpu_usage = 100 - $1; # 100% - %idle
-        last;
-    }
-}
-close(MPSTAT);
-
-$cpu_usage eq -1 and die 'Can\'t find CPU information';
+export LC_ALL="en_US.UTF-8"  # Ensure mpstat runs with the correct locale
+cpu_usage=$(mpstat 1 1 | awk '/Average/ {print 100 - $12}')  # 100% - %idle
+if [ -z "$cpu_usage" ]; then
+    echo "Can't find CPU information"
+    exit 1
+fi
 
 # Get turbo boost information
-open (NO_TURBO, '/sys/devices/system/cpu/intel_pstate/no_turbo') or die "Can't find boost information";
-my $boost = do { local $/; <NO_TURBO> };
-chomp($boost);
-close(NO_TURBO);
-if ($boost eq "1") {
-    $label = $label1;
-} else {
-    $label = $label2;
-}
+if [ -f /sys/devices/system/cpu/intel_pstate/no_turbo ]; then
+    boost=$(< /sys/devices/system/cpu/intel_pstate/no_turbo)
+    if [ "$boost" == "1" ]; then
+        label="$label1"
+    else
+        label="$label2"
+    fi
+else
+    label="$label2"
+fi
 
-# Print short_text, full_text
-print "${label}";
-printf "%02.${decimals}f%%\n", $cpu_usage;
-print "${label}";
-printf "%02.${decimals}f%%\n", $cpu_usage;
+# Print short_text and full_text
+printf "%s" "$label"
+printf "%02.${decimals}f%%\n" "$cpu_usage"
+printf "%s" "$label"
+printf "%02.${decimals}f%%\n" "$cpu_usage"
 
-# Print color, if needed
-if ($cpu_usage >= $t_crit) {
-    print "#FF0000\n";
-    # Non-zero exit code will cause red background
-    # exit 33;
-} elsif ($cpu_usage >= $t_warn) {
-    print "#FFFC00\n";
-}
+# Print color based on thresholds
+if (( $(echo "$cpu_usage >= $t_crit" | bc -l) )); then
+    echo "#FF0000"  # Critical threshold - Red
+elif (( $(echo "$cpu_usage >= $t_warn" | bc -l) )); then
+    echo "#FFFC00"  # Warning threshold - Yellow
+fi
 
-exit 0;
+exit 0
