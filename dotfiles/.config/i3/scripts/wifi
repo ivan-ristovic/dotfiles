@@ -51,8 +51,9 @@ QUALITY=$(iw dev ${INTERFACE} link | grep 'dBm$' | grep -Eoe '-[0-9]{2}' | awk '
 
 #------------------------------------------------------------------------
 
-# echo "[$QUALITY%]" # full text
-# echo "[$QUALITY%]" # short text
+if [ $BLOCK_BUTTON -ne 0 ]; then
+    notify-send "$INTERFACE signal strength: $QUALITY%"
+fi
 
 # color
 if [[ $QUALITY -ge 80 ]]; then
