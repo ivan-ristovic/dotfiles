@@ -18,7 +18,7 @@ set -x;
 
 #------------------------------------------------------------------------
 if [[ -z "$INTERFACE" ]] ; then
-    INTERFACE="${BLOCK_INSTANCE:-wlan0}"
+    INTERFACE="${BLOCK_INSTANCE:-$(cat /proc/net/wireless | perl -ne '/(\w+):/ && print $1')}"
 fi
 #------------------------------------------------------------------------
 
