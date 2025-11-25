@@ -12,8 +12,8 @@ function fm ()
             --cmd="map Q chain shell echo %d > $tempfile; quitall"
         )
         
-        ${ranger_cmd[@]} "$@" 2>/dev/null
-        if [[ -f "$tempfile" ]] && [[ "$(cat -- "$tempfile")" != "$(echo -n "$(pwd)")" ]]; then
+        "${ranger_cmd[@]}" "$@" 2>/dev/null
+        if [[ -s "$tempfile" ]] && [[ "$(cat -- "$tempfile")" != "$(echo -n "$(pwd)")" ]]; then
             cd -- "$(cat "$tempfile")" || return
         fi
         command rm -f -- "$tempfile" 2>/dev/null
