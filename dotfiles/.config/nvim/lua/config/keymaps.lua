@@ -20,6 +20,9 @@ U.keymap("n", "<C-q>", "")
 -- Easier :
 U.keymap("n", ";", ":")
 
+-- Faster exit
+U.keymap("n", "Q", ":qa!<CR>")
+
 -- Better redo
 U.keymap("n", "U", "<C-r>", "Redo")
 
