@@ -1,9 +1,9 @@
 /* Title */
-.bar_c38106 {
+.bar_c38106 .c38106a3f0c3ca76-bar {
     display: none !important;
 }
 .visual-refresh {
-    --custom-app-top-bar-height: 1px !important;
+    --custom-app-top-bar-height: 0px !important;
 }
 
 <!-- /* Servers sidebar */ -->
