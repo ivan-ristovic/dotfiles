@@ -255,6 +255,7 @@ bindsym $mod+XF86AudioRaiseVolume exec --no-startup-id $scriptdir/volume-ctl 1%+
 bindsym $mod+XF86AudioLowerVolume exec --no-startup-id $scriptdir/volume-ctl 1%-
 ##  Mute
 bindsym XF86AudioMute  exec --no-startup-id BLOCK_BUTTON=1 $scriptdir/volume && pkill -RTMIN+10 i3blocks
+bindsym $mod+Shift+M  exec --no-startup-id BLOCK_BUTTON=1 $scriptdir/volume && pkill -RTMIN+10 i3blocks
 #   Play-pause (doesn't seem to work with mpd) 
 bindsym XF86AudioPlay  exec --no-startup-id playerctl play-pause
 bindsym XF86AudioPause exec --no-startup-id playerctl pause
