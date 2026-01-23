@@ -14,8 +14,7 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 --   term_mode = "t",
 --   command_mode = "c",
 
--- Unmap Ctrl + q
-U.keymap("n", "<C-q>", "")
+U.keymap("n", "<C-q>", ":bd<CR>")
 
 -- Easier :
 U.keymap("n", ";", ":")
