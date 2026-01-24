@@ -1,5 +1,5 @@
 -- Source:
--- https://github.com/chrisgrieser/.config/blob/main/nvim/after/ftplugin/bib.lua
+-- https://github.com/chrisgrieser/.config/blob/main/nvim/after/ftplugin/
 --------------------------------------------------------------------------------
 
 -- scroll down on reading a file

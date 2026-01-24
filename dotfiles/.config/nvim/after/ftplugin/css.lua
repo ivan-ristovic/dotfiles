@@ -1,5 +1,5 @@
 -- Source:
--- https://github.com/chrisgrieser/.config/blob/main/nvim/after/ftplugin/css.lua
+-- https://github.com/chrisgrieser/.config/blob/main/nvim/after/ftplugin/
 --------------------------------------------------------------------------------
 
 vim.bo.commentstring = "/* %s */" -- add spaces

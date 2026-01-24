@@ -1,5 +1,5 @@
 -- Source:
--- https://github.com/chrisgrieser/.config/blob/main/nvim/after/ftplugin/python.lua
+-- https://github.com/chrisgrieser/.config/blob/main/nvim/after/ftplugin/
 --------------------------------------------------------------------------------
 
 -- python standard
