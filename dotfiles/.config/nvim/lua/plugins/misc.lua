@@ -117,5 +117,51 @@ return {
     end,
   },
 
+  -- Enhanced increment/decrement
+  {
+    "monaqa/dial.nvim",
+    keys = {
+      {
+        "<C-i>",
+        function() require("dial.map").manipulate("increment", "normal") end,
+        mode = { "n", "x" },
+        desc = "[I]ncrement",
+      },
+      {
+        "g<C-i>",
+        function() require("dial.map").manipulate("increment", "gnormal") end,
+        mode = { "n", "x" },
+        desc = "[I]ncrement",
+      },
+      {
+        "<C-x>",
+        function() require("dial.map").manipulate("decrement", "normal") end,
+        mode = { "n", "x" },
+        desc = "[D]ecrement",
+      },
+      {
+        "g<C-x>",
+        function() require("dial.map").manipulate("decrement", "gnormal") end,
+        mode = { "n", "x" },
+        desc = "[D]ecrement",
+      },
+    },
+    config = function()
+      local augend = require("dial.augend")
+      require("dial.config").augends:register_group({
+        default = {
+          augend.integer.alias.decimal,
+          augend.integer.alias.hex,
+          augend.date.alias["%Y/%m/%d"],
+          augend.constant.alias.bool,
+          augend.constant.alias.Bool,
+          augend.constant.alias.en_weekday,
+          augend.constant.alias.en_weekday_full,
+          augend.semver.alias.semver,
+        },
+      })
+    end,
+  },
+
 }
 
