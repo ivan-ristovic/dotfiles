@@ -14,6 +14,7 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 --   term_mode = "t",
 --   command_mode = "c",
 
+-- Close buffer
 U.keymap("n", "<C-q>", ":bd<CR>")
 
 -- Easier :
@@ -92,6 +93,9 @@ U.keymap("v", ">", ">gv")
 -- Quickfix list
 U.keymap("n", "<leader>ln", "<cmd>cnext<cr>zz")
 U.keymap("n", "<leader>lp", "<cmd>cprev<cr>zz")
+
+-- Man pages
+U.keymap("n", "<leader>m", "<cmd>Man<cr>")
 
 -- Better terminal navigation
 -- U.keymap("t", "<C-h>", "<C-\\><C-N><C-w>h")

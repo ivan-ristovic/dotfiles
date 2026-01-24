@@ -28,89 +28,89 @@ return {
           :find()
       end
 
-      vim.keymap.set("n", "<leader>M", function()
+      vim.keymap.set("n", "<leader>H", function()
         local harpoon = require("harpoon")
         toggle_telescope_with_harpoon(harpoon:list())
-      end, { desc = "List marks (Telescope)" })
+      end, { desc = "Harpoon: List marks (Telescope)" })
     end,
     keys = {
       {
-        "<C-M>",
+        "<C-H>",
         function()
           require("harpoon"):list():add()
         end,
-        desc = "Mark file",
+        desc = "Harpoon: Mark file",
       },
       {
-        "<leader>m",
+        "<leader>h",
         function()
           local harpoon = require("harpoon")
           harpoon.ui:toggle_quick_menu(harpoon:list())
         end,
-        desc = "List marks",
+        desc = "Harpoon: List marks",
       },
       {
         "<leader>1",
         function()
           require("harpoon"):list():select(1)
         end,
-        desc = "Go to mark 1",
+        desc = "Harpoon: Go to mark 1",
       },
       {
         "<leader>2",
         function()
           require("harpoon"):list():select(2)
         end,
-        desc = "Go to mark 2",
+        desc = "Harpoon: Go to mark 2",
       },
       {
         "<leader>3",
         function()
           require("harpoon"):list():select(3)
         end,
-        desc = "Go to mark 3",
+        desc = "Harpoon: Go to mark 3",
       },
       {
         "<leader>4",
         function()
           require("harpoon"):list():select(4)
         end,
-        desc = "Go to mark 4",
+        desc = "Harpoon: Go to mark 4",
       },
       {
         "<leader>5",
         function()
           require("harpoon"):list():select(5)
         end,
-        desc = "Go to mark 5",
+        desc = "Harpoon: Go to mark 5",
       },
       {
         "<leader>6",
         function()
           require("harpoon"):list():select(6)
         end,
-        desc = "Go to mark 6",
+        desc = "Harpoon: Go to mark 6",
       },
       {
         "<leader>7",
         function()
           require("harpoon"):list():select(7)
         end,
-        desc = "Go to mark 7",
+        desc = "Harpoon: Go to mark 7",
       },
       {
         "<leader>8",
         function()
           require("harpoon"):list():select(8)
         end,
-        desc = "Go to mark 8",
+        desc = "Harpoon: Go to mark 8",
       },
       {
         "<leader>9",
         function()
           require("harpoon"):list():select(9)
         end,
-        desc = "Go to mark 9",
+        desc = "Harpoon: Go to mark 9",
       }
     },
   },
