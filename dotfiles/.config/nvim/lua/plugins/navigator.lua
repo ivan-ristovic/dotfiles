@@ -16,5 +16,8 @@ return {
       { "<C-S-Down>", "<cmd>TmuxNavigateDown<cr>" },
       { "<C-S-\\>", "<cmd>TmuxNavigatePrevious<cr>" },
     },
+    init = function ()
+      vim.g.tmux_navigator_no_mappings = 1
+    end
   }
 }
