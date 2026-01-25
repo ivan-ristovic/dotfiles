@@ -40,61 +40,68 @@ return {
     requires = { 'nvim-tree/nvim-web-devicons' },
     lazy = false,
     init = function()
-        require("nvim-tree").setup({
-            on_attach = on_attach,
-            update_focused_file = {
-              enable = true,
-              update_cwd = true,
-            },
-            renderer = {
-              root_folder_modifier = ":t",
-              icons = {
-                glyphs = {
-                  default = "",
-                  symlink = "",
-                  folder = {
-                    arrow_open = "",
-                    arrow_closed = "",
-                    default = "",
-                    open = "",
-                    empty = "",
-                    empty_open = "",
-                    symlink = "",
-                    symlink_open = "",
-                  },
-                  git = {
-                    unstaged = "",
-                    staged = "S",
-                    unmerged = "",
-                    renamed = "➜",
-                    untracked = "U",
-                    deleted = "",
-                    ignored = "◌",
-                  },
-                },
+      require("nvim-tree").setup({
+        on_attach = on_attach,
+        renderer = {
+          root_folder_modifier = ":t",
+          icons = {
+            glyphs = {
+              default = "",
+              symlink = "",
+              folder = {
+                arrow_open = "",
+                arrow_closed = "",
+                default = "",
+                open = "",
+                empty = "",
+                empty_open = "",
+                symlink = "",
+                symlink_open = "",
+              },
+              git = {
+                unstaged = "",
+                staged = "S",
+                unmerged = "",
+                renamed = "➜",
+                untracked = "U",
+                deleted = "",
+                ignored = "◌",
               },
             },
-            diagnostics = {
-              enable = true,
-              show_on_dirs = true,
-              icons = {
-                hint = "",
-                info = "",
-                warning = "",
-                error = "",
-              },
-            },
-            view = {
-              width = 30,
-              --[[ height = 30, ]]
-              side = "left",
-            },
-        })
+          },
+        },
+        diagnostics = {
+          enable = true,
+          show_on_dirs = true,
+          icons = {
+            hint = "",
+            info = "",
+            warning = "",
+            error = "",
+          },
+        },
+        view = {
+          width = 30,
+          --[[ height = 30, ]]
+          side = "left",
+        },
+        sync_root_with_cwd = true,
+        respect_buf_cwd = true,
+        update_focused_file = {
+          enable = true,
+          update_root = true
+        },
+      })
     end,
     keys = {
-       { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file explorer" },
-       --[[ { "<leader>t", "<cmd>NvimTreeFocus<cr>", desc = "Focus file explorer" }, ]]
+      { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file explorer" },
+      --[[ { "<leader>t", "<cmd>NvimTreeFocus<cr>", desc = "Focus file explorer" }, ]]
     }
+  },
+
+  {
+    'DrKJeff16/project.nvim',
+    opts = {},
   }
 
 }
