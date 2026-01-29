@@ -115,6 +115,7 @@ fi
 "$e_alias" dcu='docker-compose up -d'
 "$e_alias" dcd='docker-compose down'
 "$e_alias" dcl='docker-compose logs -f'
+"$e_alias" dcrm='docker container rm'
 "$e_alias" de='docker exec'
 if is_installed duf ; then
     "$e_alias" df='duf'
