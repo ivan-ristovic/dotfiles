@@ -39,10 +39,12 @@ arch/polychromatic
 qalculate-gtk
 qbittorrent
 arch/retroarch
-steam-native-runtime
+steam
 torbrowser-launcher
 vlc vlc-plugins-all
 yt-dlp aria2
+
+lenovo-legion-linux
 
 aur/freetube-bin
 aur/goverlay
@@ -50,7 +52,6 @@ aur/gpu-screen-recorder
 aur/gpu-screen-recorder-gtk
 aur/gpu-screen-recorder-notification
 aur/gpu-screen-recorder-ui
-aur/lenovolegionlinux-dkms-git 
 aur/linux-wifi-hotspot
 aur/mp3gain
 aur/optimus-manager-git aur/optimus-manager-qt 

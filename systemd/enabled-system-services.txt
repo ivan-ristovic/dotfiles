@@ -1,4 +1,4 @@
-legion-linux.service
+legiond.service
 lightdm.service
 nvidia-powerd.service
 polkit.service
