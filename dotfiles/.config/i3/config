@@ -373,7 +373,7 @@ exec --no-startup-id sleep 2 && alacritty
 exec --no-startup-id sleep 3 && firefox 
 exec --no-startup-id sleep 5 && nextcloud --background
 exec --no-startup-id sleep 5 && webcord
-exec --no-startup-id sleep 5 && steam-native -silent -vrdisable -cef-force-occlusion -cef-force-opaque-backgrounds -cef-single-process -cef-disable-gpu-compositing -cef-disable-gpu -no-dwrite
+exec --no-startup-id sleep 5 && steam -silent -vrdisable -cef-force-occlusion -cef-force-opaque-backgrounds -cef-single-process -cef-disable-gpu-compositing -cef-disable-gpu -no-dwrite
 
 ################
 ##### Tray #####
