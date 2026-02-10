@@ -3,7 +3,7 @@
 source ../utils.sh
 
 __dry_run=false
-if [ $1 == "--dry" ]; then
+if [ "$1" == "--dry" ]; then
     __dry_run=true
 fi
 
