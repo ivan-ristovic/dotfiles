@@ -100,9 +100,9 @@ replay.turn_on_replay_automatically_mode turn_on_at_system_startup
 screenshot.change_image_resolution false
 screenshot.custom_script 
 screenshot.image_format jpg
-screenshot.image_height 0
+screenshot.image_height 1080
 screenshot.image_quality very_high
-screenshot.image_width 0
+screenshot.image_width 1920
 screenshot.record_area_option HDMI-0
 screenshot.record_cursor true
 screenshot.restore_portal_session true
