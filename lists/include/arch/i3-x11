@@ -23,7 +23,7 @@ dmenu
 dunst
 file-roller
 gtk-engine-murrine
-lxappearance-gtk3
+lxappearance
 network-manager-applet
 picom
 rofi rofi-calc
