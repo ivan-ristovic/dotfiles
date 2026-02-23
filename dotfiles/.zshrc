@@ -93,7 +93,6 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 zinit light zsh-users/zsh-completions       
-zinit light zdharma-continuum/zsh-diff-so-fancy
 zinit light wfxr/forgit
 # zinit light jeffreytse/zsh-vi-mode
 zinit light zsh-users/zsh-syntax-highlighting

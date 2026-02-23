@@ -1,0 +1,36 @@
+# vi: ft=gitconfig
+
+[core]
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    features = decorations
+    navigate = true
+    light = false
+    line-numbers = true
+    ; side-by-side = true
+
+    syntax-theme = Visual Studio Dark+
+    whitespace-error-style = 22 reverse
+
+    plus-style = syntax bold "#003800"
+    plus-emph-style = syntax bold "#003800"
+    minus-style = syntax "#2f0001"
+    zero-style = syntax
+    commit-style = normal
+
+[merge]
+    conflictstyle = zdiff3
+
+[diff]
+    colorMoved = default
+
+[delta "decorations"]
+    commit-decoration-style = bold yellow box ul
+    file-style = bold yellow
+    file-decoration-style = none
+    hunk-header-style = file line-number syntax
+

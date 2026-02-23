@@ -2,7 +2,7 @@
 
 
 ## Dotfiles management
-git
+git git-delta
 stow
 
 ## Editors
