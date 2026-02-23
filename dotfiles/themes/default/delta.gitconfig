@@ -16,9 +16,10 @@
     syntax-theme = Visual Studio Dark+
     whitespace-error-style = 22 reverse
 
-    plus-style = syntax bold "#003800"
-    plus-emph-style = syntax bold "#003800"
-    minus-style = syntax "#2f0001"
+    plus-style = syntax "#002C00"
+    plus-emph-style = syntax bold "#005D00"
+    minus-style = syntax "#2F0001"
+    minus-emph-style = syntax bold "#800000"
     zero-style = syntax
     commit-style = normal
 
