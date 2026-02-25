@@ -1,8 +1,10 @@
 #!/bin/bash
 
-unzip -q -o "$SETUP_HOME_DIR/.themes/*.zip" -d "$SETUP_HOME_DIR/.themes"
-tar --xz -xf "$SETUP_HOME_DIR/.icons/*.tar.xz" -C "$SETUP_HOME_DIR/.icons"
+unzip -q -o "$SETUP_HOME_DIR/.themes/"*.zip -d "$SETUP_HOME_DIR/.themes"
+tar --xz -xf "$SETUP_HOME_DIR/.icons/"*.tar.xz -C "$SETUP_HOME_DIR/.icons"
 
-for theme in "$SETUP_HOME_DIR/.themes/"*/; do
-    sudo ln -s "$SETUP_HOME_DIR/.themes/$theme" /usr/share/themes/
+for __theme in "$SETUP_HOME_DIR/.themes/"*/ ; do
+    sudo ln -s "$SETUP_HOME_DIR/.themes/$__theme" /usr/share/themes/
 done
+
+unset __theme

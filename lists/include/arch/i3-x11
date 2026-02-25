@@ -15,31 +15,29 @@ i3status
 acpi
 alacritty
 arandr
+ark
 autorandr
 brightnessctl
 conky
 dex
 dmenu
 dunst
-file-roller
-gtk-engine-murrine
-lxappearance
 network-manager-applet
 picom
-rofi rofi-calc
+rofi
 thunar
 thunar-archive-plugin
 thunar-volman
 tumbler
 xed
 
+breeze-cursors5
+kvantum-theme-matcha
+lxappearance
 
-aur/kvantum-theme-matchama
 aur/rofi-greenclip
 aur/xautolock
-aur/xcursor-breeze
 aur/xkblayout-state-git
-
 
 # Themes and icons come after dotfiles link
 !appearance
