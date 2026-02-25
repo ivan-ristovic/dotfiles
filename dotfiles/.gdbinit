@@ -6,7 +6,7 @@ python
 
 # License ----------------------------------------------------------------------
 
-# Copyright (c) 2015-2023 Andrea Cardaci <cyrus.and@gmail.com>
+# Copyright (c) 2015-2025 Andrea Cardaci <cyrus.and@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -103,13 +103,13 @@ prompt, see the command `python print(gdb.prompt.prompt_help())`''',
 
 See the `prompt` attribute. This value is used as a Python format string where
 `{pid}` is expanded with the process identifier of the target program.''',
-                'default': '\[\e[1;35m\]>>>\[\e[0m\]'
+                'default': r'\[\e[1;35m\]>>>\[\e[0m\]'
             },
             'prompt_not_running': {
                 'doc': '''Define the value of `{status}` when the target program is running.
 
 See the `prompt` attribute. This value is used as a Python format string.''',
-                'default': '\[\e[90m\]>>>\[\e[0m\]'
+                'default': r'\[\e[90m\]>>>\[\e[0m\]'
             },
             # divider
             'omit_divider': {
@@ -346,7 +346,7 @@ def fetch_breakpoints(watchpoints=False, pending=False):
                 parsed_breakpoints[number] = [address_info], is_pending, ''
             elif len(fields) >= 5 and fields[1] == 'catchpoint':
                 # only take before comma, but ignore commas in quotes
-                what = catch_what_regex.search(' '.join(fields[4:]))[0].strip()
+                what = catch_what_regex.search(' '.join(fields[4:])).group(0).strip()
                 parsed_breakpoints[number] = [], False, what
             elif len(fields) >= 3 and number in parsed_breakpoints:
                 # add this address to the list of multiple locations
@@ -612,11 +612,13 @@ class Dashboard(gdb.Command):
             else:
                 import termios
                 import fcntl
-                # first 2 shorts (4 byte) of struct winsize
-                raw = fcntl.ioctl(fd, termios.TIOCGWINSZ, ' ' * 4)
-                height, width = struct.unpack('hh', raw)
+                # first 2 shorts of struct winsize
+                winsize_format = 'hhhh'
+                buffer = b'\x00' * struct.calcsize(winsize_format)
+                buffer = fcntl.ioctl(fd, termios.TIOCGWINSZ, buffer)
+                height, width, _, _ = struct.unpack(winsize_format, buffer)
                 return int(width), int(height)
-        except (ImportError, OSError):
+        except (ImportError, OSError, SystemError):
             # this happens when no curses library is found on windows or when
             # the terminal is not properly configured
             return 80, 24  # hardcoded fallback value
@@ -650,7 +652,8 @@ class Dashboard(gdb.Command):
         # process all the init files in order
         for root, dirs, files in itertools.chain.from_iterable(inits_dirs):
             dirs.sort()
-            for init in sorted(files):
+            # skipping dotfiles
+            for init in sorted(file for file in files if not file.startswith('.')):
                 path = os.path.join(root, init)
                 _, ext = os.path.splitext(path)
                 # either load Python files or GDB
@@ -674,8 +677,19 @@ class Dashboard(gdb.Command):
 
     @staticmethod
     def create_command(name, invoke, doc, is_prefix, complete=None):
-        Class = type('', (gdb.Command,), {'invoke': invoke, '__doc__': doc})
-        Class(name, gdb.COMMAND_USER, complete or gdb.COMPLETE_NONE, is_prefix)
+        if callable(complete):
+            Class = type('', (gdb.Command,), {
+                '__doc__': doc,
+                'invoke': invoke,
+                'complete': complete
+            })
+            Class(name, gdb.COMMAND_USER, prefix=is_prefix)
+        else:
+            Class = type('', (gdb.Command,), {
+                '__doc__': doc,
+                'invoke': invoke
+            })
+            Class(name, gdb.COMMAND_USER, complete or gdb.COMPLETE_NONE, is_prefix)
 
     @staticmethod
     def err(string):
@@ -1647,46 +1661,53 @@ Optionally list the frame arguments and locals too.'''
         # skip if the current thread is not stopped
         if not gdb.selected_thread().is_stopped():
             return []
-        # find the selected frame (i.e., the first to display)
-        selected_index = 0
+        # find the selected frame level (XXX Frame.level() is a recent addition)
+        start_level = 0
         frame = gdb.newest_frame()
         while frame:
             if frame == gdb.selected_frame():
                 break
             frame = frame.older()
-            selected_index += 1
-        # format up to "limit" frames
-        frames = []
-        number = selected_index
+            start_level += 1
+        # gather the frames
         more = False
-        while frame:
-            # the first is the selected one
-            selected = (len(frames) == 0)
-            # fetch frame info
-            style = R.style_selected_1 if selected else R.style_selected_2
-            frame_id = ansi(str(number), style)
-            info = Stack.get_pc_line(frame, style)
-            frame_lines = []
-            frame_lines.append('[{}] {}'.format(frame_id, info))
-            # add frame arguments and locals
-            variables = Variables.format_frame(
-                frame, self.show_arguments, self.show_locals, self.compact, self.align, self.sort)
-            frame_lines.extend(variables)
-            # add frame
-            frames.append(frame_lines)
-            # next
-            frame = frame.older()
-            number += 1
-            # check finished according to the limit
-            if self.limit and len(frames) == self.limit:
-                # more frames to show but limited
-                if frame:
-                    more = True
+        frames = [gdb.selected_frame()]
+        going_down = True
+        while True:
+            # stack frames limit reached
+            if len(frames) == self.limit:
+                more = True
                 break
+            # zigzag the frames starting from the selected one
+            if going_down:
+                frame = frames[-1].older()
+                if frame:
+                    frames.append(frame)
+                else:
+                    frame = frames[0].newer()
+                    if frame:
+                        frames.insert(0, frame)
+                        start_level -= 1
+                    else:
+                        break
+            else:
+                frame = frames[0].newer()
+                if frame:
+                    frames.insert(0, frame)
+                    start_level -= 1
+                else:
+                    frame = frames[-1].older()
+                    if frame:
+                        frames.append(frame)
+                    else:
+                        break
+            # switch direction
+            going_down = not going_down
         # format the output
         lines = []
-        for frame_lines in frames:
-            lines.extend(frame_lines)
+        for number, frame in enumerate(frames, start=start_level):
+            selected = frame == gdb.selected_frame()
+            lines.extend(self.get_frame_lines(number, frame, selected))
         # add the placeholder
         if more:
             lines.append('[{}]'.format(ansi('+', R.style_selected_2)))
@@ -1728,6 +1749,19 @@ Optionally list the frame arguments and locals too.'''
                 'type': bool
             }
         }
+
+    def get_frame_lines(self, number, frame, selected=False):
+        # fetch frame info
+        style = R.style_selected_1 if selected else R.style_selected_2
+        frame_id = ansi(str(number), style)
+        info = Stack.get_pc_line(frame, style)
+        frame_lines = []
+        frame_lines.append('[{}] {}'.format(frame_id, info))
+        # add frame arguments and locals
+        variables = Variables.format_frame(
+            frame, self.show_arguments, self.show_locals, self.compact, self.align, self.sort)
+        frame_lines.extend(variables)
+        return frame_lines
 
     @staticmethod
     def format_line(prefix, line):
@@ -2067,7 +2101,7 @@ architectures different from x86 setting this attribute might be mandatory.''',
             if len(fields) != 7:
                 continue
             name, _, _, _, _, _, groups = fields
-            if not re.match('\w', name):
+            if not re.match(r'\w', name):
                 continue
             for group in groups.split(','):
                 if group in (match_groups or ('general',)):
@@ -2142,7 +2176,7 @@ class Expressions(Dashboard.Module):
     '''Watch user expressions.'''
 
     def __init__(self):
-        self.table = set()
+        self.table = []
 
     def label(self):
         return 'Expressions'
@@ -2153,9 +2187,9 @@ class Expressions(Dashboard.Module):
         if self.align:
             label_width = max(len(expression) for expression in self.table) if self.table else 0
         default_radix = Expressions.get_default_radix()
-        for expression in self.table:
+        for number, expression in enumerate(self.table, start=1):
             label = expression
-            match = re.match('^/(\d+) +(.+)$', expression)
+            match = re.match(r'^/(\d+) +(.+)$', expression)
             try:
                 if match:
                     radix, expression = match.groups()
@@ -2166,9 +2200,10 @@ class Expressions(Dashboard.Module):
             finally:
                 if match:
                     run('set output-radix {}'.format(default_radix))
+            number = ansi(str(number), R.style_selected_2)
             label = ansi(expression, R.style_high) + ' ' * (label_width - len(expression))
             equal = ansi('=', R.style_low)
-            out.append('{} {} {}'.format(label, equal, value))
+            out.append('[{}] {} {} {}'.format(number, label, equal, value))
         return out
 
     def commands(self):
@@ -2180,8 +2215,7 @@ class Expressions(Dashboard.Module):
             },
             'unwatch': {
                 'action': self.unwatch,
-                'doc': 'Stop watching an expression.',
-                'complete': gdb.COMPLETE_EXPRESSION
+                'doc': 'Stop watching an expression by index.'
             },
             'clear': {
                 'action': self.clear,
@@ -2200,15 +2234,22 @@ class Expressions(Dashboard.Module):
 
     def watch(self, arg):
         if arg:
-            self.table.add(arg)
+            if arg not in self.table:
+                self.table.append(arg)
+            else:
+                raise Exception('Expression already watched')
         else:
             raise Exception('Specify an expression')
 
     def unwatch(self, arg):
         if arg:
             try:
-                self.table.remove(arg)
+                number = int(arg) - 1
             except:
+                number = -1
+            if 0 <= number < len(self.table):
+                self.table.pop(number)
+            else:
                 raise Exception('Expression not watched')
         else:
             raise Exception('Specify an expression')
@@ -2223,7 +2264,7 @@ class Expressions(Dashboard.Module):
         except RuntimeError:
             # XXX this is a fix for GDB <8.1.x see #161
             message = run('show output-radix')
-            match = re.match('^Default output radix for printing of values is (\d+)\.$', message)
+            match = re.match(r'^Default output radix for printing of values is (\d+)\.$', message)
             return match.groups()[0] if match else 10  # fallback
 
 # XXX workaround to support BP_BREAKPOINT in older GDB versions
@@ -2335,9 +2376,15 @@ set python print-stack full
 
 python Dashboard.start()
 
+# Fixes ------------------------------------------------------------------------
+
+# workaround for the GDB readline issue, see #325
+python import sys; sys.modules['readline'] = None
+
 # File variables ---------------------------------------------------------------
 
 # vim: filetype=python
 # Local Variables:
 # mode: python
 # End:
+
