@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+###############################################################################
+# fzf.nb-plugin
+#
+# FZF Plugin for nb
+#
+###############################################################################
+
+# Add the new subcommand name with `_subcommands add <name>`.
+_subcommands add "fzf"
+
+# Define help and usage text with `_subcommands describe <subcommand> <usage>`.
+_subcommands describe "fzf" <<HEREDOC
+Usage:
+  nb fzf
+  Description:
+    Search through current notebook using fzf and then edit sepected item.
+HEREDOC
+
+_fzf() {
+    local note=$(_list -t note --no-color --no-indicator --no-id | fzf-tmux $(echo $FZF_TMUX_OPTS) --header "$(_notebook current --name)" --preview "nb show -p {} | bat -l md" )
+
+    if ! [[ -z "$note" ]]; then
+        command nb edit "$note"
+    fi
+}
