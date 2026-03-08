@@ -27,13 +27,14 @@ gimp
 handbrake
 kdenlive
 kvantum-manjaro
-lg512
+# lg512
 libreoffice-still
 # lutris
 neofetch
 nextcloud-client libsecret gnome-keyring
 arch/nordvpn
 obs-studio
+openrgb
 picard
 arch/polychromatic
 qalculate-gtk
