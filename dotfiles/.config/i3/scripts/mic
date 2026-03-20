@@ -1,46 +1,30 @@
 #!/bin/bash
-#
-# Copyright © 2020 Filip Paskali
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-# https://github.com/vivien/i3blocks-contrib/blob/master/miccontrol/miccontrol
 
 BLOCK_BUTTON=${BLOCK_BUTTON:-$1}
 DEFAULT_SOURCE=$(pactl get-default-source)
 SOURCE=${SOURCE:-$DEFAULT_SOURCE}
 toggled=false
+
 case $BLOCK_BUTTON in
-  1|3) 
-    pactl set-source-mute "$SOURCE" toggle 
+  1|3)
+    pactl set-source-mute "$SOURCE" toggle
     toggled=true
     ;;
 esac
 
-case $(pacmd list-sources | grep -A 11 "$SOURCE" | awk '/muted/ {print $2; exit}') in
-    yes)
-      echo ""
-      if $toggled ; then
-        notify-send -t 500 "  |  Muted"
-      fi
-      ;;
-    no)
-      echo ""
-      echo ""
-      echo "#D21A1A"
-      if $toggled ; then
-        notify-send -t 500 "  |  Unmuted"
-      fi
-      ;;
-esac
+# Get mute status using wpctl instead of pacmd
+MUTED=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | grep -o '\[MUTED\]')
+
+if [ "$MUTED" = "[MUTED]" ]; then
+  echo ""
+  if $toggled ; then
+    notify-send -t 500 "  |  Muted"
+  fi
+else
+  echo ""
+  echo ""
+  echo "#D21A1A"
+  if $toggled ; then
+    notify-send -t 500 "  |  Unmuted"
+  fi
+fi

@@ -1,8 +1,21 @@
 ### Multimedia ###
 
 
-pulseaudio pavucontrol
+## Pulseaudio
+# pulseaudio 
+# pulseaudio-alsa
+# pulseaudio-equalizer
+# pulseaudio-zeroconf
 
+## Pipewire
+pipewire
+pipewire-alsa
+pipewire-jack
+pipewire-pulse
+wireplumber
+
+## Volume control
+pavucontrol
 
 ## Player
 mpv

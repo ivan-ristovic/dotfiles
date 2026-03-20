@@ -1,3 +1,7 @@
+pipewire.service 
+pipewire-pulse.service 
+wireplumber.service
+
 gpu-screen-recorder-ui
 psd.service
 
