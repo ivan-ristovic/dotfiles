@@ -5,19 +5,22 @@ arch/updates
 cleanup_manjaro_i3
 
 
-# Base
+## Base
 +arch/i3-x11
 +arch/hardware
 +arch/utils
 +arch/media
 
 
-# Development
-# (keep close to top for build dependencies)
+## Development
+## (keep close to top for build dependencies)
 +arch/devel
 +arch/devel-dotnet
 +arch/perf
 
+## VPN
+# arch/nordvpn
+proton-vpn-cli
 
 audacity
 firefox 
@@ -32,7 +35,6 @@ libreoffice-still
 # lutris
 neofetch
 nextcloud-client libsecret gnome-keyring
-arch/nordvpn
 obs-studio
 openrgb
 picard
@@ -61,7 +63,7 @@ aur/oversteer
 aur/ventoy-bin
 aur/webcord-bin
 
-# Wine
+## Wine
 +arch/wine
 
 
