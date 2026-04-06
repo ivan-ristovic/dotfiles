@@ -2,7 +2,7 @@ main.config_file_version 2
 main.hotkeys_enable_option enable_hotkeys_no_grab
 main.joystick_hotkeys_enable_option disable_hotkeys
 main.language 
-main.notification_speed normal
+main.notification_speed fast
 main.show_hide_hotkey 26 16
 main.software_encoding_warning_shown false
 main.tint_color nvidia
@@ -73,9 +73,9 @@ replay.record_options.record_cursor true
 replay.record_options.restore_portal_session true
 replay.record_options.show_notifications true
 replay.record_options.use_led_indicator false
-replay.record_options.video_bitrate 5000
+replay.record_options.video_bitrate 7000
 replay.record_options.video_height 1080
-replay.record_options.video_quality very_high
+replay.record_options.video_quality custom
 replay.record_options.video_width 1920
 replay.record_options.webcam_camera_fps 0
 replay.record_options.webcam_camera_height 0
@@ -88,7 +88,7 @@ replay.record_options.webcam_width 30
 replay.record_options.webcam_x 0
 replay.record_options.webcam_y 0
 replay.replay_storage ram
-replay.restart_replay_on_save false
+replay.restart_replay_on_save true
 replay.save_10_min_hotkey 97 16
 replay.save_1_min_hotkey 96 16
 replay.save_directory /ramfs
