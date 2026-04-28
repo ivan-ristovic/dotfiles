@@ -6,7 +6,7 @@
 {"_id":"bounds","value":{"x":17,"y":64,"width":1886,"height":999,"maximized":true,"fullScreen":false}}
 {"_id":"channelsHidden","value":"[]"}
 {"_id":"checkForBlogPosts","value":false}
-{"_id":"checkForUpdates","value":false}
+{"_id":"checkForUpdates","value":true}
 {"_id":"defaultQuality","value":"1080"}
 {"_id":"disableSmoothScrolling","value":true}
 {"_id":"displayVideoPlayButton","value":false}
@@ -22,16 +22,17 @@
 {"_id":"hideHeaderLogo","value":true}
 {"_id":"hideLabelsSideBar","value":false}
 {"_id":"hidePopularVideos","value":false}
-{"_id":"hideSubscriptionsCommunity","value":false}
+{"_id":"hideSubscriptionsCommunity","value":true}
 {"_id":"hideSubscriptionsLive","value":false}
-{"_id":"hideSubscriptionsShorts","value":false}
+{"_id":"hideSubscriptionsShorts","value":true}
+{"_id":"hideSubscriptionsVideos","value":false}
 {"_id":"hideTrendingVideos","value":false}
 {"_id":"hideUpcomingPremieres","value":true}
 {"_id":"mainColor","value":"Red"}
 {"_id":"openDeepLinksInNewWindow","value":true}
 {"_id":"rememberHistory","value":true}
 {"_id":"rememberSearchHistory","value":false}
-{"_id":"saveWatchedProgress","value":false}
+{"_id":"settingsSectionSortEnabled","value":false}
 {"_id":"showDistractionFreeTitles","value":false}
 {"_id":"sponsorBlockFiller","value":{"color":"Orange","skip":"showInSeekBar"}}
 {"_id":"sponsorBlockIntro","value":{"color":"Orange","skip":"showInSeekBar"}}
@@ -45,3 +46,4 @@
 {"_id":"useDeArrowTitles","value":true}
 {"_id":"useRssFeeds","value":false}
 {"_id":"useSponsorBlock","value":true}
+{"_id":"watchedProgressSavingMode","value":"never"}
