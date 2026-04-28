@@ -15,7 +15,7 @@ prompt "List systemd error logs:"
 journalctl -p 3 -b | less
 
 prompt "Check package diffs:"
-list_loc=$NC_BACKUP/package_list.txt
+list_loc=$NC_BACKUP/package_list_$(hostname).txt
 touch $list_loc
 if ! diff -u <(cat $list_loc) <(pacman -Qqe) ; then
     log::msg "Changes detected. Check whether install lists should be updated."
