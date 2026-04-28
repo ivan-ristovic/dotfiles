@@ -73,7 +73,7 @@ replay.record_options.record_cursor true
 replay.record_options.restore_portal_session true
 replay.record_options.show_notifications true
 replay.record_options.use_led_indicator false
-replay.record_options.video_bitrate 7000
+replay.record_options.video_bitrate 8000
 replay.record_options.video_height 1080
 replay.record_options.video_quality custom
 replay.record_options.video_width 1920
