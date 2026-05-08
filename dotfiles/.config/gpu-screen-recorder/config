@@ -1,7 +1,7 @@
 main.advanced_view true
 main.audio_codec opus
-main.audio_input Default output
-main.audio_input Default input
+main.audio_input device:Default output
+main.audio_input device:Default input
 main.av1_amd_bug_warning_shown false
 main.change_video_resolution false
 main.codec h264
@@ -10,9 +10,11 @@ main.fps 60
 main.framerate_mode auto
 main.hevc_amd_bug_warning_shown false
 main.hide_window_when_recording false
+main.installed_gsr_global_hotkeys_version 0
 main.merge_audio_tracks false
 main.overclock false
 main.quality very_high
+main.record_app_audio_inverted false
 main.record_area_height 1200
 main.record_area_option window
 main.record_area_width 1920
@@ -23,6 +25,7 @@ main.show_recording_started_notifications false
 main.show_recording_stopped_notifications false
 main.software_encoding_warning_shown false
 main.steam_deck_warning_shown false
+main.use_new_ui false
 main.video_bitrate 5000
 main.video_height 1080
 main.video_width 1920
