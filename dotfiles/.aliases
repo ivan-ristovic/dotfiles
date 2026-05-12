@@ -98,6 +98,9 @@ fi
 "$e_alias" c='cat'
 "$e_alias" cn='cat -ns'
 "$i_alias" cp='cp -i'
+if is_installed clipcopy ; then
+    "$e_alias" cpc='clipcopy'
+fi
 "$e_alias" ctl='systemctl'
 "$e_alias" ctld='systemctl disable'
 "$e_alias" ctle='systemctl enable'
