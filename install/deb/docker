@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if test::installed docker ; then
-    log::msg "docker already installed"
+if test_installed docker ; then
+    log_msg "docker already installed"
     return
 fi
 

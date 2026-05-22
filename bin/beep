@@ -1,4 +1,4 @@
 #!/bin/bash
 
-shlib std::beep "$@"
+shlib std_beep "$@"
 

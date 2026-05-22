@@ -2,7 +2,7 @@
 
 . include lib
 
-assert::argc_ge $# 1 "[path/to/pub/key] user@server"
+assert_argc_ge $# 1 "[path/to/pub/key] user@server"
 
 function get_key_path () 
 {
@@ -19,4 +19,4 @@ fi
 
 set -e;
 ssh-copy-id -i "$key" "$dst"
-log::suc "Done!"
+log_suc "Done!"

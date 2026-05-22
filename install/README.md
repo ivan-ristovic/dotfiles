@@ -12,7 +12,7 @@ inst tmux
 
 # Plugin support
 git clone https://github.com/tmux-plugins/tpm ${SETUP_HOME_DIR}/.tmux/plugins/tpm
-log::msg "Installing tmux plugins..."
+log_msg "Installing tmux plugins..."
 TMUX_PLUGIN_MANAGER_PATH=${SETUP_HOME_DIR}/.tmux/plugins ${SETUP_HOME_DIR}/.tmux/plugins/tpm/scripts/install_plugins.sh
-log::msg "tmux plugins installed"
+log_msg "tmux plugins installed"
 ```

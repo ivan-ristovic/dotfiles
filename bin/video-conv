@@ -22,7 +22,7 @@ SHORT_OPTS=h,s:,a:,q:,p:,l,e,v,c:,t:,f:
 LONG_OPTS=help,codec:,scale:,aspect:,tag:,format:,quality:,preset:,verbose,subs,log,error
 OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --longoptions $LONG_OPTS -- "$@") 
 if [ $? -ne 0 ]; then
-    std::fat "failed to parse provided arguments"
+    std_fat "failed to parse provided arguments"
 fi
 eval set -- $OPTS
 

@@ -2,7 +2,7 @@
 
 . include assert
 
-assert::argc_ge $# 3 "base_from base_to num [nums ...]"
+assert_argc_ge $# 3 "base_from base_to num [nums ...]"
 
 ibase=$1
 obase=$2

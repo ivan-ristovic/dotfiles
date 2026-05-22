@@ -86,7 +86,7 @@ SHORT_OPTS=v,s,u:,h,l,r,d
 LONG_OPTS=user:,username:,dotfiles,link,stow,packages,install,dotfiles,patch,patches,services,all,complete,help,strict,repair,debug,verbose,remote,git,log,dry
 OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --longoptions $LONG_OPTS -- "$@") 
 if [ $? -ne 0 ]; then
-    std::fat "failed to parse provided arguments"
+    std_fat "failed to parse provided arguments"
 fi
 eval set -- $OPTS
 
@@ -118,29 +118,29 @@ do
             ;;
         --remote | --git)
             if git remote set-url origin $GIT_REMOTE ; then
-                log::suc "Successfully updated remote: $GIT_REMOTE"
+                log_suc "Successfully updated remote: $GIT_REMOTE"
                 exit 0
             else 
-                log::err "Failed to update remote"
+                log_err "Failed to update remote"
                 exit $?
             fi
             ;;
         -l | --log)
             logfile="setup-$(date +%s).log"
-            log::msg "logging output to: $logfile"
+            log_msg "logging output to: $logfile"
             exec 1> >(tee -a $logfile)
             exec 2>&1
             ;;
         -v | --verbose | --debug)
-            log::msg "debug mode enabled"
+            log_msg "debug mode enabled"
             set -x; 
             ;;
         -r | --repair)
-            log::msg "repairing dotfile symlinks"
+            log_msg "repairing dotfile symlinks"
             STOW_EXTRA_ARGS="$STOW_EXTRA_ARGS -R"
             ;;
         -s | --strict)
-            log::msg "strict mode enabled"
+            log_msg "strict mode enabled"
             set -e; 
             ;;
         -u | --user | --username)
@@ -161,7 +161,7 @@ do
             break
             ;;
         *)
-            log::err "unknown option: $1"
+            log_err "unknown option: $1"
             usage
             ;;
     esac
@@ -171,18 +171,18 @@ done
 # Check if install arg exists
 if $SETUP_PACKAGES ; then
     if [ $# -eq 0 ]; then
-        std::fat "missing install list(s) or entries to install"
+        std_fat "missing install list(s) or entries to install"
     fi
 fi
 
 # Check username
 if [ -z "$SETUP_USER" ]; then
-    std::fat "cannot automatically detect user name - please provide one using the --username option"
+    std_fat "cannot automatically detect user name - please provide one using the --username option"
 fi
 
 # Check home dir
 if [ ! -d "$SETUP_HOME_DIR" ]; then
-    std::fat "invalid home directory: $SETUP_HOME_DIR"
+    std_fat "invalid home directory: $SETUP_HOME_DIR"
 fi
 
 if ! $SETUP_OVERRIDE ; then 
@@ -192,9 +192,9 @@ if ! $SETUP_OVERRIDE ; then
     SETUP_SERVICES=false
 fi
 
-log::msg "user: $SETUP_USER"
-log::msg "home: $SETUP_HOME_DIR"
-log::msg "list: $*"
+log_msg "user: $SETUP_USER"
+log_msg "home: $SETUP_HOME_DIR"
+log_msg "list: $*"
 
 export SETUP_USER
 export SETUP_HOME_DIR
@@ -207,7 +207,7 @@ errored_entries=()
 
 if $SETUP_PACKAGES ; then
 
-    log::suc "Starting installations; Command: '$PM_INSTALL_CMD'"
+    log_suc "Starting installations; Command: '$PM_INSTALL_CMD'"
 
     function process_list ()
     {
@@ -218,34 +218,34 @@ if $SETUP_PACKAGES ; then
             if [[ "$entry" == "+"* ]]; then
                 cd "$DOTFILES_ROOT_DIR"
                 to_include="include/${entry#"+"}"
-                log::msg "Including list file   : $to_include"
+                log_msg "Including list file   : $to_include"
                 process_list $(read_list "lists/$to_include")
             elif [[ "$entry" == "!"* ]]; then
                 to_post_install=${entry#"!"}
-                log::msg "Post-link install set : $to_post_install"
+                log_msg "Post-link install set : $to_post_install"
                 packages_requiring_linked_dotfiles+=(${to_post_install})
             elif [ -f "$SETUP_SCRIPT" ]; then
-                log::msg "Setting up via script : $SETUP_SCRIPT"
+                log_msg "Setting up via script : $SETUP_SCRIPT"
                 script_rel_path=${SETUP_SCRIPT%*/}
-                log::dbg "Script path: $script_rel_path"
+                log_dbg "Script path: $script_rel_path"
                 if ! $DRY_RUN ; then
                     source ./"$script_rel_path"
                 fi
             elif [[ "$entry" == "$AUR_PREFIX"* ]]; then
                 pkg=${entry#"$AUR_PREFIX"}
-                log::msg "Installing from AUR   : $pkg"
+                log_msg "Installing from AUR   : $pkg"
                 if ! $DRY_RUN ; then
                     if inst_aur "$pkg"; then
-                        log::suc "Successfully installed: $pkg"
+                        log_suc "Successfully installed: $pkg"
                     else
                         errored_entries+=(${entry})
                     fi
                 fi
             else
-                log::msg "Installing package    : $entry"
+                log_msg "Installing package    : $entry"
                 if ! $DRY_RUN ; then
                     if inst "$PM" "$entry"; then
-                        log::suc "Successfully installed: $entry"
+                        log_suc "Successfully installed: $entry"
                     else
                         errored_entries+=(${entry})
                     fi
@@ -260,7 +260,7 @@ if $SETUP_PACKAGES ; then
 
     for arg in "$@" ; do
         if [[ "$arg" == "install/"* ]]; then
-            log::msg "Ignoring install/ pfix: $arg"
+            log_msg "Ignoring install/ pfix: $arg"
             arg=${arg#"install/"}
         fi
         if [ -f "$arg" ]; then
@@ -270,7 +270,7 @@ if $SETUP_PACKAGES ; then
         fi
     done
 
-    log::suc "Installations finished."
+    log_suc "Installations finished."
 fi
 
 
@@ -288,16 +288,16 @@ if $SETUP_DOTFILES ; then
         entry_path="$SETUP_HOME_DIR/$entry"
         if [[ -f $entry_path && ! -h $entry_path ]]; then
             mkdir -p $backup_dir
-            log::msg "Forcing overwrite of: $entry_path ; backup at $backup_dir"
+            log_msg "Forcing overwrite of: $entry_path ; backup at $backup_dir"
             mv "$entry_path" "$backup_dir"
         fi
     done
 
     cd dotfiles
     if stow --no-folding $STOW_EXTRA_ARGS -v . -t "$SETUP_HOME_DIR" ; then 
-        log::suc "Dotfiles linked."
+        log_suc "Dotfiles linked."
     else
-        log::err "Failed linking dotfiles! Backup is kept at: $backup_dir"
+        log_err "Failed linking dotfiles! Backup is kept at: $backup_dir"
     fi
     cd "$DOTFILES_ROOT_DIR"
     
@@ -313,10 +313,10 @@ if $SETUP_PATCHES ; then
         if [ -f "$patches_script" ]; then
             source ./"$patches_script" "$SETUP_SCRIPT_EXTRA_ARGS"
         else
-            log::err "$patches_dir/$patches_script script is not present."
+            log_err "$patches_dir/$patches_script script is not present."
         fi
     else
-        log::err "$patches_dir/ directory is not present."
+        log_err "$patches_dir/ directory is not present."
     fi
     unset patches_dir
     unset patches_script
@@ -331,10 +331,10 @@ if $SETUP_SERVICES ; then
         if [ -f "$services_script" ]; then
             source ./"$services_script" "$SETUP_SCRIPT_EXTRA_ARGS"
         else
-            log::err "$services_dir/$services_script script is not present."
+            log_err "$services_dir/$services_script script is not present."
         fi
     else
-        log::err "$services_dir/ directory is not present."
+        log_err "$services_dir/ directory is not present."
     fi
     unset services_dir
     unset services_script
@@ -345,12 +345,12 @@ if $SETUP_PACKAGES ; then
     process_list "${packages_requiring_linked_dotfiles[@]}"
 
     for errored_entry in "${errored_entries[@]}"; do
-        log::err "Failed to install: $errored_entry"
+        log_err "Failed to install: $errored_entry"
     done
 fi
 
 unset SETUP_USER
 unset SETUP_HOME_DIR
 
-log::suc "Done! Have a nice day."
+log_suc "Done! Have a nice day."
 

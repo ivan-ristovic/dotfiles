@@ -4,7 +4,7 @@ inst_aur ghcup-hs-bin
 
 function ghcup_install ()
 {
-    log::suc "Installing through ghcup: $*"
+    log_suc "Installing through ghcup: $*"
     ghcup install "$@"
 }
 

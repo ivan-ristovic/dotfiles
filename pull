@@ -2,27 +2,27 @@
 
 source utils.sh
 
-log::msg "Stashing existing changes..."
+log_msg "Stashing existing changes..."
 stash_result=$(git stash push -m "dotfiles: Before pull")
 needs_pop=true
 if [ "$stash_result" = "No local changes to save" ]; then
     needs_pop=false
 fi
 
-log::msg "Pulling updates..."
+log_msg "Pulling updates..."
 git pull
 
 if $needs_pop; then
-    log::msg "Restoring stashed changes..."
+    log_msg "Restoring stashed changes..."
     git stash pop
 fi
 
 unmerged_files=$(git diff --name-only --diff-filter=U)
 if [[ -n $unmerged_files ]]; then
-    log::err "The following files have merge conflicts after popping the stash:"
+    log_err "The following files have merge conflicts after popping the stash:"
     printf %"s\n" "$unmerged_files"
 else
-    log::suc "Updating dotfiles symlinks..."
+    log_suc "Updating dotfiles symlinks..."
     ./setup --dotfiles
 fi
 

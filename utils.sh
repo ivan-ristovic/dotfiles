@@ -10,7 +10,7 @@ SHLIB_FMT_TIME=true
 function uninst ()
 {
     if ! sudo $PM_UNINSTALL_CMD $@; then
-        log::wrn "An error occurred while uninstalling: $@"
+        log_wrn "An error occurred while uninstalling: $@"
         return 1
     fi
 }
@@ -18,7 +18,7 @@ function uninst ()
 function inst ()
 {
     if ! inst_silent $@; then
-        log::err "An error occurred while installing: $@"
+        log_err "An error occurred while installing: $@"
         return 1
     fi
 }
@@ -31,7 +31,7 @@ function inst_silent ()
 function inst_aur ()
 {
     if ! yay -S --sudoloop --needed --noconfirm --provides=false --answerdiff None --answerclean None --mflags "--noconfirm --needed" $@; then
-        log::err "An error occurred while installing from AUR: $@"
+        log_err "An error occurred while installing from AUR: $@"
         return 1
     fi
 }

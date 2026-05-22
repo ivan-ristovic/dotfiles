@@ -2,6 +2,6 @@
 
 . include lib
 
-assert::argc_ge $# 2 "delimiter args..."
-str::join $*
+assert_argc_ge $# 2 "delimiter args..."
+str_join $*
 

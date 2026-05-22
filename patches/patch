@@ -9,24 +9,24 @@ fi
 
 for patch in $(find ./*/ -type f) ; do
     if [[ "$(basename "$patch")" == .* ]] ; then
-        log::wrn "Skip: $patch"
+        log_wrn "Skip: $patch"
         continue
     fi
     target_file=${patch:1} 
     sudo mkdir -p "$(dirname "$target_file")"
     if [[ $patch == *.patch ]] ; then
         target_file="${target_file%.patch}"
-        log::msg "Patch: $target_file"
+        log_msg "Patch: $target_file"
         if ! $__dry_run ; then
             if ! sudo patch -N -s --reject-file=- "$target_file" < "$patch" ; then
-                log::err "Patch failed: $target_file"
+                log_err "Patch failed: $target_file"
             fi
         fi
     else
-        log::msg "Swap:  $target_file"
+        log_msg "Swap:  $target_file"
         if ! $__dry_run ; then
             if ! sudo cp --no-preserve=mode,ownership -rf "$patch" "$target_file" ; then
-                log::err "Swap failed: $patch"
+                log_err "Swap failed: $patch"
             fi
         fi
     fi

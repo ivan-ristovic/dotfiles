@@ -5,11 +5,11 @@ SHLIB_FMT_TIME=true
 
 function prompt () 
 {
-    std::confirm log::msg "$*"
+    std_confirm log_msg "$*"
 }
 
 prompt "List systemd errors:"
-log::exec systemctl --failed
+log_exec systemctl --failed
 
 prompt "List systemd error logs:"
 journalctl -p 3 -b | less
@@ -18,37 +18,37 @@ prompt "Check package diffs:"
 list_loc=$NC_BACKUP/package_list_$(hostname).txt
 touch $list_loc
 if ! diff -u <(cat $list_loc) <(pacman -Qqe) ; then
-    log::msg "Changes detected. Check whether install lists should be updated."
-    if std::ask "Update the backed up package list?" ; then
+    log_msg "Changes detected. Check whether install lists should be updated."
+    if std_ask "Update the backed up package list?" ; then
         mv $list_loc $list_loc.bak
         if pacman -Qqe > $list_loc ; then
-            log::suc "Package list updated"
+            log_suc "Package list updated"
         else
-            log::err "Failed to update package list"
+            log_err "Failed to update package list"
         fi
     fi
 fi
 unset list_loc
-log::suc "Package diffs processed."
+log_suc "Package diffs processed."
 
 prompt "Update packages (official)"
-log::exec sudo pacman -Syu
+log_exec sudo pacman -Syu
 
 prompt "Update packages (AUR)"
-log::exec yay -Syu
+log_exec yay -Syu
 
 prompt "Show orphaned packages"
-log::exec pacman -Qtd
+log_exec pacman -Qtd
 
 prompt "Show foreign packages"
-log::exec pacman -Qm
+log_exec pacman -Qm
 
 prompt "Cleaning package manager caches"
-log::exec paccache -r
-log::exec yaycache -r
+log_exec paccache -r
+log_exec yaycache -r
 
 prompt "Checking for .pacnew files"
-log::exec sudo pacdiff
+log_exec sudo pacdiff
 
-log::suc "Done. Have a nice day."
+log_suc "Done. Have a nice day."
 

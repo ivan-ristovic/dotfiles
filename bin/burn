@@ -4,23 +4,23 @@
 export SHLIB_FMT_TIME=true
 
 if [[ $# -lt 2 ]]; then
-    log::msg "USB drives:"
+    log_msg "USB drives:"
     ls -lo /dev/disk/by-id/usb-*
-    log::msg "Mountpoints:"
+    log_msg "Mountpoints:"
     lsblk
-    std::usage "file.iso /dev/my-usb"
+    std_usage "file.iso /dev/my-usb"
 else
     iso=$1
     disk=$2
-    if std::ask "Are you ABSOLUTELY SURE you want to burn '$iso' to '$disk'?"; then
-        log::msg "Unmounting $disk"
+    if std_ask "Are you ABSOLUTELY SURE you want to burn '$iso' to '$disk'?"; then
+        log_msg "Unmounting $disk"
         sudo umount "$disk"
-        log::msg "Copying '$iso' to '$disk'"
+        log_msg "Copying '$iso' to '$disk'"
         du -h "$iso"
-        sudo dd bs=4M if="$iso" of="$disk" conv=fsync oflag=direct status=progress || std::fat "Copying errored"
-        log::msg "Ensuring buffers are written..."
+        sudo dd bs=4M if="$iso" of="$disk" conv=fsync oflag=direct status=progress || std_fat "Copying errored"
+        log_msg "Ensuring buffers are written..."
         sudo sync
-        log::suc "Done!"
+        log_suc "Done!"
     fi
 fi
 
