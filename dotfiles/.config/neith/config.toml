@@ -1,0 +1,14 @@
+[editor]
+command = "nvim"
+return_behavior = "exit"
+
+[[libraries]]
+path = "~/work/neith-lib/"
+alias = "neith-lib"
+pinned = true
+
+[[libraries]]
+path = "~/work/neith-devdocs/generated/"
+alias = "devdocs"
+pinned = true
+
