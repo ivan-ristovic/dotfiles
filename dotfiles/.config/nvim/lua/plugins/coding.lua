@@ -50,19 +50,31 @@ return {
   -- Smart commenting
   {
     'numToStr/Comment.nvim',
+    dependencies = {
+      "JoosepAlviste/nvim-ts-context-commentstring",
+    },
     opts = {
       pre_hook = function(ctx)
         local U = require "Comment.utils"
-        local location = nil
-        if ctx.ctype == U.ctype.block then
-          location = require("ts_context_commentstring.utils").get_cursor_location()
+        local location
+
+        if ctx.ctype == U.ctype.blockwise then
+          location = { ctx.range.srow - 1, ctx.range.scol }
         elseif ctx.cmotion == U.cmotion.v or ctx.cmotion == U.cmotion.V then
           location = require("ts_context_commentstring.utils").get_visual_start_location()
         end
-        return require("ts_context_commentstring.internal").calculate_commentstring {
-          key = ctx.ctype == U.ctype.line and "__default" or "__multiline",
+
+        local ok, commentstring = pcall(require("ts_context_commentstring").calculate_commentstring, {
+          key = ctx.ctype == U.ctype.linewise and "__default" or "__multiline",
           location = location,
-        }
+        })
+        if ok and commentstring then
+          return commentstring
+        end
+
+        if vim.bo.commentstring:find("%%s") then
+          return vim.bo.commentstring
+        end
       end,
     }
   },

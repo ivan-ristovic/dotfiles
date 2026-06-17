@@ -6,6 +6,9 @@ return {
       'nvim-tree/nvim-web-devicons'
     },
     opts = {
+      latex = {
+        enabled = false,
+      },
       heading = {
         backgrounds = {
           'RenderMarkdownH1Bg',

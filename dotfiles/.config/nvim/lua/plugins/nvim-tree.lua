@@ -37,9 +37,9 @@ return {
 
   {
     'nvim-tree/nvim-tree.lua',
-    requires = { 'nvim-tree/nvim-web-devicons' },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     lazy = false,
-    init = function()
+    config = function()
       require("nvim-tree").setup({
         on_attach = on_attach,
         renderer = {

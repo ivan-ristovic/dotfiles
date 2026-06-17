@@ -48,7 +48,13 @@ return {
     config = function ()
 
       -- Turn on LSP status information
-      require("fidget").setup({})
+      require("fidget").setup({
+        notification = {
+          window = {
+            avoid = { "NvimTree" },
+          },
+        },
+      })
 
       local mason = require("mason")
       if not mason.has_setup then
@@ -136,13 +142,9 @@ return {
             vim.lsp.buf.formatting()
           end
         end, { desc = 'Format current buffer with LSP' })
-        
-        -- LSP color info square
-        -- Disabled until neovim update: 
-        -- https://github.com/neovim/neovim/pull/33440/files#diff-6b5f3071d65558aab177912061ac6a2f5312660655a449276c83697686f28e72
-        --[[ if client:supports_method('textDocument/documentColor') then ]]
-        --[[   vim.lsp.document_color.enable(true, bufnr, { style = 'virtual' }) ]]
-        --[[ end ]]
+        if vim.lsp.document_color and client:supports_method('textDocument/documentColor') then
+          vim.lsp.document_color.enable(true, { bufnr = bufnr }, { style = 'virtual' })
+        end
 
       end
 

@@ -42,17 +42,17 @@ local _base_lua_path = M.join_paths(vim.fn.stdpath('config'), 'lua')
 -- @param package: name of the package in lua folder.
 -----------------------------------------------------------
 function M.glob_require(package)
-    glob_path = M.join_paths(
+    local glob_path = M.join_paths(
       _base_lua_path,
       package,
       '*.lua'
     )
 
-    for i, path in pairs(vim.split(vim.fn.glob(glob_path), '\n')) do
+    for _, path in pairs(vim.fn.glob(glob_path, false, true)) do
         -- convert absolute filename to relative
-        -- ~/.config/nvim/lua/<package>/<module>.lua => <package>/foo
-        relfilename = path:gsub(_base_lua_path, ""):gsub("%.lua", "")
-        basename = M.basename(relfilename)
+        -- ~/.config/nvim/lua/<package>/<module>.lua => <package>.<module>
+        local relfilename = path:sub(#_base_lua_path + 2, -5):gsub("[/\\]", ".")
+        local basename = path:match("([^/\\]+)%.lua$") or ""
         -- skip `init` and files starting with underscore.
         if (basename ~= 'init' and basename:sub(1, 1) ~= '_') then
             require(relfilename)
@@ -71,4 +71,3 @@ function M.keymap_expr(mode, lhs, rhs, desc)
 end
 
 return M
-
