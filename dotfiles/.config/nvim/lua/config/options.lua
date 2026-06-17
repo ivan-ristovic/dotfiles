@@ -15,7 +15,7 @@ local options = {
     pumheight = 10,                          -- pop up menu height
     relativenumber = false,                  -- set relative numbered lines
     scrolloff = 8,
-    shellcmdflag = "-ic",                    -- inherit env vars when invoking commands
+    shellcmdflag = "-c",                     -- keep shell commands non-interactive
     shiftwidth = 4,                          -- the number of spaces inserted for each indentation
     showmode = true,
     showtabline = 0,                         -- show tabline when N files are open (0 - never)
@@ -45,4 +45,3 @@ vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
 --vim.cmd [[set formatoptions-=cro]] -- TODO: this doesn't seem to work
   
-

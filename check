@@ -1,0 +1,136 @@
+#!/bin/bash
+
+set -eo pipefail
+
+ROOT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
+cd "$ROOT_DIR"
+
+unset DOTFILES_UTILS_SOURCED
+export SHLIB_ROOT="$ROOT_DIR/shlib/lib"
+# shellcheck source=utils.sh
+source "$ROOT_DIR/utils.sh"
+
+set -u
+
+RUN_CONTAINER_CHECK=true
+
+function usage ()
+{
+    local exit_code=${1:-2}
+    cat <<USAGE
+usage: $(basename "$0") [--no-container] [--help]
+
+Runs repository checks.
+
+  --no-container, --skip-container
+                skip the container setup smoke test
+  -h, --help    print this help
+USAGE
+    exit "$exit_code"
+}
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --no-container | --skip-container)
+            RUN_CONTAINER_CHECK=false
+            ;;
+        -h | --help)
+            usage 0
+            ;;
+        *)
+            log_err "unknown argument: $1"
+            usage
+            ;;
+    esac
+    shift
+done
+
+function tracked_shebang_files ()
+{
+    local pattern=$1
+    local file
+    local first_line
+
+    while IFS= read -r file; do
+        [ -f "$file" ] || continue
+        IFS= read -r first_line < "$file" || true
+        if [[ "$first_line" =~ $pattern ]]; then
+            printf '%s\n' "$file"
+        fi
+    done < <(git ls-files)
+}
+
+log_msg "setup help"
+./setup --help > /dev/null
+
+log_msg "package list includes"
+missing_include=false
+while IFS= read -r include; do
+    if [ ! -f "lists/include/$include" ]; then
+        log_err "missing include: $include"
+        missing_include=true
+    fi
+done < <(find lists -type f -print0 | xargs -0 awk '/^\+/ { sub(/^\+/, "", $1); print $1 }' 2> /dev/null)
+if $missing_include; then
+    exit 1
+fi
+
+log_msg "bin helper completions"
+dotfiles/.utils/gen-bin-helper-completions --check
+
+mapfile -t shell_files < <(tracked_shebang_files '^#!.*(bash|/sh|env bash|env sh)')
+if [ "${#shell_files[@]}" -gt 0 ]; then
+    log_msg "shellcheck errors"
+    if command -v shellcheck > /dev/null 2>&1; then
+        shellcheck -S error "${shell_files[@]}"
+    else
+        log_wrn "shellcheck not found; skipping"
+    fi
+fi
+
+mapfile -t bash_files < <(tracked_shebang_files '^#!.*(bash|env bash)')
+if [ "${#bash_files[@]}" -gt 0 ]; then
+    log_msg "bash parser"
+    bash -n "${bash_files[@]}"
+fi
+
+mapfile -t lua_files < <(git ls-files '*.lua')
+if [ "${#lua_files[@]}" -gt 0 ]; then
+    log_msg "lua parser"
+    if command -v luac > /dev/null 2>&1; then
+        luac -p "${lua_files[@]}"
+    else
+        log_wrn "luac not found; skipping"
+    fi
+fi
+
+mapfile -t python_files < <(tracked_shebang_files '^#!.*python')
+if [ "${#python_files[@]}" -gt 0 ]; then
+    log_msg "python parser"
+    python3 -c '
+import pathlib
+import sys
+
+bad = []
+for filename in sys.argv[1:]:
+    path = pathlib.Path(filename)
+    try:
+        compile(path.read_text(), filename, "exec")
+    except SyntaxError as exc:
+        bad.append(f"{filename}:{exc.lineno}:{exc.offset}: {exc.msg}")
+
+if bad:
+    print("\n".join(bad), file=sys.stderr)
+    sys.exit(1)
+' "${python_files[@]}"
+fi
+
+if $RUN_CONTAINER_CHECK; then
+    log_msg "container setup smoke test"
+    containers/check-setup
+else
+    log_msg "container setup smoke test skipped"
+fi
+
+log_suc "ok"
+

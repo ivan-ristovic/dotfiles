@@ -13,7 +13,8 @@ set $bg /usr/share/backgrounds/wp.png
 ## is used in the bar {} block below.
 font pango: Noto Sans Regular 10
 
-## Set the mod key to the winkey
+## Set the mod key to "win" (Super/Meta) key
+## keyd remaps Caps Lock to Meta key so effectively Caps is the mod key
 set $mod Mod4
 
 ##############################
@@ -475,4 +476,3 @@ bar {
 #        urgent_workspace   $urgentred   $urgentred   $white      $white
 #    }
 # }
-

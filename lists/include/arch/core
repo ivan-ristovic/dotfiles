@@ -3,6 +3,8 @@
 
 +core
 
+## To avoid name clashes like fd-find
+fd
 
 ## Development packages (for building AUR packages)
 base-devel

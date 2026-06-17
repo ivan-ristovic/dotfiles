@@ -1,4 +1,10 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: flac2mp3
+# body:
+#   _arguments '*:FLAC file or directory:_bin_helpers_flac_or_dir'
+# dotfiles-completion: end
+
 
 if [ $# -eq 0 ]; then
     echo "usage: $0 .flac|dir ..."

@@ -1,4 +1,54 @@
 #!/usr/bin/env python
+# dotfiles-completion: begin
+# commands: kbl-lenovo
+# body:
+#   local effect=${words[2]}
+#   local -a effects
+#
+#   if (( CURRENT == 2 )); then
+#     effects=(
+#       'static:Static color'
+#       'breath:Fade light in and out'
+#       'hue:Transition across hue circle'
+#       'wave:Rainbow wave'
+#       'off:Turn light off'
+#     )
+#     _describe -t effects 'effect' effects
+#     return
+#   fi
+#
+#   case $effect in
+#     static)
+#       _arguments -s \
+#         '(-b --brightness)'{-b,--brightness}'[brightness]:level:(1 2)' \
+#         '*:hex color:_bin_helpers_hex_colors'
+#       ;;
+#     breath)
+#       _arguments -s \
+#         '(-b --brightness)'{-b,--brightness}'[brightness]:level:(1 2)' \
+#         '(-s --speed)'{-s,--speed}'[animation speed]:speed:(1 2 3 4)' \
+#         '*:hex color:_bin_helpers_hex_colors'
+#       ;;
+#     hue)
+#       _arguments -s \
+#         '(-b --brightness)'{-b,--brightness}'[brightness]:level:(1 2)' \
+#         '(-s --speed)'{-s,--speed}'[animation speed]:speed:(1 2 3 4)'
+#       ;;
+#     wave)
+#       _arguments -s \
+#         '(-b --brightness)'{-b,--brightness}'[brightness]:level:(1 2)' \
+#         '(-s --speed)'{-s,--speed}'[animation speed]:speed:(1 2 3 4)' \
+#         '(-d --direction)'{-d,--direction}'[wave direction]:direction:(ltr rtl)'
+#       ;;
+#     off)
+#       _bin_helpers_no_args
+#       ;;
+#     *)
+#       _message -e effects 'effect'
+#       ;;
+#   esac
+# dotfiles-completion: end
+
 
 # https://github.com/hirak99/lenovo_keboard_light
 

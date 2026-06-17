@@ -1,4 +1,12 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: beep
+# body:
+#   _arguments \
+#     '1:frequency:' \
+#     '2:duration seconds:'
+# dotfiles-completion: end
+
 
 shlib std_beep "$@"
 

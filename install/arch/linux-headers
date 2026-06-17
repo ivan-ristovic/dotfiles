@@ -1,5 +1,5 @@
 #!/bin/bash
 
-pkg=$(pacman -Q linux | awk '{print $1}' | grep "^linux[0-9]*[-rt]*$" | awk '{print $1"-headers"}' ORS=' ')
-inst "$pkg"
-unset pkg
+mapfile -t pkgs < <(pacman -Q linux | awk '{print $1}' | grep "^linux[0-9]*[-rt]*$" | awk '{print $1"-headers"}')
+inst "${pkgs[@]}"
+unset pkgs

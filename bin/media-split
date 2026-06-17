@@ -1,4 +1,13 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: media-split
+# body:
+#   _arguments \
+#     '1:input media:_bin_helpers_media_files' \
+#     '2:timestamps file:_bin_helpers_files' \
+#     '*:ffmpeg argument:'
+# dotfiles-completion: end
+
 
 if [ $# -lt 2 ]; then
     echo "usage: $(basename $0) input_media timestamps_file [ffmpeg_args]"

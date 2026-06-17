@@ -1,4 +1,10 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: 7z-backup
+# body:
+#   _arguments '1:directory:_bin_helpers_dirs'
+# dotfiles-completion: end
+
 
 if [ $# -lt 1 ]; then
     echo "usage: $0 directory"

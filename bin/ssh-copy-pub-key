@@ -1,4 +1,12 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: ssh-copy-pub-key
+# body:
+#   _arguments \
+#     '1:public key or host:_alternative "public-keys:public key:_bin_helpers_pub_keys" "hosts:host:_hosts"' \
+#     '2:host:_hosts'
+# dotfiles-completion: end
+
 
 . include lib
 

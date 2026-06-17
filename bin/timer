@@ -1,4 +1,18 @@
 #!/usr/bin/env bash
+# dotfiles-completion: begin
+# commands: timer
+# body:
+#   _arguments -s \
+#     '-r[repeat timer]:rounds:' \
+#     '-d[delay timer start]:seconds:' \
+#     '-q[suppress command-line output]' \
+#     '-N[suppress desktop notifications]' \
+#     '-p[write to /tmp/timer.fifo]' \
+#     '-h[show help]' \
+#     '-v[show version]' \
+#     '*:duration in minutes:'
+# dotfiles-completion: end
+
 
 # https://github.com/rlue/timer/blob/master/bin/Timer
 # Personal modifications: replace custom sounds with beeps
@@ -190,10 +204,10 @@ run_n_sets() {
 run_set() {
   local intervals_remaining=${#intervals[@]}
 
-  for length in ${intervals[@]}; do
+  for length in "${intervals[@]}"; do
     intervals_remaining=$(($intervals_remaining - 1))
     [ $intervals_remaining -eq 0 ] && local type="set" || local type="interval"
-    run_interval $length $type
+    run_interval "$length" "$type"
   done
 }
 
@@ -291,4 +305,3 @@ rename_tmux_session
 run_delay $delay
 run_n_sets $sets
 print_completion_message
-

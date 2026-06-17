@@ -1,4 +1,10 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: wifi-restart
+# body:
+#   _bin_helpers_no_args
+# dotfiles-completion: end
+
 
 device=$(cat /proc/net/wireless | perl -ne '/(\w+):/ && print $1')
 set -x;

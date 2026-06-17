@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# dotfiles-completion: begin
+# commands: wf
+# body:
+#   _message -e location 'weather location'
+# dotfiles-completion: end
+
 
 (
 (curl --silent --fail --show-error "wttr.in/${1:-Belgrade}?mFq&lang=en")

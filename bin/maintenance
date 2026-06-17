@@ -1,4 +1,10 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: maintenance
+# body:
+#   _bin_helpers_no_args
+# dotfiles-completion: end
+
 
 . include lib
 SHLIB_FMT_TIME=true

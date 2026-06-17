@@ -1,4 +1,10 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: treed
+# body:
+#   _arguments '*:directory:_bin_helpers_dirs'
+# dotfiles-completion: end
+
 
 tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 

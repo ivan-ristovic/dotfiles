@@ -1,4 +1,10 @@
 #!/usr/bin/env python
+# dotfiles-completion: begin
+# commands: palette
+# body:
+#   _bin_helpers_no_args
+# dotfiles-completion: end
+
 
 # Print main 16 collors
 

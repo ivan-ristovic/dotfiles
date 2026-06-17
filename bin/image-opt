@@ -1,4 +1,16 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: image-opt
+# body:
+#   _arguments -s \
+#     '(-h --help)'{-h,--help}'[show help]' \
+#     '(-S --no-strip)'{-S,--no-strip}'[do not strip EXIF metadata]' \
+#     '(-q --quality)'{-q,--quality}'[JPEG quality percent]:quality:(100 95 90 85 80 75 70 60)' \
+#     '(-e --error)'{-e,--error}'[halt on ImageMagick error]' \
+#     '1:image file or input directory:_bin_helpers_image_or_dir' \
+#     '2:output directory:_bin_helpers_dirs'
+# dotfiles-completion: end
+
 
 function usage ()
 {

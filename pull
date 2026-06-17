@@ -1,5 +1,9 @@
 #!/bin/bash
 
+DOTFILES_ROOT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P) || exit 1
+cd "$DOTFILES_ROOT_DIR" || exit 1
+export SHLIB_ROOT=${SHLIB_ROOT:-"$DOTFILES_ROOT_DIR/shlib/lib"}
+# shellcheck source=utils.sh
 source utils.sh
 
 log_msg "Stashing existing changes..."
@@ -10,19 +14,28 @@ if [ "$stash_result" = "No local changes to save" ]; then
 fi
 
 log_msg "Pulling updates..."
-git pull
+if ! git pull; then
+    log_err "Pull failed."
+    if $needs_pop; then
+        log_msg "Restoring stashed changes..."
+        git stash pop || log_err "Failed to restore stashed changes."
+    fi
+    exit 1
+fi
 
 if $needs_pop; then
     log_msg "Restoring stashed changes..."
-    git stash pop
+    if ! git stash pop; then
+        log_err "Failed to restore stashed changes cleanly."
+    fi
 fi
 
 unmerged_files=$(git diff --name-only --diff-filter=U)
 if [[ -n $unmerged_files ]]; then
     log_err "The following files have merge conflicts after popping the stash:"
-    printf %"s\n" "$unmerged_files"
+    printf "%s\n" "$unmerged_files"
+    exit 1
 else
     log_suc "Updating dotfiles symlinks..."
     ./setup --dotfiles
 fi
-

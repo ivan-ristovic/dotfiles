@@ -1,4 +1,16 @@
 #!/bin/sh
+# dotfiles-completion: begin
+# commands: randpass
+# body:
+#   _arguments -s \
+#     '-h[show help]' \
+#     '-\?[show help]' \
+#     '-g[use graph characters]' \
+#     '-a[use alphabetic characters]' \
+#     '-f[legacy flag]' \
+#     '-n[password length]:length:(8 12 16 20 24 32 48 64)'
+# dotfiles-completion: end
+
 #
 # About
 # -----

@@ -2,11 +2,25 @@
 
 inst zsh
 
-rm -f "$SETUP_HOME_DIR"/.zshrc
+if [ -e "$SETUP_HOME_DIR/.zshrc" ] && [ ! -L "$SETUP_HOME_DIR/.zshrc" ]; then
+    rm -f "$SETUP_HOME_DIR/.zshrc"
+fi
+
+omz_dir="$SETUP_HOME_DIR/.oh-my-zsh"
+if [ ! -d "$omz_dir" ]; then
+    log_msg "Installing oh-my-zsh"
+    git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git "$omz_dir"
+fi
+
+zinit_dir="$SETUP_HOME_DIR/.zinit/zinit.git"
+if [ ! -d "$zinit_dir" ]; then
+    log_msg "Installing zinit"
+    mkdir -p "$(dirname "$zinit_dir")"
+    git clone --depth 1 https://github.com/zdharma-continuum/zinit.git "$zinit_dir"
+fi
 
 if is_android ; then
     chsh -s zsh
 else
-    sudo usermod --shell "$(which zsh)" $SETUP_USER
+    sudo usermod --shell "$(which zsh)" "$SETUP_USER"
 fi
-

@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # https://github.com/junegunn/fzf/blob/master/ADVANCED.md
 # Two-phase filtering with Ripgrep and fzf
 # 1. Search for text in files using Ripgrep

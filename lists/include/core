@@ -7,15 +7,16 @@ stow
 
 ## Editors
 neovim
+vim
 
 ## Shell
 tmux
 zsh
+!zsh-plugins
 
 ## Core packages 
 bat
 curl
-fd
 fzf
 openssl
 p7zip zip unzip unrar

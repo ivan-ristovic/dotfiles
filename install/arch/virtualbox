@@ -5,8 +5,8 @@ if test_installed virtualbox ; then
     return
 fi
 
-source ./linux-headers
+# shellcheck source=/dev/null
+source "$(dirname "${BASH_SOURCE[0]}")/linux-headers"
 inst virtualbox virtualbox-host-dkms
 
 sudo modprobe vboxdrv vboxnetadp vboxnetflt
-

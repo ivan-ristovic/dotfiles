@@ -1,4 +1,22 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: crypto
+# body:
+#   _arguments -s \
+#     '(-h --help)'{-h,--help}'[show help]' \
+#     '(-v --version)'{-v,--version}'[show version]' \
+#     '(-d --debug)'{-d,--debug}'[enable debug output]' \
+#     '(-c --cleanup)'{-c,--cleanup}'[clean up temporary files and exit]' \
+#     '(-t --torify)'{-t,--torify}'[request data via Tor]' \
+#     '(-w --verbose)'{-w,--verbose}'[show verbose output]' \
+#     '(-n --top)'{-n,--top}'[number of currencies to display]:count:' \
+#     '(-p --depth)'{-p,--depth}'[search depth for symbol lists]:count:' \
+#     '(-f --fiat)'{-f,--fiat}'[currency used for prices]:currency:_bin_helpers_fiat_currencies' \
+#     '(-e --eur)'{-e,--eur}'[use EUR as currency]' \
+#     '(-l --listbysymbols)'{-l,--listbysymbols}'[comma-separated crypto symbols]:symbols:_bin_helpers_crypto_symbols' \
+#     '(-i --listbynames)'{-i,--listbynames}'[comma-separated crypto names]:names:_bin_helpers_crypto_names'
+# dotfiles-completion: end
+
 #
 # coinbash.sh
 # - Bash Script
@@ -734,7 +752,7 @@ function main() {
         echo -e "[\n" >"${JSONFILE}"
         isfirst="true"
         for name in "${CCNAMESARRAY[@]}"; do
-            [ "$DEBUG" == "true" ] && echo "${0##*/}: DEBUG: $TORIFYCMD curl -H \"X-CMC_PRO_API_KEY: $COINMARKETCAP_API_KEY\" -H \"Accept: application/json\" -s  \"${DATAURL}quotes/latest${CONVERT}&slug=${name}\" > \"${JSONFILE}.part\""
+            [ "$DEBUG" == "true" ] && echo "${0##*/}: DEBUG: $TORIFYCMD curl -H \"X-CMC_PRO_API_KEY: <redacted>\" -H \"Accept: application/json\" -s  \"${DATAURL}quotes/latest${CONVERT}&slug=${name}\" > \"${JSONFILE}.part\""
             $TORIFYCMD curl -H "X-CMC_PRO_API_KEY: $COINMARKETCAP_API_KEY" -H "Accept: application/json" -s "${DATAURL}quotes/latest${CONVERT}&slug=${name}" >"${JSONFILE}.part"
             firstLine=$(head -n 1 "${JSONFILE}.part")
             if [ "${firstLine,,}" == "<!doctype html>" ] || [ "${firstLine}" == "<html>" ]; then
@@ -778,7 +796,7 @@ function main() {
         if [ $TOP -gt $TOPDEFAULT ]; then
             echo -n "be patient ..."
         fi
-        [ "$DEBUG" == "true" ] && echo "${0##*/}: DEBUG: $TORIFYCMD curl -H \"X-CMC_PRO_API_KEY: $COINMARKETCAP_API_KEY\" -H \"Accept: application/json\" s \"${DATAURL}listings/latest${CONVERT}${LIMIT}&start=1\" > \"${JSONFILE}\""
+        [ "$DEBUG" == "true" ] && echo "${0##*/}: DEBUG: $TORIFYCMD curl -H \"X-CMC_PRO_API_KEY: <redacted>\" -H \"Accept: application/json\" s \"${DATAURL}listings/latest${CONVERT}${LIMIT}&start=1\" > \"${JSONFILE}\""
         $TORIFYCMD curl -H "X-CMC_PRO_API_KEY: $COINMARKETCAP_API_KEY" -H "Accept: application/json" -s "${DATAURL}listings/latest${CONVERT}${LIMIT}&start=1" >"${JSONFILE}"
         if [ $TOP -gt $TOPDEFAULT ]; then
             echo -e -n "\b\b\b\b\b\b\b\b\b\b\b\b\b\b              \b\b\b\b\b\b\b\b\b\b\b\b\b\b" # erase "be patient ..."
@@ -841,4 +859,3 @@ function main() {
 main "$@"
 
 # end of script
-

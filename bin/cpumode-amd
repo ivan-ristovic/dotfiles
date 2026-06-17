@@ -1,0 +1,706 @@
+#!/bin/bash
+
+set -uo pipefail
+
+version=2.0.0-amd
+CPU_ROOT=/sys/devices/system/cpu
+AMD_PSTATE_MODULE=amd_pstate
+
+function die ()
+{
+    local code=$1
+    shift
+    printf 'Error: %s\n' "$*" >&2
+    exit "$code"
+}
+
+function as_root ()
+{
+    if [ "$EUID" -eq 0 ]; then
+        "$@"
+        return
+    fi
+
+    if ! command -v sudo > /dev/null 2>&1; then
+        printf 'Error: root privileges are required, and sudo is not installed\n' >&2
+        return 1
+    fi
+
+    sudo "$@"
+}
+
+function cpufreq_dirs ()
+{
+    local -a dirs
+
+    shopt -s nullglob
+    dirs=("$CPU_ROOT"/cpufreq/policy[0-9]*)
+    if [ "${#dirs[@]}" -eq 0 ]; then
+        dirs=("$CPU_ROOT"/cpu[0-9]*/cpufreq)
+    fi
+    shopt -u nullglob
+
+    printf '%s\n' "${dirs[@]}"
+}
+
+function cpu_cpufreq_dirs ()
+{
+    local -a dirs
+
+    shopt -s nullglob
+    dirs=("$CPU_ROOT"/cpu[0-9]*/cpufreq)
+    shopt -u nullglob
+
+    printf '%s\n' "${dirs[@]}"
+}
+
+function read_first_file ()
+{
+    local suffix=$1
+    local dir
+    local file
+
+    for dir in "${CPUFREQ_DIRS[@]}"; do
+        file="$dir/$suffix"
+        if [ -r "$file" ]; then
+            cat "$file"
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+function files_for_suffix ()
+{
+    local suffix=$1
+    local dir
+    local file
+
+    for dir in "${CPUFREQ_DIRS[@]}"; do
+        file="$dir/$suffix"
+        [ -e "$file" ] && printf '%s\n' "$file"
+    done
+}
+
+function hz2mhz ()
+{
+    awk '
+        {
+            for (i = 1; i <= NF; i++) {
+                if (i > 1) {
+                    printf " "
+                }
+                printf "%dMHz", $i / 1000
+            }
+        }
+        END {
+            printf "\n"
+        }
+    ' <<< "$*"
+}
+
+function unique_words ()
+{
+    tr '[:space:]' '\n' | sed '/^$/d' | sort -u | tr '\n' ' ' | sed 's/[[:space:]]*$//'
+}
+
+function available_governors ()
+{
+    read_first_file scaling_available_governors 2> /dev/null || true
+}
+
+function governor_files ()
+{
+    files_for_suffix scaling_governor
+}
+
+function has_governor ()
+{
+    local governor=$1
+    local governors
+
+    governors=$(available_governors)
+    grep -qw -- "$governor" <<< "$governors"
+}
+
+function try_load_governor ()
+{
+    local governor=$1
+
+    as_root modprobe "cpufreq_$governor" > /dev/null 2>&1 || true
+}
+
+function require_governor ()
+{
+    local governor=$1
+
+    if has_governor "$governor"; then
+        return 0
+    fi
+
+    try_load_governor "$governor"
+    if has_governor "$governor"; then
+        return 0
+    fi
+
+    die 100 "governor '$governor' is not available with driver '$DRIVER_NAME'"
+}
+
+function set_all_files ()
+{
+    local value=$1
+    shift
+
+    [ "$#" -gt 0 ] || die 100 "no sysfs files found for requested operation"
+    printf '%s\n' "$value" | as_root tee "$@" > /dev/null
+}
+
+function verify_all_files ()
+{
+    local value=$1
+    shift
+    local file
+    local actual
+
+    for file in "$@"; do
+        actual=$(cat "$file" 2> /dev/null || true)
+        [ "$actual" = "$value" ] || return 1
+    done
+}
+
+function setgov ()
+{
+    local governor=$1
+    local -a files
+
+    require_governor "$governor"
+    mapfile -t files < <(governor_files)
+    set_all_files "$governor" "${files[@]}" || die 1 "failed switching to the '$governor' governor"
+    verify_all_files "$governor" "${files[@]}" || die 100 "failed switching to the '$governor' governor; it may not be supported by this driver"
+    printf '%s mode/governor has been activated\n' "$governor"
+}
+
+function getgov ()
+{
+    local -a files
+    local file
+
+    mapfile -t files < <(governor_files)
+    printf 'Governor: '
+    for file in "${files[@]}"; do
+        cat "$file"
+    done | unique_words
+    printf '\n'
+}
+
+function auto_governor ()
+{
+    local governor
+
+    for governor in ondemand schedutil powersave; do
+        if has_governor "$governor"; then
+            printf '%s\n' "$governor"
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+function setauto ()
+{
+    local governor
+
+    governor=$(auto_governor) || die 100 "no automatic governor is available with driver '$DRIVER_NAME'"
+    setgov "$governor"
+}
+
+function add_existing_path ()
+{
+    local path=$1
+    local existing
+
+    [ -e "$path" ] || return 0
+    for existing in "${BOOST_PATHS[@]}"; do
+        [ "$existing" = "$path" ] && return 0
+    done
+    BOOST_PATHS+=("$path")
+}
+
+function collect_boost_paths ()
+{
+    local dir
+
+    BOOST_PATHS=()
+    add_existing_path "$CPU_ROOT/cpufreq/boost"
+    for dir in "${CPUFREQ_DIRS[@]}"; do
+        add_existing_path "$dir/boost"
+    done
+
+    mapfile -t CPU_DIRS < <(cpu_cpufreq_dirs)
+    for dir in "${CPU_DIRS[@]}"; do
+        add_existing_path "$dir/boost"
+    done
+}
+
+function normalize_boost_arg ()
+{
+    local arg=${1,,}
+
+    case "$arg" in
+        1 | on | yes | true | enable | enabled)
+            printf '1\n'
+            ;;
+        0 | off | no | false | disable | disabled)
+            printf '0\n'
+            ;;
+        *)
+            die 2 "invalid boost state: $1"
+            ;;
+    esac
+}
+
+function show_boost ()
+{
+    local values
+
+    collect_boost_paths
+    printf 'Boost:    '
+    if [ "${#BOOST_PATHS[@]}" -eq 0 ]; then
+        printf 'is not supported by driver %s\n' "$DRIVER_NAME"
+        return 0
+    fi
+
+    values=$(for file in "${BOOST_PATHS[@]}"; do cat "$file" 2> /dev/null; done | unique_words)
+    case "$values" in
+        1)
+            printf 'enabled\n'
+            ;;
+        0)
+            printf 'disabled\n'
+            ;;
+        *)
+            printf 'mixed (%s)\n' "$values"
+            ;;
+    esac
+}
+
+function set_boost ()
+{
+    local arg=${1-}
+    local target
+    local current
+
+    collect_boost_paths
+    printf 'Boost:    '
+    if [ "${#BOOST_PATHS[@]}" -eq 0 ]; then
+        printf 'is not supported by driver %s\n' "$DRIVER_NAME"
+        return 0
+    fi
+
+    if [ -z "$arg" ]; then
+        current=$(cat "${BOOST_PATHS[0]}" 2> /dev/null || true)
+        case "$current" in
+            0)
+                target=1
+                ;;
+            1)
+                target=0
+                ;;
+            *)
+                die 100 "cannot toggle boost because current boost state is '$current'"
+                ;;
+        esac
+    else
+        target=$(normalize_boost_arg "$arg")
+    fi
+
+    set_all_files "$target" "${BOOST_PATHS[@]}" || die 1 "failed changing boost state"
+    if verify_all_files "$target" "${BOOST_PATHS[@]}"; then
+        [ "$target" = 1 ] && printf 'enabled\n' || printf 'disabled\n'
+    else
+        [ "$target" = 1 ] && die 1 "failed to enable boost" || die 1 "failed to disable boost"
+    fi
+}
+
+function show_frequencies ()
+{
+    local file
+    local min_freq
+    local max_freq
+
+    file=${CPUFREQ_DIRS[0]}/scaling_available_frequencies
+    printf 'The available frequencies are: '
+    if [ -s "$file" ]; then
+        cat "$file"
+        return
+    fi
+
+    min_freq=$(read_first_file cpuinfo_min_freq 2> /dev/null || true)
+    max_freq=$(read_first_file cpuinfo_max_freq 2> /dev/null || true)
+    if [ -n "$min_freq" ] && [ -n "$max_freq" ]; then
+        printf 'anything from %s (%s KHz) to %s (%s KHz)\n' "$(hz2mhz "$min_freq")" "$min_freq" "$(hz2mhz "$max_freq")" "$max_freq"
+    else
+        printf 'not reported by driver %s\n' "$DRIVER_NAME"
+    fi
+}
+
+function validate_frequency ()
+{
+    local freq=$1
+    local dir
+    local min_freq
+    local max_freq
+    local available
+
+    [[ "$freq" =~ ^[0-9]+$ ]] || die 2 "frequency must be specified in KHz"
+
+    for dir in "${CPUFREQ_DIRS[@]}"; do
+        if [ -s "$dir/scaling_available_frequencies" ]; then
+            available=$(cat "$dir/scaling_available_frequencies")
+            grep -qw -- "$freq" <<< "$available" || die 2 "'$freq' is not amongst the allowed frequencies: $available"
+        fi
+
+        min_freq=$(cat "$dir/cpuinfo_min_freq" 2> /dev/null || true)
+        max_freq=$(cat "$dir/cpuinfo_max_freq" 2> /dev/null || true)
+        if [ -n "$min_freq" ] && [ "$freq" -lt "$min_freq" ]; then
+            die 2 "'$freq' is below the minimum frequency for $dir: $min_freq"
+        fi
+        if [ -n "$max_freq" ] && [ "$freq" -gt "$max_freq" ]; then
+            die 2 "'$freq' is above the maximum frequency for $dir: $max_freq"
+        fi
+    done
+}
+
+function set_max_frequency ()
+{
+    local freq=$1
+    local -a files
+    local file
+
+    [ -n "$freq" ] || {
+        printf 'Need an argument to continue. '
+        show_frequencies
+        return 1
+    }
+
+    validate_frequency "$freq"
+    mapfile -t files < <(files_for_suffix scaling_max_freq)
+    set_all_files "$freq" "${files[@]}" || die 1 "failed setting maximum frequency"
+    getgov
+    printf 'Setting maximum frequency of %s\n' "$(hz2mhz "$freq")"
+    printf 'Result: '
+    for file in "${files[@]}"; do
+        cat "$file"
+    done | awk '{ print $1 / 1000 "MHz" }' | sort -u | tr '\n' ' '
+    printf '\n'
+}
+
+function set_userspace_frequency ()
+{
+    local freq=$1
+    local -a max_files
+    local -a setspeed_files
+
+    [ -n "$freq" ] || {
+        printf 'Need an argument to continue. '
+        show_frequencies
+        return 1
+    }
+
+    validate_frequency "$freq"
+    require_governor userspace
+    mapfile -t setspeed_files < <(files_for_suffix scaling_setspeed)
+    [ "${#setspeed_files[@]}" -gt 0 ] || die 100 "userspace fixed-frequency mode is not supported by driver '$DRIVER_NAME' because scaling_setspeed is missing"
+
+    setgov userspace
+    printf 'Setting user defined frequency of %s ... ' "$(hz2mhz "$freq")"
+    mapfile -t max_files < <(files_for_suffix scaling_max_freq)
+    set_all_files "$freq" "${max_files[@]}" || die 1 "failed setting maximum frequency"
+    set_all_files "$freq" "${setspeed_files[@]}" || die 1 "failed setting userspace frequency"
+    verify_all_files "$freq" "${setspeed_files[@]}" && printf 'OK\n' || die 1 "failed setting userspace frequency"
+}
+
+function reset_max_frequency ()
+{
+    local dir
+    local max_freq
+    local file
+    local failed=false
+
+    getgov
+    printf 'Resetting maximum frequency ... \n'
+    for dir in "${CPUFREQ_DIRS[@]}"; do
+        file="$dir/scaling_max_freq"
+        max_freq=$(cat "$dir/cpuinfo_max_freq" 2> /dev/null || true)
+        if [ -z "$max_freq" ] || [ ! -e "$file" ]; then
+            failed=true
+            continue
+        fi
+        printf '%s\n' "$max_freq" | as_root tee "$file" > /dev/null || failed=true
+    done
+
+    $failed && die 1 "failed resetting one or more maximum CPU frequencies"
+    files_for_suffix scaling_max_freq | xargs -r cat
+}
+
+function show_time_in_state ()
+{
+    local -a files=()
+    local dir
+
+    for dir in "${CPUFREQ_DIRS[@]}"; do
+        [ -f "$dir/stats/time_in_state" ] && files+=("$dir/stats/time_in_state")
+    done
+
+    if [ "${#files[@]}" -eq 0 ]; then
+        printf 'time_in_state is not supported by driver %s\n' "$DRIVER_NAME"
+        return 0
+    fi
+
+    awk '
+        {
+            time[$1] += $2
+            sum += $2
+        }
+        END {
+            if (sum == 0) {
+                exit 1
+            }
+            for (freq in time) {
+                print freq, ":", time[freq] / sum * 100, "%"
+            }
+        }
+    ' "${files[@]}"
+}
+
+function show_driver ()
+{
+    local -a files
+    local file
+
+    mapfile -t files < <(files_for_suffix scaling_driver)
+    for file in "${files[@]}"; do
+        cat "$file"
+    done | unique_words
+}
+
+function show_current_frequencies ()
+{
+    local -a dirs=()
+    local -a freqs=()
+    local dir
+    local file
+
+    mapfile -t dirs < <(cpu_cpufreq_dirs)
+    if [ "${#dirs[@]}" -eq 0 ]; then
+        dirs=("${CPUFREQ_DIRS[@]}")
+    fi
+
+    for dir in "${dirs[@]}"; do
+        file="$dir/scaling_cur_freq"
+        [ -r "$file" ] && freqs+=("$(cat "$file")")
+    done
+
+    if [ "${#freqs[@]}" -eq 0 ]; then
+        printf 'This should have never happened!\n'
+        return
+    fi
+
+    printf 'Average and maximum frequencies now: '
+    hz2mhz "$(printf '%s\n' "${freqs[@]}" | awk '
+        BEGIN {
+            max = 0
+            avg = 0
+        }
+        {
+            if ($1 > max) {
+                max = $1
+            }
+            avg += $1
+        }
+        END {
+            print avg / NR, max
+        }
+    ')"
+}
+
+function show_frequency_limit ()
+{
+    local dir
+    local limit
+    local max_freq
+    local first=
+    local notmaxed=false
+    local nonuniform=false
+    local -a limits=()
+
+    for dir in "${CPUFREQ_DIRS[@]}"; do
+        limit=$(cat "$dir/scaling_max_freq" 2> /dev/null || true)
+        max_freq=$(cat "$dir/cpuinfo_max_freq" 2> /dev/null || true)
+        [ -n "$limit" ] || continue
+
+        limits+=("$limit")
+        if [ -z "$first" ]; then
+            first=$limit
+        elif [ "$first" != "$limit" ]; then
+            nonuniform=true
+        fi
+
+        if [ -n "$max_freq" ] && [ "$limit" != "$max_freq" ]; then
+            notmaxed=true
+        fi
+    done
+
+    if ! $notmaxed; then
+        printf 'No frequency limit is enforced.\n'
+    elif $nonuniform; then
+        printf 'Maximum CPU frequency per policy is:\n'
+        for limit in "${limits[@]}"; do
+            hz2mhz "$limit"
+        done
+    else
+        max_freq=$(read_first_file cpuinfo_max_freq 2> /dev/null || true)
+        printf 'Maximum allowed frequency is %s (out of %s)\n' "$(hz2mhz "$first")" "$(hz2mhz "$max_freq")"
+    fi
+}
+
+function show_now ()
+{
+    printf 'Driver:   %s\n' "$DRIVER_NAME"
+    show_boost
+    getgov
+    show_current_frequencies
+    show_frequency_limit
+}
+
+function load_driver ()
+{
+    local driver
+
+    mapfile -t CPUFREQ_DIRS < <(cpufreq_dirs)
+    if [ "${#CPUFREQ_DIRS[@]}" -gt 0 ]; then
+        driver=$(read_first_file scaling_driver 2> /dev/null || true)
+        if [[ "$driver" == amd-pstate* ]]; then
+            printf 'CPU powersave driver is already active: %s\n' "$driver"
+            return 0
+        fi
+        if [ -n "$driver" ]; then
+            printf 'Error: CPU frequency driver is already active: %s\n' "$driver" >&2
+            printf 'Error: switching to amd_pstate generally requires an amd_pstate kernel parameter and a reboot\n' >&2
+            return 100
+        fi
+    fi
+
+    as_root modprobe "$AMD_PSTATE_MODULE" || return 1
+    mapfile -t CPUFREQ_DIRS < <(cpufreq_dirs)
+    driver=$(read_first_file scaling_driver 2> /dev/null || true)
+    if [[ "$driver" == amd-pstate* ]]; then
+        printf 'CPU powersave driver has been loaded successfully: %s\n' "$driver"
+        return 0
+    fi
+
+    printf 'Error: amd_pstate did not become active after loading the module\n' >&2
+    printf 'Error: check BIOS CPPC support and the amd_pstate kernel parameter\n' >&2
+    return 100
+}
+
+function usage ()
+{
+    cat <<USAGE
+Usage: $(basename "$0") [OPTION]
+    -M --maximum        - performance mode (minimum powersavings)
+    -m --minimum        - powersave mode (minimum performance)
+    -a --auto        - automatic dynamic governor
+    -b --boost        - enable/disable/toggle boost
+    -c --conservative    - conservative mode (gradual auto performance)
+    -s --schedutil        - schedutil governor
+    -u --userspace FREQ    - user defined CPU frequency
+    -l --load        - load CPU powersave driver
+    -n --now        - show current mode
+    -S --set FREQ        - set maximum CPU frequency
+    -r --reset        - reset maximum CPU frequency
+    -f --frequencies    - show available frequencies
+    -t --time        - percentage of time spent in states
+    -v --version        - show application version and exit
+    -h --help        - show this help and exit
+USAGE
+}
+
+cmd=${1:---now}
+
+case "$cmd" in
+    --version | -v)
+        printf '%s version %s\n' "$(basename "$0")" "$version"
+        exit 0
+        ;;
+    --help | -h)
+        usage
+        exit 0
+        ;;
+    --load | -l)
+        load_driver
+        exit $?
+        ;;
+esac
+
+mapfile -t CPUFREQ_DIRS < <(cpufreq_dirs)
+[ "${#CPUFREQ_DIRS[@]}" -gt 0 ] || die 1 "cpufrequency subsystem is not running"
+DRIVER_NAME=$(show_driver)
+[ -n "$DRIVER_NAME" ] || die 1 "cpufrequency subsystem is not running"
+
+case "$cmd" in
+    --userspace | -u)
+        set_userspace_frequency "${2:-}"
+        exit $?
+        ;;
+    --conservative | -c)
+        setgov conservative
+        exit $?
+        ;;
+    --schedutil | -s)
+        setgov schedutil
+        exit $?
+        ;;
+    --minimum | --mimimum | -m)
+        setgov powersave
+        exit $?
+        ;;
+    --maximum | -M)
+        setgov performance
+        exit $?
+        ;;
+    --set | -S)
+        set_max_frequency "${2:-}"
+        exit $?
+        ;;
+    --reset | -r)
+        reset_max_frequency
+        exit $?
+        ;;
+    --auto | -a)
+        setauto
+        exit $?
+        ;;
+    --boost | -b)
+        set_boost "${2:-}"
+        exit $?
+        ;;
+    --frequencies | -f)
+        show_frequencies
+        exit $?
+        ;;
+    --time | -t)
+        show_time_in_state
+        exit $?
+        ;;
+    --now | -n)
+        show_now
+        exit $?
+        ;;
+    *)
+        die 2 "unknown option: $cmd"
+        ;;
+esac
+

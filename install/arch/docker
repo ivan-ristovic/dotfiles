@@ -1,6 +1,6 @@
 #!/bin/bash
 
-inst docker 
+inst docker docker-buildx
 
 sudo getent group docker || sudo groupadd docker
 sudo usermod -aG docker "$SETUP_USER"
@@ -8,4 +8,3 @@ sudo systemctl enable docker.service
 sudo systemctl enable containerd.service
 
 inst docker-compose
-

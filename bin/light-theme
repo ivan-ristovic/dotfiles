@@ -1,4 +1,12 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: light-theme
+# body:
+#   _arguments \
+#     '1:command:_command_names -e' \
+#     '*:argument:_files'
+# dotfiles-completion: end
+
 
 function usage ()
 {
@@ -10,5 +18,4 @@ if [ $# -lt 1 ]; then
     usage
 fi
 
-QT_STYLE_OVERRIDE=Fusion GTK_THEME=KvArc $@ 
-
+QT_STYLE_OVERRIDE=Fusion GTK_THEME=KvArc "$@"

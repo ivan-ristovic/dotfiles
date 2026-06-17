@@ -3,12 +3,20 @@
 # inst_aur g810-led-git 
 
 # Temp compilation fix until AUR package is updated
-sudo git clone https://github.com/MatMoul/g810-led.git /opt/g810-led
-pushd /opt/g810-led
-sudo sed -i '/#include <iostream>/a #include <cstdint>' src/helpers/help.h
+repo_dir=/opt/g810-led
+if [ -d "$repo_dir/.git" ]; then
+    sudo git -C "$repo_dir" pull --ff-only
+else
+    sudo git clone https://github.com/MatMoul/g810-led.git "$repo_dir"
+fi
+pushd "$repo_dir" || return
+if ! grep -q '#include <cstdint>' src/helpers/help.h; then
+    sudo sed -i '/#include <iostream>/a #include <cstdint>' src/helpers/help.h
+fi
 sudo make bin # for hidapi
 sudo make bin LIB=libusb # for libusb
 sudo make install
-popd
+popd || return
 
 sudo cp -f /etc/g810-led/samples/all_green /etc/g810-led/profile
+unset repo_dir

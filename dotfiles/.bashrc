@@ -5,8 +5,8 @@
 
 # If not running interactively, don't do anything
 case $- in
-	*i*) ;;
-	*) return;;
+    *i*) ;;
+    *) return;;
 esac
 
 # check the window size after each command and, if necessary,
@@ -24,17 +24,14 @@ shopt -s checkwinsize
 shopt -s histappend
 
 # ########################## PATH ##########################
-if [[ -d "${HOME}/dotfiles" ]]; then
-    if [[ ! -z $(grep ivan-ristovic/dotfiles "${HOME}/dotfiles/.git/config") ]]; then
-        export PATH="${PATH}:${HOME}/dotfiles/bin"
-    fi
+if [[ -d "${HOME}/dotfiles/bin" ]]; then
+    export PATH="${PATH}:${HOME}/dotfiles/bin"
 fi
 
 for file in ~/.{bash_prompt,aliases,functions}; do
-	if [[ -r "$file" ]] && [[ -f "$file" ]]; then
-		# shellcheck source=/dev/null
-		source "$file"
-	fi
+    if [[ -r "$file" ]] && [[ -f "$file" ]]; then
+        # shellcheck source=/dev/null
+        source "$file"
+    fi
 done
 unset file
-

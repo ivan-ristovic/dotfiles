@@ -1,4 +1,10 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: ask
+# body:
+#   _message -e prompt 'prompt text'
+# dotfiles-completion: end
+
 
 shlib std_ask "$@"
 

@@ -2,20 +2,22 @@
 
 if test_installed docker ; then
     log_msg "docker already installed"
-    return
+else
+    curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
+    sudo sh /tmp/get-docker.sh
+    rm /tmp/get-docker.sh
+
+    sudo groupadd docker
+    sudo usermod -aG docker "$SETUP_USER"
+    newgrp docker
+
+    sudo systemctl enable docker.service
+    sudo systemctl enable containerd.service
+
+    sudo curl -L "https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
 fi
 
-curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
-sudo sh /tmp/get-docker.sh
-rm /tmp/get-docker.sh
-
-sudo groupadd docker
-sudo usermod -aG docker "$SETUP_USER"
-newgrp docker
-
-sudo systemctl enable docker.service
-sudo systemctl enable containerd.service
-
-sudo curl -L "https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-
+if ! docker buildx version > /dev/null 2>&1; then
+    inst docker-buildx-plugin
+fi

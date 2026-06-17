@@ -38,6 +38,9 @@
     # Find commits by commit message
     fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
 
+    # Write the last N commits to patchfile.patch
+    fp = "!f() { count=${1:-1}; case \"$count\" in ''|0|*[!0-9]*) echo 'usage: git patchfile [commit-count]' >&2; return 2 ;; esac; git format-patch \"HEAD~$count\" --stdout > patchfile.patch; }; f"
+
     # Undo action
     undo = !git reset HEAD~1 --mixed
 

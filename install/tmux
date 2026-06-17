@@ -3,8 +3,13 @@
 inst tmux 
 
 # Plugin support
-git clone https://github.com/tmux-plugins/tpm ${SETUP_HOME_DIR}/.tmux/plugins/tpm
+tpm_dir="$SETUP_HOME_DIR/.tmux/plugins/tpm"
+if [ -d "$tpm_dir/.git" ]; then
+    git -C "$tpm_dir" pull --ff-only
+else
+    git clone https://github.com/tmux-plugins/tpm "$tpm_dir"
+fi
 log_msg "Installing tmux plugins..."
-TMUX_PLUGIN_MANAGER_PATH=${SETUP_HOME_DIR}/.tmux/plugins ${SETUP_HOME_DIR}/.tmux/plugins/tpm/scripts/install_plugins.sh
+TMUX_PLUGIN_MANAGER_PATH=${SETUP_HOME_DIR}/.tmux/plugins "$tpm_dir/scripts/install_plugins.sh"
 log_msg "tmux plugins installed"
-
+unset tpm_dir

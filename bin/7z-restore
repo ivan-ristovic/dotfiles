@@ -1,4 +1,10 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: 7z-restore
+# body:
+#   _arguments '1:backup archive:_bin_helpers_archives'
+# dotfiles-completion: end
+
 
 if [ $# -lt 1 ]; then
     echo "usage: $0 backup.tar.7z"

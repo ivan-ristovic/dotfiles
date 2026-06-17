@@ -1,4 +1,10 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: pathfind
+# body:
+#   _arguments '1:command name pattern:_command_names -e'
+# dotfiles-completion: end
+
 
 test -z "$1" && echo "usage: $(basename "$0") name" && exit 1
 

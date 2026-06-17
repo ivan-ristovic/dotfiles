@@ -1,3 +1,9 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: calc
+# body:
+#   _message -e expression 'calculator expression'
+# dotfiles-completion: end
+
 
 ~/.config/rofi/applets/bin/calc.sh

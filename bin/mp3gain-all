@@ -1,4 +1,10 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: mp3gain-all
+# body:
+#   _arguments '*:MP3 file or directory:_bin_helpers_mp3_or_dir'
+# dotfiles-completion: end
+
 
 if [ $# -eq 0 ]; then
     echo "usage: $0 .mp3|dir ..."

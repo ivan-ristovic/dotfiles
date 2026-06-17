@@ -1,200 +1,458 @@
-#!/usr/bin/env bash
-# Based on similar script by Linyos Torovoltos and Alex Epstein
-
-multiline="0" # flag that indicates multiline option
-fileoutput="0" # flag indicating the -f option
-
-
-# Determine which HTTP GET tool installed
-getConfiguredClient () {
-  if  command -v curl &>/dev/null; then
-    configuredClient="curl"
-  elif command -v wget &>/dev/null; then
-    configuredClient="wget"
-  elif command -v http &>/dev/null; then
-    configuredClient="httpie"
-  elif command -v fetch &>/dev/null; then
-    configuredClient="fetch"
-  else
-    echo "Error: This tool requires either curl, wget, httpie or fetch to be installed." >&2
-    return 1
-  fi
-}
-
-# Call appropriate http get method
-httpGet() {
-  case "$configuredClient" in
-    curl)  curl -A curl -s "$@" ;;
-    wget)  wget -qO- "$@" ;;
-    httpie) http -b GET "$@" ;;
-    fetch) fetch -q "$@" ;;
-  esac
-}
-
-# Get installed version of Python / show error if none
-getConfiguredPython() {
-  if command -v python3 &>/dev/null; then
-    configuredPython="python3"
-  elif  command -v python2 &>/dev/null; then
-    configuredPython="python2"
-  elif command -v python &>/dev/null; then
-    configuredPython="python"
-  else
-    echo "Error: This tool requires python to be installed."
-    return 1
-  fi
-}
-
-if [[ $(uname) != "Darwin" ]]; then
-  python() {
-    case "$configuredPython" in
-      python3) python3 "$@" ;;
-      python2) python2 "$@" ;;
-      python)  python "$@" ;;
-    esac
-  }
-fi
-
-# Encode input, and call to qrenco.de to get response
-makeqr() {
-  input=$(echo "$input" | sed s/" "/%20/g ) ## replace all spaces in the sentence with HTML-encoded space %20
-  httpGet qrenco.de/"$input" ## get a response for the qrcode
-}
-
-# Redirects returned QR impage into a png file
-makeQRFile() {
-	input=$(echo "$input" | sed -e s/" "/%20/g -e s/'\\n'/%0A/g ) ##same as in the makeqr function
-  addFileExt
-	httpGet "api.qrserver.com/v1/create-qr-code/?size=150x150&data=$input" > "$fileName"
-}
-
-# If filename doesn't already have .png extension, append it
-addFileExt() {
-  if ! echo "$fileName" | grep -E -q ".*\.png$|.*\.PNG$"
-  then
-    fileName="$fileName.png"
-  fi
-}
-
-makeMultiLineQr() {
-  if [[ ${configuredClient} != "curl" ]]; then ## prevent usage without curl it is unreliable
-    echo "Multiline currently only supports curl!"
-    return 1
-  else
-    input=$(echo "$input" | sed -e s/" "/%20/g -e s/'\\n'/%0A/g ) ##same as in the makeqr function
-    printf "%s" "$input"  | curl -F-=\<- qrenco.de
-  fi
-}
-
-# Function to get the json response from POST request
-decodeQR() {
-  local qrFile="$1"
-  if ! echo "$fileName" | grep -E -q ".*\.png$|.*\.PNG$|.*\.gif$|.*\.jpg$|.*\.jpeg$|.*\.GIF$|.*\.JPG$|.*\.JPEG$"
-  then
-    exit 1
-  fi
-
-  # only uses curl
-  # Cannot use wget because it does not support multipart/form-data (as per the man page)]
-
-  case "$configuredClient" in
-    curl) JSONresponse=$(curl -s -F "file=@$qrFile" http://api.qrserver.com/v1/read-qr-code/) || exit 1;;
-    wget) echo "Error:-Not supported with wget" >&2 && exit 1;;
-    httpie) JSONresponse=$(http -b --form POST http://api.qrserver.com/v1/read-qr-code/ file@"$qrFile") || exit 1;;
-    fetch) echo "Error:-Not supported with wget" >&2 && exit 1;;
-  esac
-
-  error="$(echo "$JSONresponse" | python -c "from __future__ import print_function; import sys, json; print(json.load(sys.stdin)[0]['symbol'][0]['error'])")"
-  
-  if [[ "$error" == "None" ]]
-  then
-    data="$(echo "$JSONresponse" | python -c "from __future__ import print_function; import sys, json; print(json.load(sys.stdin)[0]['symbol'][0]['data'])")"
-  else
-    echo "Error:-$error" >&2 && exit 1
-  fi
-}
-
-checkInternet()
-{
-  httpGet github.com > /dev/null 2>&1 || { echo "Error: no active internet connection" >&2; return 1; } # query github with a get request
-}
-
-usage()
-{
-  cat <<EOF
-Qrify
-Description: Converts strings or URLs into a QR code.
-Usage: qrify [stringtoturnintoqrcode]
-    -m  Enable multiline support (feature not working yet)
-    -h  Show the help
-    -v  Get the tool version
-    -f  Store the QR code as a PNG file
-    -d  Decode the QR code from a PNG/GIF/JP(E)G file
-Examples:
-    qrify this is a test string
-    qrify -m two\\\\nlines
-    qrify github.com (no http:// or https://)
-    qrify -f fileoutputName google.com
-    qrify -d fileName.png
-
-[31mPlease pay attention:[0m
-This script needs access to an external API.
-[5m[1mDo not use it to encode sensitive data.[0m
-EOF
-}
-
-getConfiguredClient || exit 1
+#!/usr/bin/env python3
+# dotfiles-completion: begin
+# commands: qr
+# body:
+#   _arguments -s \
+#     '(-r --read-from)'{-r,--read-from}'[read payload bytes from file]:file:_bin_helpers_files' \
+#     '(-l --level)'{-l,--level}'[error correction level]:level:(L M Q H)' \
+#     '(-m --margin)'{-m,--margin}'[quiet-zone margin]:modules:' \
+#     '--full[render modules as full-height cells]' \
+#     '--plain[render without ANSI colors]' \
+#     '*:text:'
+# dotfiles-completion: end
 
 
-while getopts "d:f:m:hvu*:" option
-do
-  case "${option}" in
-    h) usage && exit 0 ;;
-    m) multiline="1" && echo "Error this is not a supported feature yet" && exit 1 ;;
-		f)
-			fileName=$OPTARG
-			#file name is the first argument of the option -f
-			fileoutput="1";;
-    d)
-      fileName=$OPTARG
-      decode="1";;
-  esac
-done
+import argparse
+import copy
+import sys
 
-if [[ $# == "0" ]]; then
-  usage
-  exit 0
-elif [[ $# == "1" ]];then
-  if [[ $1 == "help" || $1 == ":help" ]]; then
-    usage
-    exit 0
-  else
-    getConfiguredPython || exit 1
-	checkInternet || exit 1
-    input=$(printf '%s ' "$@")
-    makeqr || exit 1
-    exit 0
-  fi
-else
-  getConfiguredPython || exit 1
-  checkInternet || exit 1
-  if [[ $fileoutput == "1" ]]
-	then
-		input=$(printf '%s ' "${@:3}") # first arg is -f, second is the file name, third onwards is the rest of the argument
-		# will have to be changed when implementing multiline QR code
-		makeQRFile || exit 1
-		exit 0
-  elif [[ $decode == "1" ]]
-  then
-    ( decodeQR "$fileName" && echo "$data" ) || exit 1
-    exit 0
-  elif [[ $multiline == "0" ]]; then
-    input=$(printf '%s ' "$@")
-    makeqr || exit 1
-    exit 0
-  else
-    input=$(printf '%s ' "${@:2}")
-    makeMultiLineQr || exit 1 ## if multiline that means a flag existed so start from the second argument
-    exit 0
-  fi
-fi
+
+TOTAL_CODEWORDS = [
+    0,
+    26, 44, 70, 100, 134, 172, 196, 242, 292, 346,
+    404, 466, 532, 581, 655, 733, 815, 901, 991, 1085,
+    1156, 1258, 1364, 1474, 1588, 1706, 1828, 1921, 2051, 2185,
+    2323, 2465, 2611, 2761, 2876, 3034, 3196, 3362, 3532, 3706,
+]
+
+ECC_CODEWORDS_PER_BLOCK = [
+    (0, 0, 0, 0),
+    (7, 10, 13, 17), (10, 16, 22, 28), (15, 26, 18, 22), (20, 18, 26, 16),
+    (26, 24, 18, 22), (18, 16, 24, 28), (20, 18, 18, 26), (24, 22, 22, 26),
+    (30, 22, 20, 24), (18, 26, 24, 28), (20, 30, 28, 24), (24, 22, 26, 28),
+    (26, 22, 24, 22), (30, 24, 20, 24), (22, 24, 30, 24), (24, 28, 24, 30),
+    (28, 28, 28, 28), (30, 26, 28, 28), (28, 26, 26, 26), (28, 26, 30, 28),
+    (28, 26, 28, 30), (28, 28, 30, 24), (30, 28, 30, 30), (30, 28, 30, 30),
+    (26, 28, 30, 30), (28, 28, 28, 30), (30, 28, 30, 30), (30, 28, 30, 30),
+    (30, 28, 30, 30), (30, 28, 30, 30), (30, 28, 30, 30), (30, 28, 30, 30),
+    (30, 28, 30, 30), (30, 28, 30, 30), (30, 28, 30, 30), (30, 28, 30, 30),
+    (30, 28, 30, 30), (30, 28, 30, 30), (30, 28, 30, 30), (30, 28, 30, 30),
+]
+
+NUM_ERROR_CORRECTION_BLOCKS = [
+    (0, 0, 0, 0),
+    (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 2, 2), (1, 2, 2, 4),
+    (1, 2, 4, 4), (2, 4, 4, 4), (2, 4, 6, 5), (2, 4, 6, 6),
+    (2, 5, 8, 8), (4, 5, 8, 8), (4, 5, 8, 11), (4, 8, 10, 11),
+    (4, 9, 12, 16), (4, 9, 16, 16), (6, 10, 12, 18), (6, 10, 17, 16),
+    (6, 11, 16, 19), (6, 13, 18, 21), (7, 14, 21, 25), (8, 16, 20, 25),
+    (8, 17, 23, 25), (9, 17, 23, 34), (9, 18, 25, 30), (10, 20, 27, 32),
+    (12, 21, 29, 35), (12, 23, 34, 37), (12, 25, 34, 40), (13, 26, 35, 42),
+    (14, 28, 38, 45), (15, 29, 40, 48), (16, 31, 43, 51), (17, 33, 45, 54),
+    (18, 35, 48, 57), (19, 37, 51, 60), (19, 38, 53, 63), (20, 40, 56, 66),
+    (21, 43, 59, 70), (22, 45, 62, 74), (24, 47, 65, 77), (25, 49, 68, 81),
+]
+
+LEVEL_INDEX = {"L": 0, "M": 1, "Q": 2, "H": 3}
+FORMAT_BITS = {"L": 1, "M": 0, "Q": 3, "H": 2}
+
+
+def append_bits(bits, value, width):
+    for i in range(width - 1, -1, -1):
+        bits.append((value >> i) & 1)
+
+
+def gf_multiply(x, y):
+    result = 0
+    while y:
+        if y & 1:
+            result ^= x
+        y >>= 1
+        x <<= 1
+        if x & 0x100:
+            x ^= 0x11D
+    return result & 0xFF
+
+
+def reed_solomon_divisor(degree):
+    result = [0] * (degree - 1) + [1]
+    root = 1
+    for _ in range(degree):
+        for i in range(degree):
+            result[i] = gf_multiply(result[i], root)
+            if i + 1 < degree:
+                result[i] ^= result[i + 1]
+        root = gf_multiply(root, 2)
+    return result
+
+
+def reed_solomon_remainder(data, divisor):
+    result = [0] * len(divisor)
+    for value in data:
+        factor = value ^ result.pop(0)
+        result.append(0)
+        for i, coefficient in enumerate(divisor):
+            result[i] ^= gf_multiply(coefficient, factor)
+    return result
+
+
+def data_codewords(version, level):
+    idx = LEVEL_INDEX[level]
+    return TOTAL_CODEWORDS[version] - (
+        ECC_CODEWORDS_PER_BLOCK[version][idx] * NUM_ERROR_CORRECTION_BLOCKS[version][idx]
+    )
+
+
+def choose_version(payload, level):
+    for version in range(1, 41):
+        count_width = 8 if version <= 9 else 16
+        needed = 4 + count_width + len(payload) * 8
+        if needed <= data_codewords(version, level) * 8:
+            return version
+    raise ValueError("input is too large for QR Code version 40")
+
+
+def make_data(payload, version, level):
+    count_width = 8 if version <= 9 else 16
+    capacity_bits = data_codewords(version, level) * 8
+    bits = []
+    append_bits(bits, 0b0100, 4)
+    append_bits(bits, len(payload), count_width)
+    for byte in payload:
+        append_bits(bits, byte, 8)
+
+    append_bits(bits, 0, min(4, capacity_bits - len(bits)))
+    while len(bits) % 8:
+        bits.append(0)
+
+    data = []
+    for i in range(0, len(bits), 8):
+        value = 0
+        for bit in bits[i:i + 8]:
+            value = (value << 1) | bit
+        data.append(value)
+
+    pad = 0xEC
+    while len(data) < data_codewords(version, level):
+        data.append(pad)
+        pad ^= 0xEC ^ 0x11
+    return data
+
+
+def interleave_blocks(data, version, level):
+    idx = LEVEL_INDEX[level]
+    raw_count = TOTAL_CODEWORDS[version]
+    block_count = NUM_ERROR_CORRECTION_BLOCKS[version][idx]
+    ecc_len = ECC_CODEWORDS_PER_BLOCK[version][idx]
+    short_block_len = raw_count // block_count
+    short_block_count = block_count - raw_count % block_count
+    rs_divisor = reed_solomon_divisor(ecc_len)
+    blocks = []
+    offset = 0
+
+    for i in range(block_count):
+        data_len = short_block_len - ecc_len + (0 if i < short_block_count else 1)
+        block_data = data[offset:offset + data_len]
+        offset += data_len
+        ecc = reed_solomon_remainder(block_data, rs_divisor)
+        if i < short_block_count:
+            block_data = block_data + [0]
+        blocks.append(block_data + ecc)
+
+    result = []
+    for i in range(len(blocks[0])):
+        for j, block in enumerate(blocks):
+            if i != short_block_len - ecc_len or j >= short_block_count:
+                result.append(block[i])
+    return result
+
+
+class Matrix:
+    def __init__(self, version):
+        self.version = version
+        self.size = version * 4 + 17
+        self.modules = [[False] * self.size for _ in range(self.size)]
+        self.function = [[False] * self.size for _ in range(self.size)]
+
+    def set_function(self, x, y, dark):
+        if 0 <= x < self.size and 0 <= y < self.size:
+            self.modules[y][x] = bool(dark)
+            self.function[y][x] = True
+
+    def draw_finder(self, x, y):
+        for dy in range(-4, 5):
+            for dx in range(-4, 5):
+                dist = max(abs(dx), abs(dy))
+                self.set_function(x + dx, y + dy, dist != 2 and dist != 4)
+
+    def alignment_positions(self):
+        if self.version == 1:
+            return []
+        count = self.version // 7 + 2
+        step = 26 if self.version == 32 else ((self.version * 4 + count * 2 + 1) // (count * 2 - 2)) * 2
+        return [6] + [self.size - 7 - i * step for i in range(count - 2, -1, -1)]
+
+    def draw_alignment(self, x, y):
+        for dy in range(-2, 3):
+            for dx in range(-2, 3):
+                self.set_function(x + dx, y + dy, max(abs(dx), abs(dy)) != 1)
+
+    def draw_format(self, level, mask):
+        data = (FORMAT_BITS[level] << 3) | mask
+        rem = data
+        for _ in range(10):
+            rem = (rem << 1) ^ ((rem >> 9) * 0x537)
+        bits = ((data << 10) | rem) ^ 0x5412
+
+        for i in range(15):
+            dark = ((bits >> i) & 1) != 0
+            if i < 6:
+                self.set_function(8, i, dark)
+            elif i == 6:
+                self.set_function(8, 7, dark)
+            elif i == 7:
+                self.set_function(8, 8, dark)
+            elif i == 8:
+                self.set_function(7, 8, dark)
+            else:
+                self.set_function(14 - i, 8, dark)
+
+        for i in range(15):
+            dark = ((bits >> i) & 1) != 0
+            if i < 8:
+                self.set_function(self.size - 1 - i, 8, dark)
+            else:
+                self.set_function(8, self.size - 15 + i, dark)
+        self.set_function(8, self.size - 8, True)
+
+    def draw_version(self):
+        if self.version < 7:
+            return
+        rem = self.version
+        for _ in range(12):
+            rem = (rem << 1) ^ ((rem >> 11) * 0x1F25)
+        bits = (self.version << 12) | rem
+        for i in range(18):
+            dark = ((bits >> i) & 1) != 0
+            a = self.size - 11 + i % 3
+            b = i // 3
+            self.set_function(a, b, dark)
+            self.set_function(b, a, dark)
+
+    def draw_function_patterns(self, level):
+        self.draw_finder(3, 3)
+        self.draw_finder(self.size - 4, 3)
+        self.draw_finder(3, self.size - 4)
+
+        positions = self.alignment_positions()
+        for y in positions:
+            for x in positions:
+                if not self.function[y][x]:
+                    self.draw_alignment(x, y)
+
+        for i in range(self.size):
+            if not self.function[6][i]:
+                self.set_function(i, 6, i % 2 == 0)
+            if not self.function[i][6]:
+                self.set_function(6, i, i % 2 == 0)
+
+        self.draw_format(level, 0)
+        self.draw_version()
+
+    def draw_codewords(self, codewords):
+        bits = []
+        for byte in codewords:
+            for i in range(7, -1, -1):
+                bits.append((byte >> i) & 1)
+
+        bit_index = 0
+        right = self.size - 1
+        while right > 0:
+            if right == 6:
+                right -= 1
+            for vertical in range(self.size):
+                y = self.size - 1 - vertical if ((right + 1) & 2) == 0 else vertical
+                for dx in range(2):
+                    x = right - dx
+                    if not self.function[y][x] and bit_index < len(bits):
+                        self.modules[y][x] = bits[bit_index] == 1
+                        bit_index += 1
+            right -= 2
+
+
+def mask_bit(mask, x, y):
+    if mask == 0:
+        return (x + y) % 2 == 0
+    if mask == 1:
+        return y % 2 == 0
+    if mask == 2:
+        return x % 3 == 0
+    if mask == 3:
+        return (x + y) % 3 == 0
+    if mask == 4:
+        return (x // 3 + y // 2) % 2 == 0
+    if mask == 5:
+        return (x * y) % 2 + (x * y) % 3 == 0
+    if mask == 6:
+        return ((x * y) % 2 + (x * y) % 3) % 2 == 0
+    if mask == 7:
+        return ((x + y) % 2 + (x * y) % 3) % 2 == 0
+    raise ValueError(mask)
+
+
+def penalty_score(modules):
+    size = len(modules)
+    score = 0
+
+    for rows in (modules, list(zip(*modules))):
+        for row in rows:
+            run_color = row[0]
+            run_len = 1
+            for color in row[1:]:
+                if color == run_color:
+                    run_len += 1
+                else:
+                    if run_len >= 5:
+                        score += 3 + run_len - 5
+                    run_color = color
+                    run_len = 1
+            if run_len >= 5:
+                score += 3 + run_len - 5
+
+            values = [1 if value else 0 for value in row]
+            for i in range(size - 10):
+                window = values[i:i + 11]
+                if window == [0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1]:
+                    score += 40
+                elif window == [1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0]:
+                    score += 40
+
+    for y in range(size - 1):
+        for x in range(size - 1):
+            color = modules[y][x]
+            if modules[y][x + 1] == color and modules[y + 1][x] == color and modules[y + 1][x + 1] == color:
+                score += 3
+
+    dark = sum(1 for row in modules for value in row if value)
+    total = size * size
+    k = abs(dark * 20 - total * 10) // total
+    score += k * 10
+    return score
+
+
+def apply_best_mask(matrix, level):
+    best_modules = None
+    best_score = None
+    for mask in range(8):
+        candidate = copy.deepcopy(matrix)
+        for y in range(candidate.size):
+            for x in range(candidate.size):
+                if not candidate.function[y][x] and mask_bit(mask, x, y):
+                    candidate.modules[y][x] = not candidate.modules[y][x]
+        candidate.draw_format(level, mask)
+        score = penalty_score(candidate.modules)
+        if best_score is None or score < best_score:
+            best_score = score
+            best_modules = candidate.modules
+    matrix.modules = best_modules
+
+
+def make_qr(payload, level):
+    version = choose_version(payload, level)
+    data = make_data(payload, version, level)
+    codewords = interleave_blocks(data, version, level)
+    matrix = Matrix(version)
+    matrix.draw_function_patterns(level)
+    matrix.draw_codewords(codewords)
+    apply_best_mask(matrix, level)
+    return matrix.modules
+
+
+def module_at(modules, x, y, border):
+    size = len(modules)
+    x -= border
+    y -= border
+    if 0 <= x < size and 0 <= y < size:
+        return modules[y][x]
+    return False
+
+
+def render_plain(modules, border):
+    size = len(modules) + border * 2
+    for y in range(size):
+        line = []
+        for x in range(size):
+            line.append("██" if module_at(modules, x, y, border) else "  ")
+        print("".join(line))
+
+
+def render_ansi(modules, border, full):
+    size = len(modules) + border * 2
+    if full:
+        for y in range(size):
+            line = []
+            for x in range(size):
+                line.append("\033[40m  " if module_at(modules, x, y, border) else "\033[47m  ")
+            print("".join(line) + "\033[0m")
+        return
+
+    upper = "\u2580"
+    for y in range(0, size, 2):
+        line = []
+        for x in range(size):
+            top = module_at(modules, x, y, border)
+            bottom = module_at(modules, x, y + 1, border) if y + 1 < size else False
+            fg = "30" if top else "37"
+            bg = "40" if bottom else "47"
+            line.append(f"\033[{fg};{bg}m{upper}")
+        print("".join(line) + "\033[0m")
+
+
+def read_payload(args):
+    if args.read_from:
+        with open(args.read_from, "rb") as file:
+            return file.read()
+    if args.text:
+        return " ".join(args.text).encode("utf-8")
+    if not sys.stdin.isatty():
+        return sys.stdin.buffer.read()
+    return b""
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Generate a terminal QR code without external QR dependencies.")
+    parser.add_argument("text", nargs="*", help="text to encode; stdin is used when omitted")
+    parser.add_argument("-r", "--read-from", metavar="FILE", help="read payload bytes from a file")
+    parser.add_argument("-l", "--level", choices=sorted(LEVEL_INDEX), default="M", help="error correction level")
+    parser.add_argument("-m", "--margin", type=int, default=4, help="quiet-zone margin in modules (default: 4)")
+    parser.add_argument("--full", action="store_true", help="render each QR module as a full-height cell")
+    parser.add_argument("--plain", action="store_true", help="render without ANSI colors")
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
+    if args.margin < 0:
+        print("error: margin must be non-negative", file=sys.stderr)
+        return 2
+
+    payload = read_payload(args)
+    if not payload:
+        print("error: no input provided", file=sys.stderr)
+        return 2
+
+    try:
+        modules = make_qr(payload, args.level)
+    except ValueError as error:
+        print(f"error: {error}", file=sys.stderr)
+        return 1
+
+    if args.plain:
+        render_plain(modules, args.margin)
+    else:
+        render_ansi(modules, args.margin, args.full)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

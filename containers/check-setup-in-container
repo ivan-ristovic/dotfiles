@@ -1,0 +1,180 @@
+#!/bin/bash
+
+set -uo pipefail
+
+cd /home/user/dotfiles || exit 1
+export TERM=xterm-256color
+export SHLIB_NO_COLOR=true
+export NO_COLOR=1
+
+PACKAGE_LIST=${DOTFILES_TEST_PACKAGE_LIST:?missing DOTFILES_TEST_PACKAGE_LIST}
+
+failures=0
+HEALTH_FILE=/tmp/dotfiles-nvim-health.txt
+HEALTH_ERR_FILE=/tmp/dotfiles-nvim-health.err
+HEALTH_OUT_FILE=/tmp/dotfiles-nvim-health.out
+HEALTH_ERRORS_FILE=/tmp/dotfiles-nvim-health-errors.txt
+NVIM_START_OUT_FILE=/tmp/dotfiles-nvim-start.out
+NVIM_LAZY_OUT_FILE=/tmp/dotfiles-nvim-lazy-sync.out
+NVIM_MASON_OUT_FILE=/tmp/dotfiles-nvim-mason-tools.out
+
+function fail ()
+{
+    printf 'ASSERTION FAILED: %s\n' "$*" >&2
+    failures=1
+}
+
+function run_step ()
+{
+    printf '\n== %s ==\n' "$*"
+    "$@"
+}
+
+function refresh_package_index ()
+{
+    printf '\n== refresh package index ==\n'
+
+    if [ -f /etc/arch-release ]; then
+        sudo pacman --noconfirm -Syy
+    elif [ -f /etc/debian_version ]; then
+        sudo apt-get update -qq
+    else
+        printf 'No package index refresh configured for this distro; continuing.\n'
+    fi
+}
+
+function require_cmd ()
+{
+    local command_name=$1
+
+    if ! command -v "$command_name" > /dev/null 2>&1; then
+        fail "missing command: $command_name"
+    fi
+}
+
+function assert_dotfile_link ()
+{
+    local path=$1
+    local resolved
+
+    if [ ! -L "$path" ]; then
+        fail "expected symlink: $path"
+        return
+    fi
+
+    resolved=$(readlink -f "$path") || {
+        fail "failed to resolve symlink: $path"
+        return
+    }
+
+    case "$resolved" in
+        /home/user/dotfiles/dotfiles/*)
+            ;;
+        *)
+            fail "symlink does not point into dotfiles tree: $path -> $resolved"
+            ;;
+    esac
+}
+
+function check_zsh_quiet_startup ()
+{
+    local expected="__DOTFILES_ZSH_READY__"
+    local output
+
+    output=$(DOTFILES_NO_TMUX_AUTOSTART=1 TERM=xterm-256color zsh -ic 'printf "__DOTFILES_ZSH_READY__\n"' 2>&1)
+    if [ "$output" != "$expected" ]; then
+        fail "zsh printed output before or around the startup sentinel"
+        printf 'zsh quiet-startup output:\n%s\n' "$output"
+    fi
+}
+
+function extract_health_errors ()
+{
+    : > "$HEALTH_ERRORS_FILE"
+
+    if [ -f "$HEALTH_FILE" ]; then
+        awk '/❌ ERROR|ERROR|E[0-9]+/ { print }' "$HEALTH_FILE" >> "$HEALTH_ERRORS_FILE"
+    fi
+
+    if [ -f "$HEALTH_ERR_FILE" ] && grep -Eq 'E[0-9]+|ERROR|Error|Lua|stack traceback|Vim\(' "$HEALTH_ERR_FILE"; then
+        {
+            printf 'stderr:\n'
+            grep -E 'E[0-9]+|ERROR|Error|Lua|stack traceback|Vim\(' "$HEALTH_ERR_FILE"
+        } >> "$HEALTH_ERRORS_FILE"
+    fi
+}
+
+function check_nvim_health ()
+{
+    local health_rc=0
+
+    printf '\n== nvim lazy sync ==\n'
+    nvim --headless '+Lazy! sync' +qa > "$NVIM_LAZY_OUT_FILE" 2>&1 || health_rc=$?
+    if [ "$health_rc" -ne 0 ]; then
+        fail "nvim Lazy sync failed with status $health_rc"
+        printf 'nvim Lazy sync output tail:\n'
+        tail -n 80 "$NVIM_LAZY_OUT_FILE"
+        return
+    fi
+
+    printf '\n== nvim mason tools install ==\n'
+    health_rc=0
+    nvim --headless '+MasonToolsInstallSync' +qa > "$NVIM_MASON_OUT_FILE" 2>&1 || health_rc=$?
+    if [ "$health_rc" -ne 0 ]; then
+        fail "nvim Mason tools install failed with status $health_rc"
+        printf 'nvim Mason tools install output tail:\n'
+        tail -n 80 "$NVIM_MASON_OUT_FILE"
+        return
+    fi
+
+    printf '\n== nvim healthcheck ==\n'
+    health_rc=0
+    nvim --headless +'checkhealth' +"silent write! $HEALTH_FILE" +qa > "$HEALTH_OUT_FILE" 2> "$HEALTH_ERR_FILE" || health_rc=$?
+
+    extract_health_errors
+    if [ -s "$HEALTH_ERRORS_FILE" ]; then
+        printf 'nvim healthcheck errors:\n'
+        sed 's/^/- /' "$HEALTH_ERRORS_FILE"
+        if [ "${DOTFILES_STRICT_NVIM_HEALTH:-false}" = true ]; then
+            fail "nvim healthcheck reported errors"
+        else
+            printf 'nvim healthcheck errors are report-only; use --strict-health to fail on them.\n'
+        fi
+    else
+        printf 'nvim healthcheck errors: none\n'
+    fi
+
+    if [ "$health_rc" -ne 0 ]; then
+        fail "nvim healthcheck command failed with status $health_rc"
+    fi
+}
+
+run_step ./check --no-container || exit $?
+refresh_package_index || exit $?
+run_step ./setup --user user --packages --dotfiles --repair "$PACKAGE_LIST" || exit $?
+
+for command_name in git stow nvim tmux zsh rg curl wget; do
+    require_cmd "$command_name"
+done
+
+assert_dotfile_link "$HOME/.zshrc"
+assert_dotfile_link "$HOME/.tmux.conf"
+assert_dotfile_link "$HOME/.config/nvim/init.lua"
+
+check_zsh_quiet_startup
+
+tmux -V > /dev/null || fail "tmux -V failed"
+if ! nvim --headless +qa > "$NVIM_START_OUT_FILE" 2>&1; then
+    fail "nvim --headless +qa failed"
+    printf 'nvim startup output tail:\n'
+    tail -n 80 "$NVIM_START_OUT_FILE"
+fi
+nvim --version > /dev/null || fail "nvim --version failed"
+
+check_nvim_health
+
+if [ "$failures" -ne 0 ]; then
+    exit 1
+fi
+
+printf '\ncontainer setup smoke test ok\n'

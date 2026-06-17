@@ -12,7 +12,7 @@ return {
     },
 
     dependencies = {
-      -- Automatically install LSPs to stdpath for neovim
+      -- Mason LSP integration. General CLI tools live in plugins/mason.lua. 
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
       -- Useful status updates for LSP
@@ -33,7 +33,14 @@ return {
         },
       },
       -- Highlight symbols under cursor
-      'RRethy/vim-illuminate',
+      {
+        'RRethy/vim-illuminate',
+        config = function()
+          require('illuminate').configure({
+            providers = { 'lsp', 'regex' },
+          })
+        end,
+      },
       -- Better method overloads
       'Issafalcon/lsp-overloads.nvim',
     },
@@ -43,39 +50,29 @@ return {
       -- Turn on LSP status information
       require("fidget").setup({})
 
-      -- Setup mason so it can manage external tooling
-      require('mason').setup()
+      local mason = require("mason")
+      if not mason.has_setup then
+        mason.setup()
+      end
 
       -- Enable the following language servers
-      -- Commented ones should be installed manually
       local servers = {
         'bashls',                           -- bash lsp
         'clangd',                           -- C/C++ lsp
-        'cmake',                            -- CMake lsp
         'cssls',                            -- CSS lsp
         'dockerls',                         -- docker lsp
         'docker_compose_language_service',  -- docker-compose lsp
         'gradle_ls',                        -- gradle lsp
-        --[[ 'editorconfig-checker',             -- .editorconfig check  ]]
         'html',                             -- html lsp
         'jdtls',                            -- java lsp
         'jsonls',                           -- json lsp
         'lemminx',                          -- xml lsp
         'lua_ls',                           -- lua lsp and linter
         'marksman',                         -- markdown lsp
-        --[[ 'misspell',                         -- english word correction ]]
-        --[[ 'pylint',                           -- python linter ]]
         'omnisharp',                        -- csharp lsp
         'pyright',                          -- python static type checker 
-        --[[ 'shellcheck',                       -- bash static analysis ]]
-        --[[ 'shfmt',                            -- bash formatter ]]
         'texlab',                           -- latex lsp
         'yamlls',                           -- yml/yaml linter 
-      }
-
-      -- Ensure the servers above are installed
-      require('mason-lspconfig').setup {
-        ensure_installed = servers,
       }
 
       --  This function gets run when an LSP connects to a particular buffer.
@@ -159,6 +156,13 @@ return {
           capabilities = capabilities,
         })
       end
+
+      require('mason-lspconfig').setup {
+        ensure_installed = servers,
+        automatic_enable = false,
+      }
+
+      vim.lsp.enable(servers)
 
       -- signs
       local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }

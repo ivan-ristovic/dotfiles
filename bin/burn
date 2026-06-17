@@ -1,4 +1,12 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: burn
+# body:
+#   _arguments \
+#     '1:ISO image:_bin_helpers_iso_files' \
+#     '2:block device:_bin_helpers_block_devices'
+# dotfiles-completion: end
+
 
 . include lib
 export SHLIB_FMT_TIME=true

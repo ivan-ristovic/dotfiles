@@ -1,3 +1,9 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: include
+# body:
+#   _arguments '1:library:_bin_helpers_shlib_names'
+# dotfiles-completion: end
+
 
 source "$SHLIB_ROOT/$1.sh"

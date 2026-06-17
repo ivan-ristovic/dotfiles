@@ -143,7 +143,7 @@ function cht ()
 {
     local style=native
     if command -v cht.sh > /dev/null ; then
-        CHTSH_QUERY_OPTIONS="style=$style" cht.sh $@
+        CHTSH_QUERY_OPTIONS="style=$style" cht.sh "$@"
     else
         local sp="${*/ //}"
         curl https://cht.sh/"${sp// /+}"\?style=native
@@ -163,4 +163,3 @@ function dec2oct () { base2base 10  8 "$@" ; }
 function hex2bin () { base2base 16  2 "$@" ; }
 function hex2dec () { base2base 16 10 "$@" ; }
 function hex2oct () { base2base 16  8 "$@" ; }
-

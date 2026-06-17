@@ -1,4 +1,18 @@
 #!/bin/bash 
+# dotfiles-completion: begin
+# commands: image-alpha
+# body:
+#   _arguments -s \
+#     '-f[fuzz percent]:fuzz:(0 5 10 15 20 25)' \
+#     '-s[use speedy antialiasing]' \
+#     '-S[suppress antialiasing]' \
+#     '-A[suppress antialiasing]' \
+#     '-h[show help]' \
+#     '-p[floodfill pixel coordinate]:x,y:' \
+#     '-v[verbose output]' \
+#     '*:image file:_bin_helpers_image_files'
+# dotfiles-completion: end
+
 # https://github.com/hackerb9/mktrans/blob/master/mktrans
 
 # Fuzz is how far off the background color can be (in percent).

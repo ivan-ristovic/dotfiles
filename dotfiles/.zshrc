@@ -1,7 +1,15 @@
+if [[ ! -o interactive ]]; then
+    return 0
+fi
+
+if [[ "${DOTFILES_ZSH_ALLOW_HEADLESS:-}" != "1" ]] && { [[ ! -t 0 ]] || [[ ! -t 1 ]]; }; then
+    return 0
+fi
+
 ######################### TMUX #########################
 
 # Start tmux. Has to be before p10k instant prompt initialization!
-if command -v tmux > /dev/null && [ -z "$TMUX" ]; then
+if command -v tmux > /dev/null && [ -z "$TMUX" ] && [ "${DOTFILES_NO_TMUX_AUTOSTART:-}" != "1" ]; then
     exec tmux new-session -A
 fi
 
@@ -30,7 +38,11 @@ bindkey -M vicmd "^I" expand-or-complete-with-dots
 
 ######################### ENV #########################
 
-ZSH_TMUX_AUTOSTART=true
+if [ "${DOTFILES_NO_TMUX_AUTOSTART:-}" = "1" ]; then
+    ZSH_TMUX_AUTOSTART=false
+else
+    ZSH_TMUX_AUTOSTART=true
+fi
 # CASE_SENSITIVE="true"
 # HYPHEN_INSENSITIVE="true"
 # DISABLE_AUTO_UPDATE="true"
@@ -47,11 +59,6 @@ fpath=(~/.config/zsh/completion $fpath)
 
 ####################### PLUGINS #######################
 
-if [ ! -d "$HOME"/.oh-my-zsh/ ]; then
-    echo "Installing oh-my-zsh ..."
-    git clone https://github.com/ohmyzsh/ohmyzsh.git "$HOME"/.oh-my-zsh/
-fi
-
 plugins=(
   colored-man-pages         # man highlighting
   command-not-found         # "did you mean" on cmd 404
@@ -59,14 +66,12 @@ plugins=(
   copyfile                  # copies file to clip
   copypath                  # copies $(pwd) to clip
   cp                        # cpv alias to use rsync
-  direnv                    # .env files for each dir
   dirhistory                # alt+arrows to navigate dirs
   docker                    # docker completion and aliases
   docker-compose            # docker-compose completion and aliases
   encode64                  # encode64/decode64 aliases
   extract                   # extract alias
   fancy-ctrl-z              # ctrl+z for fg and bg
-  fzf                       # fzf completion
   git                       # git completion and aliases
   # per-directory-history     # ctrl+g to toggle global/dir history
   python                    # python aliases and venv management
@@ -80,24 +85,36 @@ plugins=(
   zsh-interactive-cd        # tab completion for cd
 )
 
-source $HOME/.oh-my-zsh/oh-my-zsh.sh
+if command -v direnv > /dev/null 2>&1; then
+    plugins+=(direnv)
+fi
+
+if command -v fzf > /dev/null 2>&1; then
+    plugins+=(fzf)
+fi
+
+if [ -d "$HOME"/.oh-my-zsh/ ]; then
+    source "$HOME/.oh-my-zsh/oh-my-zsh.sh"
+fi
 
 ZINIT_HOME="${HOME}/.zinit/zinit.git"
 
-if [ ! -d "$ZINIT_HOME" ]; then
-    mkdir -p "$(dirname $ZINIT_HOME)"
-    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+if [ -r "${ZINIT_HOME}/zinit.zsh" ]; then
+    source "${ZINIT_HOME}/zinit.zsh"
+
+    zinit ice depth=1 lucid; zinit light romkatv/powerlevel10k
+    zinit ice lucid
+    zinit light zsh-users/zsh-completions
+    zinit ice lucid
+    zinit light wfxr/forgit
+    # zinit light jeffreytse/zsh-vi-mode
+    zinit ice lucid
+    zinit light zsh-users/zsh-syntax-highlighting
+    zinit ice lucid
+    zinit light zdharma-continuum/fast-syntax-highlighting
+    zinit ice lucid
+    zinit light Aloxaf/fzf-tab
 fi
-
-source "${ZINIT_HOME}/zinit.zsh"
-
-zinit ice depth=1; zinit light romkatv/powerlevel10k
-zinit light zsh-users/zsh-completions       
-zinit light wfxr/forgit
-# zinit light jeffreytse/zsh-vi-mode
-zinit light zsh-users/zsh-syntax-highlighting
-zinit light zdharma-continuum/fast-syntax-highlighting
-zinit light Aloxaf/fzf-tab
 
 ########################## MISC ###########################
 
@@ -161,13 +178,15 @@ autoload -Uz compinit
 compinit
 
 # Replay compdefs
-zinit cdreplay -q
+if (( $+functions[zinit] )); then
+    zinit cdreplay -q
+fi
 
 # Alt-Tab for quoted completion
 # `showkey -a` can be used to help find keymaps
 autoload -Uz quote-and-complete-word
 zle -N quote-and-complete-word
-bindkey '^[\t' quote-and-complete-wordq
+bindkey '^[\t' quote-and-complete-word
 
 ####################### ALIAS SUPPORT #######################
 
@@ -274,4 +293,3 @@ autoload -U zmv
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-

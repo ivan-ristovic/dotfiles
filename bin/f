@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# dotfiles-completion: begin
+# commands: f fa ff ffa mpp
+# body:
+#   _message -e query 'search query'
+# dotfiles-completion: end
+
 
 # Two-phase filtering with fd and fzf
 # 1. Search for files using fd

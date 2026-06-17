@@ -1,0 +1,415 @@
+#!/usr/bin/env python3
+
+import argparse
+import difflib
+import pathlib
+import stat
+import subprocess
+import sys
+
+
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+OUTPUT_FILE = ROOT / "dotfiles/.config/zsh/completion/_bin_helpers"
+
+
+PRELUDE = r'''_bin_helpers_dirs() {
+  _files -/
+}
+
+_bin_helpers_files() {
+  _files
+}
+
+_bin_helpers_archives() {
+  _files -g '*.(7z|tar.7z|tar.gz|tgz|tar.bz2|tbz2|tar.xz|txz|zip|rar)(-.)'
+}
+
+_bin_helpers_iso_files() {
+  _files -g '*.(iso|img)(-.)'
+}
+
+_bin_helpers_image_files() {
+  _files -g '*.(jpg|jpeg|png|webp|gif|bmp|tif|tiff|heic|avif)(-.)'
+}
+
+_bin_helpers_audio_files() {
+  _files -g '*.(mp3|flac|wav|ogg|opus|m4a|aac)(-.)'
+}
+
+_bin_helpers_flac_files() {
+  _files -g '*.flac(-.)'
+}
+
+_bin_helpers_mp3_files() {
+  _files -g '*.mp3(-.)'
+}
+
+_bin_helpers_video_files() {
+  _files -g '*.(mp4|mkv|avi|mov|webm|flv|m4v|mpg|mpeg|wmv|ogv)(-.)'
+}
+
+_bin_helpers_media_files() {
+  _files -g '*.(mp3|flac|wav|ogg|opus|m4a|aac|mp4|mkv|avi|mov|webm|flv|m4v|mpg|mpeg|wmv|ogv)(-.)'
+}
+
+_bin_helpers_image_or_dir() {
+  _alternative \
+    'directories:directory:_bin_helpers_dirs' \
+    'images:image file:_bin_helpers_image_files'
+}
+
+_bin_helpers_audio_or_dir() {
+  _alternative \
+    'directories:directory:_bin_helpers_dirs' \
+    'audio:audio file:_bin_helpers_audio_files'
+}
+
+_bin_helpers_flac_or_dir() {
+  _alternative \
+    'directories:directory:_bin_helpers_dirs' \
+    'flac-files:FLAC file:_bin_helpers_flac_files'
+}
+
+_bin_helpers_mp3_or_dir() {
+  _alternative \
+    'directories:directory:_bin_helpers_dirs' \
+    'mp3-files:MP3 file:_bin_helpers_mp3_files'
+}
+
+_bin_helpers_video_or_dir() {
+  _alternative \
+    'directories:directory:_bin_helpers_dirs' \
+    'videos:video file:_bin_helpers_video_files'
+}
+
+_bin_helpers_media_or_dir() {
+  _alternative \
+    'directories:directory:_bin_helpers_dirs' \
+    'media:media file:_bin_helpers_media_files'
+}
+
+_bin_helpers_block_devices() {
+  local -a devs
+  devs=( /dev/disk/by-id/usb-*(N) /dev/sd[a-z](N) /dev/nvme[0-9]n[0-9](N) )
+  if (( $#devs )); then
+    compadd -a devs
+  else
+    _files -W /dev
+  fi
+}
+
+_bin_helpers_conn_ids() {
+  local line ids_raw id
+  local -a ids
+
+  if [[ -r $HOME/.known_hosts ]]; then
+    while IFS= read -r line; do
+      line=${line##[[:space:]]##}
+      [[ -z $line || $line == \#* ]] && continue
+      ids_raw=${line%%[[:space:]]*}
+      for id in ${(s:,:)ids_raw}; do
+        [[ -n $id ]] && ids+=( "$id" )
+      done
+    done < "$HOME/.known_hosts"
+  fi
+
+  ids=( ${(u)ids} )
+  if (( $#ids )); then
+    _describe -t server-ids 'server id' ids
+  else
+    _hosts
+  fi
+}
+
+_bin_helpers_cpu_freqs() {
+  local freq_file=/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies
+  local contents
+  local -a freqs
+
+  if [[ -r $freq_file ]]; then
+    contents=$(< "$freq_file")
+    freqs=( ${(z)contents} )
+  fi
+
+  if (( $#freqs )); then
+    _describe -t cpu-frequencies 'CPU frequency' freqs
+  else
+    _message -e cpu-frequency 'frequency in kHz'
+  fi
+}
+
+_bin_helpers_fiat_currencies() {
+  local -a currencies=(
+    BTC ETH USDT XRP BCH BNB DOT LINK CRO BSV LTC
+    XAU XAG XPT XPD AUD BRL CAD CHF CLP CNY CZK DKK EUR GBP
+    HKD HUF IDR ILS INR JPY KRW MXN MYR NOK NZD PHP PKR PLN
+    RUB SEK SGD THB TRY TWD USD ZAR
+  )
+  _describe -t currencies 'currency' currencies
+}
+
+_bin_helpers_crypto_symbols() {
+  local -a symbols=(btc eth usdt xrp bch bnb dot link ltc sol ada doge xmr xlm etc)
+  _values -s , 'crypto symbol' ${symbols[@]}
+}
+
+_bin_helpers_crypto_names() {
+  local -a names=(bitcoin ethereum tether ripple bitcoin-cash binance-coin polkadot chainlink litecoin solana cardano dogecoin monero stellar ethereum-classic)
+  _values -s , 'crypto name' ${names[@]}
+}
+
+_bin_helpers_hex_colors() {
+  compadd 000000 ffffff ff0000 00ff00 0000ff ffff00 ff00ff 00ffff
+}
+
+_bin_helpers_pub_keys() {
+  local -a keys
+  keys=( "$HOME"/.ssh/*.pub(N) )
+  if (( $#keys )); then
+    compadd -a keys
+  else
+    _files -g '*.pub(-.)'
+  fi
+}
+
+_bin_helpers_shlib_names() {
+  local root=${SHLIB_ROOT:-$HOME/dotfiles/shlib/lib}
+  local -a libs
+  libs=( ${root}/*.sh(N:t:r) )
+  if (( $#libs )); then
+    _describe -t shlib-libraries 'library' libs
+  else
+    _message -e shlib-libraries 'library name'
+  fi
+}
+
+_bin_helpers_themes() {
+  local themes_dir=$HOME/dotfiles/dotfiles/themes
+  local -a themes
+  themes=( ${themes_dir}/*(N/:t) )
+  if (( $#themes )); then
+    _describe -t themes 'theme' themes
+  else
+    _message -e themes 'theme name'
+  fi
+}
+
+_bin_helpers_tmux_layouts() {
+  local layouts_dir=$HOME/.tmux/layouts
+  local -a layouts
+  layouts=( ${layouts_dir}/*(N.:t) )
+  if (( $#layouts )); then
+    _describe -t tmux-layouts 'layout' layouts
+  else
+    _message -e tmux-layouts 'layout name'
+  fi
+}
+
+_bin_helpers_no_args() {
+  _message -e arguments 'no arguments'
+}
+'''
+
+
+class CompletionBlock:
+    def __init__(self, path, commands, body):
+        self.path = path
+        self.commands = commands
+        self.body = body
+
+
+def run_git_ls_files():
+    result = subprocess.run(
+        ["git", "ls-files", "-z", "bin"],
+        cwd=ROOT,
+        check=True,
+        stdout=subprocess.PIPE,
+    )
+    return [
+        ROOT / item.decode()
+        for item in result.stdout.split(b"\0")
+        if item
+    ]
+
+
+def is_executable_file(path):
+    try:
+        mode = path.stat().st_mode
+    except FileNotFoundError:
+        return False
+    return stat.S_ISREG(mode) and bool(mode & (stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH))
+
+
+def strip_comment(line):
+    stripped = line.lstrip()
+    if not stripped.startswith("#"):
+        return None
+    text = stripped[1:]
+    if text.startswith(" "):
+        text = text[1:]
+    return text.rstrip("\n")
+
+
+def dedent_body(lines):
+    non_empty = [line for line in lines if line.strip()]
+    if not non_empty:
+        return []
+    indent = min(len(line) - len(line.lstrip(" ")) for line in non_empty)
+    return [line[indent:] if len(line) >= indent else "" for line in lines]
+
+
+def parse_completion_metadata(path):
+    text = path.read_text()
+    lines = text.splitlines()
+    blocks = []
+    has_none = False
+    index = 0
+
+    while index < len(lines):
+        comment = strip_comment(lines[index])
+        if comment == "dotfiles-completion: none":
+            has_none = True
+            index += 1
+            continue
+        if comment != "dotfiles-completion: begin":
+            index += 1
+            continue
+
+        index += 1
+        commands = None
+        body = []
+        in_body = False
+        while index < len(lines):
+            comment = strip_comment(lines[index])
+            if comment is None:
+                raise ValueError(f"{path}: non-comment line inside completion metadata")
+            if comment == "dotfiles-completion: end":
+                break
+            if in_body:
+                body.append(comment)
+            elif comment.startswith("commands:"):
+                commands = comment.removeprefix("commands:").split()
+            elif comment == "body:":
+                in_body = True
+            elif not comment:
+                pass
+            else:
+                raise ValueError(f"{path}: unknown completion metadata line: {comment}")
+            index += 1
+        else:
+            raise ValueError(f"{path}: unterminated completion metadata block")
+
+        if not commands:
+            raise ValueError(f"{path}: completion metadata is missing commands")
+        body = dedent_body(body)
+        if not body:
+            raise ValueError(f"{path}: completion metadata has an empty body")
+        blocks.append(CompletionBlock(path, commands, body))
+        index += 1
+
+    if has_none and blocks:
+        raise ValueError(f"{path}: cannot combine completion metadata with dotfiles-completion: none")
+    return blocks, has_none
+
+
+def collect_blocks():
+    paths = sorted(path for path in run_git_ls_files() if is_executable_file(path))
+    missing = []
+    command_sources = {}
+    blocks = []
+    records = []
+
+    for path in paths:
+        parsed_blocks, has_none = parse_completion_metadata(path)
+        records.append((path, parsed_blocks, has_none))
+        for block in parsed_blocks:
+            blocks.append(block)
+            for command in block.commands:
+                source = command_sources.setdefault(command, block.path)
+                if source != block.path:
+                    raise ValueError(
+                        f"{path}: command '{command}' is already defined by {source.relative_to(ROOT)}"
+                    )
+
+    covered_commands = set(command_sources)
+    for path, parsed_blocks, has_none in records:
+        if parsed_blocks or has_none or path.name in covered_commands:
+            continue
+        missing.append(path.relative_to(ROOT).as_posix())
+
+    return sorted(blocks, key=lambda block: block.commands[0]), missing
+
+
+def render_completion(blocks):
+    commands = sorted(command for block in blocks for command in block.commands)
+    out = []
+    out.append("# Generated by dotfiles/.utils/gen-bin-helper-completions. Do not edit directly.")
+    out.append("#compdef " + " ".join(commands))
+    out.append("")
+    out.append(PRELUDE.rstrip())
+    out.append("")
+    out.append("_bin_helpers() {")
+    out.append("  emulate -L zsh")
+    out.append("  setopt extendedglob nullglob")
+    out.append("")
+    out.append("  local cmd=${service:-${words[1]}}")
+    out.append("")
+    out.append("  case $cmd in")
+    for block in blocks:
+        out.append(f"    {'|'.join(block.commands)})")
+        for line in block.body:
+            out.append("      " + line if line else "")
+        out.append("      ;;")
+    out.append("    *)")
+    out.append("      _normal")
+    out.append("      ;;")
+    out.append("  esac")
+    out.append("}")
+    out.append("")
+    out.append("if [[ $funcstack[1] == _bin_helpers ]]; then")
+    out.append('  _bin_helpers "$@"')
+    out.append("fi")
+    out.append("")
+    return "\n".join(out)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Generate zsh completions for dotfiles bin helpers")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--write", action="store_true", help="write generated completion file")
+    mode.add_argument("--check", action="store_true", help="fail if completion file is stale")
+    args = parser.parse_args()
+
+    try:
+        blocks, missing = collect_blocks()
+        generated = render_completion(blocks)
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+
+    for path in missing:
+        print(f"warning: missing completion metadata: {path}", file=sys.stderr)
+
+    if args.write:
+        OUTPUT_FILE.write_text(generated)
+        return 0
+
+    if args.check:
+        current = OUTPUT_FILE.read_text() if OUTPUT_FILE.exists() else ""
+        if current != generated:
+            diff = difflib.unified_diff(
+                current.splitlines(keepends=True),
+                generated.splitlines(keepends=True),
+                fromfile=str(OUTPUT_FILE.relative_to(ROOT)),
+                tofile="generated",
+            )
+            sys.stderr.writelines(diff)
+            return 1
+        return 0
+
+    sys.stdout.write(generated)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

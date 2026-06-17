@@ -1,4 +1,10 @@
 #!/usr/bin/env zsh
+# dotfiles-completion: begin
+# commands: preview
+# body:
+#   _arguments '1:file:_bin_helpers_files'
+# dotfiles-completion: end
+
 
 FILE_PATH=$1
 

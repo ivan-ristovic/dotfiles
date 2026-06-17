@@ -7,5 +7,4 @@ Entries from the installation lists are processed in the following manner:
     - if there exists a special setup script matching that name in the `install/` directory, it is invoked
         - additionally, if entry is prefixed with a `!` sign, then the installation will be performed after stowing (linking) dotfiles
     - otherwise, it is assumed that there exists a package with such name and installation is attempted using the default package manager
-        - specially, for Arch Linux, entries prefixed with `aur:` will use `yay` instead of `pacman` for that entry
-
+        - specially, for Arch Linux, entries prefixed with `aur/` will use `yay` instead of `pacman` for that entry

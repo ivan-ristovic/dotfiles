@@ -1,4 +1,12 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: shlib
+# body:
+#   _arguments \
+#     '1:function name:' \
+#     '*:argument:'
+# dotfiles-completion: end
+
 
 source $SHLIB_ROOT/lib.sh
 

@@ -1,0 +1,237 @@
+#!/bin/bash
+
+set -uo pipefail
+
+ROOT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P) || exit 1
+CONTAINERS_DIR="$ROOT_DIR/containers"
+
+DISTRO=arch
+BUILD_IMAGE=true
+KEEP_CONTAINER=false
+KEEP_CONTAINER_REASON=
+STRICT_HEALTH=false
+
+function usage ()
+{
+    local exit_code=${1:-2}
+    cat <<USAGE
+usage: $(basename "$0") [arch|ubuntu] [--no-build] [--keep|--no-remove] [--strict-health] [--help]
+
+Runs a clean container setup smoke test.
+
+  arch|ubuntu   container distro to test (default: arch)
+  --no-build    skip image build and reuse the existing image
+  --keep, --no-remove
+                keep the container even when the test succeeds
+  --strict-health
+                fail when Neovim checkhealth reports ERROR entries
+  --help        print this help
+USAGE
+    exit "$exit_code"
+}
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        arch | ubuntu)
+            DISTRO="$1"
+            ;;
+        --no-build)
+            BUILD_IMAGE=false
+            ;;
+        --keep)
+            KEEP_CONTAINER=true
+            KEEP_CONTAINER_REASON="--keep was provided"
+            ;;
+        --no-remove)
+            KEEP_CONTAINER=true
+            KEEP_CONTAINER_REASON="--no-remove was provided"
+            ;;
+        --strict-health)
+            STRICT_HEALTH=true
+            ;;
+        -h | --help)
+            usage 0
+            ;;
+        *)
+            echo "fatal: unknown argument: $1" >&2
+            usage
+            ;;
+    esac
+    shift
+done
+
+case "$DISTRO" in
+    arch)
+        PACKAGE_LIST="+arch/core"
+        ;;
+    ubuntu)
+        PACKAGE_LIST="+deb/core"
+        ;;
+esac
+PACKAGE_LIST_PATH="lists/include/${PACKAGE_LIST#+}"
+IMAGE_TAG="dotfiles-$DISTRO"
+CONTAINER_NAME="dotfiles-check-${DISTRO}-$(date +%Y%m%d%H%M%S)-$$"
+LOG_FILE="$ROOT_DIR/setup-container-${DISTRO}-$(date +%Y%m%d-%H%M%S).log"
+
+HEALTH_FILE=$(mktemp)
+HEALTH_ERR_FILE=$(mktemp)
+HEALTH_OUT_FILE=$(mktemp)
+HEALTH_ERRORS_FILE=$(mktemp)
+NVIM_START_OUT_FILE=$(mktemp)
+NVIM_LAZY_OUT_FILE=$(mktemp)
+NVIM_MASON_OUT_FILE=$(mktemp)
+
+function cleanup ()
+{
+    rm -f "$HEALTH_FILE" "$HEALTH_ERR_FILE" "$HEALTH_OUT_FILE" "$HEALTH_ERRORS_FILE" "$NVIM_START_OUT_FILE" "$NVIM_LAZY_OUT_FILE" "$NVIM_MASON_OUT_FILE"
+}
+trap cleanup EXIT
+
+function log_msg ()
+{
+    printf '[check-setup] %s\n' "$*" | tee -a "$LOG_FILE"
+}
+
+function log_err ()
+{
+    printf '[check-setup] ERROR: %s\n' "$*" | tee -a "$LOG_FILE" >&2
+}
+
+function strip_ansi_stream ()
+{
+    sed -u -E $'s/\x1B\\[[0-?]*[ -/]*[@-~]//g'
+}
+
+function run_logged ()
+{
+    log_msg "running: $*"
+    "$@" 2>&1 | strip_ansi_stream | tee -a "$LOG_FILE"
+    local rc=${PIPESTATUS[0]}
+    return "$rc"
+}
+
+function run_logged_in_dir ()
+{
+    local dir=$1
+    shift
+
+    log_msg "running: (cd $dir && $*)"
+    (cd "$dir" && "$@") 2>&1 | strip_ansi_stream | tee -a "$LOG_FILE"
+    local rc=${PIPESTATUS[0]}
+    return "$rc"
+}
+
+function copy_container_file ()
+{
+    local container_path=$1
+    local host_path=$2
+
+    docker cp "$CONTAINER_NAME:$container_path" "$host_path" >> "$LOG_FILE" 2>&1
+}
+
+function append_file_to_log ()
+{
+    local title=$1
+    local file=$2
+
+    if [ -s "$file" ]; then
+        {
+            printf '\n===== %s =====\n' "$title"
+            strip_ansi_stream < "$file"
+            printf '\n'
+        } >> "$LOG_FILE"
+    fi
+}
+
+if ! command -v docker > /dev/null 2>&1; then
+    log_err "docker is not installed or not on PATH"
+    exit 1
+fi
+
+if [ ! -f "$ROOT_DIR/$PACKAGE_LIST_PATH" ]; then
+    log_err "missing package list: $PACKAGE_LIST_PATH"
+    exit 1
+fi
+
+: > "$LOG_FILE"
+log_msg "log: $LOG_FILE"
+log_msg "distro: $DISTRO"
+log_msg "image: $IMAGE_TAG"
+log_msg "container: $CONTAINER_NAME"
+log_msg "package list: $PACKAGE_LIST"
+log_msg "package list path: $PACKAGE_LIST_PATH"
+log_msg "strict nvim health: $STRICT_HEALTH"
+
+if docker ps -a --format '{{.Names}}' | grep -Fx -- "$CONTAINER_NAME" > /dev/null; then
+    log_err "container already exists: $CONTAINER_NAME"
+    exit 1
+fi
+
+if $BUILD_IMAGE; then
+    if ! run_logged_in_dir "$CONTAINERS_DIR" ./image build "$DISTRO"; then
+        log_err "image build failed"
+        exit 1
+    fi
+else
+    log_msg "skipping image build"
+fi
+
+log_msg "creating container"
+docker create \
+    --name "$CONTAINER_NAME" \
+    --volume "$ROOT_DIR:/home/user/dotfiles" \
+    --workdir /home/user/dotfiles \
+    --env "DOTFILES_TEST_PACKAGE_LIST=$PACKAGE_LIST" \
+    --env "DOTFILES_STRICT_NVIM_HEALTH=$STRICT_HEALTH" \
+    "$IMAGE_TAG" \
+    bash /home/user/dotfiles/containers/check-setup-in-container 2>&1 | strip_ansi_stream | tee -a "$LOG_FILE"
+create_rc=${PIPESTATUS[0]}
+if [ "$create_rc" -ne 0 ]; then
+    log_err "failed to create container"
+    exit "$create_rc"
+fi
+
+log_msg "starting container"
+docker start -a "$CONTAINER_NAME" 2>&1 | strip_ansi_stream | tee -a "$LOG_FILE"
+run_rc=${PIPESTATUS[0]}
+
+if copy_container_file /tmp/dotfiles-nvim-health.txt "$HEALTH_FILE"; then
+    append_file_to_log "nvim checkhealth buffer" "$HEALTH_FILE"
+fi
+if copy_container_file /tmp/dotfiles-nvim-health.err "$HEALTH_ERR_FILE"; then
+    append_file_to_log "nvim checkhealth stderr" "$HEALTH_ERR_FILE"
+fi
+if copy_container_file /tmp/dotfiles-nvim-health.out "$HEALTH_OUT_FILE"; then
+    append_file_to_log "nvim checkhealth stdout" "$HEALTH_OUT_FILE"
+fi
+if copy_container_file /tmp/dotfiles-nvim-health-errors.txt "$HEALTH_ERRORS_FILE"; then
+    append_file_to_log "nvim checkhealth errors" "$HEALTH_ERRORS_FILE"
+fi
+if copy_container_file /tmp/dotfiles-nvim-start.out "$NVIM_START_OUT_FILE"; then
+    append_file_to_log "nvim startup output" "$NVIM_START_OUT_FILE"
+fi
+if copy_container_file /tmp/dotfiles-nvim-lazy-sync.out "$NVIM_LAZY_OUT_FILE"; then
+    append_file_to_log "nvim Lazy sync output" "$NVIM_LAZY_OUT_FILE"
+fi
+if copy_container_file /tmp/dotfiles-nvim-mason-tools.out "$NVIM_MASON_OUT_FILE"; then
+    append_file_to_log "nvim Mason tools install output" "$NVIM_MASON_OUT_FILE"
+fi
+
+if [ "$run_rc" -eq 0 ]; then
+    log_msg "container setup check passed"
+    if $KEEP_CONTAINER; then
+        log_msg "keeping container because $KEEP_CONTAINER_REASON: $CONTAINER_NAME"
+    else
+        if ! run_logged docker rm "$CONTAINER_NAME"; then
+            log_err "test passed, but failed to remove container: $CONTAINER_NAME"
+            exit 1
+        fi
+    fi
+    log_msg "log kept at: $LOG_FILE"
+    exit 0
+fi
+
+log_err "container setup check failed with status $run_rc"
+log_err "container kept for inspection: $CONTAINER_NAME"
+log_err "log kept at: $LOG_FILE"
+exit "$run_rc"

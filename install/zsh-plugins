@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if ! command -v zsh > /dev/null 2>&1; then
+    log_err "zsh is not installed; cannot bootstrap zsh plugins"
+    return 1
+fi
+
+if [ ! -r "$SETUP_HOME_DIR/.zshrc" ]; then
+    log_err "missing readable zshrc: $SETUP_HOME_DIR/.zshrc"
+    return 1
+fi
+
+log_msg "Bootstrapping zsh plugins"
+bootstrap_log=$(mktemp)
+
+if HOME="$SETUP_HOME_DIR" DOTFILES_NO_TMUX_AUTOSTART=1 DOTFILES_ZSH_ALLOW_HEADLESS=1 TERM=xterm-256color zsh -ic true > "$bootstrap_log" 2>&1; then
+    rm -f "$bootstrap_log"
+else
+    log_err "zsh plugin bootstrap failed; output follows"
+    sed 's/^/zsh-bootstrap: /' "$bootstrap_log" >&2
+    rm -f "$bootstrap_log"
+    return 1
+fi

@@ -1,23 +1,29 @@
 #!/bin/bash
 
-source ../utils.sh
+PATCHES_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P) || exit 1
+DOTFILES_ROOT_DIR=${DOTFILES_ROOT_DIR:-$(cd "$PATCHES_DIR/.." && pwd -P)}
+export SHLIB_ROOT=${SHLIB_ROOT:-"$DOTFILES_ROOT_DIR/shlib/lib"}
+# shellcheck source=/dev/null
+source "$DOTFILES_ROOT_DIR/utils.sh"
+cd "$PATCHES_DIR" || exit 1
 
 __dry_run=false
 if [ "$1" == "--dry" ]; then
     __dry_run=true
 fi
 
-for patch in $(find ./*/ -type f) ; do
+while IFS= read -r -d '' patch ; do
     if [[ "$(basename "$patch")" == .* ]] ; then
         log_wrn "Skip: $patch"
         continue
     fi
-    target_file=${patch:1} 
-    sudo mkdir -p "$(dirname "$target_file")"
+    target_file="/${patch#./}"
     if [[ $patch == *.patch ]] ; then
         target_file="${target_file%.patch}"
         log_msg "Patch: $target_file"
         if ! $__dry_run ; then
+            sudo mkdir -p "$(dirname "$target_file")"
+            # shellcheck disable=SC2024
             if ! sudo patch -N -s --reject-file=- "$target_file" < "$patch" ; then
                 log_err "Patch failed: $target_file"
             fi
@@ -25,11 +31,12 @@ for patch in $(find ./*/ -type f) ; do
     else
         log_msg "Swap:  $target_file"
         if ! $__dry_run ; then
+            sudo mkdir -p "$(dirname "$target_file")"
             if ! sudo cp --no-preserve=mode,ownership -rf "$patch" "$target_file" ; then
                 log_err "Swap failed: $patch"
             fi
         fi
     fi
-done
+done < <(find ./*/ -type f -print0)
 
 unset __dry_run

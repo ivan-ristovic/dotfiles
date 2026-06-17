@@ -1,4 +1,13 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: colorconv
+# body:
+#   _arguments \
+#     '1:hex color or red channel:' \
+#     '2:green channel:' \
+#     '3:blue channel:'
+# dotfiles-completion: end
+
 
 if [[ $# -eq 1 ]]; then
     hex=$1

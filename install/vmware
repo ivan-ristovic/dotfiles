@@ -10,7 +10,7 @@ inst fuse2 gtkmm ncurses libcanberra pcsclite
 
 dir=/tmp/vmware-player-install
 mkdir -p "$dir"
-cd $!
+cd "$dir" || return
 msg "Downloading VMware player to: $dir"
 wget --user-agent="Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0" https://www.vmware.com/go/getplayer-linux -O vmplayer
 sudo chmod +x vmplayer
@@ -31,5 +31,4 @@ sudo systemctl start "${services[@]}"
 msg "Installing and loading VMware kernel modules"
 sudo vmware-modconfig --console --install-all
 sudo modprobe -a vmw_vmci vmmon
-
 

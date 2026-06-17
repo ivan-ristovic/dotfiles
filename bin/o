@@ -1,4 +1,12 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: o
+# body:
+#   _arguments -s \
+#     '(-s --shell)'{-s,--shell}'[use shell action instead of xdg-open]' \
+#     '*:target:_files'
+# dotfiles-completion: end
+
 
 function usage ()
 {

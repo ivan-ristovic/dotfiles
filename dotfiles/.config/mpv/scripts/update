@@ -3,34 +3,34 @@
 source $SHLIB_ROOT/lib.sh
 
 for plugin in *.lua ; do
-    log::msg "checking $plugin"
-    hashfile="$(os::path::file_noext "$plugin").hash"
-    log::dbg "$hashfile"
+    log_msg "checking $plugin"
+    hashfile="$(os_path_file_noext "$plugin").hash"
+    log_dbg "$hashfile"
     if [ -f "$hashfile" ]; then
         contents=()
-        io::readlines contents < "$hashfile"
+        io_readlines contents < "$hashfile"
         url=${contents[0]}
-        log::dbg "url: $url"
+        log_dbg "url: $url"
         remote=$(curl --silent "$url")
         remote_hash=$(echo "$remote" | sha1sum)
         hash=${contents[1]}
-        log::dbg "local : $hash"
-        log::dbg "remote: $remote_hash"
+        log_dbg "local : $hash"
+        log_dbg "remote: $remote_hash"
         if [ "$remote_hash" != "$hash" ]; then
             diff "$plugin" <(echo "$remote")
-            if std::ask "updates found, proceed" Y ; then
+            if std_ask "updates found, proceed" Y ; then
                 mv "$plugin" "$plugin.old"
-                log::wrn "old file saved as $plugin.old" 
+                log_wrn "old file saved as $plugin.old" 
                 echo "$remote" > "$plugin"
                 echo "$url" > "$hashfile"
                 echo "$remote_hash" >> "$hashfile"
                 echo >> "$hashfile"
-                log::suc "updated $plugin"
+                log_suc "updated $plugin"
             fi
         else
-            log::suc "no updates for $plugin"
+            log_suc "no updates for $plugin"
         fi
     else
-        log::err "no hash found for $plugin"
+        log_err "no hash found for $plugin"
     fi
 done

@@ -1,4 +1,10 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: swtheme
+# body:
+#   _arguments '1:theme:_bin_helpers_themes'
+# dotfiles-completion: end
+
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 THEMES_DIR="$SCRIPT_DIR/../dotfiles/themes/"

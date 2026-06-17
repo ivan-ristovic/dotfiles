@@ -1,4 +1,10 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: video-cat
+# body:
+#   _arguments '*:input video:_bin_helpers_video_files'
+# dotfiles-completion: end
+
 
 if [ $# -lt 2 ]; then
     echo "usage: $(basename $0) input_video ..."

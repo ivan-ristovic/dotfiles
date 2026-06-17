@@ -1,4 +1,10 @@
 #!/usr/bin/env python
+# dotfiles-completion: begin
+# commands: colorconv-term
+# body:
+#   _arguments '1:hex color:'
+# dotfiles-completion: end
+
 
 N = []
 for i, n in enumerate([47, 68, 40, 40, 40, 21]):

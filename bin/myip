@@ -1,4 +1,10 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: myip
+# body:
+#   _arguments '1:IP version:(4 6)'
+# dotfiles-completion: end
+
 
 host="@resolver1.opendns.com"
 version=""

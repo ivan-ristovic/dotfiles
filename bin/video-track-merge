@@ -1,4 +1,12 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: video-track-merge
+# body:
+#   _arguments \
+#     '1:input video:_bin_helpers_video_files' \
+#     '2:output video:_files'
+# dotfiles-completion: end
+
 
 if [ $# -lt 1 ]; then
     echo "usage: $(basename "$0") input_video [output_video]"

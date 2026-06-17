@@ -2,18 +2,68 @@
 
 # Make sure user is set in case the script is invoked directly
 # and not through `setup --services`
+SYSTEMD_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P) || exit 1
+DOTFILES_ROOT_DIR=${DOTFILES_ROOT_DIR:-$(cd "$SYSTEMD_DIR/.." && pwd -P)}
+export SHLIB_ROOT=${SHLIB_ROOT:-"$DOTFILES_ROOT_DIR/shlib/lib"}
+
 if [ -z "$SETUP_USER" ]; then
     SETUP_USER=$USER
-    curr_dir=$PWD
-    cd .. && source utils.sh && cd "$curr_dir"
 fi
+
+# shellcheck source=/dev/null
+source "$DOTFILES_ROOT_DIR/utils.sh"
+cd "$SYSTEMD_DIR" || exit 1
 
 __dry_run=false
 if [ "$1" == "--dry" ]; then
     __dry_run=true
 fi
 
-if [ ! -d /usr/sbin/dotfiles ]; then
+function setup_system_service ()
+{
+    local service=$1
+    local service_name=$service
+
+    if [[ "$service" == system/* ]]; then
+        service_name=$(basename -- "$service")
+        log_msg "linking system service: $service_name"
+        if ! $__dry_run ; then
+            sudo ln -sf "$(pwd)/$service" "/etc/systemd/system/$service_name"
+            sudo systemctl daemon-reload
+        fi
+    fi
+
+    log_msg "enabling system service: $service_name"
+    if ! $__dry_run ; then
+        if ! sudo systemctl enable --now "$service_name"; then
+            log_err "failed to setup: $service_name"
+        fi
+    fi
+}
+
+function setup_user_service ()
+{
+    local service=$1
+    local service_name=$service
+
+    if [[ "$service" == user/* ]]; then
+        service_name=$(basename -- "$service")
+        log_msg "linking user service: $service_name"
+        if ! $__dry_run ; then
+            sudo ln -sf "$(pwd)/$service" "/etc/systemd/user/$service_name"
+            sudo systemctl --user -M "$SETUP_USER"@ daemon-reload
+        fi
+    fi
+
+    log_msg "enabling user service: $service_name"
+    if ! $__dry_run ; then
+        if ! sudo systemctl --user -M "$SETUP_USER"@ enable --now "$service_name"; then
+            log_err "failed to setup: $service_name"
+        fi
+    fi
+}
+
+if [ ! -e /usr/sbin/dotfiles ]; then
     log_msg "linking sbin to /usr/sbin"
     if ! $__dry_run ; then
         sudo ln -s "$(pwd)/sbin/" /usr/sbin/dotfiles
@@ -21,20 +71,9 @@ if [ ! -d /usr/sbin/dotfiles ]; then
 fi
 
 for service in $(read_list "./enabled-system-services.txt"); do
-    log_msg "enabling system service: $service"
-    if ! $__dry_run ; then
-        if ! sudo systemctl enable --now "$service"; then
-            log_err "failed to setup: $service"
-        fi
-    fi
+    setup_system_service "$service"
 done
 
 for service in $(read_list "./enabled-user-services.txt"); do
-    log_msg "enabling user service: $service"
-    if ! $__dry_run ; then
-        if ! sudo systemctl --user -M "$SETUP_USER"@ enable --now "$service"; then
-            log_err "failed to setup: $service"
-        fi
-    fi
+    setup_user_service "$service"
 done
-

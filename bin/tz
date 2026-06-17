@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# dotfiles-completion: begin
+# commands: tz
+# body:
+#   _bin_helpers_no_args
+# dotfiles-completion: end
+
 
 [[ $(TZ=Europe/Berlin date +%Z) == CEST ]] && tz_width=4 || tz_width=4
 

@@ -2,7 +2,7 @@
 
 function usage ()
 {
-    echo "usage $(basename "$0") build|run distro [docker run/build opts ...]"
+    echo "usage $(basename "$0") build|run distro [--ssh] [docker run/build opts ...]"
     exit 1
 }
 
@@ -24,21 +24,70 @@ shift 2
 set -e
 
 cd "$distro"
+
 case "$cmd" in
     build)
-        priv_key=$(cat ~/.ssh/id)
-        pub_key=$(cat ~/.ssh/id.pub)
-        docker build -t "$tag" \
-            --force-rm \
-            --build-arg PRIVATE_KEY="$priv_key" \
-            --build-arg PUBLIC_KEY="$pub_key" \
-            .
+        if docker buildx version > /dev/null 2>&1; then
+            docker buildx build -t "$tag" \
+                --force-rm \
+                --load \
+                "$@" \
+                .
+        else
+            echo "warning: docker buildx is not installed; falling back to legacy docker build" >&2
+            docker build -t "$tag" \
+                --force-rm \
+                "$@" \
+                .
+        fi
     ;;
     run)
-        docker run "$@" -v "$dotfiles_dir:/home/user/dotfiles" -it --rm "$tag"
+        ssh_agent=false
+        run_args=()
+        while [[ $# -gt 0 ]]; do
+            case "$1" in
+                --ssh)
+                    ssh_agent=true
+                    ;;
+                --)
+                    shift
+                    run_args+=("$@")
+                    break
+                    ;;
+                *)
+                    run_args+=("$1")
+                    ;;
+            esac
+            shift
+        done
+
+        ssh_args=()
+        if $ssh_agent; then
+            if [[ -z "${SSH_AUTH_SOCK:-}" ]]; then
+                echo "fatal: SSH_AUTH_SOCK is not set; start ssh-agent and add a key first" >&2
+                exit 1
+            fi
+            if [[ ! -S "$SSH_AUTH_SOCK" ]]; then
+                echo "fatal: SSH_AUTH_SOCK is not a socket: $SSH_AUTH_SOCK" >&2
+                exit 1
+            fi
+
+            ssh_args+=(
+                --mount "type=bind,src=$SSH_AUTH_SOCK,dst=/run/host-ssh-agent"
+                -e SSH_AUTH_SOCK=/run/host-ssh-agent
+            )
+
+            if [[ -r "$HOME/.ssh/known_hosts" ]]; then
+                ssh_args+=(
+                    --mount "type=bind,src=$HOME/.ssh/known_hosts,dst=/tmp/known_hosts,readonly"
+                    -e "GIT_SSH_COMMAND=ssh -o UserKnownHostsFile=/tmp/known_hosts -o StrictHostKeyChecking=yes"
+                )
+            fi
+        fi
+
+        docker run "${run_args[@]}" "${ssh_args[@]}" -v "$dotfiles_dir:/home/user/dotfiles" -it --rm "$tag"
     ;;
     *)
         usage
     ;;
 esac
-

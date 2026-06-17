@@ -25,7 +25,7 @@ This repository contains my personal dotfiles, QOL scripts and binaries, as well
 My custom (additional) features:
 - Integration with tmux, nvim, fzf...
 - Automatic [alias expansion](dotfiles/.zshrc)
-- QOL [aliases](dotfiles/aliases) and [functions](bin)
+- QOL [aliases](dotfiles/.aliases) and [functions](bin)
 - Custom [shell library](shlib)
 - [Theming](dotfiles/themes)
 
@@ -89,4 +89,3 @@ Also check out:
 - `install/` directory for more information on how to use the scripts for custom package installations
 - `patches/` directory for more information on how to use the automatic config patching system
 - `systemd/` directory for more information on how to create custom `systemd` services
-

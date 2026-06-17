@@ -1,4 +1,12 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: tx
+# body:
+#   _arguments \
+#     '1:layout:_bin_helpers_tmux_layouts' \
+#     '2:root directory:_bin_helpers_dirs'
+# dotfiles-completion: end
+
 
 layouts_dir="$HOME/.tmux/layouts"
 

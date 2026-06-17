@@ -6,10 +6,15 @@
 # inst_aur lenovolegionlinux-dkms-git
 
 # Temp compilation fix until packages are updated
-sudo git clone https://github.com/johnfanv2/LenovoLegionLinux.git /opt/LenovoLegionLinux
-pushd /opt/LenovoLegionLinux
-cd ./kernel_module
+repo_dir=/opt/LenovoLegionLinux
+if [ -d "$repo_dir/.git" ]; then
+    sudo git -C "$repo_dir" pull --ff-only
+else
+    sudo git clone https://github.com/johnfanv2/LenovoLegionLinux.git "$repo_dir"
+fi
+pushd "$repo_dir" || return
+cd ./kernel_module || return
 make
 sudo make dkms
-popd
-
+popd || return
+unset repo_dir

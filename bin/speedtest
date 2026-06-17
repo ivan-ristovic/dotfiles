@@ -1,3 +1,9 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: speedtest
+# body:
+#   _bin_helpers_no_args
+# dotfiles-completion: end
+
 
 curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python - --secure

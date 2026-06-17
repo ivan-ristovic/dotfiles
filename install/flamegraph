@@ -4,6 +4,10 @@ __output_dir=/opt/FlameGraph
 
 sudo mkdir -p "$__output_dir"
 sudo chown "$SETUP_USER":"$SETUP_USER" "$__output_dir"
-git clone https://github.com/brendangregg/FlameGraph.git "$__output_dir"
+if [ -d "$__output_dir/.git" ]; then
+    git -C "$__output_dir" pull --ff-only
+else
+    git clone https://github.com/brendangregg/FlameGraph.git "$__output_dir"
+fi
 
 unset __output_dir

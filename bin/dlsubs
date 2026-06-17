@@ -1,4 +1,24 @@
 #!/usr/bin/env python3
+# dotfiles-completion: begin
+# commands: dlsubs
+# body:
+#   _arguments -s \
+#     '--cli[force CLI mode]' \
+#     '(-g --gui)'{-g,--gui}'[select GUI]:gui:(auto kde gnome cli)' \
+#     '(-u --username)'{-u,--username}'[OpenSubtitles username]:username:' \
+#     '(-p --password)'{-p,--password}'[OpenSubtitles password]:password:' \
+#     '(-l --lang)'{-l,--lang}'[subtitle language list]:languages:' \
+#     '(-s --search)'{-s,--search}'[search mode]:mode:(hash filename hash_then_filename hash_and_filename)' \
+#     '(-t --select)'{-t,--select}'[selection mode]:mode:(manual default auto)' \
+#     '(-a --auto)'{-a,--auto}'[select and download best subtitles automatically]' \
+#     '(-i --skip)'{-i,--skip}'[skip files with existing subtitles]' \
+#     '(-o --output)'{-o,--output}'[subtitle output directory]:directory:_bin_helpers_dirs' \
+#     '(-x --suffix)'{-x,--suffix}'[force language code suffix]' \
+#     '--noai[ignore AI or machine translated subtitles]' \
+#     '--nohi[ignore hearing-impaired subtitles]' \
+#     '*:video file or directory:_bin_helpers_video_or_dir'
+# dotfiles-completion: end
+
 # -*- coding: utf-8 -*-
 
 # OpenSubtitlesDownload.py / Version 6.4

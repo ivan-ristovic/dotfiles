@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -o nounset -o pipefail
 
 playlist=$(mpc -f '%position% %artist% - %title%' playlist) &&

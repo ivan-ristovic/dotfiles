@@ -1,4 +1,24 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: video-conv
+# body:
+#   _arguments -s \
+#     '(-h --help)'{-h,--help}'[show help]' \
+#     '(-c --codec)'{-c,--codec}'[video codec suffix passed as lib<codec>]:codec:(x264 x265 vpx vp9 aom-av1 svtav1)' \
+#     '(-t --tag)'{-t,--tag}'[video tag]:tag:(hvc1 avc1 mp4v)' \
+#     '(-f --format)'{-f,--format}'[output format]:format:(mp4 mkv webm mov)' \
+#     '(-s --scale)'{-s,--scale}'[output height]:height:(2160 1440 1080 720 480 360)' \
+#     '(-a --aspect)'{-a,--aspect}'[aspect ratio]:ratio:(16/9 4/3 1/1 21/9)' \
+#     '(-q --quality)'{-q,--quality}'[CRF quality]:crf:(18 20 23 28)' \
+#     '(-p --preset)'{-p,--preset}'[encoder preset]:preset:(ultrafast superfast veryfast faster fast medium slow slower veryslow)' \
+#     '(-v --verbose)'{-v,--verbose}'[show ffmpeg output]' \
+#     '--subs[include subtitles]' \
+#     '(-l --log)'{-l,--log}'[log ffmpeg output]' \
+#     '(-e --error)'{-e,--error}'[halt on ffmpeg error]' \
+#     '1:video file or input directory:_bin_helpers_video_or_dir' \
+#     '2:output directory:_bin_helpers_dirs'
+# dotfiles-completion: end
+
 
 function usage ()
 {

@@ -16,7 +16,7 @@ trash_dirs=(
 )
 for dir in "${trash_dirs[@]}" ; do 
     log_msg "Cleaning up junk dir: $dir"
-    rm "$SETUP_HOME_USER/${dir:?}" -rf
+    rm -rf -- "$SETUP_HOME_DIR/${dir:?}"
 done
 unset trash_dirs
 
@@ -44,4 +44,3 @@ for package in "${bloat[@]}" ; do
     uninst "$package"
 done
 unset bloat
-

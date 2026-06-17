@@ -1,4 +1,9 @@
 #!/bin/bash
+# dotfiles-completion: begin
+# commands: ytdl-mp3
+# body:
+#   _arguments '*:URL:_urls'
+# dotfiles-completion: end
 
-yt-dlp -f "bestaudio" --extract-audio --audio-format=mp3 $@
 
+yt-dlp -f "bestaudio" --extract-audio --audio-format=mp3 "$@"

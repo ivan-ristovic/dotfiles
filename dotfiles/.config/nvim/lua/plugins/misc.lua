@@ -23,11 +23,13 @@ return {
 
   -- Colorizer
   {
-    'norcalli/nvim-colorizer.lua',
+    'catgoose/nvim-colorizer.lua',
     opts = {
-      '*'; -- Highlight all files, but customize some others.
-      css = { rgb_fn = true; }; -- Enable parsing rgb(...) functions in css.
-      html = { names = false; } -- Disable parsing "names" like Blue or Gray
+      filetypes = {
+        '*', -- Highlight all files, but customize some others.
+        css = { rgb_fn = true }, -- Enable parsing rgb(...) functions in css.
+        html = { names = false }, -- Disable parsing "names" like Blue or Gray.
+      },
     }
   },
 
@@ -164,4 +166,3 @@ return {
   },
 
 }
-
