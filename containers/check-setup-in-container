@@ -80,8 +80,16 @@ function check_zsh_quiet_startup ()
 {
     local expected="__DOTFILES_ZSH_READY__"
     local output
+    local zsh_rc
 
-    output=$(DOTFILES_NO_TMUX_AUTOSTART=1 TERM=xterm-256color zsh -ic 'printf "__DOTFILES_ZSH_READY__\n"' 2>&1)
+    output=$(DOTFILES_NO_TMUX_AUTOSTART=1 TERM=xterm-256color script -qfec 'zsh -ic '\''printf "__DOTFILES_ZSH_READY__\n"'\''' /dev/null 2>&1)
+    zsh_rc=$?
+    output=${output//$'\r'/}
+    if [ "$zsh_rc" -ne 0 ]; then
+        fail "zsh startup failed with status $zsh_rc"
+        printf 'zsh quiet-startup output:\n%s\n' "$output"
+        return
+    fi
     if [ "$output" != "$expected" ]; then
         fail "zsh printed output before or around the startup sentinel"
         printf 'zsh quiet-startup output:\n%s\n' "$output"
@@ -152,8 +160,9 @@ function check_nvim_health ()
 run_step ./check --no-container || exit $?
 refresh_package_index || exit $?
 run_step ./setup --user user --packages --dotfiles --repair "$PACKAGE_LIST" || exit $?
+run_step ./check --no-container || exit $?
 
-for command_name in git stow nvim tmux zsh rg curl wget; do
+for command_name in git stow nvim tmux zsh rg curl wget script; do
     require_cmd "$command_name"
 done
 

@@ -91,7 +91,35 @@ fi
 mapfile -t bash_files < <(tracked_shebang_files '^#!.*(bash|env bash)')
 if [ "${#bash_files[@]}" -gt 0 ]; then
     log_msg "bash parser"
-    bash -n "${bash_files[@]}"
+    for bash_file in "${bash_files[@]}"; do
+        bash -n "$bash_file"
+    done
+    unset bash_file
+fi
+
+mapfile -t zsh_files < <(
+    {
+        git ls-files \
+            '*.zsh' \
+            'dotfiles/.zshrc' \
+            'dotfiles/.p10k.zsh' \
+            'dotfiles/.fzf-git.zsh' \
+            'dotfiles/.zsh.d/*/*' \
+            'dotfiles/.config/zsh/completion/*' \
+            'dotfiles/themes/*/p10k.zsh'
+        tracked_shebang_files '^#!.*(zsh|env zsh)'
+    } | awk '!seen[$0]++'
+)
+if [ "${#zsh_files[@]}" -gt 0 ]; then
+    log_msg "zsh parser"
+    if command -v zsh > /dev/null 2>&1; then
+        for zsh_file in "${zsh_files[@]}"; do
+            zsh -n "$zsh_file"
+        done
+        unset zsh_file
+    else
+        log_wrn "zsh not found; skipping"
+    fi
 fi
 
 mapfile -t lua_files < <(git ls-files '*.lua')
@@ -133,4 +161,3 @@ else
 fi
 
 log_suc "ok"
-

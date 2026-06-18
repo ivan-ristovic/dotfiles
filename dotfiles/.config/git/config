@@ -68,7 +68,7 @@
     keepBackup = false
 
 [mergetool "nvimdiff"]
-    cmd = nvim -c "Gvdiffsplit!" "$MERGED"
+    cmd = DOTFILES_MERGETOOL=1 DOTFILES_MERGETOOL_MERGED="$MERGED" nvim -c "Gvdiffsplit!" "$MERGED"
 
 [url "https://github.com/"]
     insteadOf = github:

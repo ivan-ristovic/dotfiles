@@ -254,7 +254,10 @@ if $SETUP_PACKAGES ; then
                 log_dbg "Script path: $script_rel_path"
                 if ! $DRY_RUN ; then
                     # shellcheck source=/dev/null
-                    source ./"$script_rel_path"
+                    if ! source ./"$script_rel_path"; then
+                        log_err "Setup script failed : $SETUP_SCRIPT"
+                        errored_entries+=("$entry")
+                    fi
                 fi
             elif [[ "$entry" == "$AUR_PREFIX"* ]]; then
                 pkg=${entry#"$AUR_PREFIX"}
