@@ -159,7 +159,7 @@ function check_nvim_health ()
 
 run_step ./check --no-container || exit $?
 refresh_package_index || exit $?
-run_step ./setup --user user --packages --dotfiles --repair "$PACKAGE_LIST" || exit $?
+run_step ./setup --strict --user user --packages --dotfiles --repair "$PACKAGE_LIST" || exit $?
 run_step ./check --no-container || exit $?
 
 for command_name in git stow nvim tmux zsh rg curl wget script; do
