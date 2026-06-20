@@ -24,6 +24,10 @@ function fm ()
 
 function cf ()
 {
+    if [ "$#" -eq 0 ]; then
+        set -- .
+    fi
+
     for f in "$@"; do
         echo -n "$f: "
         ls -1 "$f" | wc -l
