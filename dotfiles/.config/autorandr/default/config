@@ -1,23 +1,28 @@
-output DP-0
+output HDMI-A-0
 off
-output DP-1
+output DisplayPort-0
 off
-output DP-2
+output DisplayPort-1
 off
-output DP-3
+output DisplayPort-2
 off
-output HDMI-0
+output DisplayPort-3
 off
-output DP-4
+output DisplayPort-4
 off
-output eDP-1-1
+output DisplayPort-5
+off
+output eDP
 crtc 0
 mode 1920x1200
 pos 0x0
 primary
-rate 59.95
-x-prop-broadcast_rgb Automatic
+rate 60.00
 x-prop-colorspace Default
-x-prop-max_bpc 12
+x-prop-max_bpc 16
 x-prop-non_desktop 0
-x-prop-scaling_mode Full aspect
+x-prop-scaling_mode None
+x-prop-tearfree auto
+x-prop-underscan off
+x-prop-underscan_hborder 0
+x-prop-underscan_vborder 0

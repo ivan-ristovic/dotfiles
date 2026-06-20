@@ -189,6 +189,36 @@ See the `prompt` attribute. This value is used as a Python format string.''',
 
 # Common -----------------------------------------------------------------------
 
+
+from pygments.style import Style
+from pygments.token import (
+    Text, Comment, Keyword, Name, String, Number,
+    Operator, Punctuation
+)
+
+class VisualStudioDarkStyle(Style):
+    background_color = "#1e1e1e"
+    default_style = ""
+
+    styles = {
+        Text:              "#d4d4d4",
+        Comment:           "italic #6a9955",
+        Keyword:           "#569cd6",
+        Keyword.Type:      "#569cd6",
+        Name:              "#9cdcfe",
+        Name.Variable:     "#9cdcfe",
+        Name.Function:     "#dcdcaa",
+        Name.Class:        "#4ec9b0",
+        Name.Builtin:      "#4ec9b0",
+        Name.Constant:     "#4fc1ff",
+        Name.Decorator:    "#dcdcaa",
+        String:            "#ce9178",
+        Number:            "#b5cea8",
+        Operator:          "#d4d4d4",
+        Punctuation:       "#d4d4d4",
+    }
+
+
 class Beautifier():
 
     def __init__(self, hint, tab_size=4):
@@ -208,7 +238,7 @@ class Beautifier():
             else:
                 from pygments.lexers import get_lexer_for_filename
                 self.lexer = get_lexer_for_filename(hint, stripnl=False)
-            self.formatter = Terminal256Formatter(style=R.syntax_highlighting)
+            self.formatter = Terminal256Formatter(style=VisualStudioDarkStyle)
             self.active = True
         except ImportError:
             # Pygments not available
