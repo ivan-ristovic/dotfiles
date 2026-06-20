@@ -150,6 +150,7 @@ fi
 "$e_alias" fda='fd --unrestricted'
 "$e_alias" getc='curl --continue-at - --location --progress-bar --remote-name --remote-time'
 "$e_alias" getw='wget --continue --progress=bar --timestamping'
+"$e_alias" gfp='git fp'
 "$e_alias" gs='git status -s'
 "$e_alias" gsma='git submodule add'
 "$e_alias" gsmd='git submodule deinit'
