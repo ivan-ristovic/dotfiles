@@ -6,67 +6,8 @@ fi
 
 export SHLIB_FMT_TIME=true
 
-if [ -n "$SHLIB_ROOT" ] && [ -f "$SHLIB_ROOT/lib.sh" ]; then
-    # shellcheck source=/dev/null
-    source "$SHLIB_ROOT/lib.sh"
-else
-    function __log ()
-    {
-        local level=$1
-        shift
-        printf '[%s] %s\n' "$level" "$*"
-    }
-
-    function log_msg () { __log "INFO" "$@"; }
-    function log_suc () { __log " OK " "$@"; }
-    function log_wrn () { __log "WARN" "$@"; }
-    function log_err () { __log "ERR " "$@" >&2; }
-    function log_dbg () { [ -n "$DEBUG" ] && __log "DBG " "$@"; }
-    function log_exec () { log_msg "$*"; "$@"; }
-    function std_err () { log_err "$@"; }
-    function std_fat () { log_err "$@"; exit 1; }
-    function std_ask ()
-    {
-        local answer
-        read -r -p "$* [y/N] " answer
-        [[ "$answer" == [Yy]* ]]
-    }
-    function std_confirm () { "$@"; }
-    function test_installed () { command -v "$1" > /dev/null 2>&1; }
-    function assert_argc_ge ()
-    {
-        local actual=$1
-        local expected=$2
-        local usage=$3
-        [ "$actual" -ge "$expected" ] || std_fat "usage: $usage"
-    }
-    function io_is_file () { [ -f "$1" ]; }
-    function os_path_par () { dirname -- "$1"; }
-    function os_path_abs ()
-    {
-        local dir
-        local base
-        dir=$(dirname -- "$1") || return
-        base=$(basename -- "$1") || return
-        printf '%s/%s\n' "$(cd "$dir" && pwd -P)" "$base"
-    }
-    function str_join ()
-    {
-        local sep=$1
-        shift
-        local first=true
-        local item
-        for item in "$@"; do
-            if $first; then
-                first=false
-            else
-                printf '%s' "$sep"
-            fi
-            printf '%s' "$item"
-        done
-        printf '\n'
-    }
-fi
+# shellcheck source=/dev/null
+source "$SHLIB_ROOT/lib.sh"
 
 function uninst ()
 {

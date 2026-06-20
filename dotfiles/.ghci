@@ -7,16 +7,16 @@ import Data.String
 
 :set prompt "\ESC[1m\ESC[34m\STXλ> \ESC[m\STX"
 
-:set +t
-:set +c
+-- :set +t
+-- :set +c
 
-:m + Control.Arrow
-:m + Control.Applicative
-:m + Control.Monad
-:m + Data.Function
-:m + Data.List
-:m + Data.Maybe
-:m + Data.Monoid
+-- :m + Control.Arrow
+-- :m + Control.Applicative
+-- :m + Control.Monad
+-- :m + Data.Function
+-- :m + Data.List
+-- :m + Data.Maybe
+-- :m + Data.Monoid
 
 -- :set -Wall
 :set -fno-warn-missing-signatures

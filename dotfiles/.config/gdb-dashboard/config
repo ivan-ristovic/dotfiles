@@ -1,6 +1,7 @@
 # My custom gdb config
 # by ivan-ristovic
 
+set auto-load safe-path /
 
 ####### General settings #######
 
