@@ -1,7 +1,6 @@
 FROM archlinux:multilib-devel
 
-RUN pacman --noconfirm -Syu
-RUN pacman --noconfirm -S openssh git stow sudo vim
+RUN pacman --noconfirm -Syu openssh git stow sudo vim bc
 
 RUN useradd -ms /bin/bash user && \
         echo "root ALL=(ALL) NOPASSWD:ALL" >  /etc/sudoers && \

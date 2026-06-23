@@ -7,10 +7,6 @@ hexyl
 cmake
 npm
 
-## Version control
-git
-#subversion
-
 ## Debugging
 gdb
 

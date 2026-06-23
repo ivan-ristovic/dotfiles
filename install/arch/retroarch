@@ -16,9 +16,5 @@ inst_aur libretro-fbneo
 
 # Download GLSL shaders (as root as it is a global install)
 shader_dir=/usr/share/libretro/shaders/glsl-shaders
-if [ -d "$shader_dir/.git" ]; then
-    sudo git -C "$shader_dir" pull --ff-only
-else
-    sudo git clone https://github.com/libretro/glsl-shaders "$shader_dir"
-fi
+sudo_git_clone_or_pull https://github.com/libretro/glsl-shaders "$shader_dir"
 unset shader_dir

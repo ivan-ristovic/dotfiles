@@ -18,6 +18,17 @@ while [ -f "$output" ]; do
     i=$((i+1))
 done
 
-set -xe;
-ffmpeg -f concat -safe 0 -i <(for f in "$@"; do echo "file '$(realpath $f)'"; done) -c copy "$output"
+concat_list=$(mktemp) || exit 1
+cleanup() {
+    rm -f "$concat_list"
+}
+trap cleanup EXIT
 
+for f in "$@"; do
+    path=$(realpath -- "$f") || exit 1
+    escaped=$(printf '%s' "$path" | sed "s/'/'\\\\''/g")
+    printf "file '%s'\n" "$escaped" >> "$concat_list"
+done
+
+set -xe;
+ffmpeg -f concat -safe 0 -i "$concat_list" -c copy "$output"

@@ -7,17 +7,12 @@ if [ -e "$SETUP_HOME_DIR/.zshrc" ] && [ ! -L "$SETUP_HOME_DIR/.zshrc" ]; then
 fi
 
 omz_dir="$SETUP_HOME_DIR/.oh-my-zsh"
-if [ ! -d "$omz_dir" ]; then
-    log_msg "Installing oh-my-zsh"
-    git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git "$omz_dir"
-fi
+log_msg "Installing/updating oh-my-zsh"
+git_clone_or_pull https://github.com/ohmyzsh/ohmyzsh.git "$omz_dir" --depth 1
 
 zinit_dir="$SETUP_HOME_DIR/.zinit/zinit.git"
-if [ ! -d "$zinit_dir" ]; then
-    log_msg "Installing zinit"
-    mkdir -p "$(dirname "$zinit_dir")"
-    git clone --depth 1 https://github.com/zdharma-continuum/zinit.git "$zinit_dir"
-fi
+log_msg "Installing/updating zinit"
+git_clone_or_pull https://github.com/zdharma-continuum/zinit.git "$zinit_dir" --depth 1
 
 if is_android ; then
     chsh -s zsh

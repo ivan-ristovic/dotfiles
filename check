@@ -153,6 +153,13 @@ if bad:
 ' "${python_files[@]}"
 fi
 
+if [ -x shlib/scripts/check ]; then
+    log_msg "shlib checks"
+    (unset SHLIB_FMT_TIME; shlib/scripts/check)
+else
+    log_wrn "shlib check script not found or not executable; skipping"
+fi
+
 if $RUN_CONTAINER_CHECK; then
     log_msg "container setup smoke test"
     containers/check-setup

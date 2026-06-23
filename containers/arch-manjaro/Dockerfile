@@ -1,7 +1,6 @@
 FROM manjarolinux/base
 
-RUN sudo pacman --noconfirm -Syu
-RUN sudo pacman --noconfirm -S openssh yay binutils git stow
+RUN sudo pacman --noconfirm -Syu openssh yay binutils git stow bc
 
 RUN useradd -ms /bin/bash user && \
         echo "user ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/user && \

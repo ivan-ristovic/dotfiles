@@ -73,6 +73,23 @@ function usage ()
 
 GIT_REMOTE="git@github.com:ivan-ristovic/dotfiles.git"
 
+function resolve_user_home ()
+{
+    local user=$1
+    local home_dir=
+
+    if command -v getent > /dev/null 2>&1; then
+        home_dir=$(getent passwd "$user" | awk -F: '{ print $6; exit }')
+    fi
+
+    if [ -z "$home_dir" ] && [ "$user" = "$(id -un 2> /dev/null)" ]; then
+        home_dir=${HOME:-}
+    fi
+
+    [ -n "$home_dir" ] || return 1
+    printf '%s\n' "$home_dir"
+}
+
 STOW_EXTRA_ARGS=()
 SETUP_SCRIPT_EXTRA_ARGS=()
 SETUP_OVERRIDE=false
@@ -82,8 +99,11 @@ SETUP_PATCHES=false
 SETUP_SERVICES=false
 DRY_RUN=false
 SETUP_FAILED=false
-SETUP_USER=${SUDO_USER:-$(logname 2> /dev/null)}
-SETUP_HOME_DIR="/home/$SETUP_USER"
+SETUP_USER=${SUDO_USER:-}
+if [ -z "$SETUP_USER" ]; then
+    SETUP_USER=$(logname 2> /dev/null || id -un 2> /dev/null)
+fi
+SETUP_HOME_DIR=$(resolve_user_home "$SETUP_USER" 2> /dev/null || true)
 
 SHORT_OPTS=v,s,u:,h,l,r,d
 LONG_OPTS=user:,username:,dotfiles,link,stow,packages,install,dotfiles,patch,patches,services,all,complete,help,strict,repair,debug,verbose,remote,git,log,dry,dry-run
@@ -153,7 +173,7 @@ do
             ;;
         -u | --user | --username)
             SETUP_USER="$2"
-            SETUP_HOME_DIR="/home/$SETUP_USER"
+            SETUP_HOME_DIR=$(resolve_user_home "$SETUP_USER" 2> /dev/null || true)
             shift;
             ;;
         -d | --dry | --dry-run )
@@ -187,6 +207,10 @@ fi
 # Check username
 if [ -z "$SETUP_USER" ]; then
     std_fat "cannot automatically detect user name - please provide one using the --username option"
+fi
+
+if [ -z "$SETUP_HOME_DIR" ]; then
+    std_fat "cannot resolve home directory for user: $SETUP_USER"
 fi
 
 # Check home dir

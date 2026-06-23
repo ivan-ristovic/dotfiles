@@ -1,7 +1,6 @@
 FROM ubuntu:latest
 
-RUN apt-get update
-RUN apt-get install -y sudo git ssh
+RUN apt-get update && apt-get install -y sudo git ssh bc
 
 RUN useradd -ms /bin/bash user && \
         mkdir -p /etc/sudoers.d && \

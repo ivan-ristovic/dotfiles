@@ -458,7 +458,7 @@ _bin_helpers() {
         '-p[write to /tmp/timer.fifo]' \
         '-h[show help]' \
         '-v[show version]' \
-        '*:duration in minutes:'
+        '*:duration:'
       ;;
     treed)
       _arguments '*:directory:_bin_helpers_dirs'

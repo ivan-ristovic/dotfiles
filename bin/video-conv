@@ -44,18 +44,18 @@ OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --long
 if [ $? -ne 0 ]; then
     std_fat "failed to parse provided arguments"
 fi
-eval set -- $OPTS
+eval set -- "$OPTS"
 
 STRICT=false
 LOG_FILE="/dev/null"
 CODEC="libx265"
 TAG="hvc1"
 OUT="mp4"
-SUBS=""
-QUALITY=""
-SCALE=""
-ASPECT=""
-PRESET=""
+SUBS_ARGS=()
+SCALE_ARGS=()
+ASPECT_ARGS=()
+QUALITY_ARGS=()
+PRESET_ARGS=()
 
 while :
 do
@@ -71,11 +71,11 @@ do
             LOG_FILE="/dev/tty"
             ;;
         -s | --scale)
-            SCALE="-vf scale=-1:$2"
+            SCALE_ARGS=(-vf "scale=-1:$2")
             shift
             ;;
         -a | --aspect)
-            ASPECT="-aspect $2"
+            ASPECT_ARGS=(-aspect "$2")
             shift
             ;;
         -c | --codec)
@@ -91,18 +91,18 @@ do
             shift
             ;;
         -q | --quality)
-            QUALITY="-crf $2"
+            QUALITY_ARGS=(-crf "$2")
             shift
             ;;
         -p | --preset)
-            PRESET="-preset $2"
+            PRESET_ARGS=(-preset "$2")
             shift
             ;;
         -h | --help)
             usage
             ;;
         --subs)
-            SUBS="-map 0:s:0 -c:s copy -metadata:s:s:0 language=eng"
+            SUBS_ARGS=(-map 0:s:0 -c:s copy -metadata:s:s:0 language=eng)
             ;;
         --)
             shift;
@@ -123,9 +123,11 @@ errored_entries=()
 
 function process ()
 {
-    in="$1"
-    out="$2/${in/%mkv/$OUT}"
-    i=1
+    local in=$1
+    local out="$2/${in%.*}.$OUT"
+    local i=1
+    local status
+
     while [ -f "$out" ]; do
         out="${out/%".$OUT"/"_${i}.${OUT}"}"
         i=$((i+1))
@@ -136,17 +138,18 @@ function process ()
 
     ffmpeg -nostdin -y \
         -i "$in" \
-        $SCALE \
+        "${SCALE_ARGS[@]}" \
         -map 0:v:0 \
         -map 0:a:0 \
-        -c:v $CODEC -vtag $TAG $ASPECT $QUALITY $PRESET \
-        $SUBS \
+        -c:v "$CODEC" -vtag "$TAG" "${ASPECT_ARGS[@]}" "${QUALITY_ARGS[@]}" "${PRESET_ARGS[@]}" \
+        "${SUBS_ARGS[@]}" \
         -movflags faststart \
         "$out" \
         2>> "$LOG_FILE"
-    if [ $? -ne 0 ] ; then
+    status=$?
+    if [ "$status" -ne 0 ] ; then
         if $STRICT ; then
-            exit $?
+            exit "$status"
         fi
         errored_entries+=("$in")
         echo "error: $in"
@@ -154,10 +157,9 @@ function process ()
 }
 
 if [ -d "$1" ]; then
-    find "$1" -type f -print0 | 
-    while IFS= read -r -d '' f; do 
+    while IFS= read -r -d '' f; do
         process "$f" "$2"
-    done
+    done < <(find "$1" -type f -print0)
 else
     process "$1" "$2"
 fi
@@ -166,4 +168,3 @@ echo " --- errors ---"
 for errored_entry in "${errored_entries[@]}"; do
     echo "$errored_entry"
 done
-

@@ -768,11 +768,11 @@ function main() {
                 echo "${0##*/}:    1008 429 Too Many Requests"
                 echo "${0##*/}:     500 500 Internal Server Error"
                 echo "${0##*/}:     600 600 API responded with HTML page. Maybe a CAPTCHA. Using TOR?"
-                echo "${0##*/}: Timestamp:  $(jq <"${JSONFILE}.part" 2>/dev/null | "[.status.timestamp][]" 2>/dev/null)"
-                echo "${0##*/}: Message:    $(jq <"${JSONFILE}.part" 2>/dev/null | "[.status.error_message][]" 2>/dev/null)"
+                echo "${0##*/}: Timestamp:  $(jq -r '.status.timestamp // empty' <"${JSONFILE}.part" 2>/dev/null)"
+                echo "${0##*/}: Message:    $(jq -r '.status.error_message // empty' <"${JSONFILE}.part" 2>/dev/null)"
                 echo "${0##*/}: Reason:     Maybe you entered an unknown symbol or unknown name."
                 echo "${0##*/}:             Or something else failed on server."
-                exit "$ret"
+                exit 1
             fi
             # shellcheck disable=SC2046
             if [ $(grep -c "id not found" "${JSONFILE}.part") -eq 1 ]; then
@@ -815,11 +815,11 @@ function main() {
             echo "${0##*/}:    1008 429 Too Many Requests"
             echo "${0##*/}:     500 500 Internal Server Error"
             echo "${0##*/}:     600 600 API responded with HTML page. Maybe a CAPTCHA. Using TOR?"
-            echo "${0##*/}: Timestamp:  $(jq <"${JSONFILE}" 2>/dev/null | "[.status.timestamp][]" 2>/dev/null)"
-            echo "${0##*/}: Message:    $(jq <"${JSONFILE}" 2>/dev/null | "[.status.error_message][]" 2>/dev/null)"
+            echo "${0##*/}: Timestamp:  $(jq -r '.status.timestamp // empty' <"${JSONFILE}" 2>/dev/null)"
+            echo "${0##*/}: Message:    $(jq -r '.status.error_message // empty' <"${JSONFILE}" 2>/dev/null)"
             echo "${0##*/}: Reason:     Maybe you entered an unknown symbol or unknown name."
             echo "${0##*/}:             Or something else failed on server."
-            exit "$ret"
+            exit 1
         fi
     fi
     setSeperator

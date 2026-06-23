@@ -22,16 +22,16 @@ function usage ()
     exit 2
 }
 
-SHORT_OPTS=h,S:,q:,e
-LONG_OPTS=help,no-strip:,quality:,error
+SHORT_OPTS=h,S,q:,e
+LONG_OPTS=help,no-strip,quality:,error
 OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --longoptions $LONG_OPTS -- "$@") 
 if [ $? -ne 0 ]; then
     std_fat "failed to parse provided arguments"
 fi
-eval set -- $OPTS
+eval set -- "$OPTS"
 
 STRICT=false
-STRIP="-strip"
+STRIP_ARGS=(-strip)
 QUALITY="85%"
 
 while :
@@ -41,8 +41,7 @@ do
             STRICT=true
             ;;
         -S | --no-strip)
-            STRIP=""
-            shift
+            STRIP_ARGS=()
             ;;
         -q | --quality)
             QUALITY="$2%"
@@ -70,22 +69,25 @@ errored_entries=()
 
 function process ()
 {
-    in="$1"
-    out="$2/$in"
+    local in=$1
+    local out=$2/$in
+    local status
+
     mkdir -p "$(dirname "$out")"
     echo "$in -> $out"
 
     magick \
         "$in" \
-        $STRIP \
+        "${STRIP_ARGS[@]}" \
         -interlace Plane \
         -sampling-factor 4:2:0 \
         -define jpeg:dct-method=float \
-        -quality $QUALITY \
+        -quality "$QUALITY" \
         "$out"
-    if [ $? -ne 0 ] ; then
+    status=$?
+    if [ "$status" -ne 0 ] ; then
         if $STRICT ; then
-            exit $?
+            exit "$status"
         fi
         errored_entries+=("$in")
         echo "error: $in"
@@ -93,10 +95,9 @@ function process ()
 }
 
 if [ -d "$1" ]; then
-    find "$1" -type f -print0 | 
-    while IFS= read -r -d '' f; do 
+    while IFS= read -r -d '' f; do
         process "$f" "$2"
-    done
+    done < <(find "$1" -type f -print0)
 else
     process "$1" "$2"
 fi
@@ -105,4 +106,3 @@ echo " --- errors ---"
 for errored_entry in "${errored_entries[@]}"; do
     echo "$errored_entry"
 done
-

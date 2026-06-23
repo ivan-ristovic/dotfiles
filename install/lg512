@@ -4,11 +4,7 @@
 
 # Temp compilation fix until AUR package is updated
 repo_dir=/opt/g810-led
-if [ -d "$repo_dir/.git" ]; then
-    sudo git -C "$repo_dir" pull --ff-only
-else
-    sudo git clone https://github.com/MatMoul/g810-led.git "$repo_dir"
-fi
+sudo_git_clone_or_pull https://github.com/MatMoul/g810-led.git "$repo_dir"
 pushd "$repo_dir" || return
 if ! grep -q '#include <cstdint>' src/helpers/help.h; then
     sudo sed -i '/#include <iostream>/a #include <cstdint>' src/helpers/help.h

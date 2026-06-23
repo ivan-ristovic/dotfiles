@@ -7,11 +7,8 @@
 
 # Temp compilation fix until packages are updated
 repo_dir=/opt/LenovoLegionLinux
-if [ -d "$repo_dir/.git" ]; then
-    sudo git -C "$repo_dir" pull --ff-only
-else
-    sudo git clone https://github.com/johnfanv2/LenovoLegionLinux.git "$repo_dir"
-fi
+ensure_user_owned_dir "$repo_dir"
+git_clone_or_pull https://github.com/johnfanv2/LenovoLegionLinux.git "$repo_dir"
 pushd "$repo_dir" || return
 cd ./kernel_module || return
 make

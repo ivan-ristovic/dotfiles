@@ -60,7 +60,19 @@ while getopts "h?fgan:" opt; do
     a)
       cset="[:alpha:]"
       ;;
+    f)
+      ;;
     n)
+      case "$OPTARG" in
+        ''|*[!0-9]*)
+          echo "randpass: length must be a positive integer" >&2
+          exit 2
+          ;;
+      esac
+      if [ "$OPTARG" -le 0 ]; then
+        echo "randpass: length must be a positive integer" >&2
+        exit 2
+      fi
       len=$OPTARG
       ;;
   esac
@@ -69,5 +81,5 @@ done
 #
 #  Output the password
 #
-printf "%s\n" $(cat /dev/urandom | env LC_CTYPE=C tr -cd "$cset" | head -c $len )
-
+env LC_CTYPE=C tr -cd "$cset" < /dev/urandom | head -c "$len"
+printf "\n"

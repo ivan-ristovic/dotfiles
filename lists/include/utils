@@ -74,9 +74,6 @@ taskw
 ## Directory tree
 tree
 
-## Unarchiver
-unrar
-
 ## JSON, YAML, XML, TOML parser
 yq
 

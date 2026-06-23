@@ -4,13 +4,8 @@
 if ! inst_silent yay ; then
     inst base-devel binutils
     yaydir=/opt/yay
-    sudo mkdir -p "$yaydir"
-    sudo chown "$SETUP_USER":"$SETUP_USER" "$yaydir"
-    if [ -d "$yaydir/.git" ]; then
-        git -C "$yaydir" pull --ff-only
-    else
-        git clone https://aur.archlinux.org/yay-bin.git "$yaydir"
-    fi
+    ensure_user_owned_dir "$yaydir"
+    git_clone_or_pull https://aur.archlinux.org/yay-bin.git "$yaydir"
     pushd "$yaydir" || (std_err "failed to create installation directory for yay: $yaydir" && return)
     makepkg -si --noconfirm --needed
     popd || return

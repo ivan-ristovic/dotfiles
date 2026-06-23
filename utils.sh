@@ -120,6 +120,46 @@ function inst_pip ()
     fi
 }
 
+function ensure_user_owned_dir ()
+{
+    local dir=$1
+
+    sudo mkdir -p "$dir"
+    sudo chown "$SETUP_USER":"$SETUP_USER" "$dir"
+}
+
+function _git_clone_or_pull ()
+{
+    local runner=$1
+    local repo_url=$2
+    local target_dir=$3
+    local parent_dir
+    local -a command_prefix=()
+    shift 3
+
+    parent_dir=$(dirname -- "$target_dir") || return
+    if [ -n "$runner" ]; then
+        command_prefix=("$runner")
+    fi
+
+    if [ -d "$target_dir/.git" ]; then
+        "${command_prefix[@]}" git -C "$target_dir" pull --ff-only
+    else
+        "${command_prefix[@]}" mkdir -p "$parent_dir"
+        "${command_prefix[@]}" git clone "$@" "$repo_url" "$target_dir"
+    fi
+}
+
+function git_clone_or_pull ()
+{
+    _git_clone_or_pull "" "$@"
+}
+
+function sudo_git_clone_or_pull ()
+{
+    _git_clone_or_pull sudo "$@"
+}
+
 function rm_comments ()
 {
     sed -e 's/[[:space:]]*#.*// ; /^[[:space:]]*$/d' "$@"

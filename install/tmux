@@ -4,11 +4,7 @@ inst tmux
 
 # Plugin support
 tpm_dir="$SETUP_HOME_DIR/.tmux/plugins/tpm"
-if [ -d "$tpm_dir/.git" ]; then
-    git -C "$tpm_dir" pull --ff-only
-else
-    git clone https://github.com/tmux-plugins/tpm "$tpm_dir"
-fi
+git_clone_or_pull https://github.com/tmux-plugins/tpm "$tpm_dir"
 log_msg "Installing tmux plugins..."
 TMUX_PLUGIN_MANAGER_PATH=${SETUP_HOME_DIR}/.tmux/plugins "$tpm_dir/scripts/install_plugins.sh"
 log_msg "tmux plugins installed"

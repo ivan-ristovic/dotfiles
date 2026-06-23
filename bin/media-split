@@ -27,11 +27,8 @@ ext="${media##*.}"
 tsf=$2
 shift 2
 
-# remove leading/trailing spaces
-sed -i 's/^[[:space:]]*//;s/[[:space:]]*$//' "$tsf"
-
 # read lines
-IFS=$'\n' read -d '' -r -a ts < "$tsf"
+mapfile -t ts < <(sed 's/^[[:space:]]*//;s/[[:space:]]*$//;/^$/d' "$tsf")
 
 # test first line of the file to determine if ts is first or title
 ts_first=false
@@ -53,8 +50,8 @@ for (( i=0; i<n; i++ )); do
     fi
     echo "$from - ${to:-xx:xx} | $name"
     if [ -z "$to" ]; then
-        ffmpeg -i "$media" -ss "$from" -vcodec copy -acodec copy -y "$name" $* 
+        ffmpeg -i "$media" -ss "$from" -vcodec copy -acodec copy -y "$name" "$@"
     else
-        ffmpeg -i "$media" -ss "$from" -to "$to" -vcodec copy -acodec copy -y "$name" $* 
+        ffmpeg -i "$media" -ss "$from" -to "$to" -vcodec copy -acodec copy -y "$name" "$@"
     fi
 done
