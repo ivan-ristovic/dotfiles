@@ -7,7 +7,23 @@
 # 3. Open the file in editor
 # Switch between Ripgrep mode and fzf filtering mode (CTRL-T)
 
-rm -f /tmp/rg-fzf-{r,f}
+set -euo pipefail
+
+# shellcheck source=bin/include
+source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
+
+cmd_require rg fzf bat || exit 1
+
+tmp_dir=$(fs_tempdir rg-fzf) || exit 1
+rg_query_file=$tmp_dir/rg-query
+fzf_query_file=$tmp_dir/fzf-query
+rg_query_ref=$(printf '%q' "$rg_query_file")
+fzf_query_ref=$(printf '%q' "$fzf_query_file")
+cleanup() {
+    rm -rf -- "$tmp_dir"
+}
+trap cleanup EXIT
+
 RG_OPTS="${RG_OPTS:-""}"
 RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case $RG_OPTS"
 INITIAL_QUERY="${*:-}"
@@ -15,8 +31,8 @@ INITIAL_QUERY="${*:-}"
     --bind "start:reload:$RG_PREFIX {q}" \
     --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
     --bind 'ctrl-t:transform:[[ ! $FZF_PROMPT =~ rg ]] &&
-      echo "rebind(change)+change-prompt(1. rg> )+disable-search+transform-query:echo \{q} > /tmp/rg-fzf-f; cat /tmp/rg-fzf-r" ||
-      echo "unbind(change)+change-prompt(2. fzf> )+enable-search+transform-query:echo \{q} > /tmp/rg-fzf-r; cat /tmp/rg-fzf-f"' \
+      echo "rebind(change)+change-prompt(1. rg> )+disable-search+transform-query:echo \{q} > '"$rg_query_ref"'; cat '"$fzf_query_ref"'" ||
+      echo "unbind(change)+change-prompt(2. fzf> )+enable-search+transform-query:echo \{q} > '"$fzf_query_ref"'; cat '"$rg_query_ref"'"' \
     --color "hl:-1:underline,hl+:-1:underline:reverse" \
     --prompt '[Ctrl+T to swap] 1. rg> ' \
     --delimiter : \

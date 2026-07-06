@@ -2,21 +2,58 @@
 # dotfiles-completion: begin
 # commands: video-cat
 # body:
-#   _arguments '*:input video:_bin_helpers_video_files'
+#   _arguments -s \
+#     '(-n --dry-run)'{-n,--dry-run}'[print commands without writing files]' \
+#     '(-o --output)'{-o,--output}'[output video]:output file:_files' \
+#     '*:input video:_bin_helpers_video_files'
 # dotfiles-completion: end
 
+# shellcheck source=bin/include
+source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
+
+SHLIB_DRY_RUN=false
+output=
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -n | --dry-run)
+            SHLIB_DRY_RUN=true
+            ;;
+        -o | --output)
+            [ $# -ge 2 ] || std_fat "$1 requires an output file"
+            output=$2
+            shift
+            ;;
+        -h | --help)
+            echo "usage: $(basename "$0") [--dry-run] [--output output_video] input_video ..."
+            exit 0
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            std_fat "unknown option: $1"
+            ;;
+        *)
+            break
+            ;;
+    esac
+    shift
+done
+
+export SHLIB_DRY_RUN
 
 if [ $# -lt 2 ]; then
-    echo "usage: $(basename $0) input_video ..."
+    echo "usage: $(basename "$0") [--dry-run] [--output output_video] input_video ..."
     exit 1
 fi
 
-output="merged.mp4"
-i=1
-while [ -f "$output" ]; do
-    output="merged_${i}.mp4"
-    i=$((i+1))
-done
+cmd_require ffmpeg realpath || exit 1
+
+if [ -z "$output" ]; then
+    output=$(fs_unique_path "merged.mp4") || exit 1
+fi
 
 concat_list=$(mktemp) || exit 1
 cleanup() {
@@ -30,5 +67,4 @@ for f in "$@"; do
     printf "file '%s'\n" "$escaped" >> "$concat_list"
 done
 
-set -xe;
-ffmpeg -f concat -safe 0 -i "$concat_list" -c copy "$output"
+cmd_run ffmpeg -f concat -safe 0 -i "$concat_list" -c copy "$output"

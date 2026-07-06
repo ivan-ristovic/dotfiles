@@ -8,8 +8,8 @@
 # dotfiles-completion: end
 
 
-. include lib
+# shellcheck source=bin/include
+source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
 
 assert_argc_ge $# 2 "delimiter args..."
-str_join $*
-
+str_join "$@"

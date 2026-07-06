@@ -8,6 +8,7 @@
 # dotfiles-completion: end
 
 
-source $SHLIB_ROOT/lib.sh
+# shellcheck source=bin/include
+source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
 
 "$@"

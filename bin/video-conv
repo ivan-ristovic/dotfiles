@@ -11,14 +11,19 @@
 #     '(-a --aspect)'{-a,--aspect}'[aspect ratio]:ratio:(16/9 4/3 1/1 21/9)' \
 #     '(-q --quality)'{-q,--quality}'[CRF quality]:crf:(18 20 23 28)' \
 #     '(-p --preset)'{-p,--preset}'[encoder preset]:preset:(ultrafast superfast veryfast faster fast medium slow slower veryslow)' \
+#     '(-A --audio-stream)'{-A,--audio-stream}'[audio stream index]:index:(0 1 2 3)' \
+#     '(-C --copy-audio)'{-C,--copy-audio}'[copy audio stream]' \
 #     '(-v --verbose)'{-v,--verbose}'[show ffmpeg output]' \
 #     '--subs[include subtitles]' \
+#     '(-n --dry-run)'{-n,--dry-run}'[print commands without writing files]' \
 #     '(-l --log)'{-l,--log}'[log ffmpeg output]' \
 #     '(-e --error)'{-e,--error}'[halt on ffmpeg error]' \
 #     '1:video file or input directory:_bin_helpers_video_or_dir' \
 #     '2:output directory:_bin_helpers_dirs'
 # dotfiles-completion: end
 
+# shellcheck source=bin/include
+source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
 
 function usage ()
 {
@@ -31,15 +36,18 @@ function usage ()
     echo -e "    (--aspect  | -a) ratio     (e.g., '-a 16/9')"
     echo -e "    (--quality | -q) [0..51]   (e.g., '-q 18' for visually lossless)"
     echo -e "    (--preset  | -p) preset    (e.g., '-p veryslow')"
+    echo -e "    (--audio-stream | -A) idx  (select audio stream, default 0)"
+    echo -e "    --copy-audio | -C          (copy audio stream instead of re-encoding)"
     echo -e "    --verbose  | -v            (do not suppress ffmpeg output)"
     echo -e "    --subs                     (includes subtitles)"
+    echo -e "    --dry-run  | -n            (print commands without writing files)"
     echo -e "    --log   | -l               (log ffmpeg output to a file)"
     echo -e "    --error | -e               (halt on ffmpeg error)"
     exit 2
 }
 
-SHORT_OPTS=h,s:,a:,q:,p:,l,e,v,c:,t:,f:
-LONG_OPTS=help,codec:,scale:,aspect:,tag:,format:,quality:,preset:,verbose,subs,log,error
+SHORT_OPTS=h,s:,a:,q:,p:,l,e,v,c:,t:,f:,A:,C,n
+LONG_OPTS=help,codec:,scale:,aspect:,tag:,format:,quality:,preset:,audio-stream:,copy-audio,verbose,subs,dry-run,log,error
 OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --longoptions $LONG_OPTS -- "$@") 
 if [ $? -ne 0 ]; then
     std_fat "failed to parse provided arguments"
@@ -47,15 +55,18 @@ fi
 eval set -- "$OPTS"
 
 STRICT=false
+SHLIB_DRY_RUN=false
 LOG_FILE="/dev/null"
 CODEC="libx265"
 TAG="hvc1"
 OUT="mp4"
+AUDIO_STREAM=0
 SUBS_ARGS=()
 SCALE_ARGS=()
 ASPECT_ARGS=()
 QUALITY_ARGS=()
 PRESET_ARGS=()
+AUDIO_CODEC_ARGS=()
 
 while :
 do
@@ -94,9 +105,19 @@ do
             QUALITY_ARGS=(-crf "$2")
             shift
             ;;
+        -A | --audio-stream)
+            AUDIO_STREAM="$2"
+            shift
+            ;;
+        -C | --copy-audio)
+            AUDIO_CODEC_ARGS=(-c:a copy)
+            ;;
         -p | --preset)
             PRESET_ARGS=(-preset "$2")
             shift
+            ;;
+        -n | --dry-run)
+            SHLIB_DRY_RUN=true
             ;;
         -h | --help)
             usage
@@ -115,33 +136,39 @@ do
     shift;
 done
 
+export SHLIB_DRY_RUN
+
 if [ $# -ne 2 ]; then
     usage
 fi
+
+cmd_require ffmpeg || exit 1
 
 errored_entries=()
 
 function process ()
 {
     local in=$1
-    local out="$2/${in%.*}.$OUT"
-    local i=1
+    local input_root=$2
+    local output_root=$3
+    local rel
+    local out
     local status
 
-    while [ -f "$out" ]; do
-        out="${out/%".$OUT"/"_${i}.${OUT}"}"
-        i=$((i+1))
-    done
+    rel=$(os_path_rel "$in" "$input_root") || return
+    out="$output_root/${rel%.*}.$OUT"
+    out=$(fs_unique_path "$out") || return
 
-    mkdir -p "$(dirname "$out")"
+    cmd_run mkdir -p "$(dirname "$out")"
     echo "$in -> $out"
 
-    ffmpeg -nostdin -y \
+    cmd_run ffmpeg -nostdin -y \
         -i "$in" \
         "${SCALE_ARGS[@]}" \
         -map 0:v:0 \
-        -map 0:a:0 \
+        -map "0:a:$AUDIO_STREAM" \
         -c:v "$CODEC" -vtag "$TAG" "${ASPECT_ARGS[@]}" "${QUALITY_ARGS[@]}" "${PRESET_ARGS[@]}" \
+        "${AUDIO_CODEC_ARGS[@]}" \
         "${SUBS_ARGS[@]}" \
         -movflags faststart \
         "$out" \
@@ -158,10 +185,10 @@ function process ()
 
 if [ -d "$1" ]; then
     while IFS= read -r -d '' f; do
-        process "$f" "$2"
-    done < <(find "$1" -type f -print0)
+        process "$f" "$1" "$2"
+    done < <(find "$1" -type f \( -iname '*.mp4' -o -iname '*.mkv' -o -iname '*.avi' -o -iname '*.mov' -o -iname '*.webm' -o -iname '*.flv' -o -iname '*.m4v' -o -iname '*.mpg' -o -iname '*.mpeg' -o -iname '*.wmv' -o -iname '*.ogv' \) -print0)
 else
-    process "$1" "$2"
+    process "$1" "$(dirname -- "$1")" "$2"
 fi
 
 echo " --- errors ---"

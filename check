@@ -13,17 +13,20 @@ source "$ROOT_DIR/utils.sh"
 set -u
 
 RUN_CONTAINER_CHECK=true
+RUN_BIN_WARNING_CHECK=false
 
 function usage ()
 {
     local exit_code=${1:-2}
     cat <<USAGE
-usage: $(basename "$0") [--no-container] [--help]
+usage: $(basename "$0") [--no-container] [--strict-warnings] [--help]
 
 Runs repository checks.
 
   --no-container, --skip-container
                 skip the container setup smoke test
+  --strict-warnings
+                also run warning-level shellcheck for bin scripts
   -h, --help    print this help
 USAGE
     exit "$exit_code"
@@ -33,6 +36,9 @@ while [ $# -gt 0 ]; do
     case "$1" in
         --no-container | --skip-container)
             RUN_CONTAINER_CHECK=false
+            ;;
+        --strict-warnings)
+            RUN_BIN_WARNING_CHECK=true
             ;;
         -h | --help)
             usage 0
@@ -45,7 +51,15 @@ while [ $# -gt 0 ]; do
     shift
 done
 
-function tracked_shebang_files ()
+function files_for_checks ()
+{
+    {
+        git ls-files
+        find bin -maxdepth 1 -type f -print
+    } | awk '!seen[$0]++'
+}
+
+function shebang_files ()
 {
     local pattern=$1
     local file
@@ -57,7 +71,7 @@ function tracked_shebang_files ()
         if [[ "$first_line" =~ $pattern ]]; then
             printf '%s\n' "$file"
         fi
-    done < <(git ls-files)
+    done < <(files_for_checks)
 }
 
 log_msg "setup help"
@@ -78,7 +92,7 @@ fi
 log_msg "bin helper completions"
 dotfiles/.utils/gen-bin-helper-completions --check
 
-mapfile -t shell_files < <(tracked_shebang_files '^#!.*(bash|/sh|env bash|env sh)')
+mapfile -t shell_files < <(shebang_files '^#!.*(bash|/sh|env bash|env sh)')
 if [ "${#shell_files[@]}" -gt 0 ]; then
     log_msg "shellcheck errors"
     if command -v shellcheck > /dev/null 2>&1; then
@@ -88,7 +102,26 @@ if [ "${#shell_files[@]}" -gt 0 ]; then
     fi
 fi
 
-mapfile -t bash_files < <(tracked_shebang_files '^#!.*(bash|env bash)')
+if $RUN_BIN_WARNING_CHECK; then
+    log_msg "bin shellcheck warnings"
+    if command -v shellcheck > /dev/null 2>&1; then
+        bin_warning_files=()
+        for shell_file in "${shell_files[@]}"; do
+            if [[ "$shell_file" == bin/* ]]; then
+                bin_warning_files+=("$shell_file")
+            fi
+        done
+        if [ "${#bin_warning_files[@]}" -gt 0 ]; then
+            shellcheck -S warning "${bin_warning_files[@]}"
+        fi
+        unset bin_warning_files
+        unset shell_file
+    else
+        log_wrn "shellcheck not found; skipping"
+    fi
+fi
+
+mapfile -t bash_files < <(shebang_files '^#!.*(bash|env bash)')
 if [ "${#bash_files[@]}" -gt 0 ]; then
     log_msg "bash parser"
     for bash_file in "${bash_files[@]}"; do
@@ -107,7 +140,7 @@ mapfile -t zsh_files < <(
             'dotfiles/.zsh.d/*/*' \
             'dotfiles/.config/zsh/completion/*' \
             'dotfiles/themes/*/p10k.zsh'
-        tracked_shebang_files '^#!.*(zsh|env zsh)'
+        shebang_files '^#!.*(zsh|env zsh)'
     } | awk '!seen[$0]++'
 )
 if [ "${#zsh_files[@]}" -gt 0 ]; then
@@ -132,7 +165,7 @@ if [ "${#lua_files[@]}" -gt 0 ]; then
     fi
 fi
 
-mapfile -t python_files < <(tracked_shebang_files '^#!.*python')
+mapfile -t python_files < <(shebang_files '^#!.*python')
 if [ "${#python_files[@]}" -gt 0 ]; then
     log_msg "python parser"
     python3 -c '

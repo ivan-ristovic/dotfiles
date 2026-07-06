@@ -2,24 +2,56 @@
 # dotfiles-completion: begin
 # commands: video-track-merge
 # body:
-#   _arguments \
+#   _arguments -s \
+#     '(-n --dry-run)'{-n,--dry-run}'[print commands without writing files]' \
 #     '1:input video:_bin_helpers_video_files' \
 #     '2:output video:_files'
 # dotfiles-completion: end
 
+# shellcheck source=bin/include
+source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
+
+SHLIB_DRY_RUN=false
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -n | --dry-run)
+            SHLIB_DRY_RUN=true
+            ;;
+        -h | --help)
+            echo "usage: $(basename "$0") [--dry-run] input_video [output_video]"
+            exit 0
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            std_fat "unknown option: $1"
+            ;;
+        *)
+            break
+            ;;
+    esac
+    shift
+done
+
+export SHLIB_DRY_RUN
 
 if [ $# -lt 1 ]; then
-    echo "usage: $(basename "$0") input_video [output_video]"
+    echo "usage: $(basename "$0") [--dry-run] input_video [output_video]"
     exit 1
 fi
+
+cmd_require ffmpeg || exit 1
 
 input="$1"
 input_noext="${input%.*}"
 input_ext="${input##*.}"
 output="${2:-"${input_noext}_merged.$input_ext"}"
+output=$(fs_unique_path "$output") || exit 1
 
-set -xe;
-ffmpeg \
+cmd_run ffmpeg \
     -i "$input" \
     -filter_complex "[0:a:0][0:a:1]amix=2:longest[aout]" \
     -map 0:V:0 -map "[aout]" \

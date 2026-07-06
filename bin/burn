@@ -2,33 +2,72 @@
 # dotfiles-completion: begin
 # commands: burn
 # body:
-#   _arguments \
+#   _arguments -s \
+#     '(-n --dry-run)'{-n,--dry-run}'[print commands without writing device]' \
 #     '1:ISO image:_bin_helpers_iso_files' \
 #     '2:block device:_bin_helpers_block_devices'
 # dotfiles-completion: end
 
-
-. include lib
 export SHLIB_FMT_TIME=true
+
+# shellcheck source=bin/include
+source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
+
+SHLIB_DRY_RUN=false
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -n | --dry-run)
+            SHLIB_DRY_RUN=true
+            ;;
+        -h | --help)
+            std_usage "[--dry-run] file.iso /dev/my-usb"
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            std_fat "unknown option: $1"
+            ;;
+        *)
+            break
+            ;;
+    esac
+    shift
+done
 
 if [[ $# -lt 2 ]]; then
     log_msg "USB drives:"
     ls -lo /dev/disk/by-id/usb-*
     log_msg "Mountpoints:"
     lsblk
-    std_usage "file.iso /dev/my-usb"
+    std_usage "[--dry-run] file.iso /dev/my-usb"
 else
     iso=$1
     disk=$2
-    if std_ask "Are you ABSOLUTELY SURE you want to burn '$iso' to '$disk'?"; then
+
+    cmd_require dd du lsblk || exit 1
+
+    [ -f "$iso" ] || std_fat "not a file: $iso"
+    [ -b "$disk" ] || std_fat "not a block device: $disk"
+
+    log_msg "Target device:"
+    lsblk "$disk"
+    if [ "$SHLIB_DRY_RUN" = true ]; then
+        log_wrn "Dry run enabled; commands will be printed only."
+    fi
+
+    if std_ask "Are you ABSOLUTELY SURE you want to burn '$iso' to '$disk'?" N; then
         log_msg "Unmounting $disk"
-        sudo umount "$disk"
+        cmd_run sudo umount "$disk"
         log_msg "Copying '$iso' to '$disk'"
         du -h "$iso"
-        sudo dd bs=4M if="$iso" of="$disk" conv=fsync oflag=direct status=progress || std_fat "Copying errored"
+        cmd_run sudo dd bs=4M if="$iso" of="$disk" conv=fsync oflag=direct status=progress || std_fat "Copying errored"
         log_msg "Ensuring buffers are written..."
-        sudo sync
+        cmd_run sudo sync
         log_suc "Done!"
+    else
+        log_wrn "Aborted."
     fi
 fi
-

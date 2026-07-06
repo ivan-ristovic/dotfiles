@@ -13,7 +13,23 @@
 # 3. Preview matches
 # Switch between fd mode and fzf filtering mode (CTRL-T)
 
-rm -f /tmp/fd-fzf-{r,f}
+set -euo pipefail
+
+# shellcheck source=bin/include
+source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
+
+cmd_require fd fzf || exit 1
+
+tmp_dir=$(fs_tempdir fd-fzf) || exit 1
+fd_query_file=$tmp_dir/fd-query
+fzf_query_file=$tmp_dir/fzf-query
+fd_query_ref=$(printf '%q' "$fd_query_file")
+fzf_query_ref=$(printf '%q' "$fzf_query_file")
+cleanup() {
+    rm -rf -- "$tmp_dir"
+}
+trap cleanup EXIT
+
 FD_OPTS=${FD_OPTS:-""}
 FD_PREFIX="fd $FD_OPTS"
 INITIAL_QUERY="${*:-}"
@@ -21,8 +37,8 @@ INITIAL_QUERY="${*:-}"
     --bind "start:reload:$FD_PREFIX {q}" \
     --bind "change:reload:sleep 0.1; $FD_PREFIX {q} || true" \
     --bind 'ctrl-t:transform:[[ ! $FZF_PROMPT =~ fd ]] &&
-      echo "rebind(change)+change-prompt(1. fd> )+disable-search+transform-query:echo \{q} > /tmp/fd-fzf-f; cat /tmp/fd-fzf-r" ||
-      echo "unbind(change)+change-prompt(2. fzf> )+enable-search+transform-query:echo \{q} > /tmp/fd-fzf-r; cat /tmp/fd-fzf-f"' \
+      echo "rebind(change)+change-prompt(1. fd> )+disable-search+transform-query:echo \{q} > '"$fd_query_ref"'; cat '"$fzf_query_ref"'" ||
+      echo "unbind(change)+change-prompt(2. fzf> )+enable-search+transform-query:echo \{q} > '"$fzf_query_ref"'; cat '"$fd_query_ref"'"' \
     --color "hl:-1:underline,hl+:-1:underline:reverse" \
     --prompt '[Ctrl+T to swap] 1. fd> ' \
     --delimiter : \

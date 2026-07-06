@@ -9,14 +9,15 @@
 # dotfiles-completion: end
 
 
-. include assert
+# shellcheck source=bin/include
+source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
 
 assert_argc_ge $# 3 "base_from base_to num [nums ...]"
 
 ibase=$1
 obase=$2
 shift 2
-nums=$(joinby ';' "$@" | tr '[:lower:]' '[:upper:]')
+nums=$(str_join ';' "$@" | tr '[:lower:]' '[:upper:]')
 
 # Order matters! As soon as ibase is set, input must be in that base
 bc <<< "obase=$obase;ibase=$ibase;$nums"

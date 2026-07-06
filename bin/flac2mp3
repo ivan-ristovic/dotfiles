@@ -2,28 +2,87 @@
 # dotfiles-completion: begin
 # commands: flac2mp3
 # body:
-#   _arguments '*:FLAC file or directory:_bin_helpers_flac_or_dir'
+#   _arguments -s \
+#     '(-n --dry-run)'{-n,--dry-run}'[print commands without writing files]' \
+#     '*:FLAC file or directory:_bin_helpers_flac_or_dir'
 # dotfiles-completion: end
 
+# shellcheck source=bin/include
+source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
+
+SHLIB_DRY_RUN=false
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -n | --dry-run)
+            SHLIB_DRY_RUN=true
+            ;;
+        -h | --help)
+            echo "usage: $0 [--dry-run] .flac|dir ..."
+            exit 0
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            std_fat "unknown option: $1"
+            ;;
+        *)
+            break
+            ;;
+    esac
+    shift
+done
+
+export SHLIB_DRY_RUN
 
 if [ $# -eq 0 ]; then
-    echo "usage: $0 .flac|dir ..."
+    echo "usage: $0 [--dry-run] .flac|dir ..."
     exit 2
 fi
 
+cmd_require ffmpeg || exit 1
+
+function process_flac ()
+{
+    local in=$1
+    local out
+
+    if [[ "${in,,}" != *.flac ]]; then
+        log_wrn "skipping $in as it is not a FLAC file"
+        return
+    fi
+
+    out=$(fs_unique_path "${in%.*}.mp3") || return
+    cmd_run ffmpeg -i "$in" -qscale:a 0 "$out"
+}
+
+function process_flac_dir_sequential ()
+{
+    local dir=$1
+    local file
+
+    while IFS= read -r -d '' file; do
+        process_flac "$file"
+    done < <(find "$dir" -type f -iname '*.flac' -print0)
+}
+
 for arg in "$@"; do
     if [ -f "$arg" ]; then
-        if [ "${arg: -5}" == ".flac" ]; then
-            ffmpeg -i "$arg" -qscale:a 0 "${arg%.*}.mp3"
-        else
-            echo "warning: skipping $arg as it is not a FLAC file"
-        fi
+        process_flac "$arg"
     elif [ -d "$arg" ]; then
-        fd -t f -e flac . "$arg" | parallel --jobs 80% --progress --bar "ffmpeg -i {} -qscale:a 0 {.}.mp3"
+        if [ "$SHLIB_DRY_RUN" = true ]; then
+            process_flac_dir_sequential "$arg"
+        elif cmd_exists parallel; then
+            find "$arg" -type f -iname '*.flac' -print0 |
+                parallel --null --jobs 80% --progress --bar \
+                    'ffmpeg -i {} -qscale:a 0 {.}.mp3'
+        else
+            log_wrn "parallel is not installed; converting FLAC files sequentially"
+            process_flac_dir_sequential "$arg"
+        fi
     else
-        echo "error: unsupported file type: $arg"
-        exit 1
+        std_fat "unsupported file type: $arg"
     fi
 done
-
-

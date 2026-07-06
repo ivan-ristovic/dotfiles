@@ -6,11 +6,14 @@
 #     '(-h --help)'{-h,--help}'[show help]' \
 #     '(-S --no-strip)'{-S,--no-strip}'[do not strip EXIF metadata]' \
 #     '(-q --quality)'{-q,--quality}'[JPEG quality percent]:quality:(100 95 90 85 80 75 70 60)' \
+#     '(-n --dry-run)'{-n,--dry-run}'[print commands without writing files]' \
 #     '(-e --error)'{-e,--error}'[halt on ImageMagick error]' \
 #     '1:image file or input directory:_bin_helpers_image_or_dir' \
 #     '2:output directory:_bin_helpers_dirs'
 # dotfiles-completion: end
 
+# shellcheck source=bin/include
+source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
 
 function usage ()
 {
@@ -18,12 +21,13 @@ function usage ()
     echo -e "options:"
     echo -e "    --no-strip | -S            (do not strip exif metadata)"
     echo -e "    (--quality | -q) [0..100]  (e.g., '-q 85' for visually lossless)"
+    echo -e "    --dry-run | -n             (print commands without writing files)"
     echo -e "    --error | -e               (halt on magick error)"
     exit 2
 }
 
-SHORT_OPTS=h,S,q:,e
-LONG_OPTS=help,no-strip,quality:,error
+SHORT_OPTS=h,S,q:,n,e
+LONG_OPTS=help,no-strip,quality:,dry-run,error
 OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --longoptions $LONG_OPTS -- "$@") 
 if [ $? -ne 0 ]; then
     std_fat "failed to parse provided arguments"
@@ -31,6 +35,7 @@ fi
 eval set -- "$OPTS"
 
 STRICT=false
+SHLIB_DRY_RUN=false
 STRIP_ARGS=(-strip)
 QUALITY="85%"
 
@@ -47,6 +52,9 @@ do
             QUALITY="$2%"
             shift
             ;;
+        -n | --dry-run)
+            SHLIB_DRY_RUN=true
+            ;;
         -h | --help)
             usage
             ;;
@@ -61,22 +69,32 @@ do
     shift;
 done
 
+export SHLIB_DRY_RUN
+
 if [ $# -ne 2 ]; then
     usage
 fi
+
+cmd_require magick || exit 1
 
 errored_entries=()
 
 function process ()
 {
     local in=$1
-    local out=$2/$in
+    local input_root=$2
+    local output_root=$3
+    local rel
+    local out
     local status
 
-    mkdir -p "$(dirname "$out")"
+    rel=$(os_path_rel "$in" "$input_root") || return
+    out="$output_root/$rel"
+
+    cmd_run mkdir -p "$(dirname "$out")"
     echo "$in -> $out"
 
-    magick \
+    cmd_run magick \
         "$in" \
         "${STRIP_ARGS[@]}" \
         -interlace Plane \
@@ -96,10 +114,10 @@ function process ()
 
 if [ -d "$1" ]; then
     while IFS= read -r -d '' f; do
-        process "$f" "$2"
-    done < <(find "$1" -type f -print0)
+        process "$f" "$1" "$2"
+    done < <(find "$1" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.bmp' -o -iname '*.tif' -o -iname '*.tiff' -o -iname '*.heic' -o -iname '*.avif' \) -print0)
 else
-    process "$1" "$2"
+    process "$1" "$(dirname -- "$1")" "$2"
 fi
 
 echo " --- errors ---"

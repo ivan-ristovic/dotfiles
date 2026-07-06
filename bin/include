@@ -6,4 +6,46 @@
 # dotfiles-completion: end
 
 
-source "$SHLIB_ROOT/$1.sh"
+function __include_fail ()
+{
+    local message=$1
+
+    printf 'include: %s\n' "$message" >&2
+}
+
+if [ $# -ne 1 ]; then
+    __include_fail "usage: source include library" 2
+    return 2 2>/dev/null || exit 2
+fi
+
+__include_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P) ||
+    {
+        __include_fail "failed to resolve include directory"
+        return 1 2>/dev/null || exit 1
+    }
+
+if [ -f "$__include_dir/../shlib/lib/$1.sh" ]; then
+    SHLIB_ROOT=$(cd -- "$__include_dir/../shlib/lib" && pwd -P) ||
+        {
+            __include_fail "failed to resolve repo-local shlib"
+            return 1 2>/dev/null || exit 1
+        }
+    export SHLIB_ROOT
+elif [ -z "${SHLIB_ROOT:-}" ]; then
+    __include_fail "SHLIB_ROOT is not set and repo-local shlib was not found"
+    return 1 2>/dev/null || exit 1
+fi
+
+__include_target="$SHLIB_ROOT/$1.sh"
+if [ ! -f "$__include_target" ]; then
+    __include_fail "library not found: $1"
+    return 1 2>/dev/null || exit 1
+fi
+
+# shellcheck source=/dev/null
+source "$__include_target"
+__include_status=$?
+
+unset __include_dir __include_target
+unset -f __include_fail
+return "$__include_status" 2>/dev/null || exit "$__include_status"

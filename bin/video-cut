@@ -2,34 +2,68 @@
 # dotfiles-completion: begin
 # commands: video-cut
 # body:
-#   _arguments \
+#   _arguments -s \
+#     '(-n --dry-run)'{-n,--dry-run}'[print commands without writing files]' \
+#     '(-o --output)'{-o,--output}'[output video]:output file:_files' \
 #     '1:input video:_bin_helpers_video_files' \
 #     '2:start timestamp:' \
 #     '3:end timestamp:'
 # dotfiles-completion: end
 
+# shellcheck source=bin/include
+source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
+
+SHLIB_DRY_RUN=false
+output=
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -n | --dry-run)
+            SHLIB_DRY_RUN=true
+            ;;
+        -o | --output)
+            [ $# -ge 2 ] || std_fat "$1 requires an output file"
+            output=$2
+            shift
+            ;;
+        -h | --help)
+            echo "usage: $(basename "$0") [--dry-run] [--output output_video] input_video [hh]:mm:ss [[hh]:mm:ss]"
+            exit 0
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            std_fat "unknown option: $1"
+            ;;
+        *)
+            break
+            ;;
+    esac
+    shift
+done
+
+export SHLIB_DRY_RUN
 
 if [ $# -lt 2 ]; then
-    echo "usage: $(basename $0) input_video [hh]:mm:ss [[hh]:mm:ss]"
+    echo "usage: $(basename "$0") [--dry-run] [--output output_video] input_video [hh]:mm:ss [[hh]:mm:ss]"
     exit 1
 fi
+
+cmd_require ffmpeg || exit 1
 
 filename=$(basename -- "$1")
 filename="${filename%.*}"
 
-from="-ss $2"
-to=""
+cmd=(ffmpeg -i "$1" -ss "$2")
 if [ $# -gt 2 ]; then
-    to="-to $3"
+    cmd+=(-to "$3")
 fi
 
-output="cut_$filename.mp4"
-i=1
-while [ -f "$output" ]; do
-    output="cut${i}_${filename}.mp4"
-    i=$((i+1))
-done
+if [ -z "$output" ]; then
+    output=$(fs_unique_path "cut_$filename.mp4") || exit 1
+fi
 
-set -xe;
-ffmpeg -i "$1" $from $to -filter_complex "[0:a:0][0:a:1]amix=2:longest[aout]" -map 0:V:0 -map "[aout]" -c:v copy -c:a aac -b:a 320k "$output"
-
+cmd+=(-filter_complex "[0:a:0][0:a:1]amix=2:longest[aout]" -map 0:V:0 -map "[aout]" -c:v copy -c:a aac -b:a 320k "$output")
+cmd_run "${cmd[@]}"

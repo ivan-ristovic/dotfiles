@@ -28,6 +28,7 @@ else
     # Perform custom layout
     layout="$layouts_dir/$SESSION_NAME"
     if [ -f "$layout" ]; then
+        # shellcheck source=/dev/null
         source "$layout"
     else
         echo "error: unknown layout: $layout"

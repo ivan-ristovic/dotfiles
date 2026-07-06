@@ -25,7 +25,7 @@ function usage ()
     fi
     echo "Available themes:"
     ls -l .
-    popd
+    popd || exit
     exit 1
 }
 
@@ -38,8 +38,7 @@ if [ "${#theme[@]}" -ne 1 ]; then
     usage "Unique theme name starting with $1 was not found." 
 fi
 
-rm current > /dev/null 2>&1
+rm -f current
 ln -s "${theme[0]}" current
 ./postswitch
-popd
-
+popd || exit

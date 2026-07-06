@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # dotfiles-completion: begin
 # commands: palette
 # body:
@@ -48,4 +48,3 @@ for (i, color) in enumerate(colored_palette + grayscale_palette, 16):
     hex   = (normal + "%s" + reset) % (i, color)
     newline = '\n' if i % 6 == 3 else ''
     print(index, hex, ' ', newline, end='') 
-

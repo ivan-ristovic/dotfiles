@@ -6,8 +6,9 @@
 # dotfiles-completion: end
 
 
-. include lib
-SHLIB_FMT_TIME=true
+# shellcheck source=bin/include
+source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
+export SHLIB_FMT_TIME=true
 
 function prompt () 
 {
@@ -57,4 +58,3 @@ prompt "Checking for .pacnew files"
 log_exec sudo pacdiff
 
 log_suc "Done. Have a nice day."
-

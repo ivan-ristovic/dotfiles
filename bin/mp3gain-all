@@ -2,28 +2,85 @@
 # dotfiles-completion: begin
 # commands: mp3gain-all
 # body:
-#   _arguments '*:MP3 file or directory:_bin_helpers_mp3_or_dir'
+#   _arguments -s \
+#     '(-n --dry-run)'{-n,--dry-run}'[print commands without writing files]' \
+#     '*:MP3 file or directory:_bin_helpers_mp3_or_dir'
 # dotfiles-completion: end
 
+# shellcheck source=bin/include
+source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
+
+SHLIB_DRY_RUN=false
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -n | --dry-run)
+            SHLIB_DRY_RUN=true
+            ;;
+        -h | --help)
+            echo "usage: $0 [--dry-run] .mp3|dir ..."
+            exit 0
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            std_fat "unknown option: $1"
+            ;;
+        *)
+            break
+            ;;
+    esac
+    shift
+done
+
+export SHLIB_DRY_RUN
 
 if [ $# -eq 0 ]; then
-    echo "usage: $0 .mp3|dir ..."
+    echo "usage: $0 [--dry-run] .mp3|dir ..."
     exit 2
 fi
 
+cmd_require mp3gain || exit 1
+
+function process_mp3 ()
+{
+    local in=$1
+
+    if [[ "${in,,}" != *.mp3 ]]; then
+        log_wrn "skipping $in as it is not a MP3 file"
+        return
+    fi
+
+    cmd_run mp3gain -q -c -r "$in"
+}
+
+function process_mp3_dir_sequential ()
+{
+    local dir=$1
+    local file
+
+    while IFS= read -r -d '' file; do
+        process_mp3 "$file"
+    done < <(find "$dir" -type f -iname '*.mp3' -print0)
+}
+
 for arg in "$@"; do
     if [ -f "$arg" ]; then
-        if [ "${arg: -4}" == ".mp3" ]; then
-            mp3gain -q -c -r "$arg"
-        else
-            echo "warning: skipping $arg as it is not a MP3 file"
-        fi
+        process_mp3 "$arg"
     elif [ -d "$arg" ]; then
-        fd -t f -e mp3 . "$arg" | parallel --jobs 80% --progress --bar "mp3gain -r {}"
+        if [ "$SHLIB_DRY_RUN" = true ]; then
+            process_mp3_dir_sequential "$arg"
+        elif cmd_exists parallel; then
+            find "$arg" -type f -iname '*.mp3' -print0 |
+                parallel --null --jobs 80% --progress --bar \
+                    'mp3gain -q -c -r {}'
+        else
+            log_wrn "parallel is not installed; applying mp3gain sequentially"
+            process_mp3_dir_sequential "$arg"
+        fi
     else
-        echo "error: unsupported file type: $arg"
-        exit 1
+        std_fat "unsupported file type: $arg"
     fi
 done
-
-

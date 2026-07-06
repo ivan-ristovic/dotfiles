@@ -6,25 +6,29 @@
 # dotfiles-completion: end
 
 
-host="@resolver1.opendns.com"
-version=""
+# shellcheck source=bin/include
+source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
 
-if [ $# -ge 0 ]; then
+resolver=("@resolver1.opendns.com")
+version=""
+version_arg=()
+
+cmd_require dig || exit 1
+
+if [ $# -gt 0 ]; then
     version=$1
 fi
 
-if [ ! -z $version ]; then
-    if [ $version == "4" ]; then
-        host="@resolver4.opendns.com"
-    elif [ $version == "6" ]; then
-        host="@resolver1.ipv6-sandbox.opendns.com AAAA"
+if [ -n "$version" ]; then
+    if [ "$version" == "4" ]; then
+        resolver=("@resolver4.opendns.com")
+    elif [ "$version" == "6" ]; then
+        resolver=("@resolver1.ipv6-sandbox.opendns.com" AAAA)
     else
         echo "usage: $0 [4|6]"
         exit 1
     fi
-    version=-$version
+    version_arg=(-"$version")
 fi
 
-set -x;
-dig +short $host myip.opendns.com $version
-
+dig +short "${resolver[@]}" myip.opendns.com "${version_arg[@]}"
