@@ -15,7 +15,7 @@
 
 set -euo pipefail
 
-# shellcheck source=bin/include
+# shellcheck source=/dev/null
 source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
 
 cmd_require fd fzf || exit 1

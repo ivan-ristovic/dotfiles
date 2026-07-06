@@ -9,7 +9,7 @@
 # dotfiles-completion: end
 
 
-# shellcheck source=bin/include
+# shellcheck source=/dev/null
 source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
 
 assert_argc_ge $# 3 "base_from base_to num [nums ...]"

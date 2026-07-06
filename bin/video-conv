@@ -22,7 +22,7 @@
 #     '2:output directory:_bin_helpers_dirs'
 # dotfiles-completion: end
 
-# shellcheck source=bin/include
+# shellcheck source=/dev/null
 source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
 
 function usage ()

@@ -8,7 +8,7 @@
 #     '2:output video:_files'
 # dotfiles-completion: end
 
-# shellcheck source=bin/include
+# shellcheck source=/dev/null
 source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
 
 SHLIB_DRY_RUN=false

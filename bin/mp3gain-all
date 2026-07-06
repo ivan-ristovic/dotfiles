@@ -7,7 +7,7 @@
 #     '*:MP3 file or directory:_bin_helpers_mp3_or_dir'
 # dotfiles-completion: end
 
-# shellcheck source=bin/include
+# shellcheck source=/dev/null
 source "$(dirname -- "${BASH_SOURCE[0]}")/include" lib
 
 SHLIB_DRY_RUN=false
