@@ -10,6 +10,9 @@ return {
       -- or leave it empty to use the default settings
       -- refer to the configuration section below
       preset = 'helix',
+      spec = {
+        { "<leader>g", group = "Git" },
+      },
       plugins = {
         spelling = {
           enabled = true,
