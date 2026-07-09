@@ -67,7 +67,7 @@ SD=`cat $cpu0/scaling_driver 2>/dev/null`
 hz2mhz()
 {
 :
-	echo "$@" | awk 'END{ORS=" "; for (i=1;i<=NF;i++) print int($i/1000)"MHz"}' | sed 's/.$//'
+	echo "$@" | awk 'END{ORS=" "; for (i=1;i<=NF;i++) print int($i/1000)"MHz \n"}' | sed 's/.$//'
 }
 
 setgov()
