@@ -1,0 +1,587 @@
+#!/usr/bin/env python3
+# dotfiles-completion: begin
+# commands: cpu
+# body:
+#   local -a freqs boost
+#   
+#   if [[ -r /sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies ]]; then
+#       freqs=(${(f)"$(</sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies)"})
+#   else
+#       freqs=(
+#           25% 50% 75% 90% 100%
+#           800MHz 1GHz 1.5GHz 2GHz 2.5GHz 3GHz
+#       )
+#   fi
+#   
+#   boost=(toggle on off)
+#   
+#   _arguments \
+#       '(-P -B -S -A --fixed)'{-P,--performance}'[performance profile]' \
+#       '(-P -B -S -A --fixed)'{-B,--balanced}'[balanced profile]' \
+#       '(-P -B -S -A --fixed)'{-S,--powersave}'[powersave profile]' \
+#       '(-P -B -S -A --fixed)'{-A,--auto}'[automatic/default profile]' \
+#       '(-P -B -S -A --fixed)--fixed=[set fixed CPU frequency]:frequency:(${freqs})' \
+#       '--min=[minimum CPU frequency]:frequency:(${freqs})' \
+#       '--max=[maximum CPU frequency]:frequency:(${freqs})' \
+#       '(-r --reset)'{-r,--reset}'[reset frequency limits]' \
+#       '(-b --boost)'{-b,--boost}'[toggle or set boost]:boost mode:(${boost})' \
+#       '(-f --frequencies)'{-f,--frequencies}'[list supported frequencies]' \
+#       '(-s --status)'{-s,--status}'[show current status]' \
+#       '(-t --time)'{-t,--time}'[show residency statistics]' \
+#       '(-v --verbose)'{-v,--verbose}'[verbose/debug output]' \
+#       '(-c --clean)'{-c,--clean}'[disable colored output]' \
+#       '(-h --help)'{-h,--help}'[show help]'
+# dotfiles-completion: end
+
+from __future__ import annotations
+
+import argparse
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from enum import Enum
+from pathlib import Path
+import re
+import subprocess
+import sys
+from typing import override, TypeVar
+
+RE_FREQ = re.compile(r"^\s*(\d+)\s*([kmg]?hz)?\s*$", re.I)
+RE_PERCENT = re.compile(r"^\s*(\d+(?:\.\d+)?)\s*%\s*$")
+
+T = TypeVar("T", str, int, float, bool)
+
+SYS_CPU = Path("/sys/devices/system/cpu")
+CPUFREQ = SYS_CPU / "cpufreq"
+INTEL_PSTATE = SYS_CPU / "intel_pstate"
+AMD_PSTATE = SYS_CPU / "amd_pstate"
+
+COLOR = True
+VERBOSE = False
+
+
+class Color:
+    RESET = "\033[0m"
+    DIM = "\033[2m"
+    BOLD = "\033[1m"
+    BLUE = "\033[94m"
+    GREEN = "\033[92m"
+    YELLOW = "\033[93m"
+    ORANGE = "\033[38;5;208m"
+    RED = "\033[91m"
+
+
+def ansi(text: str, color: str) -> str:
+    return f"{color}{text}{Color.RESET}" if COLOR else text
+
+
+def debug(*args, **kwargs):
+    if VERBOSE:
+        print("[DEBUG]", *args, file=sys.stderr, **kwargs)
+
+
+def debug_read(path: Path, value):
+    debug(f"read  {path} -> {value!r}")
+
+
+def debug_write(path: Path, value):
+    debug(f"write {path} <- {value!r}")
+
+
+def fmt_bool(v: bool | None) -> str:
+    if v is None:
+        return ansi("None", Color.DIM)
+    return ansi("True", Color.GREEN) if v else ansi("False", Color.RED)
+
+
+def fmt_freq(freq: int | None,
+             min_freq: int | None,
+             max_freq: int | None) -> str:
+    if freq is None:
+        return ansi("None", Color.DIM)
+
+    mhz = freq // 1000
+
+    if min_freq is None or max_freq is None or max_freq <= min_freq:
+        return f"{mhz:4d} MHz"
+
+    r = (freq - min_freq) / (max_freq - min_freq)
+
+    if r < 0.25:
+        c = Color.BLUE
+    elif r < 0.50:
+        c = Color.GREEN
+    elif r < 0.75:
+        c = Color.YELLOW
+    elif r < 0.90:
+        c = Color.ORANGE
+    else:
+        c = Color.RED
+
+    return ansi(f"{mhz:4d} MHz", c)
+
+
+# ---------------------------------------------------------------------------
+
+class Profile(Enum):
+    PERFORMANCE = "performance"
+    BALANCED = "balanced"
+    POWERSAVE = "powersave"
+    AUTO = "auto"
+
+
+@dataclass(slots=True)
+class Capabilities:
+
+    cpu_isolated: list[int]
+    cpu_offline: list[int]
+    cpu_online: list[int]
+    cpu_isolated_count: int
+    cpu_offline_count: int
+    cpu_online_count: int
+
+    epp: str | None
+    epp_avail: list[str] | None
+    governor: str | None
+    min_freq: int | None
+    max_freq: int | None
+    scaling_min_freq: int | None
+    scaling_max_freq: int | None
+    scaling_set_freq: int | None
+
+    @override
+    def __init__(
+        self,
+        cpu_isolated,
+        cpu_offline,
+        cpu_online,
+        epp=None,
+        epp_avail=None,
+        governor=None,
+        min_freq=None,
+        max_freq=None,
+        scaling_min_freq=None,
+        scaling_max_freq=None,
+        scaling_set_freq=None,
+    ) -> None:
+        self.cpu_isolated = cpu_isolated
+        self.cpu_offline = cpu_offline
+        self.cpu_online = cpu_online
+        self.cpu_isolated_count = len(cpu_isolated)
+        self.cpu_offline_count = len(cpu_offline)
+        self.cpu_online_count = len(cpu_online)
+        self.epp = epp
+        self.epp_avail = epp_avail
+        self.governor = governor
+        self.min_freq = min_freq
+        self.max_freq = max_freq
+        self.scaling_min_freq = scaling_min_freq
+        self.scaling_max_freq = scaling_max_freq
+        self.scaling_set_freq = scaling_set_freq
+
+    @override
+    def __str__(self) -> str:
+        return (
+            f"online    | {self.cpu_online_count:2d} {self.cpu_online}\n"
+            f"offline   | {self.cpu_offline_count:2d} {self.cpu_offline}\n"
+            f"isolated  | {self.cpu_isolated_count:2d} {self.cpu_isolated}\n"
+            f"governor  | {self.governor}\n"
+            f"epp       | {self.epp}\n"
+            f"          | [{self.epp_avail}]\n"
+            f"min_freq  | {fmt_freq(self.min_freq, self.min_freq, self.max_freq)}\n"
+            f"max_freq  | {fmt_freq(self.max_freq, self.min_freq, self.max_freq)}\n"
+            f"smin_freq | {fmt_freq(self.scaling_min_freq, self.min_freq, self.max_freq)}\n"
+            f"smax_freq | {fmt_freq(self.scaling_max_freq, self.min_freq, self.max_freq)}\n"
+            f"sset_freq | {fmt_freq(self.scaling_set_freq, self.min_freq, self.max_freq)}\n"
+        )
+
+# ---------------------------------------------------------------------------
+
+def parse_value(path: Path, cast: type[T] = str) -> T | None:
+    try:
+        if not path.exists():
+            debug("missing", path)
+            return None
+
+        value = path.read_text().strip()
+        debug_read(path, value)
+
+        if value == "<unsupported>":
+            return None
+
+        if cast is bool:
+            value = int(value)
+
+        return cast(value)
+
+    except (IOError, ValueError) as e:
+        debug("read failed:", path, e)
+        return None
+
+
+def parse_cpulist(path: str) -> list[int]:
+    p = SYS_CPU / path
+    cpus = []
+
+    try:
+        text = p.read_text().strip()
+        debug_read(p, text)
+
+        for part in text.split(","):
+            if not part:
+                continue
+
+            if "-" in part:
+                start, end = map(int, part.split("-", 1))
+                cpus.extend(range(start, end + 1))
+            else:
+                cpus.append(int(part))
+
+    except IOError as e:
+        debug("cpulist read failed:", p, e)
+        return []
+
+    return cpus
+
+# ---------------------------------------------------------------------------
+
+class CpuBackend(ABC):
+
+    name = "unknown"
+
+    def __init__(self, caps: Capabilities):
+        self.caps = caps
+
+    @abstractmethod
+    def profile(self, profile: Profile) -> None:
+        ...
+
+    @abstractmethod
+    def set_boost(self, enabled: bool | None) -> None:
+        ...
+
+    @abstractmethod
+    def set_min_freq(self, freq: str) -> None:
+        ...
+
+    @abstractmethod
+    def set_max_freq(self, freq: str) -> None:
+        ...
+
+    @abstractmethod
+    def set_fixed_freq(self, freq: str) -> None:
+        ...
+
+    @abstractmethod
+    def reset_limits(self) -> None:
+        ...
+
+    @abstractmethod
+    def available_frequencies(self) -> list[str]:
+        ...
+
+    @abstractmethod
+    def status(self) -> None:
+        ...
+
+    @abstractmethod
+    def residency(self) -> None:
+        ...
+
+
+class GenericCpufreqBackend(CpuBackend):
+
+    name = "cpufreq"
+    BOOST = CPUFREQ / "boost"
+    boost = parse_value(BOOST, bool)
+
+    def __init__(self, driver: str, caps: Capabilities):
+        super().__init__(caps)
+        self.driver = driver
+
+    def profile(self, profile: Profile):
+        print(f"[{self.name}:{self.driver}] profile set to: {profile.value}")
+
+    def set_boost(self, enabled):
+        if enabled is None:
+            enabled = not self.boost
+        write_file_elevated(self.BOOST, "1" if enabled else "0")
+        print(f"[{self.name}] boost set to: {fmt_bool(enabled)}")
+
+    def set_min_freq(self, freq):
+        freq = self.parse_freq_value(freq)
+        if not self._is_freq_allowed(freq):
+            return
+        self._set_all_cpus("scaling_min_freq", freq)
+        print(f"[{self.name}:{self.driver}] set min freq to: {fmt_freq(freq, self.caps.min_freq, self.caps.max_freq)}")
+
+    def set_max_freq(self, freq):
+        freq = self.parse_freq_value(freq)
+        if not self._is_freq_allowed(freq):
+            return
+        self._set_all_cpus("scaling_max_freq", freq)
+        print(f"[{self.name}:{self.driver}] max freq set to: {fmt_freq(freq, self.caps.min_freq, self.caps.max_freq)}")
+
+    def set_fixed_freq(self, freq):
+        freq = self.parse_freq_value(freq)
+        if not self._is_freq_allowed(freq):
+            return
+        self._set_all_cpus("scaling_setspeed", freq)
+        print(f"[{self.name}:{self.driver}] freq fixed to: {fmt_freq(freq, self.caps.min_freq, self.caps.max_freq)}")
+
+    def reset_limits(self):
+        print(f"[{self.name}:{self.driver}] reset freq limits")
+
+    def available_frequencies(self):
+        policy = next(CPUFREQ.glob("policy*"), None)
+        if not policy:
+            return []
+
+        path = policy / "scaling_available_frequencies"
+
+        if not path.exists():
+            return []
+
+        value = path.read_text().split()
+        debug_read(path, value)
+        return value
+
+    def _is_freq_allowed(self, freq) -> bool:
+        min_freq = self.caps.min_freq or 0
+        max_freq = self.caps.max_freq or sys.maxsize
+        if freq < min_freq or freq > max_freq:
+            print("Frequency", freq, "must be in range", min_freq, "to", max_freq)
+            return False
+
+        fs = self.available_frequencies()
+        if fs and str(freq) not in fs:
+            print("Frequency", freq, "not in allowed list:", fs)
+            return False
+
+        return True
+
+    def _set_all_cpus(self, path, value):
+        for cpu in self.caps.cpu_online:
+            write_file_elevated(SYS_CPU / f"cpu{cpu}" / "cpufreq" / path, str(value))
+
+    def parse_freq_value(self, freq: str) -> int:
+        freq = freq.strip()
+        max_freq = self.caps.max_freq or 0
+
+        m = RE_PERCENT.fullmatch(freq)
+        if m:
+            return int(max_freq * float(m.group(1)) / 100)
+
+        m = RE_FREQ.fullmatch(freq)
+        if m:
+            value = int(m.group(1))
+            unit = (m.group(2) or "").lower()
+            multipliers = {
+                "": 1,
+                "khz": 1,
+                "mhz": 1_000,
+                "ghz": 1_000_000,
+            }
+            return value * multipliers[unit]
+
+        try:
+            value = float(freq)
+        except ValueError:
+            raise ValueError(f"Invalid frequency value: {freq!r}") from None
+
+        if "." in freq:
+            return int(max_freq * value)
+
+        raise ValueError(f"Invalid frequency value: {freq!r}")
+
+    def status(self):
+        print(f"backend   | {self.name} [{self.driver}]")
+        print(f"boost     | {fmt_bool(self.boost)}")
+        print(self.caps)
+
+    def residency(self):
+        print("TODO")
+
+
+class IntelPstateBackend(GenericCpufreqBackend):
+
+    name = "intel-pstate"
+    BOOST = INTEL_PSTATE / "no_turbo"
+    boost = not parse_value(BOOST, bool)
+
+    def profile(self, profile: Profile):
+        print(f"[{self.name}] profile set to: {profile.value}")
+
+    @override
+    def set_boost(self, enabled):
+        if enabled is None:
+            enabled = not self.boost
+        write_file_elevated(self.BOOST, "0" if enabled else "1")
+        print(f"[{self.name}] boost set to: {fmt_bool(enabled)}")
+
+
+class AmdPstateBackend(GenericCpufreqBackend):
+
+    name = "amd-pstate"
+
+    def profile(self, profile: Profile):
+        print(f"[{self.name}] profile set to: {profile.value}")
+
+    def set_boost(self, enabled):
+        if enabled is None:
+            enabled = not self.boost
+        write_file_elevated(self.BOOST, "1" if enabled else "0")
+        print(f"[{self.name}] boost set to: {fmt_bool(enabled)}")
+
+# ---------------------------------------------------------------------------
+
+def scaling_driver() -> str | None:
+
+    for driver in sorted(CPUFREQ.glob("policy*/scaling_driver")):
+        try:
+            value = driver.read_text().strip()
+            debug_read(driver, value)
+            return value
+        except OSError:
+            pass
+
+    return None
+
+
+def detect_capabilities() -> Capabilities:
+
+    cpu_isolated = parse_cpulist("isolated")
+    cpu_offline = parse_cpulist("offline")
+    cpu_online = parse_cpulist("online")
+
+    policy = next(CPUFREQ.glob("policy*"), None)
+
+    if policy is None:
+        return Capabilities(
+            cpu_isolated,
+            cpu_offline,
+            cpu_online,
+        )
+
+    return Capabilities(
+        cpu_isolated,
+        cpu_offline,
+        cpu_online,
+        epp=parse_value(policy / "energy_performance_preference"),
+        epp_avail=parse_value(policy / "energy_performance_available_preferences"),
+        governor=parse_value(policy / "scaling_governor"),
+        min_freq=parse_value(policy / "cpuinfo_min_freq", int),
+        max_freq=parse_value(policy / "cpuinfo_max_freq", int),
+        scaling_min_freq=parse_value(policy / "scaling_min_freq", int),
+        scaling_max_freq=parse_value(policy / "scaling_max_freq", int),
+        scaling_set_freq=parse_value(policy / "scaling_setspeed", int),
+    )
+
+
+def detect_backend() -> CpuBackend:
+
+    caps = detect_capabilities()
+    driver = scaling_driver()
+
+    if driver == "amd-pstate" or AMD_PSTATE.exists():
+        return AmdPstateBackend(driver or "amd-pstate", caps)
+
+    if driver == "intel_pstate" or INTEL_PSTATE.exists():
+        return IntelPstateBackend(driver or "intel_pstate", caps)
+
+    if driver:
+        return GenericCpufreqBackend(driver, caps)
+
+    raise RuntimeError("No CPU frequency driver detected.")
+
+
+def write_file_elevated(path: Path, contents: str) -> None:
+    debug_write(path, contents)
+    subprocess.run(
+        ["sudo", "tee", path],
+        input=contents,
+        text=True,
+        stdout=subprocess.DEVNULL,
+        check=True,
+    )
+
+
+# ---------------------------------------------------------------------------
+
+def build_parser() -> argparse.ArgumentParser:
+
+    p = argparse.ArgumentParser(prog="cpu", description="Portable CPU performance manager")
+
+    g = p.add_mutually_exclusive_group()
+    g.add_argument("-P", "--performance", action="store_true", help="performance profile")
+    g.add_argument("-B", "--balanced", action="store_true", help="balanced profile")
+    g.add_argument("-S", "--powersave", action="store_true", help="powersave profile")
+    g.add_argument("-A", "--auto", action="store_true", help="automatic/default profile")
+    g.add_argument("--fixed", metavar="FREQ", help="set fixed CPU frequency")
+
+    p.add_argument("--min", metavar="FREQ", help="minimum CPU frequency")
+    p.add_argument("--max", metavar="FREQ", help="maximum CPU frequency")
+    p.add_argument("-r", "--reset", action="store_true", help="reset frequency limits")
+    p.add_argument("-b", "--boost", nargs="?", const="toggle", choices=("toggle", "on", "off"), help="toggle or set boost")
+    p.add_argument("-f", "--frequencies", action="store_true", help="list supported frequencies")
+    p.add_argument("-s", "--status", action="store_true", help="show current status")
+    p.add_argument("-t", "--time", action="store_true", help="show residency statistics")
+    p.add_argument("-v", "--verbose", action="store_true", help="verbose/debug output")
+    p.add_argument("-c", "--clean", action="store_true", help="no colored output")
+
+    return p
+
+# ---------------------------------------------------------------------------
+
+def main():
+
+    global COLOR
+    global VERBOSE
+
+    parser = build_parser()
+    args = parser.parse_args()
+
+    COLOR = not args.clean
+    VERBOSE = args.verbose
+
+    cpu = detect_backend()
+    debug("backend:", cpu.name)
+
+    cpu.status()
+
+    if args.performance:
+        cpu.profile(Profile.PERFORMANCE)
+    elif args.balanced:
+        cpu.profile(Profile.BALANCED)
+    elif args.powersave:
+        cpu.profile(Profile.POWERSAVE)
+    elif args.auto:
+        cpu.profile(Profile.AUTO)
+
+    if args.fixed:
+        cpu.set_fixed_freq(args.fixed)
+
+    if args.min:
+        cpu.set_min_freq(args.min)
+
+    if args.max:
+        cpu.set_max_freq(args.max)
+
+    if args.reset:
+        cpu.reset_limits()
+
+    if args.boost:
+        cpu.set_boost(None if args.boost == "toggle" else args.boost == "on")
+
+    if args.frequencies:
+        fs = cpu.available_frequencies()
+        print("Available frequencies:", fs or "all")
+
+    if args.status:
+        cpu.status()
+
+    if args.time:
+        cpu.residency()
+
+
+if __name__ == "__main__":
+    main()

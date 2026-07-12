@@ -1,4 +1,4 @@
-#compdef 7z-backup 7z-restore ask base2base beep burn calc colorconv colorconv-term conn cpumode cpumode-amd cpumode-intel crypto dlpage dlsubs f fa ff ffa flac2mp3 image-alpha image-opt include joinby kbl-lenovo light-theme maintenance media-split mp3gain-all mpp myip o palette pathfind preview qr randpass shlib speedtest ssh-copy-pub-key swtheme timer treed tx tz video-cat video-conv video-cut video-track-merge wf wifi-restart ytdl-mp3
+#compdef 7z-backup 7z-restore ask base2base beep burn calc colorconv colorconv-term conn cpu crypto dlpage dlsubs f fa ff ffa flac2mp3 image-alpha image-opt include joinby kbl-lenovo light-theme maintenance media-split mp3gain-all mpp myip o palette pathfind preview qr randpass shlib speedtest ssh-copy-pub-key swtheme timer treed tx tz video-cat video-conv video-cut video-track-merge wf wifi-restart ytdl-mp3
 
 _bin_helpers_dirs() {
   _files -/
@@ -247,23 +247,36 @@ _bin_helpers() {
         '1:server id:_bin_helpers_conn_ids' \
         '2:protocol:(ssh mosh scp sftp telnet nc)'
       ;;
-    cpumode|cpumode-amd|cpumode-intel)
-      _arguments -s \
-        '(-M --maximum)'{-M,--maximum}'[performance mode]' \
-        '(-m --minimum)'{-m,--minimum}'[powersave mode]' \
-        '(-a --auto)'{-a,--auto}'[automatic governor]' \
-        '(-b --boost)'{-b,--boost}'[toggle or set CPU boost]::state:(on off yes no 1 0)' \
-        '(-c --conservative)'{-c,--conservative}'[conservative governor]' \
-        '(-s --schedutil)'{-s,--schedutil}'[schedutil governor]' \
-        '(-u --userspace)'{-u,--userspace}'[set userspace CPU frequency]:frequency:_bin_helpers_cpu_freqs' \
-        '(-l --load)'{-l,--load}'[load CPU powersave driver]' \
-        '(-n --now)'{-n,--now}'[show current mode]' \
-        '(-S --set)'{-S,--set}'[set maximum CPU frequency]:frequency:_bin_helpers_cpu_freqs' \
-        '(-r --reset)'{-r,--reset}'[reset maximum CPU frequency]' \
-        '(-f --frequencies)'{-f,--frequencies}'[show available frequencies]' \
-        '(-t --time)'{-t,--time}'[show time spent in CPU states]' \
-        '(-v --version)'{-v,--version}'[show version]' \
-        '(-h --help)'{-h,--help}'[show help]'
+    cpu)
+      local -a freqs boost
+
+      if [[ -r /sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies ]]; then
+          freqs=(${(f)"$(</sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies)"})
+      else
+          freqs=(
+              25% 50% 75% 90% 100%
+              800MHz 1GHz 1.5GHz 2GHz 2.5GHz 3GHz
+          )
+      fi
+
+      boost=(toggle on off)
+
+      _arguments \
+          '(-P -B -S -A --fixed)'{-P,--performance}'[performance profile]' \
+          '(-P -B -S -A --fixed)'{-B,--balanced}'[balanced profile]' \
+          '(-P -B -S -A --fixed)'{-S,--powersave}'[powersave profile]' \
+          '(-P -B -S -A --fixed)'{-A,--auto}'[automatic/default profile]' \
+          '(-P -B -S -A --fixed)--fixed=[set fixed CPU frequency]:frequency:(${freqs})' \
+          '--min=[minimum CPU frequency]:frequency:(${freqs})' \
+          '--max=[maximum CPU frequency]:frequency:(${freqs})' \
+          '(-r --reset)'{-r,--reset}'[reset frequency limits]' \
+          '(-b --boost)'{-b,--boost}'[toggle or set boost]:boost mode:(${boost})' \
+          '(-f --frequencies)'{-f,--frequencies}'[list supported frequencies]' \
+          '(-s --status)'{-s,--status}'[show current status]' \
+          '(-t --time)'{-t,--time}'[show residency statistics]' \
+          '(-v --verbose)'{-v,--verbose}'[verbose/debug output]' \
+          '(-c --clean)'{-c,--clean}'[disable colored output]' \
+          '(-h --help)'{-h,--help}'[show help]'
       ;;
     crypto)
       _arguments -s \
