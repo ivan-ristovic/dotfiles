@@ -51,6 +51,13 @@ if [ -f /sys/devices/system/cpu/intel_pstate/no_turbo ]; then
     else
         label="$label2"
     fi
+elif [ -f /sys/devices/system/cpu/cpufreq/boost ]; then
+    boost=$(< /sys/devices/system/cpu/cpufreq/boost)
+    if [ "$boost" == "0" ]; then
+        label="$label1"
+    else
+        label="$label2"
+    fi
 else
     label="$label2"
 fi
