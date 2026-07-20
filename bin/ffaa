@@ -1,0 +1,2 @@
+#!/bin/bash
+RG_OPTS="--hidden -L --no-ignore-vcs" ff "$@"

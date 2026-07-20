@@ -1,0 +1,2 @@
+#!/bin/bash
+FD_OPTS="-H -L --no-ignore-vcs" f "$@"
