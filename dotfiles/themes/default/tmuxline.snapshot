@@ -65,3 +65,4 @@ set -g @prefix_highlight_sync_mode_attr 'fg=green'
 setw -g window-status-format "#[fg=colour70,bg=colour234] #I #[fg=colour70,bg=colour234] #W "
 setw -g window-status-current-format "#[fg=colour234,bg=colour237,nobold,nounderscore,noitalics]#[fg=colour144,bg=colour237] #I #[fg=colour144,bg=colour237] #W #[fg=colour237,bg=colour234,nobold,nounderscore,noitalics]"
 set -g mouse on 
+set -g message-format '#[fill=colour237,#{?#{command_prompt},#{E:message-command-style},#{E:message-style}}]#{message}'
