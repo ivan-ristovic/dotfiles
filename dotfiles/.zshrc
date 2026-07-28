@@ -74,7 +74,7 @@ plugins=(
   fancy-ctrl-z              # ctrl+z for fg and bg
   git                       # git completion and aliases
   # per-directory-history     # ctrl+g to toggle global/dir history
-  python                    # python aliases and venv management
+  # python                    # python aliases and venv management
   rsync                     # rsync aliases
   sudo                      # esc to add/remove sudo
   taskwarrior               # taskw completion

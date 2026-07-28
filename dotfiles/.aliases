@@ -211,6 +211,7 @@ if is_installed neith ; then
 fi
 "$e_alias" p='ps -f'
 "$e_alias" ports='netstat -tulanp'
+"$e_alias" py='python'
 "$i_alias" q=exit
 "$e_alias" rd=rmdir
 "$e_alias" rgd='rg -.'
