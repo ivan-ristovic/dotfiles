@@ -1,0 +1,11 @@
+[Unit]
+Description=ProtonVPN Auto Connect
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/protonvpn connect
+
+[Install]
+WantedBy=default.target
+EOF

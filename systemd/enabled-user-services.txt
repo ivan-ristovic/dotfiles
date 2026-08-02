@@ -6,6 +6,7 @@ gpu-screen-recorder-ui
 psd.service
 
 user/mpDris2.service
+user/protonvpn-autostart.service
 user/redshift.service
 user/ssh-agent.service
 
