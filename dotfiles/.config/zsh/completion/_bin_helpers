@@ -1,4 +1,4 @@
-#compdef 7z-backup 7z-restore ask base2base beep burn calc colorconv colorconv-term conn cpu crypto dlpage dlsubs f fa ff ffa flac2mp3 image-alpha image-opt include joinby kbl-lenovo light-theme maintenance media-split mp3gain-all mpp myip o palette pathfind preview qr randpass shlib speedtest ssh-copy-pub-key swtheme timer treed tx tz video-cat video-conv video-cut video-track-merge wf wifi-restart ytdl-mp3
+#compdef 7z-backup 7z-restore ask base2base beep burn calc colorconv colorconv-term conn cpu crypto dlpage dlsubs f fa ff ffa flac2mp3 image-alpha image-opt include joinby kbl-lenovo light-theme maintenance media-split mp3gain-all mpp mpv-remote myip o palette pathfind preview qr randpass shlib speedtest ssh-copy-pub-key swtheme timer treed tx tz video-cat video-conv video-cut video-track-merge wf wifi-restart ytdl-mp3
 
 _bin_helpers_dirs() {
   _files -/
@@ -417,6 +417,11 @@ _bin_helpers() {
       _arguments -s \
         '(-n --dry-run)'{-n,--dry-run}'[print commands without writing files]' \
         '*:MP3 file or directory:_bin_helpers_mp3_or_dir'
+      ;;
+    mpv-remote)
+      _arguments \
+        '1:user@host:' \
+        '2:remote directory:'
       ;;
     myip)
       _arguments '1:IP version:(4 6)'

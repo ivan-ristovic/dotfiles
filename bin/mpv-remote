@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# dotfiles-completion: begin
+# commands: mpv-remote
+# body:
+#   _arguments \
+#     '1:user@host:' \
+#     '2:remote directory:'
+# dotfiles-completion: end
+
+set -euo pipefail
+
+SSH_TARGET="${1:?user@host required}"
+REMOTE_DIR="${2:?remote folder required}"
+
+FIND_CMD='
+cd "'"$REMOTE_DIR"'" &&
+find . -type f \
+  \( \
+    -iname "*.mp4" -o \
+    -iname "*.mkv" -o \
+    -iname "*.avi" -o \
+    -iname "*.mov" -o \
+    -iname "*.wmv" -o \
+    -iname "*.flv" -o \
+    -iname "*.webm" -o \
+    -iname "*.m4v" -o \
+    -iname "*.mpg" -o \
+    -iname "*.mpeg" -o \
+    -iname "*.ts" -o \
+    -iname "*.m2ts" -o \
+    -iname "*.mts" -o \
+    -iname "*.3gp" -o \
+    -iname "*.ogv" \
+  \) \
+  -printf "%p\n" |
+sed "s|^\./||" |
+sort
+'
+
+selected="$(
+    ssh "$SSH_TARGET" "$FIND_CMD" | fzf
+)"
+
+if [[ -z "${selected:-}" ]]; then
+    echo "No selection."
+    exit 1
+fi
+
+remote_path="${REMOTE_DIR%/}/$selected"
+echo "Playing: $remote_path"
+exec mpv "sftp://${SSH_TARGET}${remote_path}"#!/usr/bin/env bash
