@@ -48,4 +48,4 @@ fi
 
 remote_path="${REMOTE_DIR%/}/$selected"
 echo "Playing: $remote_path"
-exec mpv "sftp://${SSH_TARGET}${remote_path}"#!/usr/bin/env bash
+exec mpv "sftp://${SSH_TARGET}${remote_path}"
