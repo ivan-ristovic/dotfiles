@@ -467,9 +467,17 @@ _bin_helpers() {
       _bin_helpers_no_args
       ;;
     ssh-copy-pub-key)
-      _arguments \
-        '1:public key or host:_alternative "public-keys:public key:_bin_helpers_pub_keys" "hosts:host:_hosts"' \
+      _arguments -C \
+        '1:public key or host:->arg1' \
         '2:host:_hosts'
+
+      case $state in
+        arg1)
+          _alternative \
+            'public-keys:public key:_bin_helpers_pub_keys' \
+            'hosts:host:_hosts'
+          ;;
+      esac
       ;;
     swtheme)
       _arguments '1:theme:_bin_helpers_themes'
