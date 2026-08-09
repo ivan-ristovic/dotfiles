@@ -37,9 +37,11 @@ sed "s|^\./||" |
 sort
 '
 
-selected="$(
-    ssh "$SSH_TARGET" "$FIND_CMD" | fzf
-)"
+selected=$(
+    ssh -o IdentityAgent=none "$SSH_TARGET" "$FIND_CMD" < /dev/tty
+) || exit $?
+
+selected=$(printf '%s\n' "$selected" | fzf)
 
 if [[ -z "${selected:-}" ]]; then
     echo "No selection."
