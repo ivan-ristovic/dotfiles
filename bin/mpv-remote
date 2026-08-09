@@ -38,7 +38,7 @@ sort
 '
 
 selected=$(
-    ssh -o IdentityAgent=none "$SSH_TARGET" "$FIND_CMD" < /dev/tty
+    ssh "$SSH_TARGET" "$FIND_CMD" < /dev/tty
 ) || exit $?
 
 selected=$(printf '%s\n' "$selected" | fzf)
