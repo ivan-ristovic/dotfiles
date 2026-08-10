@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# dotfiles-completion: begin
+# commands: after
+# body:
+#   _arguments \
+#     '1:process ID:_pids' \
+#     '2:command name:_command_names -e' \
+#     '*::arguments:'
+# dotfiles-completion: end
+
+pid=$1
+shift
+
+if [[ -z "$pid" || ! "$pid" =~ ^[0-9]+$ || $# -eq 0 ]]; then
+    echo "usage: after PID COMMAND [ARG...]" >&2
+    exit 2
+fi
+
+tail --pid="$pid" -f /dev/null
+exec "$@"
+

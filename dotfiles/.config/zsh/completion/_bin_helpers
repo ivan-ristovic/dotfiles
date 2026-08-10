@@ -1,4 +1,4 @@
-#compdef 7z-backup 7z-restore ask base2base beep burn calc colorconv colorconv-term conn cpu crypto dlpage dlsubs f fa ff ffa flac2mp3 image-alpha image-opt include joinby kbl-lenovo light-theme maintenance media-split mp3gain-all mpp mpv-remote myip o palette pathfind preview qr randpass shlib speedtest ssh-copy-pub-key swtheme timer treed tx tz video-cat video-conv video-cut video-track-merge wf wifi-restart ytdl-mp3
+#compdef 7z-backup 7z-restore after ask base2base beep burn calc colorconv colorconv-term conn cpu crypto dlpage dlsubs f fa faa ff ffa ffaa flac2mp3 image-alpha image-opt include joinby kbl-lenovo light-theme maintenance media-split mp3gain-all mpp mpv-remote myip o palette pathfind preview qr randpass shlib speedtest ssh-copy-pub-key swtheme timer treed tx tz vibrance video-cat video-conv video-cut video-track-merge wf wifi-restart ytdl-mp3
 
 _bin_helpers_dirs() {
   _files -/
@@ -210,6 +210,12 @@ _bin_helpers() {
     7z-restore)
       _arguments '1:backup archive:_bin_helpers_archives'
       ;;
+    after)
+      _arguments \
+        '1:process ID:_pids' \
+        '2:command name:_command_names -e' \
+        '*::arguments:'
+      ;;
     ask)
       _message -e prompt 'prompt text'
       ;;
@@ -313,7 +319,7 @@ _bin_helpers() {
         '--nohi[ignore hearing-impaired subtitles]' \
         '*:video file or directory:_bin_helpers_video_or_dir'
       ;;
-    f|fa|ff|ffa|mpp)
+    f|fa|ff|ffa|faa|ffaa|mpp)
       _message -e query 'search query'
       ;;
     flac2mp3)
@@ -503,6 +509,9 @@ _bin_helpers() {
       ;;
     tz)
       _bin_helpers_no_args
+      ;;
+    vibrance)
+      _arguments '1:value:(0 1)'
       ;;
     video-cat)
       _arguments -s \
