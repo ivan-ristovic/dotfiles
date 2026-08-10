@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# dotfiles-completion: begin
+# commands: vibrance
+# body:
+#   _arguments '1:value:(0 1)'
+# dotfiles-completion: end
 
 import re
 import subprocess
