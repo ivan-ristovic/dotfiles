@@ -75,7 +75,7 @@ function shebang_files ()
 }
 
 log_msg "setup help"
-./setup --help 
+./setup --help > /dev/null 
 
 log_msg "package list includes"
 missing_include=false
@@ -98,7 +98,11 @@ if [ "${#shell_files[@]}" -gt 0 ]; then
     if command -v shellcheck > /dev/null 2>&1; then
         shellcheck -S error "${shell_files[@]}"
     else
-        log_wrn "shellcheck not found; skipping"
+        if $RUN_BIN_WARNING_CHECK ; then
+            std_fat "shellcheck not found; aborting"
+        else
+            log_wrn "shellcheck not found; skipping"
+        fi
     fi
 fi
 
@@ -117,7 +121,11 @@ if $RUN_BIN_WARNING_CHECK; then
         unset bin_warning_files
         unset shell_file
     else
-        log_wrn "shellcheck not found; skipping"
+        if $RUN_BIN_WARNING_CHECK ; then
+            std_fat "shellcheck not found; aborting"
+        else
+            log_wrn "shellcheck not found; skipping"
+        fi
     fi
 fi
 
