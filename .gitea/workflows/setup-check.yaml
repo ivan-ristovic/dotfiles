@@ -15,3 +15,5 @@ jobs:
 
       - name: Run check
         run: ./check
+        env:
+          SETUP_ALLOW_ROOT: "1"
