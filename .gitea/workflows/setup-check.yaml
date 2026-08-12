@@ -1,0 +1,16 @@
+name: Full setup check
+
+on:
+  schedule:
+    - cron: "0 3 * * 6"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run check
+        run: ./check --no-container --strict-warnings
