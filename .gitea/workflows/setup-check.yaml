@@ -23,7 +23,7 @@ jobs:
 
       - name: Send failure email
         # if: ${{ failure() }}
-        uses: https://git.ristovic.net/ivan/action-gitea-workflow-error-email@v1
+        uses: https://git.ristovic.net/ivan/action-gitea-workflow-error-email
         with:
           smtp-host: ${{ secrets.SMTP_HOST }}
           smtp-username: ${{ secrets.SMTP_USERNAME }}
