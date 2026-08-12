@@ -12,6 +12,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install dependencies
+        uses: ./.gitea/workflows/_setup
+
       - name: Run check
         run: ./check --no-container --strict-warnings
         env:
