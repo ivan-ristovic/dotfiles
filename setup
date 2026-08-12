@@ -71,7 +71,7 @@ function usage ()
 }
 
 
-GIT_REMOTE="git@github.com:ivan-ristovic/dotfiles.git"
+GIT_REMOTE="git@ristovic.net:ivan/dotfiles.git"
 
 function resolve_user_home ()
 {
