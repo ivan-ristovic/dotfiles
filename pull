@@ -6,6 +6,8 @@ export SHLIB_ROOT=${SHLIB_ROOT:-"$DOTFILES_ROOT_DIR/shlib/lib"}
 # shellcheck source=utils.sh
 source utils.sh
 
+./setup --init
+
 log_msg "Stashing existing changes..."
 stash_result=$(git stash push -m "dotfiles: Before pull")
 needs_pop=true

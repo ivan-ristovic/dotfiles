@@ -59,7 +59,7 @@ function usage ()
     echo -e "\t--strict -s           halt on error (set -e)"
     echo -e "\t--repair -r           repair dotfile symlinks"
     echo -e "\t--verbose -v          runs the script in debug mode (set -x)"
-    echo -e "\t--remote              update git remote URL"
+    echo -e "\t--init                update git repository origin url and hooks"
     echo -e "\t--log -l              output log to logfile"
     echo -e "\t--dry[-run] -d        dry run"
     echo
@@ -106,7 +106,7 @@ fi
 SETUP_HOME_DIR=$(resolve_user_home "$SETUP_USER" 2> /dev/null || true)
 
 SHORT_OPTS=v,s,u:,h,l,r,d
-LONG_OPTS=user:,username:,dotfiles,link,stow,packages,install,dotfiles,patch,patches,services,all,complete,help,strict,repair,debug,verbose,remote,git,log,dry,dry-run
+LONG_OPTS=user:,username:,dotfiles,link,stow,packages,install,dotfiles,patch,patches,services,all,complete,help,strict,repair,debug,verbose,init,git,log,dry,dry-run
 if ! OPTS=$(getopt --alternative --name 'argument error' --options $SHORT_OPTS --longoptions $LONG_OPTS -- "$@"); then
     std_fat "failed to parse provided arguments"
 fi
@@ -138,7 +138,12 @@ do
             SETUP_OVERRIDE=true
             SETUP_SERVICES=true
             ;;
-        --remote | --git)
+        --init | --git)
+            if git config core.hooksPath .githooks ; then
+                log_suc "Enabled repository git hooks"
+            else
+                log_err "Repository git hook setup failed"
+            fi
             if {
                 if git remote get-url origin > /dev/null 2>&1; then
                     git remote set-url origin "$GIT_REMOTE"

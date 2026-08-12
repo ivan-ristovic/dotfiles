@@ -1,0 +1,18 @@
+#!/bin/sh
+
+remote_name="$1"
+remote_url="$2"
+
+case "$remote_url" in
+    *github.com*)
+        echo "⚠️  WARNING: Pushing to GitHub: $remote_url"
+        printf "Continue? [y/N] "
+        
+        read answer < /dev/tty
+
+        case "$answer" in
+            y|Y|yes|YES) exit 0 ;;
+            *) echo "Push cancelled."; exit 1 ;;
+        esac
+        ;;
+esac
