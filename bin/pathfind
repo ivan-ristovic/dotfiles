@@ -5,12 +5,22 @@
 #   _arguments '1:command name pattern:_command_names -e'
 # dotfiles-completion: end
 
-
 test -z "$1" && echo "usage: $(basename "$0") name" && exit 1
 
-echo "$PATH" | awk -F : '{ for (i=1;i<=NF;i++) print $i }' | while read -r cdir; do
-    ls "$cdir" | grep -- "$1"
-done | while read -r name; do
-    /usr/bin/which "$name"
-done | sort
-
+echo "$PATH" |
+    awk -F: '{ for (i=1; i<=NF; i++) print $i }' |
+    while read -r cdir; do
+        for path in "$cdir"/*; do
+            [ -f "$path" ] || continue
+            name=${path##*/}
+            case $name in
+                *"$1"*)
+                    printf '%s\n' "$name"
+                    ;;
+            esac
+        done
+    done |
+    while read -r name; do
+        /usr/bin/which "$name"
+    done |
+    sort
