@@ -75,7 +75,7 @@ function shebang_files ()
 }
 
 log_msg "setup help"
-./setup --help > /dev/null
+./setup --help 
 
 log_msg "package list includes"
 missing_include=false
