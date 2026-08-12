@@ -14,4 +14,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run check
-        run: ./check --no-container --strict-warnings
+        run: ./containers/check-setup 
