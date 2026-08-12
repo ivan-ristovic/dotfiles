@@ -1,5 +1,4 @@
-name: Setup dependencies
-description: Install workflow dependencies 
+name: Install workflow dependencies
 
 runs:
   using: composite
@@ -9,4 +8,3 @@ runs:
       run: |
         sudo apt-get update
         sudo apt-get install -y shellcheck bc
-
