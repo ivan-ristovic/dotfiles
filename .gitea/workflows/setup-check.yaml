@@ -21,9 +21,9 @@ jobs:
         env:
           SETUP_ALLOW_ROOT: "1"
 
-      - name: Send failure email
+      - name: Check for failures
         if: ${{ failure() }}
-        uses: https://git.ristovic.net/ivan/action-gitea-workflow-error-email@v2
+        uses: ${{ vars.ACTIONS_ROOT }}/action-gitea-workflow-error-email@v3
         with:
           smtp-host: ${{ secrets.SMTP_HOST }}
           smtp-username: ${{ secrets.SMTP_USERNAME }}
