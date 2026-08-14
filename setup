@@ -71,7 +71,7 @@ function usage ()
 }
 
 
-GIT_REMOTE="git@ristovic.net:ivan/dotfiles.git"
+GIT_REMOTE="git@ristovic.net:ivan"
 
 function resolve_user_home ()
 {
@@ -88,6 +88,30 @@ function resolve_user_home ()
 
     [ -n "$home_dir" ] || return 1
     printf '%s\n' "$home_dir"
+}
+
+function setup_init ()
+{
+    local repo="$GIT_REMOTE/$(basename "$(pwd)")"
+
+    if git config core.hooksPath .githooks ; then
+        log_suc "Enabled repository git hooks"
+    else
+        log_err "Repository git hook setup failed"
+    fi
+    if {
+        if git remote get-url origin > /dev/null 2>&1; then
+            git remote set-url origin "$repo"
+        else
+            git remote add origin "$repo"
+        fi
+    }; then
+        log_suc "Successfully updated remote: $repo"
+        return 0
+    else 
+        log_err "Failed to update remote"
+        return 1
+    fi
 }
 
 STOW_EXTRA_ARGS=()
@@ -139,24 +163,12 @@ do
             SETUP_SERVICES=true
             ;;
         --init | --git)
-            if git config core.hooksPath .githooks ; then
-                log_suc "Enabled repository git hooks"
-            else
-                log_err "Repository git hook setup failed"
-            fi
-            if {
-                if git remote get-url origin > /dev/null 2>&1; then
-                    git remote set-url origin "$GIT_REMOTE"
-                else
-                    git remote add origin "$GIT_REMOTE"
-                fi
-            }; then
-                log_suc "Successfully updated remote: $GIT_REMOTE"
-                exit 0
-            else 
-                log_err "Failed to update remote"
-                exit 1
-            fi
+            status=0
+            setup_init || status=1
+            pushd ./shlib || exit 1
+            setup_init || status=1
+            popd
+            exit "$status"
             ;;
         -l | --log)
             logfile="setup-$(date +%s).log"
