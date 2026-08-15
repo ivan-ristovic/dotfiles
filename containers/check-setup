@@ -126,6 +126,7 @@ function copy_container_file ()
     local container_path=$1
     local host_path=$2
 
+    log_msg "copying: $host_path to $CONTAINER_NAME:$container_path ..."
     docker cp "$CONTAINER_NAME:$container_path" "$host_path" >> "$LOG_FILE" 2>&1
 }
 
