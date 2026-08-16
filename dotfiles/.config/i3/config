@@ -364,6 +364,8 @@ exec --no-startup-id xset b off
 ## Automatic lock 
 ##  https://wiki.archlinux.org/title/Session_lock#xautolock
 exec --no-startup-id xautolock -time 10 -notify 60 -notifier "notify-send 'Auto-Locking in 1 minute...'" -locker "$scriptdir/lock-blur $bg"
+##  on-suspend support
+exec --no-startup-id xss-lock --transfer-sleep-lock -- $scriptdir/lock-bg --nofork
 
 ## Desktop notifications
 exec --no-startup-id dbus-launch dunst --config ~/.config/dunst/dunstrc

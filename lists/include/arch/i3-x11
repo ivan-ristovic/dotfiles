@@ -9,7 +9,7 @@
 i3-wm
 i3-gaps
 i3blocks
-i3lock
+i3lock xss-lock
 i3status
 
 acpi
