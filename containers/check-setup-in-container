@@ -35,7 +35,7 @@ function refresh_package_index ()
     printf '\n== refresh package index ==\n'
 
     if [ -f /etc/arch-release ]; then
-        sudo pacman --noconfirm -Syy
+        sudo pacman --noconfirm -Syu
     elif [ -f /etc/debian_version ]; then
         sudo apt-get update -qq
     else
