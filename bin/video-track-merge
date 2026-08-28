@@ -49,9 +49,8 @@ input="$1"
 input_noext="${input%.*}"
 input_ext="${input##*.}"
 output="${2:-"${input_noext}_merged.$input_ext"}"
-output=$(fs_unique_path "$output") || exit 1
 
-cmd_run ffmpeg \
+ffmpeg \
     -i "$input" \
     -filter_complex "[0:a:0][0:a:1]amix=2:longest[aout]" \
     -map 0:V:0 -map "[aout]" \

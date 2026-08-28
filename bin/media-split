@@ -83,7 +83,7 @@ if [[ "${ts[0]%% *}" =~ ^([0-9]{1,2}:)?[0-9]{1,2}:[0-9]{2}$ ]] ; then
     ts_first=true  
 fi
 
-cmd_run mkdir -p "$output_dir"
+mkdir -p "$output_dir"
 
 n=${#ts[@]}
 for (( i=0; i<n; i++ )); do
@@ -110,5 +110,5 @@ for (( i=0; i<n; i++ )); do
     fi
     cmd+=(-vcodec copy -acodec copy -y "$name")
     cmd+=("$@")
-    cmd_run "${cmd[@]}"
+    "${cmd[@]}"
 done

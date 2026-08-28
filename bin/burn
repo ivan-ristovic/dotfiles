@@ -60,12 +60,12 @@ else
 
     if std_ask "Are you ABSOLUTELY SURE you want to burn '$iso' to '$disk'?" N; then
         log_msg "Unmounting $disk"
-        cmd_run sudo umount "$disk"
+        sudo umount "$disk"
         log_msg "Copying '$iso' to '$disk'"
         du -h "$iso"
-        cmd_run sudo dd bs=4M if="$iso" of="$disk" conv=fsync oflag=direct status=progress || std_fat "Copying errored"
+        sudo dd bs=4M if="$iso" of="$disk" conv=fsync oflag=direct status=progress || std_fat "Copying errored"
         log_msg "Ensuring buffers are written..."
-        cmd_run sudo sync
+        sudo sync
         log_suc "Done!"
     else
         log_wrn "Aborted."

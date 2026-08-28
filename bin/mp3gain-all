@@ -53,7 +53,7 @@ function process_mp3 ()
         return
     fi
 
-    cmd_run mp3gain -q -c -r "$in"
+    mp3gain -q -c -r "$in"
 }
 
 function process_mp3_dir_sequential ()

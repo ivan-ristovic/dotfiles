@@ -67,4 +67,4 @@ for f in "$@"; do
     printf "file '%s'\n" "$escaped" >> "$concat_list"
 done
 
-cmd_run ffmpeg -f concat -safe 0 -i "$concat_list" -c copy "$output"
+ffmpeg -f concat -safe 0 -i "$concat_list" -c copy "$output"

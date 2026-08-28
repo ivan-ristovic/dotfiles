@@ -55,7 +55,7 @@ function process_flac ()
     fi
 
     out=$(fs_unique_path "${in%.*}.mp3") || return
-    cmd_run ffmpeg -i "$in" -qscale:a 0 "$out"
+    ffmpeg -i "$in" -qscale:a 0 "$out"
 }
 
 function process_flac_dir_sequential ()

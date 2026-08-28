@@ -91,10 +91,10 @@ function process ()
     rel=$(os_path_rel "$in" "$input_root") || return
     out="$output_root/$rel"
 
-    cmd_run mkdir -p "$(dirname "$out")"
+    mkdir -p "$(dirname "$out")"
     echo "$in -> $out"
 
-    cmd_run magick \
+    magick \
         "$in" \
         "${STRIP_ARGS[@]}" \
         -interlace Plane \

@@ -159,10 +159,10 @@ function process ()
     out="$output_root/${rel%.*}.$OUT"
     out=$(fs_unique_path "$out") || return
 
-    cmd_run mkdir -p "$(dirname "$out")"
+    mkdir -p "$(dirname "$out")"
     echo "$in -> $out"
 
-    cmd_run ffmpeg -nostdin -y \
+    ffmpeg -nostdin -y \
         -i "$in" \
         "${SCALE_ARGS[@]}" \
         -map 0:v:0 \

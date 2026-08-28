@@ -66,4 +66,4 @@ if [ -z "$output" ]; then
 fi
 
 cmd+=(-filter_complex "[0:a:0][0:a:1]amix=2:longest[aout]" -map 0:V:0 -map "[aout]" -c:v copy -c:a aac -b:a 320k "$output")
-cmd_run "${cmd[@]}"
+"${cmd[@]}"
