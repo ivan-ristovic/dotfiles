@@ -31,3 +31,11 @@ jobs:
           smtp-password: ${{ secrets.SMTP_PASSWORD }}
           from: ${{ secrets.SMTP_FROM }}
           to: ${{ secrets.WORKFLOW_ERROR_EMAIL }}
+
+      - name: Save logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs
+          path: |
+            *.log

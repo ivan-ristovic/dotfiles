@@ -29,6 +29,7 @@ case "$cmd" in
     build)
         if docker buildx version > /dev/null 2>&1; then
             docker buildx build -t "$tag" \
+                --pull \
                 --force-rm \
                 --load \
                 "$@" \
@@ -36,6 +37,7 @@ case "$cmd" in
         else
             echo "warning: docker buildx is not installed; falling back to legacy docker build" >&2
             docker build -t "$tag" \
+                --pull \
                 --force-rm \
                 "$@" \
                 .

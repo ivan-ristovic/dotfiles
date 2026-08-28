@@ -185,7 +185,11 @@ docker create \
     --env "DOTFILES_TEST_PACKAGE_LIST=$PACKAGE_LIST" \
     --env "DOTFILES_STRICT_NVIM_HEALTH=$STRICT_HEALTH" \
     "$IMAGE_TAG" \
-    bash /home/user/dotfiles/containers/check-setup-in-container 2>&1 | strip_ansi_stream | tee -a "$LOG_FILE"
+    bash -c 'if [ ! -f /home/user/dotfiles/containers/check-setup-in-container ]; then
+        echo "[check-setup] ERROR: repository files not accessible in container (bind mount failed)" >&2
+        exit 126
+    fi
+    exec bash /home/user/dotfiles/containers/check-setup-in-container' 2>&1 | strip_ansi_stream | tee -a "$LOG_FILE"
 create_rc=${PIPESTATUS[0]}
 if [ "$create_rc" -ne 0 ]; then
     log_err "failed to create container"
@@ -195,6 +199,39 @@ fi
 log_msg "starting container"
 docker start -a "$CONTAINER_NAME" 2>&1 | strip_ansi_stream | tee -a "$LOG_FILE"
 run_rc=${PIPESTATUS[0]}
+
+if [ "$run_rc" -eq 126 ]; then
+    log_msg "bind mount not accessible; copying repository files into container"
+    if ! run_logged docker rm "$CONTAINER_NAME"; then
+        log_err "failed to remove container: $CONTAINER_NAME"
+        exit 1
+    fi
+
+    docker create \
+        --name "$CONTAINER_NAME" \
+        --workdir /home/user/dotfiles \
+        --env "DOTFILES_TEST_PACKAGE_LIST=$PACKAGE_LIST" \
+        --env "DOTFILES_STRICT_NVIM_HEALTH=$STRICT_HEALTH" \
+        "$IMAGE_TAG" \
+        bash -c 'sleep 3600' 2>&1 | strip_ansi_stream | tee -a "$LOG_FILE"
+    create_rc=${PIPESTATUS[0]}
+    if [ "$create_rc" -ne 0 ]; then
+        log_err "failed to create container"
+        exit "$create_rc"
+    fi
+
+    docker start "$CONTAINER_NAME" 2>&1 | tee -a "$LOG_FILE"
+
+    log_msg "copying repository files"
+    tar -C "$ROOT_DIR" -cf - . | docker exec -i "$CONTAINER_NAME" tar -xf - -C /home/user/dotfiles/ 2>&1 | strip_ansi_stream | tee -a "$LOG_FILE"
+
+    docker exec "$CONTAINER_NAME" bash /home/user/dotfiles/containers/check-setup-in-container 2>&1 | strip_ansi_stream | tee -a "$LOG_FILE"
+    run_rc=${PIPESTATUS[0]}
+
+    if [ "$run_rc" -eq 0 ]; then
+        docker stop "$CONTAINER_NAME" > /dev/null 2>&1
+    fi
+fi
 
 if copy_container_file /tmp/dotfiles-nvim-health.txt "$HEALTH_FILE"; then
     append_file_to_log "nvim checkhealth buffer" "$HEALTH_FILE"
