@@ -78,7 +78,7 @@
     insteadOf = ir:
     insteadOf = ivan-ristovic:
 
-[url "git@github.com/"]
+[url "git@github.com:"]
     insteadOf = ggithub:
     insteadOf = ggh:
 
