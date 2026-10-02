@@ -25,6 +25,7 @@ export NC_BACKUP=$NC_ROOT/Backup
 # Misc 
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
+export GOPATH=~/.go
 
 # UI settings
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
