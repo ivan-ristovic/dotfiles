@@ -1,0 +1,67 @@
+# This tmux statusbar config was created by tmuxline.vim
+# on Wed, 28 Aug 2019
+
+# default statusbar colors
+set-option -g status-bg colour252 #base02
+set-option -g status-fg colour2 
+#set-option -g status-attr default
+
+# window title
+set-option -g set-titles on
+set-option -g set-titles-string "#S / #W"
+
+# default window title colors
+#set-window-option -g window-status-fg colour244 #base0
+#set-window-option -g window-status-bg default
+#set-window-option -g window-status-attr dim
+
+# active window title colors
+#set-window-option -g window-status-current-fg green #colour166 #orange
+#set-window-option -g window-status-current-bg default
+#set-window-option -g window-status-current-attr bright
+
+# pane border
+#set-option -g pane-border-fg colour235 #base02
+#set-option -g pane-active-border-fg colour240 #base01
+
+# message text
+#set-option -g message-bg colour235 #base02
+#set-option -g message-fg colour166 #orange
+
+# pane number display
+set-option -g display-panes-active-colour colour33 #blue
+set-option -g display-panes-colour colour166 #orange
+
+# clock
+set-window-option -g clock-mode-colour colour64 #green
+
+# tmuxline
+set -g status-justify "left"
+set -g status "on"
+set -g status-left-style "none"
+set -g message-command-style "fg=colour0,bg=colour252"
+set -g status-right-style "none"
+set -g pane-active-border-style "fg=colour70"
+set -g status-style "none,bg=colour252"
+set -g message-style "fg=colour0,bg=colour252"
+set -g pane-border-style "fg=colour237"
+set -g status-right-length "100"
+set -g status-left-length "100"
+setw -g window-status-activity-style "none"
+setw -g window-status-separator ""
+setw -g window-status-style "none,fg=colour15,bg=colour252"
+set -g status-left "#[fg=colour15,bg=colour70] #S #[fg=colour70,bg=colour249,nobold,nounderscore,noitalics]"
+set -g status-right "#{prefix_highlight}#[fg=colour249,bg=colour252,nobold,nounderscore,noitalics]#[fg=colour0,bg=colour249] %Y-%m-%d  %H:%M #[fg=colour70,bg=colour249,nobold,nounderscore,noitalics]#[fg=colour15,bg=colour70] #h "
+set -g @prefix_highlight_fg 'colour0'
+set -g @prefix_highlight_bg 'colour252'
+set -g @prefix_highlight_prefix_prompt '󰋽'
+set -g @prefix_highlight_show_copy_mode 'on'
+set -g @prefix_highlight_copy_prompt '󰋽'
+set -g @prefix_highlight_copy_mode_attr 'fg=blue'
+set -g @prefix_highlight_show_sync_mode 'on'
+set -g @prefix_highlight_sync_prompt '󰋽'
+set -g @prefix_highlight_sync_mode_attr 'fg=green'
+setw -g window-status-format "#[fg=colour0,bg=colour249] #I #[fg=colour0,bg=colour249] #W "
+setw -g window-status-current-format "#[fg=colour249,bg=colour245,nobold,nounderscore,noitalics]#[fg=colour0,bg=colour245] #I #[fg=colour0,bg=colour245] #W #[fg=colour245,bg=colour249,nobold,nounderscore,noitalics]"
+set -g mouse on 
+set -g message-format '#[fill=colour252,#{?#{command_prompt},#{E:message-command-style},#{E:message-style}}]#{message}'
