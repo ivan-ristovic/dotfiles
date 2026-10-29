@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+set -u
+
+icon=${UPDATES_ICON:-'Updates available'}
+tmp=$(mktemp)
+trap 'rm -f "$tmp"' EXIT
+
+updates=''
+manager=''
+
+if command -v checkupdates >/dev/null 2>&1; then
+    manager=arch
+    updates=$(checkupdates 2>/dev/null || :)
+    if command -v yay >/dev/null 2>&1; then
+        aur=$(yay -Qua 2>/dev/null || :)
+        [[ -n "$aur" ]] && updates+=$'\n'"$aur"
+    elif command -v paru >/dev/null 2>&1; then
+        aur=$(paru -Qua 2>/dev/null || :)
+        [[ -n "$aur" ]] && updates+=$'\n'"$aur"
+    fi
+
+elif command -v apt-get >/dev/null 2>&1 && command -v apt >/dev/null 2>&1; then
+    manager=apt
+    # Uses the package lists already on disk; refresh them with `sudo apt update`.
+    updates=$(apt list --upgradable 2>/dev/null | sed '1d' | sed '/^[[:space:]]*$/d' || :)
+
+elif command -v dnf5 >/dev/null 2>&1; then
+    manager=dnf
+    updates=$(dnf5 -q check-upgrade 2>/dev/null || :)
+
+elif command -v dnf >/dev/null 2>&1; then
+    manager=dnf
+    # DNF returns status 100 when updates are available.
+    updates=$(dnf -q check-update 2>/dev/null || :)
+
+elif command -v zypper >/dev/null 2>&1; then
+    manager=zypper
+    updates=$(zypper --no-refresh --quiet list-updates 2>/dev/null || :)
+fi
+
+# Strip blank lines and harmless command output before deciding whether to show the icon.
+updates=$(printf '%s\n' "$updates" |
+    sed '/^[[:space:]]*$/d; /^Listing\.\.\./d')
+
+if [[ -n "$updates" ]]; then
+    {
+        printf 'Updates found (%s)\n\n' "$manager"
+        printf '%s\n' "$updates"
+    } >"$tmp"
+
+    if [[ ${BLOCK_BUTTON:-0} == 1 ]]; then
+        notify-send --urgency=normal --expire-time=0 \
+            "Available package updates" "$(cat "$tmp")"
+    fi
+
+    printf '%s\n\n#ff0000\n' "$icon"
+else
+    # Empty full_text hides the block when no updates are found.
+    printf '\n\n#ffffff\n'
+fi
+
