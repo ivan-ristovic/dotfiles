@@ -47,7 +47,7 @@ if [[ -n "$updates" ]]; then
     update_count=$(printf '%s\n' "$updates" | wc -l)
 fi
 
-if (( update_count > 10 )); then
+if (( update_count > ${UPDATE_PACKAGE_COUNT_THRESHOLD:-10} )); then
     {
         printf 'Updates found (%s)\n\n' "$manager"
         printf '%s\n' "$updates"
