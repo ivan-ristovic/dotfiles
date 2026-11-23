@@ -9,7 +9,7 @@ white = "#DCDFE4"
 yellow = "#E5C07B"
 
 [colors.primary]
-background = "#1e1e1e"
+background = "#161616"
 
 [cursor.style]
 blinking = "Off"
